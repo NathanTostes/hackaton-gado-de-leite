@@ -1,0 +1,10 @@
+{
+  "name": "@drmoo/engine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Motor de inferência do Dr. Moo — TypeScript puro, zero dependências",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "sideEffects": false
+}
