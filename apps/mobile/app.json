@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Dr. Moo",
+    "slug": "dr-moo",
+    "scheme": "drmoo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "backgroundColor": "#FFFFFF",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#015B66"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "br.ufjf.drmoo"
+    },
+    "android": {
+      "package": "br.ufjf.drmoo",
+      "adaptiveIcon": {
+        "backgroundColor": "#015B66",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": ["expo-router", "expo-sqlite", "expo-font"],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}

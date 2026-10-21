@@ -1,0 +1,33 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@drmoo/engine": [
+        "../../packages/engine/src/index.ts"
+      ],
+      "@drmoo/knowledge": [
+        "../../packages/knowledge/src/index.ts"
+      ],
+      "@drmoo/domain": [
+        "../../packages/domain/src/index.ts"
+      ],
+      "@drmoo/db": [
+        "../../packages/db/src/index.ts"
+      ],
+      "@drmoo/ui": [
+        "../../packages/ui/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}
