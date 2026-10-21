@@ -1,0 +1,356 @@
+[
+  {
+    "var": "caneca_grumos",
+    "pergunta": "Nos primeiros jatos, o leite apresenta grumos ou pus?",
+    "tipo": "boolean",
+    "ajuda": "Use o teste da caneca de fundo escuro (ou caneca telada): contenha a vaca, lave bem as mãos, retire os três primeiros jatos de cada teto e observe o leite na caneca. Pequenos grumos já são considerados sinal de mastite clínica. Todo o leite da caneca deve ser jogado fora.",
+    "ilustracao": "caneca-fundo-escuro",
+    "custo": 1,
+    "fonte": "EMBRAPA. Como identificar a vaca com mastite em sua propriedade, 2015, p. 12 e 15-19."
+  },
+  {
+    "var": "caneca_cor_alterada",
+    "pergunta": "O leite está com a cor alterada (amarelada ou avermelhada)?",
+    "tipo": "boolean",
+    "ajuda": "A vaca está com mastite clínica se, ao realizar o teste da caneca, o leite apresentar coloração amarelada, presença de grumos ou pus.",
+    "ilustracao": "caneca-fundo-escuro",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 19."
+  },
+  {
+    "var": "caneca_consistencia_alterada",
+    "pergunta": "O leite está com a consistência alterada (mais aguado ou mais grosso que o normal)?",
+    "tipo": "boolean",
+    "ilustracao": "caneca-fundo-escuro",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 12-13."
+  },
+  {
+    "var": "palpacao_dor",
+    "pergunta": "A vaca sente dor quando você toca alguma parte da mama?",
+    "tipo": "boolean",
+    "ajuda": "Antes da ordenha, examine a mama com as mãos. Verifique se a vaca sente dor ao toque e se existe área endurecida ou mais quente.",
+    "ilustracao": "palpacao-ubere",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 13 e 21."
+  },
+  {
+    "var": "palpacao_inchaco",
+    "pergunta": "Há inchaço em alguma parte da mama?",
+    "tipo": "boolean",
+    "ilustracao": "palpacao-ubere",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 13 e 21."
+  },
+  {
+    "var": "palpacao_endurecido",
+    "pergunta": "Há alguma área endurecida na mama?",
+    "tipo": "boolean",
+    "ilustracao": "palpacao-ubere",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 13 e 21."
+  },
+  {
+    "var": "palpacao_vermelhidao",
+    "pergunta": "Alguma parte da mama está avermelhada?",
+    "tipo": "boolean",
+    "ilustracao": "palpacao-ubere",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 13."
+  },
+  {
+    "var": "ubere_aumento_tamanho",
+    "pergunta": "O úbere está visivelmente aumentado de tamanho?",
+    "tipo": "boolean",
+    "ajuda": "Antes da ordenha, faça o exame visual da mama e verifique se existe algo diferente: local avermelhado, inchaço, aumento de tamanho.",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 21."
+  },
+  {
+    "var": "nao_deixa_ordenhar",
+    "pergunta": "A vaca não se deixa ordenhar?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 21."
+  },
+  {
+    "var": "caroco_apos_ordenha",
+    "pergunta": "Depois da ordenha, você sente caroços ou áreas endurecidas dentro de algum quarto?",
+    "tipo": "boolean",
+    "ajuda": "Após a ordenha, examine com as mãos a parte interna de cada quarto mamário e verifique se estão macios.",
+    "ilustracao": "palpacao-ubere",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 21."
+  },
+  {
+    "var": "quarto_sem_leite",
+    "pergunta": "Algum quarto mamário não produz mais leite?",
+    "tipo": "boolean",
+    "ajuda": "Na prática isso é chamado de \"peito perdido\" e deve ser anotado com a sigla PP.",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 37."
+  },
+  {
+    "var": "cmt_pior_quarto",
+    "pergunta": "Qual o resultado do teste de CMT?",
+    "tipo": "por_quarto",
+    "ajuda": "Faça o teste da caneca antes do CMT. Lave e desinfete os tetos, seque com papel-toalha, retire o leite de cada teto até a primeira marca de cada copo da raquete, adicione o reagente até a segunda marca e misture com movimentos circulares por 20 segundos. Leia conforme a tabela: N = sem reação; T = gel leve que se dissolve; + = gel fraco que não se dissolve; ++ = gel com mamilo no centro; +++ = gel muito grosso, que cola no fundo.",
+    "ilustracao": "raquete-cmt",
+    "custo": 3,
+    "opcoes": [
+      { "valor": "N", "rotulo": "N — negativo, sem reação", "cor": "verdeOk" },
+      { "valor": "T", "rotulo": "T — traços (dissolve com o movimento)", "cor": "verdeOk" },
+      { "valor": "1", "rotulo": "+ — gel fraco que não se dissolve", "cor": "atencao" },
+      { "valor": "2", "rotulo": "++ — gel com mamilo no centro", "cor": "atencao" },
+      { "valor": "3", "rotulo": "+++ — gel muito grosso, cola no fundo", "cor": "alerta" },
+      { "valor": "PP", "rotulo": "PP — peito perdido", "cor": "cinza" }
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 23-33."
+  },
+  {
+    "var": "ccs_individual",
+    "pergunta": "Qual a Contagem de Células Somáticas (CCS) individual desta vaca?",
+    "tipo": "numero",
+    "unidade": "células/mL",
+    "min": 0,
+    "max": 10000000,
+    "ajuda": "A amostra deve ser enviada a um laboratório de qualidade do leite credenciado pelo Mapa. Vacas com CCS acima de 200.000 células por mL são consideradas com mastite subclínica.",
+    "custo": 5,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 34."
+  },
+
+  {
+    "var": "febre",
+    "pergunta": "A vaca está com febre (acima de 39,5 °C) ou com orelhas e focinho quentes?",
+    "tipo": "boolean",
+    "custo": 3,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 14."
+  },
+  {
+    "var": "apetite_reduzido",
+    "pergunta": "A vaca está comendo menos que o normal?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 14."
+  },
+  {
+    "var": "apatia",
+    "pergunta": "A vaca está apática, parada, cabeça baixa, diferente do normal?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 14."
+  },
+  {
+    "var": "desidratacao",
+    "pergunta": "A vaca apresenta sinais de desidratação (olhos fundos, prega de pele que demora a voltar)?",
+    "tipo": "boolean",
+    "ajuda": "Belisque a pele do pescoço: se a prega demorar mais de 2 segundos para voltar, há desidratação.",
+    "custo": 1,
+    "fonte": "EMBRAPA, Mastite, 2015, p. 14."
+  },
+
+  {
+    "var": "queda_producao_subita",
+    "pergunta": "Houve queda súbita na produção de leite desta vaca?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "decubito",
+    "pergunta": "A vaca está caída e não consegue levantar?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "extremidades_frias",
+    "pergunta": "As orelhas e as patas estão frias?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "tremores_musculares",
+    "pergunta": "A vaca apresenta tremores musculares?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "halito_adocicado",
+    "pergunta": "O hálito da vaca está adocicado (cheiro de acetona ou de maçã passada)?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "perda_escore_corporal",
+    "pergunta": "A vaca está emagrecendo de forma visível?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+
+  {
+    "var": "placenta_retida_12h",
+    "pergunta": "A placenta ficou retida por mais de 12 horas após o parto?",
+    "tipo": "boolean",
+    "custo": 1,
+    "preRequisito": { "var": "del", "op": "<=", "val": 30 }
+  },
+  {
+    "var": "corrimento_vulvar_fetido",
+    "pergunta": "Há corrimento pela vulva com cheiro ruim ou cor achocolatada?",
+    "tipo": "boolean",
+    "custo": 1,
+    "preRequisito": { "var": "del", "op": "<=", "val": 45 }
+  },
+
+  {
+    "var": "fezes_escassas",
+    "pergunta": "As fezes estão escassas ou mais pastosas que o normal?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "fezes_liquidas_bolhosas",
+    "pergunta": "As fezes estão líquidas e com bolhas?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "ruminacao_reduzida",
+    "pergunta": "A vaca está ruminando menos que o normal?",
+    "tipo": "boolean",
+    "ajuda": "Observe o rebanho em descanso: o normal é que a maioria das vacas deitadas esteja ruminando.",
+    "custo": 1
+  },
+  {
+    "var": "flanco_esquerdo_distendido",
+    "pergunta": "O flanco esquerdo está estufado?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "dieta_muito_concentrado",
+    "pergunta": "A dieta do lote tem muito concentrado e pouca fibra longa?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "queda_gordura_leite",
+    "pergunta": "Houve queda no teor de gordura do leite do rebanho?",
+    "tipo": "boolean",
+    "custo": 3
+  },
+
+  {
+    "var": "claudicacao",
+    "pergunta": "A vaca está mancando?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "casco_quente_inchado",
+    "pergunta": "Algum casco está quente ou inchado?",
+    "tipo": "boolean",
+    "custo": 3,
+    "preRequisito": { "var": "claudicacao", "op": "=", "val": true }
+  },
+  {
+    "var": "mau_cheiro_casco",
+    "pergunta": "Há mau cheiro ou ferida entre os dedos?",
+    "tipo": "boolean",
+    "custo": 3,
+    "preRequisito": { "var": "claudicacao", "op": "=", "val": true }
+  },
+
+  {
+    "var": "mucosas_palidas",
+    "pergunta": "As mucosas (gengiva e ao redor dos olhos) estão pálidas?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "mucosas_amareladas",
+    "pergunta": "As mucosas estão amareladas?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "urina_escura",
+    "pergunta": "A urina está escura, cor de vinho ou de café?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "infestacao_carrapatos",
+    "pergunta": "O animal está com muitos carrapatos?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "EMBRAPA. Administrando a propriedade leiteira, 2016, p. 23 (tristeza parasitária como causa de morte; conduta: controle estratégico de carrapatos)."
+  },
+  {
+    "var": "tosse",
+    "pergunta": "O animal está tossindo?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "secrecao_nasal",
+    "pergunta": "Há secreção saindo pelo nariz?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "respiracao_acelerada",
+    "pergunta": "A respiração está acelerada?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+
+  {
+    "var": "vesiculas_boca_tetos_cascos",
+    "pergunta": "Há aftas ou bolhas na boca, na língua, no focinho, nos tetos ou entre os cascos?",
+    "tipo": "boolean",
+    "ajuda": "Atenção: este é um sinal de doença de notificação obrigatória. Responda com cuidado.",
+    "custo": 3
+  },
+  {
+    "var": "salivacao_intensa",
+    "pergunta": "A vaca está babando muito, com saliva escorrendo?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+  {
+    "var": "sinais_nervosos",
+    "pergunta": "O animal apresenta sinais nervosos (incoordenação, agressividade, mugido alterado, paralisia do trem traseiro)?",
+    "tipo": "boolean",
+    "ajuda": "Atenção: não manipule o animal sem equipamento de proteção enquanto não houver avaliação veterinária.",
+    "custo": 1
+  },
+  {
+    "var": "dificuldade_deglutir",
+    "pergunta": "O animal tem dificuldade para engolir?",
+    "tipo": "boolean",
+    "custo": 1
+  },
+
+  {
+    "var": "fezes_liquidas",
+    "pergunta": "A bezerra está com fezes líquidas (diarreia)?",
+    "tipo": "boolean",
+    "custo": 1,
+    "preRequisito": { "var": "idade_dias", "op": "<=", "val": 90 },
+    "fonte": "EMBRAPA. Administrando a propriedade leiteira, 2016, p. 23 (diarreia como causa de morte de bezerra)."
+  },
+  {
+    "var": "umbigo_inchado_quente",
+    "pergunta": "O umbigo da bezerra está inchado, quente ou dolorido?",
+    "tipo": "boolean",
+    "custo": 1,
+    "preRequisito": { "var": "idade_dias", "op": "<=", "val": 60 }
+  },
+  {
+    "var": "colostro_primeiras_6h",
+    "pergunta": "A bezerra recebeu colostro nas primeiras 6 horas de vida?",
+    "tipo": "boolean",
+    "custo": 1,
+    "preRequisito": { "var": "idade_dias", "op": "<=", "val": 90 }
+  }
+]
