@@ -1,0 +1,398 @@
+[
+  {
+    "id": "CASO-MAST-001",
+    "descricao": "Grumos nos primeiros jatos, mama sem alteração à palpação",
+    "fatos": {
+      "caneca_grumos": true,
+      "caneca_cor_alterada": false,
+      "caneca_consistencia_alterada": false,
+      "palpacao_dor": false,
+      "palpacao_inchaco": false,
+      "palpacao_endurecido": false,
+      "palpacao_vermelhidao": false
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_clinica_g1",
+      "cfMinimo": 0.9,
+      "naoDeveConcluir": ["mastite_clinica_g2", "mastite_clinica_g3", "sem_alteracao"],
+      "regrasDisparadas": ["MAST-CLIN-G1"]
+    }
+  },
+  {
+    "id": "CASO-MAST-002",
+    "descricao": "Leite amarelado, sem grumos e sem alteração à palpação",
+    "fatos": {
+      "caneca_grumos": false,
+      "caneca_cor_alterada": true,
+      "caneca_consistencia_alterada": false,
+      "palpacao_dor": false,
+      "palpacao_inchaco": false,
+      "palpacao_endurecido": false,
+      "palpacao_vermelhidao": false
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_clinica_g1",
+      "cfMinimo": 0.9,
+      "naoDeveConcluir": ["mastite_clinica_g2", "sem_alteracao"],
+      "regrasDisparadas": ["MAST-CLIN-G1"]
+    }
+  },
+  {
+    "id": "CASO-MAST-003",
+    "descricao": "Vaca com grumos no leite, úbere dolorido e inchado, sem febre",
+    "fatos": {
+      "caneca_grumos": true,
+      "palpacao_dor": true,
+      "palpacao_inchaco": true,
+      "febre": false,
+      "apetite_reduzido": false
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_clinica_g2",
+      "cfMinimo": 0.8,
+      "naoDeveConcluir": ["mastite_clinica_g3"],
+      "regrasDisparadas": ["MAST-CLIN-G1", "MAST-CLIN-G2"]
+    }
+  },
+  {
+    "id": "CASO-MAST-004",
+    "descricao": "Mastite clínica grau 3: grumos, dor e febre — emergência",
+    "fatos": {
+      "caneca_grumos": true,
+      "palpacao_dor": true,
+      "febre": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_clinica_g3",
+      "cfMinimo": 0.75,
+      "bandeiraVermelha": true,
+      "regrasDisparadas": ["MAST-CLIN-G1", "MAST-CLIN-G2", "MAST-CLIN-G3"]
+    }
+  },
+  {
+    "id": "CASO-MAST-005",
+    "descricao": "CMT negativo (N) isolado não deve concluir mastite",
+    "fatos": { "cmt_pior_quarto": "N" },
+    "esperado": {
+      "diagnosticoPrincipal": null,
+      "naoDeveConcluir": ["mastite_subclinica", "mastite_clinica_g1"]
+    }
+  },
+  {
+    "id": "CASO-MAST-006",
+    "descricao": "CMT com traços (T) — negativo, mas sinaliza acompanhamento",
+    "fatos": { "cmt_pior_quarto": "T" },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_subclinica",
+      "cfMinimo": 0.25,
+      "cfMaximo": 0.35,
+      "regrasDisparadas": ["MAST-SUB-CMT-TRACOS"]
+    }
+  },
+  {
+    "id": "CASO-MAST-007",
+    "descricao": "CMT uma cruz (+) — mastite subclínica",
+    "fatos": { "cmt_pior_quarto": "1" },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_subclinica",
+      "cfMinimo": 0.85,
+      "regrasDisparadas": ["MAST-SUB-CMT-1"]
+    }
+  },
+  {
+    "id": "CASO-MAST-008",
+    "descricao": "CMT duas cruzes (++) — mastite subclínica",
+    "fatos": { "cmt_pior_quarto": "2" },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_subclinica",
+      "cfMinimo": 0.9,
+      "regrasDisparadas": ["MAST-SUB-CMT-2"]
+    }
+  },
+  {
+    "id": "CASO-MAST-009",
+    "descricao": "CMT três cruzes (+++) — mastite subclínica forte",
+    "fatos": { "cmt_pior_quarto": "3" },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_subclinica",
+      "cfMinimo": 0.95,
+      "regrasDisparadas": ["MAST-SUB-CMT-3"]
+    }
+  },
+  {
+    "id": "CASO-MAST-010",
+    "descricao": "CCS individual de 350.000 células/mL — acima do limite de 200.000",
+    "fatos": { "ccs_individual": 350000 },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_subclinica",
+      "cfMinimo": 0.9,
+      "regrasDisparadas": ["MAST-SUB-CCS"]
+    }
+  },
+  {
+    "id": "CASO-MAST-011",
+    "descricao": "CCS individual de 150.000 células/mL — dentro do limite",
+    "fatos": { "ccs_individual": 150000 },
+    "esperado": {
+      "diagnosticoPrincipal": null,
+      "naoDeveConcluir": ["mastite_subclinica"]
+    }
+  },
+  {
+    "id": "CASO-MAST-012",
+    "descricao": "CMT positivo há 4 meses na mesma lactação — mastite crônica",
+    "fatos": { "cmt_pior_quarto": "2", "cmt_positivo_meses": 4 },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_cronica",
+      "cfMinimo": 0.85,
+      "naoDeveConcluir": ["mastite_subclinica"],
+      "regrasDisparadas": ["MAST-CRONICA", "MAST-SUB-CMT-2"]
+    }
+  },
+  {
+    "id": "CASO-MAST-013",
+    "descricao": "Quarto mamário que não produz mais leite — peito perdido",
+    "fatos": { "quarto_sem_leite": true },
+    "esperado": {
+      "diagnosticoPrincipal": "peito_perdido",
+      "cfMinimo": 0.9,
+      "regrasDisparadas": ["MAST-PP"]
+    }
+  },
+
+  {
+    "id": "CASO-REB-001",
+    "descricao": "Exemplo da cartilha: 4,8% de mastite clínica no mês (acima da meta de 2%)",
+    "fatos": { "perc_mastite_clinica_mes": 4.8 },
+    "esperado": {
+      "diagnosticoPrincipal": "rebanho_mastite_clinica_alta",
+      "cfMinimo": 0.9,
+      "regrasDisparadas": ["REB-MAST-CLIN-ALTA"]
+    }
+  },
+  {
+    "id": "CASO-REB-002",
+    "descricao": "25% de mastite subclínica — acima da meta de 20%",
+    "fatos": { "perc_mastite_subclinica": 25 },
+    "esperado": {
+      "diagnosticoPrincipal": "rebanho_mastite_subclinica_alta",
+      "cfMinimo": 0.9,
+      "regrasDisparadas": ["REB-MAST-SUB-ALTA"]
+    }
+  },
+  {
+    "id": "CASO-REB-003",
+    "descricao": "15% de mastite subclínica — dentro da meta",
+    "fatos": { "perc_mastite_subclinica": 15, "perc_mastite_clinica_mes": 1.2 },
+    "esperado": {
+      "diagnosticoPrincipal": null,
+      "naoDeveConcluir": ["rebanho_mastite_subclinica_alta", "rebanho_mastite_clinica_alta"]
+    }
+  },
+
+  {
+    "id": "CASO-MET-001",
+    "descricao": "Vaca de 3ª cria, 1 dia pós-parto, caída, sem febre, extremidades frias",
+    "fatos": {
+      "del": 1,
+      "numero_lactacao": 3,
+      "decubito": true,
+      "febre": false,
+      "extremidades_frias": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "hipocalcemia",
+      "cfMinimo": 0.85,
+      "naoDeveConcluir": ["cetose"],
+      "regrasDisparadas": ["MET-HIPOCALCEMIA", "MET-HIPOCALCEMIA-REFORCO"]
+    }
+  },
+  {
+    "id": "CASO-MET-002",
+    "descricao": "Vaca com 25 DEL, comendo pouco, emagrecendo, hálito adocicado",
+    "fatos": {
+      "del": 25,
+      "apetite_reduzido": true,
+      "perda_escore_corporal": true,
+      "halito_adocicado": true,
+      "fezes_escassas": false,
+      "queda_producao_subita": false
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "cetose",
+      "cfMinimo": 0.9,
+      "naoDeveConcluir": ["deslocamento_abomaso"],
+      "regrasDisparadas": ["MET-CETOSE", "MET-CETOSE-HALITO"]
+    }
+  },
+  {
+    "id": "CASO-DIG-001",
+    "descricao": "Lote com fezes líquidas e bolhosas, pouca ruminação, muito concentrado",
+    "fatos": {
+      "fezes_liquidas_bolhosas": true,
+      "ruminacao_reduzida": true,
+      "dieta_muito_concentrado": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "acidose_ruminal",
+      "cfMinimo": 0.75,
+      "regrasDisparadas": ["DIG-SARA", "DIG-SARA-REFORCO"]
+    }
+  },
+  {
+    "id": "CASO-LOC-001",
+    "descricao": "Vaca mancando, com mau cheiro entre os dedos",
+    "fatos": {
+      "claudicacao": true,
+      "mau_cheiro_casco": true,
+      "casco_quente_inchado": false
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "pododermatite",
+      "cfMinimo": 0.75,
+      "naoDeveConcluir": ["laminite"],
+      "regrasDisparadas": ["LOC-PODODERMATITE"]
+    }
+  },
+  {
+    "id": "CASO-PAR-001",
+    "descricao": "Febre, mucosas amareladas, urina escura e muitos carrapatos",
+    "fatos": {
+      "febre": true,
+      "mucosas_amareladas": true,
+      "urina_escura": true,
+      "infestacao_carrapatos": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "tristeza_parasitaria",
+      "cfMinimo": 0.9,
+      "regrasDisparadas": ["PAR-TRISTEZA", "PAR-TRISTEZA-CARRAPATO"]
+    }
+  },
+
+  {
+    "id": "CASO-NOT-001",
+    "descricao": "Aftas na boca e nos tetos com salivação intensa — notificação obrigatória",
+    "fatos": {
+      "vesiculas_boca_tetos_cascos": true,
+      "salivacao_intensa": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "suspeita_aftosa",
+      "cfMinimo": 0.65,
+      "bandeiraVermelha": true,
+      "regrasDisparadas": ["NOT-AFTOSA"]
+    }
+  },
+  {
+    "id": "CASO-NOT-002",
+    "descricao": "Sinais nervosos com dificuldade de engolir — suspeita de raiva (zoonose)",
+    "fatos": {
+      "sinais_nervosos": true,
+      "dificuldade_deglutir": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "suspeita_raiva",
+      "cfMinimo": 0.65,
+      "bandeiraVermelha": true,
+      "regrasDisparadas": ["NOT-RAIVA"]
+    }
+  },
+
+  {
+    "id": "CASO-BEZ-001",
+    "descricao": "Bezerra de 10 dias com diarreia e sinais de desidratação",
+    "fatos": {
+      "idade_dias": 10,
+      "fezes_liquidas": true,
+      "desidratacao": true,
+      "colostro_primeiras_6h": true,
+      "umbigo_inchado_quente": false
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "diarreia_neonatal",
+      "cfMinimo": 0.9,
+      "naoDeveConcluir": ["falha_transferencia_imunidade", "onfalite"],
+      "regrasDisparadas": ["BEZ-DIARREIA", "BEZ-DIARREIA-GRAVE"]
+    }
+  },
+  {
+    "id": "CASO-BEZ-002",
+    "descricao": "Bezerra de 5 dias que não recebeu colostro nas primeiras 6 horas",
+    "fatos": {
+      "idade_dias": 5,
+      "colostro_primeiras_6h": false,
+      "fezes_liquidas": false,
+      "umbigo_inchado_quente": false
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "falha_transferencia_imunidade",
+      "cfMinimo": 0.75,
+      "naoDeveConcluir": ["diarreia_neonatal", "onfalite"],
+      "regrasDisparadas": ["BEZ-FALHA-COLOSTRO"]
+    }
+  },
+
+  {
+    "id": "CASO-NEG-001",
+    "descricao": "Vaca sadia: nenhum sinal encontrado na triagem",
+    "fatos": {
+      "caneca_grumos": false,
+      "caneca_cor_alterada": false,
+      "caneca_consistencia_alterada": false,
+      "palpacao_dor": false,
+      "palpacao_inchaco": false,
+      "febre": false,
+      "apetite_reduzido": false,
+      "apatia": false,
+      "claudicacao": false,
+      "queda_producao_subita": false
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "sem_alteracao",
+      "cfMinimo": 0.8,
+      "naoDeveConcluir": ["mastite_clinica_g1", "mastite_clinica_g2", "mastite_clinica_g3"],
+      "regrasDisparadas": ["TRI-SEM-ALTERACAO"]
+    }
+  },
+  {
+    "id": "CASO-NEG-002",
+    "descricao": "Vaca clinicamente normal, mas com CMT ++ — a subclínica só aparece no teste",
+    "fatos": {
+      "caneca_grumos": false,
+      "caneca_cor_alterada": false,
+      "caneca_consistencia_alterada": false,
+      "palpacao_dor": false,
+      "palpacao_inchaco": false,
+      "febre": false,
+      "apetite_reduzido": false,
+      "apatia": false,
+      "claudicacao": false,
+      "queda_producao_subita": false,
+      "cmt_pior_quarto": "2"
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_subclinica",
+      "cfMinimo": 0.9,
+      "deveConcluir": ["sem_alteracao"],
+      "regrasDisparadas": ["MAST-SUB-CMT-2", "TRI-SEM-ALTERACAO"]
+    }
+  },
+
+  {
+    "id": "CASO-AMB-001",
+    "descricao": "Caso ambíguo: 20 DEL, come pouco, produção caiu e fezes escassas — abomaso ou cetose?",
+    "fatos": {
+      "del": 20,
+      "apetite_reduzido": true,
+      "queda_producao_subita": true,
+      "fezes_escassas": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "deslocamento_abomaso",
+      "cfMinimo": 0.75,
+      "deveConcluir": ["cetose"],
+      "regrasDisparadas": ["MET-CETOSE", "DIG-DESLOC-ABOMASO", "DIG-DA-COM-CETOSE"]
+    }
+  }
+]
