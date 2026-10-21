@@ -1,0 +1,92 @@
+[
+  {
+    "id": "MET-HIPOCALCEMIA",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Hipocalcemia (febre do leite)",
+    "prioridade": 92,
+    "se": {
+      "todas": [
+        { "var": "del", "op": "<=", "val": 3 },
+        { "var": "numero_lactacao", "op": ">=", "val": 2 },
+        { "var": "decubito", "op": "=", "val": true },
+        { "nao": { "var": "febre", "op": "=", "val": true } }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "hipocalcemia", "cf": 0.85 }],
+    "porque": "A hipocalcemia ocorre tipicamente nos primeiros dias após o parto em vacas multíparas e de alta produção. Apesar do nome popular \"febre do leite\", o animal NÃO apresenta febre — ao contrário, fica com as extremidades frias.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA: o tratamento é a aplicação de cálcio e precisa ser feito por profissional.",
+      "Mantenha a vaca em posição esternal (deitada sobre o peito), nunca de lado, para evitar timpanismo e aspiração.",
+      "Coloque o animal em piso macio e não escorregadio, à sombra, com água por perto.",
+      "Reveja o manejo nutricional das vacas no pré-parto com o técnico."
+    ],
+    "fonte": "Consenso veterinário geral sobre hipocalcemia puerperal — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-HIPOCALCEMIA-REFORCO",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Sinais de reforço de hipocalcemia",
+    "prioridade": 70,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "hipocalcemia" },
+        {
+          "alguma": [
+            { "var": "extremidades_frias", "op": "=", "val": true },
+            { "var": "tremores_musculares", "op": "=", "val": true }
+          ]
+        }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "hipocalcemia", "cf": 0.6 }],
+    "porque": "Extremidades frias e tremores musculares reforçam a suspeita de queda de cálcio no sangue.",
+    "conduta": ["Reforce a urgência do atendimento veterinário."],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-CETOSE",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Cetose",
+    "prioridade": 80,
+    "se": {
+      "todas": [
+        { "var": "del", "op": "entre", "val": [7, 60] },
+        { "var": "apetite_reduzido", "op": "=", "val": true },
+        {
+          "alguma": [
+            { "var": "queda_producao_subita", "op": "=", "val": true },
+            { "var": "perda_escore_corporal", "op": "=", "val": true }
+          ]
+        }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "cetose", "cf": 0.7 }],
+    "porque": "A cetose aparece no início da lactação, quando a vaca não consegue comer o suficiente para a produção de leite que faz. Come menos, emagrece e a produção cai.",
+    "conduta": [
+      "Procure o médico-veterinário para confirmar com teste de corpos cetônicos e indicar o tratamento.",
+      "Ofereça alimento de boa qualidade e de fácil consumo a esta vaca.",
+      "Revise a dieta das vacas no início de lactação com o técnico.",
+      "Verifique se há outro problema associado (deslocamento de abomaso, metrite)."
+    ],
+    "fonte": "Consenso veterinário geral sobre cetose de início de lactação — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-CETOSE-HALITO",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Hálito cetônico",
+    "prioridade": 85,
+    "se": { "var": "halito_adocicado", "op": "=", "val": true },
+    "entao": [{ "var": "diagnostico", "val": "cetose", "cf": 0.8 }],
+    "porque": "O hálito com cheiro adocicado (acetona) é um sinal bastante específico de cetose.",
+    "conduta": ["Procure o médico-veterinário para confirmar e tratar."],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  }
+]
