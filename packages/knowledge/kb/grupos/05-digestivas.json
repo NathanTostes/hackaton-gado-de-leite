@@ -1,0 +1,110 @@
+[
+  {
+    "id": "DIG-DESLOC-ABOMASO",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Deslocamento de abomaso",
+    "prioridade": 88,
+    "se": {
+      "todas": [
+        { "var": "del", "op": "<=", "val": 30 },
+        { "var": "apetite_reduzido", "op": "=", "val": true },
+        { "var": "queda_producao_subita", "op": "=", "val": true },
+        { "var": "fezes_escassas", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "deslocamento_abomaso", "cf": 0.75 }],
+    "porque": "O deslocamento de abomaso é típico do primeiro mês após o parto: a vaca para de comer de repente, a produção despenca e as fezes ficam escassas e pastosas.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO: a confirmação é feita pela auscultação (som de \"ping\") e o tratamento costuma ser cirúrgico.",
+      "Não insista em forçar alimentação.",
+      "Verifique também cetose — os dois problemas costumam andar juntos.",
+      "Revise a dieta de transição (pré e pós-parto) com o técnico."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-DA-COM-CETOSE",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Cetose concomitante reforça deslocamento de abomaso",
+    "prioridade": 60,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "cetose" },
+        { "var": "del", "op": "<=", "val": 30 },
+        { "var": "fezes_escassas", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "deslocamento_abomaso", "cf": 0.5 }],
+    "porque": "Cetose que não melhora, acompanhada de fezes escassas no primeiro mês de lactação, levanta forte suspeita de deslocamento de abomaso associado.",
+    "conduta": ["Peça ao veterinário que ausculte o flanco em busca do som de \"ping\"."],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-SARA",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Acidose ruminal subaguda (SARA)",
+    "prioridade": 75,
+    "se": {
+      "todas": [
+        { "var": "fezes_liquidas_bolhosas", "op": "=", "val": true },
+        { "var": "ruminacao_reduzida", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "acidose_ruminal", "cf": 0.7 }],
+    "porque": "Fezes líquidas e com bolhas junto de pouca ruminação são sinais clássicos de acidez excessiva no rúmen, causada por excesso de concentrado e falta de fibra longa.",
+    "conduta": [
+      "Revise a dieta com o técnico: aumentar fibra longa efetiva e reduzir concentrado rapidamente fermentável.",
+      "Verifique se o concentrado está sendo fornecido de uma vez só — parcele ao longo do dia.",
+      "Acompanhe o teor de gordura do leite do tanque.",
+      "Garanta acesso a volumoso de qualidade antes do concentrado."
+    ],
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-SARA-REFORCO",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Dieta e gordura do leite reforçam SARA",
+    "prioridade": 65,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "acidose_ruminal" },
+        {
+          "alguma": [
+            { "var": "dieta_muito_concentrado", "op": "=", "val": true },
+            { "var": "queda_gordura_leite", "op": "=", "val": true }
+          ]
+        }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "acidose_ruminal", "cf": 0.6 }],
+    "porque": "Dieta rica em concentrado e queda do teor de gordura do leite são as duas confirmações de rebanho mais usadas para acidose subaguda.",
+    "conduta": ["Trate como problema de LOTE, não de animal isolado: avalie todas as vacas do grupo."],
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-TIMPANISMO",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Timpanismo",
+    "prioridade": 93,
+    "se": { "var": "flanco_esquerdo_distendido", "op": "=", "val": true },
+    "entao": [{ "var": "diagnostico", "val": "timpanismo", "cf": 0.75 }],
+    "porque": "O flanco esquerdo estufado indica acúmulo de gases no rúmen. O quadro pode evoluir rápido e levar o animal à morte por asfixia.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Mantenha o animal em pé e caminhando devagar, nunca deitado.",
+      "Não aplique nada pela boca sem orientação — há risco de aspiração.",
+      "Verifique se o lote teve acesso recente a pasto novo de leguminosa ou a muito concentrado."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  }
+]

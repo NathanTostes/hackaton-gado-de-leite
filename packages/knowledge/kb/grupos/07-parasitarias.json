@@ -1,0 +1,105 @@
+[
+  {
+    "id": "PAR-TRISTEZA",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Tristeza parasitária bovina",
+    "prioridade": 90,
+    "se": {
+      "todas": [
+        { "var": "febre", "op": "=", "val": true },
+        {
+          "alguma": [
+            { "var": "mucosas_palidas", "op": "=", "val": true },
+            { "var": "mucosas_amareladas", "op": "=", "val": true },
+            { "var": "urina_escura", "op": "=", "val": true }
+          ]
+        }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "tristeza_parasitaria", "cf": 0.75 }],
+    "porque": "Febre com mucosas pálidas ou amareladas e urina escura é o quadro clássico de babesiose/anaplasmose, transmitidas pelo carrapato. A cartilha da Embrapa registra tristeza parasitária como causa real de morte em rebanho leiteiro.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA: a doença evolui rápido e o tratamento precoce é decisivo.",
+      "Faça controle estratégico de carrapatos no rebanho — é a orientação registrada na cartilha.",
+      "Evite estresse e transporte do animal doente.",
+      "Observe os demais animais do lote nos próximos dias."
+    ],
+    "fonte": "EMBRAPA. Administrando a propriedade leiteira, 2016, p. 23 (ficha de mortes: tristeza parasitária → \"faça controle estratégico de carrapatos\"). Quadro clínico: consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-TRISTEZA-CARRAPATO",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Infestação por carrapatos reforça tristeza parasitária",
+    "prioridade": 65,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "tristeza_parasitaria" },
+        { "var": "infestacao_carrapatos", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "tristeza_parasitaria", "cf": 0.7 }],
+    "porque": "A presença de muitos carrapatos no animal confirma a via de transmissão da tristeza parasitária.",
+    "conduta": ["Implante controle estratégico de carrapatos em todo o rebanho, com orientação técnica."],
+    "fonte": "EMBRAPA, Administrando a propriedade leiteira, 2016, p. 23.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-VERMINOSE",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Verminose",
+    "prioridade": 55,
+    "se": {
+      "todas": [
+        { "var": "perda_escore_corporal", "op": "=", "val": true },
+        { "var": "mucosas_palidas", "op": "=", "val": true },
+        { "nao": { "var": "febre", "op": "=", "val": true } }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "verminose", "cf": 0.6 }],
+    "porque": "Emagrecimento com mucosas pálidas e sem febre sugere parasitismo interno, que causa anemia e queda de desempenho.",
+    "conduta": [
+      "Converse com o veterinário sobre exame de fezes e vermifugação estratégica.",
+      "Inclua o controle de verminose no calendário sanitário do rebanho.",
+      "Avalie o manejo de pastagem (lotação e rotação)."
+    ],
+    "fonte": "EMBRAPA, Administrando a propriedade leiteira, 2016, p. 25 (calendário sanitário inclui verminose). Quadro clínico: consenso geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-PNEUMONIA",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Pneumonia / problema respiratório",
+    "prioridade": 80,
+    "se": {
+      "todas": [
+        {
+          "alguma": [
+            { "var": "tosse", "op": "=", "val": true },
+            { "var": "secrecao_nasal", "op": "=", "val": true }
+          ]
+        },
+        {
+          "alguma": [
+            { "var": "respiracao_acelerada", "op": "=", "val": true },
+            { "var": "febre", "op": "=", "val": true }
+          ]
+        }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "pneumonia", "cf": 0.75 }],
+    "porque": "Tosse ou secreção nasal associadas a respiração acelerada ou febre caracterizam quadro respiratório.",
+    "conduta": [
+      "Procure o médico-veterinário: pode haver necessidade de antibiótico com prescrição.",
+      "Atenção à carência do medicamento para o leite e para a carne.",
+      "Melhore a ventilação e reduza a poeira no alojamento.",
+      "Separe o animal dos demais enquanto estiver com sinais."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  }
+]

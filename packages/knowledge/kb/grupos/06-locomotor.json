@@ -1,0 +1,72 @@
+[
+  {
+    "id": "LOC-LAMINITE",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Laminite",
+    "prioridade": 70,
+    "se": {
+      "todas": [
+        { "var": "claudicacao", "op": "=", "val": true },
+        { "var": "casco_quente_inchado", "op": "=", "val": true },
+        { "nao": { "var": "mau_cheiro_casco", "op": "=", "val": true } }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "laminite", "cf": 0.7 }],
+    "porque": "Manqueira com casco quente e sem ferida infectada entre os dedos aponta para laminite, inflamação ligada à dieta (acidose) e ao piso em que o animal anda.",
+    "conduta": [
+      "Procure o médico-veterinário ou casqueador para avaliar e fazer o casqueamento corretivo.",
+      "Reveja a dieta do lote com o técnico — laminite costuma vir junto de acidose ruminal.",
+      "Avalie o piso: concreto áspero, pedras no caminho e longas distâncias até o pasto pioram o problema.",
+      "Mantenha a vaca em piso macio enquanto se recupera."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-PODODERMATITE",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Pododermatite / doença da linha branca",
+    "prioridade": 75,
+    "se": {
+      "todas": [
+        { "var": "claudicacao", "op": "=", "val": true },
+        { "var": "mau_cheiro_casco", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "pododermatite", "cf": 0.8 }],
+    "porque": "Mau cheiro e ferida entre os dedos, com manqueira, caracterizam infecção do casco (pododermatite).",
+    "conduta": [
+      "Procure o médico-veterinário: o tratamento envolve limpeza, curativo e muitas vezes antibiótico.",
+      "Atenção à carência do medicamento para o leite.",
+      "Avalie o uso de pedilúvio e a limpeza do curral e do caminho até o pasto.",
+      "Isole o animal em piso seco até a melhora."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-CLAUDICACAO-GERAL",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Manqueira sem causa definida",
+    "prioridade": 40,
+    "se": {
+      "todas": [
+        { "var": "claudicacao", "op": "=", "val": true },
+        { "nao": { "var": "casco_quente_inchado", "op": "=", "val": true } },
+        { "nao": { "var": "mau_cheiro_casco", "op": "=", "val": true } }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "laminite", "cf": 0.35 }],
+    "porque": "Há manqueira, mas sem os sinais que permitem separar laminite de infecção do casco. É preciso examinar o casco levantado.",
+    "conduta": [
+      "Levante o casco e examine a sola, com contenção adequada.",
+      "Chame o casqueador ou o veterinário.",
+      "Registre o escore de locomoção para acompanhar a evolução."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  }
+]
