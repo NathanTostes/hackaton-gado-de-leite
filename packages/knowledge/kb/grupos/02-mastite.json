@@ -1,0 +1,257 @@
+[
+  {
+    "id": "MAST-CLIN-G1",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Mastite clínica grau 1",
+    "prioridade": 80,
+    "se": {
+      "alguma": [
+        { "var": "caneca_grumos", "op": "=", "val": true },
+        { "var": "caneca_cor_alterada", "op": "=", "val": true },
+        { "var": "caneca_consistencia_alterada", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "mastite_clinica_g1", "cf": 0.95 }],
+    "porque": "É a forma clínica mais branda, em que ocorrem apenas alterações no leite — presença de grumos ou pus, alterações de cor e/ou de consistência — principalmente nos primeiros jatos, observadas no teste da caneca de fundo escuro.",
+    "conduta": [
+      "Separe a vaca e ordenhe-a por último em todas as próximas ordenhas.",
+      "Identifique o animal, por exemplo com uma corda de nylon no pescoço.",
+      "Descarte o leite do quarto afetado em local apropriado — este leite não deve ser aproveitado.",
+      "Lave as mãos antes de ordenhar a próxima vaca.",
+      "Procure o médico-veterinário para indicar o tratamento adequado.",
+      "Anote o caso na ficha de mastite clínica."
+    ],
+    "fonte": "EMBRAPA. Como identificar a vaca com mastite em sua propriedade, 2015, p. 12 e p. 19-20.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-CLIN-G2",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Mastite clínica grau 2",
+    "prioridade": 85,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "mastite_clinica_g1" },
+        {
+          "alguma": [
+            { "var": "palpacao_dor", "op": "=", "val": true },
+            { "var": "palpacao_inchaco", "op": "=", "val": true },
+            { "var": "palpacao_endurecido", "op": "=", "val": true },
+            { "var": "palpacao_vermelhidao", "op": "=", "val": true }
+          ]
+        }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "mastite_clinica_g2", "cf": 0.9 }],
+    "porque": "No grau 2, além das alterações no leite vistas no grau 1, ao examinar a mama com as mãos percebe-se dor, inchaço, local endurecido ou parte da mama avermelhada.",
+    "conduta": [
+      "Separe a vaca e ordenhe-a por último em todas as próximas ordenhas.",
+      "Identifique o animal, por exemplo com uma corda de nylon no pescoço.",
+      "Descarte o leite do quarto afetado em local apropriado.",
+      "Lave as mãos antes de ordenhar a próxima vaca.",
+      "Acione o médico-veterinário: a presença do profissional é importante para examinar a vaca e indicar o tratamento certo.",
+      "Trate até a recuperação completa da mama doente."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 13 e p. 19-20.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-CLIN-G3",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Mastite clínica grau 3 — emergência",
+    "prioridade": 98,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "mastite_clinica_g2" },
+        {
+          "alguma": [
+            { "var": "febre", "op": "=", "val": true },
+            { "var": "apetite_reduzido", "op": "=", "val": true },
+            { "var": "desidratacao", "op": "=", "val": true },
+            { "var": "apatia", "op": "=", "val": true }
+          ]
+        }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "mastite_clinica_g3", "cf": 0.95 }],
+    "porque": "No grau 3, além dos sinais dos graus 1 e 2, há comprometimento do organismo do animal: a vaca pode apresentar febre, perda de apetite e desidratação. Vacas com mastite clínica grau 3 correm risco de morrer.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO IMEDIATAMENTE. O tratamento tem que ser iniciado o mais rápido possível.",
+      "Sem atendimento rápido, a vaca pode perder a mama ou até morrer.",
+      "Separe o animal agora e ordenhe-o sempre por último.",
+      "Descarte todo o leite deste animal em local apropriado.",
+      "Ofereça água e sombra; não transporte o animal sem orientação."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 14.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-CLIN-PALP-POS",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Caroços na mama após a ordenha",
+    "prioridade": 60,
+    "se": { "var": "caroco_apos_ordenha", "op": "=", "val": true },
+    "entao": [{ "var": "diagnostico", "val": "mastite_clinica_g1", "cf": 0.6 }],
+    "porque": "Após a ordenha, cada quarto mamário deve estar macio. A formação de caroços ou de áreas endurecidas indica processo inflamatório na mama.",
+    "conduta": [
+      "Refaça o teste da caneca de fundo escuro na próxima ordenha.",
+      "Faça o teste de CMT neste animal.",
+      "Ordenhe a vaca por último até esclarecer o caso."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 21.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-CLIN-UBERE",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Exame visual do úbere alterado",
+    "prioridade": 60,
+    "se": {
+      "alguma": [
+        { "var": "ubere_aumento_tamanho", "op": "=", "val": true },
+        { "var": "nao_deixa_ordenhar", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "mastite_clinica_g1", "cf": 0.65 }],
+    "porque": "No exame visual antes da ordenha, aumento de tamanho do úbere ou recusa da vaca em se deixar ordenhar são sinais de que algo está errado na mama.",
+    "conduta": [
+      "Examine a mama com as mãos procurando dor, inchaço, área endurecida ou mais quente.",
+      "Faça o teste da caneca de fundo escuro em todos os quartos."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 21.",
+    "status": "validada"
+  },
+
+  {
+    "id": "MAST-SUB-CMT-1",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "CMT uma cruz (+)",
+    "prioridade": 70,
+    "se": { "var": "cmt_pior_quarto", "op": "=", "val": "1" },
+    "entao": [{ "var": "diagnostico", "val": "mastite_subclinica", "cf": 0.85 }],
+    "porque": "Formação gelatinosa fraca que não se dissolve é resultado positivo do CMT: há mastite subclínica naquele quarto mamário.",
+    "conduta": [
+      "Ordenhe esta vaca depois das vacas sadias.",
+      "Anote o resultado na ficha de mastite subclínica, por quarto.",
+      "Repita o CMT no mês que vem e acompanhe a evolução.",
+      "Lave as mãos durante o teste para não passar germes de uma vaca para outra."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 31-33.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-SUB-CMT-2",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "CMT duas cruzes (++)",
+    "prioridade": 72,
+    "se": { "var": "cmt_pior_quarto", "op": "=", "val": "2" },
+    "entao": [{ "var": "diagnostico", "val": "mastite_subclinica", "cf": 0.9 }],
+    "porque": "Formação gelatinosa com mamilo no centro é resultado positivo de CMT. Quanto mais afetado o quarto mamário, mais gelatinosa fica a mistura.",
+    "conduta": [
+      "Ordenhe esta vaca depois das vacas sadias.",
+      "Anote o resultado na ficha de mastite subclínica, por quarto.",
+      "Considere a CCS individual para confirmar e acompanhar.",
+      "Repita o CMT no mês que vem."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 31-33.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-SUB-CMT-3",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "CMT três cruzes (+++)",
+    "prioridade": 75,
+    "se": { "var": "cmt_pior_quarto", "op": "=", "val": "3" },
+    "entao": [{ "var": "diagnostico", "val": "mastite_subclinica", "cf": 0.95 }],
+    "porque": "Formação de gel muito grosso, que cola no fundo da raquete, indica quarto mamário fortemente afetado.",
+    "conduta": [
+      "Ordenhe esta vaca por último.",
+      "Anote o resultado na ficha de mastite subclínica, por quarto.",
+      "Procure o médico-veterinário para definir tratamento ou decisão de descarte.",
+      "Repita o CMT no mês que vem."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 31-33.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-SUB-CMT-TRACOS",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "CMT com traços (T)",
+    "prioridade": 40,
+    "se": { "var": "cmt_pior_quarto", "op": "=", "val": "T" },
+    "entao": [{ "var": "diagnostico", "val": "mastite_subclinica", "cf": 0.3 }],
+    "porque": "Ligeira formação de gel que se dissolve com os movimentos da raquete é considerada resultado NEGATIVO, mas merece acompanhamento no mês seguinte.",
+    "conduta": [
+      "Resultado considerado negativo — não é preciso separar a vaca.",
+      "Repita o CMT no mês que vem e observe se evolui para positivo."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 32.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-SUB-CCS",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "CCS individual acima de 200.000",
+    "prioridade": 78,
+    "se": { "var": "ccs_individual", "op": ">", "val": 200000 },
+    "entao": [{ "var": "diagnostico", "val": "mastite_subclinica", "cf": 0.9 }],
+    "porque": "Vacas com CCS acima de 200.000 células por mL são consideradas com mastite subclínica. As células somáticas são as células de defesa que passam do sangue para a mama quando há inflamação.",
+    "conduta": [
+      "Ordenhe esta vaca depois das vacas sadias.",
+      "Separe o leite desta vaca do leite das vacas sadias para reduzir a CCS do tanque.",
+      "Repita o CMT ou a CCS pelo menos uma vez por mês e anote os resultados."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 34.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-CRONICA",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Mastite crônica (persistente)",
+    "prioridade": 88,
+    "se": { "var": "cmt_positivo_meses", "op": ">=", "val": 3 },
+    "entao": [{ "var": "diagnostico", "val": "mastite_cronica", "cf": 0.85 }],
+    "porque": "Uma vaca com CMT positivo por três meses ou mais durante uma lactação é considerada com mastite crônica.",
+    "conduta": [
+      "Anote os casos de mastite clínica que repetiram várias vezes nesta vaca durante uma ou mais lactações.",
+      "Avalie o DESCARTE da vaca com mastite persistente — é a recomendação da cartilha.",
+      "Até o descarte, ordenhe este animal sempre por último.",
+      "Faça um programa de tratamento e controle da doença para o rebanho."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 35.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-PP",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Peito perdido",
+    "prioridade": 65,
+    "se": {
+      "alguma": [
+        { "var": "quarto_sem_leite", "op": "=", "val": true },
+        { "var": "cmt_pior_quarto", "op": "=", "val": "PP" }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "peito_perdido", "cf": 0.95 }],
+    "porque": "Quando se constata que um quarto mamário não produz mais leite, na prática ele é chamado de \"peito perdido\" e deve ser representado pela sigla PP.",
+    "conduta": [
+      "Registre o quarto como PP na ficha do animal.",
+      "Não inclua este quarto nos testes de CMT.",
+      "Avalie com o veterinário se a perda decorreu de mastite mal tratada — isso indica falha no controle da doença."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 37.",
+    "status": "validada"
+  }
+]
