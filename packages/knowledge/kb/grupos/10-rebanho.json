@@ -1,0 +1,72 @@
+[
+  {
+    "id": "REB-MAST-CLIN-ALTA",
+    "versao": "1.0.0",
+    "grupo": "rebanho",
+    "titulo": "Mastite clínica acima de 2% no mês",
+    "prioridade": 85,
+    "se": { "var": "perc_mastite_clinica_mes", "op": ">", "val": 2 },
+    "entao": [{ "var": "diagnostico", "val": "rebanho_mastite_clinica_alta", "cf": 0.9 }],
+    "porque": "O resultado esperado de mastite clínica em um rebanho não deve ser maior do que 2% ao mês. Acima disso, recomenda-se adotar um programa de controle de mastite.",
+    "conduta": [
+      "Adote um programa de controle de mastite para o rebanho, com apoio do médico-veterinário.",
+      "Faça o teste da caneca de fundo escuro todos os dias, antes de cada ordenha, em todos os quartos.",
+      "Garanta que toda vaca com mastite seja ordenhada por último.",
+      "Reforce a lavagem das mãos do retireiro entre as vacas.",
+      "Anote todos os novos casos, os curados, os que voltaram e os que não foram curados."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 38 (fórmula adaptada do National Mastitis Council; meta de 2%).",
+    "status": "validada"
+  },
+  {
+    "id": "REB-MAST-SUB-ALTA",
+    "versao": "1.0.0",
+    "grupo": "rebanho",
+    "titulo": "Mastite subclínica acima de 20%",
+    "prioridade": 80,
+    "se": { "var": "perc_mastite_subclinica", "op": ">", "val": 20 },
+    "entao": [{ "var": "diagnostico", "val": "rebanho_mastite_subclinica_alta", "cf": 0.9 }],
+    "porque": "O importante é que no máximo 20% das vacas apresentem mastite subclínica.",
+    "conduta": [
+      "Reveja a rotina de ordenha: lavagem e desinfecção dos tetos, secagem com papel-toalha individual.",
+      "Repita o CMT ou faça a CCS pelo menos uma vez ao mês e anote os resultados.",
+      "Separe o leite das vacas positivas do leite das sadias para reduzir a CCS do tanque.",
+      "Identifique e avalie o descarte das vacas com mastite persistente."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 39 (meta de 20%).",
+    "status": "validada"
+  },
+  {
+    "id": "REB-CMT-ATRASADO",
+    "versao": "1.0.0",
+    "grupo": "rebanho",
+    "titulo": "CMT do rebanho atrasado",
+    "prioridade": 60,
+    "se": { "var": "dias_desde_ultimo_cmt", "op": ">", "val": 30 },
+    "entao": [{ "var": "diagnostico", "val": "rebanho_cmt_atrasado", "cf": 0.95 }],
+    "porque": "O teste de CMT deve ser feito pelo menos uma vez ao mês, em todos os tetos das vacas em lactação, antes da ordenha.",
+    "conduta": [
+      "Programe o CMT mensal de todo o rebanho no calendário.",
+      "Se a ordenha for com bezerro ao pé, faça o teste em todos os tetos antes de o bezerro apojar as vacas."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 23 e p. 25.",
+    "status": "validada"
+  },
+  {
+    "id": "REB-VL-BAIXA",
+    "versao": "1.0.0",
+    "grupo": "rebanho",
+    "titulo": "Percentual de vacas em lactação abaixo do ideal",
+    "prioridade": 50,
+    "se": { "var": "perc_vacas_lactacao", "op": "<", "val": 83 },
+    "entao": [{ "var": "diagnostico", "val": "rebanho_vl_baixa", "cf": 0.8 }],
+    "porque": "A média anual ideal é ter cerca de 83% das vacas em lactação. Este indicador mostra a eficiência reprodutiva da propriedade.",
+    "conduta": [
+      "Fique atento à alimentação e à reprodução das vacas.",
+      "Mantenha a ficha de coberturas e inseminações em dia para não deixar vacas vazias por muito tempo.",
+      "Avalie quais vacas têm problemas de reprodução e devem ser descartadas."
+    ],
+    "fonte": "EMBRAPA. Administrando a propriedade leiteira, 2016, p. 46 e p. 49.",
+    "status": "validada"
+  }
+]

@@ -1,0 +1,94 @@
+[
+  {
+    "id": "BEZ-DIARREIA",
+    "versao": "1.0.0",
+    "grupo": "bezerras",
+    "titulo": "Diarreia neonatal",
+    "prioridade": 85,
+    "se": {
+      "todas": [
+        { "var": "idade_dias", "op": "<=", "val": 60 },
+        { "var": "fezes_liquidas", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "diarreia_neonatal", "cf": 0.85 }],
+    "porque": "A diarreia é a principal causa de morte de bezerras. A cartilha da Embrapa registra diarreia como causa de morte em bezerra, com a orientação de verificar a qualidade higiênica do leite fornecido e limpar o bezerreiro.",
+    "conduta": [
+      "Ofereça soro de reidratação oral — o que mata na diarreia é a desidratação, não a diarreia em si.",
+      "Verifique se o leite fornecido às bezerras está em boa qualidade higiênica.",
+      "Limpe o bezerreiro e mantenha a cama seca.",
+      "Não suspenda o leite: continue alimentando e acrescente o soro entre as mamadas.",
+      "Separe a bezerra doente das demais."
+    ],
+    "fonte": "EMBRAPA. Administrando a propriedade leiteira, 2016, p. 23 (ficha de mortes: diarreia → \"verifique se o leite fornecido para as bezerras está em boa qualidade higiênica e limpe o bezerreiro\"). Conduta de reidratação: consenso geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-DIARREIA-GRAVE",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Diarreia neonatal com desidratação",
+    "prioridade": 95,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "diarreia_neonatal" },
+        { "var": "desidratacao", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "diarreia_neonatal", "cf": 0.8 }],
+    "porque": "Bezerra com diarreia e sinais de desidratação (olhos fundos, prega de pele que demora a voltar) está em risco de vida.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO HOJE: pode ser necessário soro na veia.",
+      "Inicie a reidratação oral imediatamente enquanto aguarda.",
+      "Mantenha a bezerra aquecida e em local seco."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-ONFALITE",
+    "versao": "1.0.0",
+    "grupo": "bezerras",
+    "titulo": "Onfalite (infecção de umbigo)",
+    "prioridade": 80,
+    "se": {
+      "todas": [
+        { "var": "idade_dias", "op": "<=", "val": 60 },
+        { "var": "umbigo_inchado_quente", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "onfalite", "cf": 0.85 }],
+    "porque": "Umbigo inchado, quente e dolorido indica infecção pela porta de entrada do umbigo, geralmente por falha na cura no momento do nascimento.",
+    "conduta": [
+      "Procure o médico-veterinário: costuma exigir antibiótico.",
+      "Revise o protocolo de cura do umbigo ao nascimento (imersão em solução adequada, repetida).",
+      "Limpe e seque o local de parto e o bezerreiro.",
+      "Acompanhe: a infecção pode se espalhar para articulações e fígado."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-FALHA-COLOSTRO",
+    "versao": "1.0.0",
+    "grupo": "bezerras",
+    "titulo": "Falha na transferência de imunidade passiva",
+    "prioridade": 70,
+    "se": {
+      "todas": [
+        { "var": "idade_dias", "op": "<=", "val": 90 },
+        { "nao": { "var": "colostro_primeiras_6h", "op": "=", "val": true } }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "falha_transferencia_imunidade", "cf": 0.8 }],
+    "porque": "A bezerra nasce sem defesas e só adquire anticorpos pelo colostro, que precisa ser fornecido em quantidade adequada nas primeiras horas de vida. Sem isso, ela fica muito mais sujeita a diarreia, onfalite e pneumonia.",
+    "conduta": [
+      "Trate esta bezerra como animal de alto risco: observe diariamente.",
+      "Corrija o protocolo de colostragem para os próximos nascimentos: colostro de boa qualidade nas primeiras horas de vida.",
+      "Inclua a conferência de colostro na triagem de recém-nascidas.",
+      "Converse com o veterinário sobre a necessidade de medidas de apoio."
+    ],
+    "fonte": "Consenso veterinário geral sobre colostragem — PENDENTE de validação.",
+    "status": "revisar"
+  }
+]
