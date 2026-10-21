@@ -1,0 +1,97 @@
+# === Dependências ===
+node_modules/
+.pnp
+.pnp.js
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/versions
+
+# === Builds / saída ===
+dist/
+build/
+out/
+web-build/
+lib/
+*.tsbuildinfo
+
+# === Expo / React Native ===
+.expo/
+.expo-shared/
+expo-env.d.ts
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Android
+android/
+*.apk
+*.aab
+*.keystore
+!debug.keystore
+.gradle/
+local.properties
+
+# iOS
+ios/
+*.ipa
+*.dSYM.zip
+Pods/
+
+# Metro
+.metro-health-check*
+metro.cache/
+
+# === Banco de dados local (gerado pelo seed) ===
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+# === Testes / cobertura ===
+coverage/
+.nyc_output/
+junit.xml
+
+# === Logs ===
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+pnpm-debug.*
+lerna-debug.log*
+logs/
+*.log
+
+# === Material de referência ===
+# Cartilhas da Embrapa, PDFs do Hackathon e a logo original: material de origem,
+# não código. A logo usada pelo app vive em apps/mobile/assets/.
+reference/
+
+# === Ambiente ===
+.env
+.env.*
+!.env.example
+
+# === Editores / SO ===
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.sample.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Caches diversos ===
+.cache/
+.temp/
+.tmp/
+.eslintcache
+.turbo/
