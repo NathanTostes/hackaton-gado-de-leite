@@ -1,0 +1,55 @@
+[
+  {
+    "id": "TRI-SEM-ALTERACAO",
+    "versao": "1.0.0",
+    "grupo": "triagem",
+    "titulo": "Nenhuma alteração detectada na triagem",
+    "prioridade": 10,
+    "se": {
+      "todas": [
+        { "nao": { "var": "caneca_grumos", "op": "=", "val": true } },
+        { "nao": { "var": "caneca_cor_alterada", "op": "=", "val": true } },
+        { "nao": { "var": "caneca_consistencia_alterada", "op": "=", "val": true } },
+        { "nao": { "var": "palpacao_dor", "op": "=", "val": true } },
+        { "nao": { "var": "palpacao_inchaco", "op": "=", "val": true } },
+        { "nao": { "var": "febre", "op": "=", "val": true } },
+        { "nao": { "var": "apetite_reduzido", "op": "=", "val": true } },
+        { "nao": { "var": "apatia", "op": "=", "val": true } },
+        { "nao": { "var": "claudicacao", "op": "=", "val": true } },
+        { "nao": { "var": "queda_producao_subita", "op": "=", "val": true } }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "sem_alteracao", "cf": 0.85 }],
+    "porque": "Nenhum dos sinais pesquisados na triagem foi encontrado: o leite está normal no teste da caneca, a mama não apresenta alteração à palpação, o estado geral do animal está bom e a produção não caiu.",
+    "conduta": [
+      "Mantenha o teste da caneca de fundo escuro todos os dias, em todos os quartos, antes de cada ordenha.",
+      "Faça o teste de CMT pelo menos uma vez por mês em todas as vacas em lactação.",
+      "Anote o resultado no controle leiteiro mensal."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 40 (\"Vamos recordar?\").",
+    "status": "validada"
+  },
+  {
+    "id": "TRI-QUEDA-PRODUCAO",
+    "versao": "1.0.0",
+    "grupo": "triagem",
+    "titulo": "Queda de produção sem causa identificada",
+    "prioridade": 20,
+    "se": {
+      "todas": [
+        { "var": "queda_producao_subita", "op": "=", "val": true },
+        { "nao": { "var": "caneca_grumos", "op": "=", "val": true } },
+        { "nao": { "var": "febre", "op": "=", "val": true } }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "mastite_subclinica", "cf": 0.35 }],
+    "porque": "Vacas com mastite reduzem a produção de leite mesmo sem sinais visíveis. Queda de produção sem outra causa aparente justifica investigar mastite subclínica por CMT ou CCS.",
+    "conduta": [
+      "Faça o teste de CMT nos quatro quartos desta vaca.",
+      "Se possível, colete amostra para CCS individual.",
+      "Revise alimentação e disponibilidade de água do lote."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 5 e p. 22.",
+    "status": "revisar"
+  }
+]
