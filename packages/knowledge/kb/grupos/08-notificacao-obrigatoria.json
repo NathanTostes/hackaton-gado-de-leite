@@ -1,0 +1,62 @@
+[
+  {
+    "id": "NOT-AFTOSA",
+    "versao": "1.0.0",
+    "grupo": "notificacao_obrigatoria",
+    "titulo": "Suspeita de febre aftosa",
+    "prioridade": 100,
+    "se": {
+      "todas": [
+        { "var": "vesiculas_boca_tetos_cascos", "op": "=", "val": true },
+        {
+          "alguma": [
+            { "var": "salivacao_intensa", "op": "=", "val": true },
+            { "var": "claudicacao", "op": "=", "val": true },
+            { "var": "febre", "op": "=", "val": true }
+          ]
+        }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "suspeita_aftosa", "cf": 0.7 }],
+    "porque": "Aftas ou vesículas na boca, língua, focinho, tetos ou entre os cascos, acompanhadas de salivação intensa, manqueira ou febre, caracterizam suspeita de febre aftosa — doença de notificação obrigatória. Este sistema NÃO diagnostica a doença: apenas orienta a comunicação ao órgão oficial.",
+    "conduta": [
+      "COMUNIQUE IMEDIATAMENTE o serviço veterinário oficial do seu estado ou o MAPA. A notificação é obrigatória por lei.",
+      "NÃO movimente animais para dentro nem para fora da propriedade.",
+      "Isole os animais com sinais e restrinja a entrada de pessoas e veículos.",
+      "Não descarte nem enterre carcaças antes da chegada da fiscalização.",
+      "Verifique se o rebanho está com a vacinação contra aftosa em dia, conforme o calendário sanitário."
+    ],
+    "fonte": "Notificação obrigatória conforme legislação sanitária federal. EMBRAPA, Administrando a propriedade leiteira, 2016, p. 23 e 25 (febre aftosa como causa de morte; calendário de vacinação). Formalização: PENDENTE de validação com o serviço oficial.",
+    "status": "revisar"
+  },
+  {
+    "id": "NOT-RAIVA",
+    "versao": "1.0.0",
+    "grupo": "notificacao_obrigatoria",
+    "titulo": "Suspeita de raiva",
+    "prioridade": 100,
+    "se": {
+      "todas": [
+        { "var": "sinais_nervosos", "op": "=", "val": true },
+        {
+          "alguma": [
+            { "var": "salivacao_intensa", "op": "=", "val": true },
+            { "var": "dificuldade_deglutir", "op": "=", "val": true }
+          ]
+        }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "suspeita_raiva", "cf": 0.7 }],
+    "porque": "Sinais nervosos — incoordenação, agressividade, mugido alterado, paralisia do trem posterior — acompanhados de salivação ou dificuldade de engolir levantam suspeita de raiva, que é ZOONOSE e doença de notificação obrigatória.",
+    "conduta": [
+      "RISCO DE ZOONOSE: não manipule o animal sem equipamento de proteção individual.",
+      "Nunca coloque a mão na boca do animal para procurar corpo estranho.",
+      "COMUNIQUE IMEDIATAMENTE o serviço veterinário oficial do seu estado.",
+      "Isole o animal e afaste as pessoas.",
+      "Se houve contato com saliva do animal em ferida ou mucosa, procure atendimento médico humano hoje.",
+      "Verifique se o rebanho está com a vacinação antirrábica em dia."
+    ],
+    "fonte": "Notificação obrigatória conforme legislação sanitária federal. EMBRAPA, Administrando a propriedade leiteira, 2016, p. 25 (raiva no calendário sanitário). Formalização: PENDENTE de validação com o serviço oficial.",
+    "status": "revisar"
+  }
+]
