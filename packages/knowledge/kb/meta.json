@@ -1,0 +1,11 @@
+{
+  "versao": "1.0.0",
+  "variavelObjetivo": "diagnostico",
+  "changelog": [
+    {
+      "versao": "1.0.0",
+      "data": "2026-10-21",
+      "notas": "Base inicial. Grupo 02 (mastite) extraído integralmente de EMBRAPA, 'Como identificar a vaca com mastite em sua propriedade' (2015), com página citada por regra — status 'validada'. Grupos 03 a 09 formalizados a partir de consenso veterinário geral, marcados como 'revisar' até conferência com fonte primária. Grupo 10 (indicadores de rebanho) usa as fórmulas e metas das duas cartilhas Embrapa."
+    }
+  ]
+}

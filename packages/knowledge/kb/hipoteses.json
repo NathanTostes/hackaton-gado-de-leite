@@ -1,0 +1,185 @@
+[
+  {
+    "id": "sem_alteracao",
+    "rotulo": "Sem alteração detectada",
+    "grupo": "triagem",
+    "descricao": "Os sinais pesquisados não apontaram alteração. Mantenha a rotina de testes: caneca de fundo escuro todos os dias e CMT uma vez por mês."
+  },
+
+  {
+    "id": "mastite_clinica_g1",
+    "rotulo": "Mastite clínica — grau 1",
+    "grupo": "mastite",
+    "descricao": "Forma clínica mais branda: só há alteração no leite (grumos, pus, cor ou consistência), principalmente nos primeiros jatos."
+  },
+  {
+    "id": "mastite_clinica_g2",
+    "rotulo": "Mastite clínica — grau 2",
+    "grupo": "mastite",
+    "descricao": "Além da alteração no leite, a mama apresenta dor, inchaço, endurecimento ou vermelhidão.",
+    "substitui": ["mastite_clinica_g1"]
+  },
+  {
+    "id": "mastite_clinica_g3",
+    "rotulo": "Mastite clínica — grau 3 (EMERGÊNCIA)",
+    "grupo": "emergencia",
+    "descricao": "Há comprometimento do organismo da vaca: febre, perda de apetite, desidratação. A vaca corre risco de perder a mama ou até de morrer.",
+    "bandeiraVermelha": true,
+    "substitui": ["mastite_clinica_g1", "mastite_clinica_g2"]
+  },
+  {
+    "id": "mastite_subclinica",
+    "rotulo": "Mastite subclínica",
+    "grupo": "mastite",
+    "descricao": "Não há sinal visível no leite nem na mama. Só os testes de CMT ou CCS detectam."
+  },
+  {
+    "id": "mastite_cronica",
+    "rotulo": "Mastite crônica (persistente)",
+    "grupo": "mastite",
+    "descricao": "CMT positivo por três meses ou mais durante a mesma lactação.",
+    "substitui": ["mastite_subclinica"]
+  },
+  {
+    "id": "peito_perdido",
+    "rotulo": "Peito perdido (PP)",
+    "grupo": "mastite",
+    "descricao": "Quarto mamário que não produz mais leite. Registre como PP e não o inclua nos testes."
+  },
+
+  {
+    "id": "hipocalcemia",
+    "rotulo": "Hipocalcemia (febre do leite)",
+    "grupo": "metabolicas",
+    "descricao": "Queda de cálcio no sangue logo após o parto, típica de vaca de alta produção e multípara. Apesar do nome, não dá febre — o animal fica frio."
+  },
+  {
+    "id": "cetose",
+    "rotulo": "Cetose",
+    "grupo": "metabolicas",
+    "descricao": "Falta de energia no início da lactação. A vaca come menos, emagrece, cai a produção e o hálito fica adocicado."
+  },
+
+  {
+    "id": "retencao_placenta",
+    "rotulo": "Retenção de placenta",
+    "grupo": "pos_parto",
+    "descricao": "Placenta não eliminada em até 12 horas após o parto. Aumenta muito o risco de metrite."
+  },
+  {
+    "id": "metrite",
+    "rotulo": "Metrite / endometrite",
+    "grupo": "pos_parto",
+    "descricao": "Infecção do útero no pós-parto, com corrimento fétido e, nos casos graves, febre e apatia."
+  },
+
+  {
+    "id": "deslocamento_abomaso",
+    "rotulo": "Deslocamento de abomaso",
+    "grupo": "digestivas",
+    "descricao": "Problema do início da lactação: queda brusca de consumo e de produção, fezes escassas, muitas vezes junto com cetose. Exige veterinário."
+  },
+  {
+    "id": "acidose_ruminal",
+    "rotulo": "Acidose ruminal subaguda (SARA)",
+    "grupo": "digestivas",
+    "descricao": "Excesso de concentrado e falta de fibra. Fezes líquidas e bolhosas, pouca ruminação e queda da gordura do leite."
+  },
+  {
+    "id": "timpanismo",
+    "rotulo": "Timpanismo (inchaço)",
+    "grupo": "digestivas",
+    "descricao": "Acúmulo de gases no rúmen, com o flanco esquerdo estufado. Pode evoluir rápido."
+  },
+
+  {
+    "id": "laminite",
+    "rotulo": "Laminite",
+    "grupo": "locomotor",
+    "descricao": "Inflamação do casco ligada à dieta e ao piso. A vaca anda com dificuldade e o casco fica quente."
+  },
+  {
+    "id": "pododermatite",
+    "rotulo": "Pododermatite / doença da linha branca",
+    "grupo": "locomotor",
+    "descricao": "Infecção entre os dedos ou na sola, com mau cheiro, inchaço e manqueira."
+  },
+
+  {
+    "id": "tristeza_parasitaria",
+    "rotulo": "Tristeza parasitária bovina",
+    "grupo": "parasitarias",
+    "descricao": "Babesiose ou anaplasmose transmitida por carrapato: febre, mucosas pálidas ou amareladas e urina escura."
+  },
+  {
+    "id": "verminose",
+    "rotulo": "Verminose",
+    "grupo": "parasitarias",
+    "descricao": "Parasitas internos: emagrecimento, mucosas pálidas e queda de desempenho."
+  },
+  {
+    "id": "pneumonia",
+    "rotulo": "Pneumonia / problema respiratório",
+    "grupo": "parasitarias",
+    "descricao": "Tosse, secreção nasal, respiração acelerada e febre."
+  },
+
+  {
+    "id": "diarreia_neonatal",
+    "rotulo": "Diarreia neonatal",
+    "grupo": "bezerras",
+    "descricao": "Principal causa de morte de bezerras. Desidratação é o que mata — reidratar é urgente."
+  },
+  {
+    "id": "onfalite",
+    "rotulo": "Onfalite (infecção de umbigo)",
+    "grupo": "bezerras",
+    "descricao": "Umbigo inchado, quente e dolorido por falta de cura adequada no nascimento."
+  },
+  {
+    "id": "falha_transferencia_imunidade",
+    "rotulo": "Falha na transferência de imunidade passiva",
+    "grupo": "bezerras",
+    "descricao": "Bezerra que não mamou colostro suficiente nas primeiras horas fica sem defesa e adoece com facilidade."
+  },
+
+  {
+    "id": "suspeita_aftosa",
+    "rotulo": "Suspeita de febre aftosa — NOTIFICAÇÃO OBRIGATÓRIA",
+    "grupo": "notificacao_obrigatoria",
+    "descricao": "Doença de notificação obrigatória. Não movimente animais e comunique imediatamente o serviço veterinário oficial do seu estado.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "suspeita_raiva",
+    "rotulo": "Suspeita de raiva — ZOONOSE, NOTIFICAÇÃO OBRIGATÓRIA",
+    "grupo": "notificacao_obrigatoria",
+    "descricao": "Risco de zoonose. Não manipule o animal sem equipamento de proteção e comunique o serviço veterinário oficial.",
+    "bandeiraVermelha": true
+  },
+
+  {
+    "id": "rebanho_mastite_clinica_alta",
+    "rotulo": "Mastite clínica acima da meta no rebanho",
+    "grupo": "rebanho",
+    "descricao": "O percentual de mastite clínica do mês passou de 2%. Recomenda-se adotar um programa de controle de mastite."
+  },
+  {
+    "id": "rebanho_mastite_subclinica_alta",
+    "rotulo": "Mastite subclínica acima da meta no rebanho",
+    "grupo": "rebanho",
+    "descricao": "Mais de 20% das vacas (ou tetos) testadas estão positivas. Reveja a rotina de ordenha e o controle de mastite."
+  },
+  {
+    "id": "rebanho_cmt_atrasado",
+    "rotulo": "CMT do rebanho atrasado",
+    "grupo": "rebanho",
+    "descricao": "O teste de CMT deve ser feito pelo menos uma vez por mês em todas as vacas em lactação."
+  },
+  {
+    "id": "rebanho_vl_baixa",
+    "rotulo": "Percentual de vacas em lactação abaixo do ideal",
+    "grupo": "rebanho",
+    "descricao": "A média anual ideal é ter cerca de 83% das vacas em lactação. Fique atento à alimentação e à reprodução."
+  }
+]

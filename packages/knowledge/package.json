@@ -1,0 +1,12 @@
+{
+  "name": "@drmoo/knowledge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Base de conhecimento do Dr. Moo — regras de produção explícitas e versionadas",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "@drmoo/engine": "1.0.0"
+  }
+}

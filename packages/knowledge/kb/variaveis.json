@@ -1,0 +1,69 @@
+[
+  { "nome": "del", "rotulo": "dias em lactação (DEL)", "tipo": "numero" },
+  { "nome": "numero_lactacao", "rotulo": "número da lactação", "tipo": "numero" },
+  { "nome": "producao_media_dia", "rotulo": "produção média por dia (L)", "tipo": "numero" },
+  { "nome": "idade_dias", "rotulo": "idade em dias", "tipo": "numero" },
+  { "nome": "cmt_positivo_meses", "rotulo": "meses seguidos com CMT positivo nesta lactação", "tipo": "numero" },
+
+  { "nome": "caneca_grumos", "rotulo": "grumos ou pus nos primeiros jatos", "tipo": "boolean" },
+  { "nome": "caneca_cor_alterada", "rotulo": "leite com coloração alterada (amarelada ou avermelhada)", "tipo": "boolean" },
+  { "nome": "caneca_consistencia_alterada", "rotulo": "leite com consistência alterada (aguado ou grosso)", "tipo": "boolean" },
+  { "nome": "palpacao_dor", "rotulo": "dor à palpação da mama", "tipo": "boolean" },
+  { "nome": "palpacao_inchaco", "rotulo": "inchaço na mama", "tipo": "boolean" },
+  { "nome": "palpacao_endurecido", "rotulo": "área endurecida na mama", "tipo": "boolean" },
+  { "nome": "palpacao_vermelhidao", "rotulo": "parte da mama avermelhada", "tipo": "boolean" },
+  { "nome": "ubere_aumento_tamanho", "rotulo": "aumento de tamanho do úbere", "tipo": "boolean" },
+  { "nome": "nao_deixa_ordenhar", "rotulo": "a vaca não se deixa ordenhar", "tipo": "boolean" },
+  { "nome": "caroco_apos_ordenha", "rotulo": "caroços ou áreas endurecidas após a ordenha", "tipo": "boolean" },
+  { "nome": "cmt_pior_quarto", "rotulo": "pior resultado de CMT entre os quartos", "tipo": "enum", "opcoes": ["N", "T", "1", "2", "3", "PP"] },
+  { "nome": "ccs_individual", "rotulo": "CCS individual (células/mL)", "tipo": "numero" },
+  { "nome": "quarto_sem_leite", "rotulo": "algum quarto não produz mais leite", "tipo": "boolean" },
+
+  { "nome": "febre", "rotulo": "febre (temperatura acima de 39,5 °C) ou orelhas e focinho quentes", "tipo": "boolean" },
+  { "nome": "apetite_reduzido", "rotulo": "perda de apetite", "tipo": "boolean" },
+  { "nome": "desidratacao", "rotulo": "sinais de desidratação (olhos fundos, prega de pele lenta)", "tipo": "boolean" },
+  { "nome": "apatia", "rotulo": "apatia ou prostração", "tipo": "boolean" },
+
+  { "nome": "decubito", "rotulo": "vaca caída, sem conseguir levantar", "tipo": "boolean" },
+  { "nome": "extremidades_frias", "rotulo": "orelhas e patas frias", "tipo": "boolean" },
+  { "nome": "tremores_musculares", "rotulo": "tremores musculares", "tipo": "boolean" },
+  { "nome": "halito_adocicado", "rotulo": "hálito adocicado (cheiro de acetona)", "tipo": "boolean" },
+  { "nome": "queda_producao_subita", "rotulo": "queda súbita na produção de leite", "tipo": "boolean" },
+  { "nome": "perda_escore_corporal", "rotulo": "emagrecimento visível", "tipo": "boolean" },
+
+  { "nome": "placenta_retida_12h", "rotulo": "placenta retida por mais de 12 horas após o parto", "tipo": "boolean" },
+  { "nome": "corrimento_vulvar_fetido", "rotulo": "corrimento vulvar fétido ou achocolatado", "tipo": "boolean" },
+
+  { "nome": "fezes_escassas", "rotulo": "fezes escassas ou pastosas", "tipo": "boolean" },
+  { "nome": "fezes_liquidas_bolhosas", "rotulo": "fezes líquidas e com bolhas", "tipo": "boolean" },
+  { "nome": "ruminacao_reduzida", "rotulo": "a vaca rumina menos que o normal", "tipo": "boolean" },
+  { "nome": "flanco_esquerdo_distendido", "rotulo": "flanco esquerdo estufado", "tipo": "boolean" },
+  { "nome": "dieta_muito_concentrado", "rotulo": "dieta com muito concentrado e pouca fibra", "tipo": "boolean" },
+  { "nome": "queda_gordura_leite", "rotulo": "queda do teor de gordura do leite", "tipo": "boolean" },
+
+  { "nome": "claudicacao", "rotulo": "manqueira (claudicação)", "tipo": "boolean" },
+  { "nome": "casco_quente_inchado", "rotulo": "casco quente ou inchado", "tipo": "boolean" },
+  { "nome": "mau_cheiro_casco", "rotulo": "mau cheiro ou ferida entre os dedos", "tipo": "boolean" },
+
+  { "nome": "mucosas_palidas", "rotulo": "mucosas pálidas (gengiva e olhos esbranquiçados)", "tipo": "boolean" },
+  { "nome": "mucosas_amareladas", "rotulo": "mucosas amareladas", "tipo": "boolean" },
+  { "nome": "urina_escura", "rotulo": "urina escura (cor de vinho ou café)", "tipo": "boolean" },
+  { "nome": "infestacao_carrapatos", "rotulo": "muitos carrapatos no animal", "tipo": "boolean" },
+  { "nome": "tosse", "rotulo": "tosse", "tipo": "boolean" },
+  { "nome": "secrecao_nasal", "rotulo": "secreção nasal", "tipo": "boolean" },
+  { "nome": "respiracao_acelerada", "rotulo": "respiração acelerada", "tipo": "boolean" },
+
+  { "nome": "vesiculas_boca_tetos_cascos", "rotulo": "aftas ou bolhas na boca, língua, focinho, tetos ou entre os cascos", "tipo": "boolean" },
+  { "nome": "salivacao_intensa", "rotulo": "salivação intensa (baba escorrendo)", "tipo": "boolean" },
+  { "nome": "sinais_nervosos", "rotulo": "sinais nervosos (incoordenação, agressividade, mugido alterado, paralisia do trem posterior)", "tipo": "boolean" },
+  { "nome": "dificuldade_deglutir", "rotulo": "dificuldade para engolir", "tipo": "boolean" },
+
+  { "nome": "fezes_liquidas", "rotulo": "fezes líquidas (diarreia)", "tipo": "boolean" },
+  { "nome": "umbigo_inchado_quente", "rotulo": "umbigo inchado, quente ou dolorido", "tipo": "boolean" },
+  { "nome": "colostro_primeiras_6h", "rotulo": "recebeu colostro nas primeiras 6 horas de vida", "tipo": "boolean" },
+
+  { "nome": "perc_mastite_clinica_mes", "rotulo": "% de mastite clínica no mês", "tipo": "numero" },
+  { "nome": "perc_mastite_subclinica", "rotulo": "% de mastite subclínica", "tipo": "numero" },
+  { "nome": "perc_vacas_lactacao", "rotulo": "% de vacas em lactação", "tipo": "numero" },
+  { "nome": "dias_desde_ultimo_cmt", "rotulo": "dias desde o último teste de CMT no rebanho", "tipo": "numero" }
+]
