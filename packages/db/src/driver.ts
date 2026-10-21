@@ -9,7 +9,7 @@
  * automatizada roda o esquema e as consultas de verdade, num SQLite de verdade,
  * sem precisar de navegador nem de aparelho.
  */
-import { DDL, SCHEMA_VERSAO } from './schema';
+import { COLUNAS_CADASTRO, DDL, SCHEMA_VERSAO } from './schema';
 
 export type Parametro = string | number | null;
 
@@ -56,6 +56,14 @@ export async function abrirBanco(): Promise<BackendSQLite> {
   abrindo = (async () => {
     const db = backendInjetado ?? (await abrirExpoSqlite());
     await db.execAsync(DDL);
+    // CREATE TABLE IF NOT EXISTS não acrescenta colunas em bancos já instalados.
+    await db.withTransactionAsync(async () => {
+      const colunas = await db.getAllAsync<{ name: string }>('PRAGMA table_info(animal)', []);
+      const existentes = new Set(colunas.map((coluna) => coluna.name));
+      for (const [nome, tipo] of Object.entries(COLUNAS_CADASTRO)) {
+        if (!existentes.has(nome)) await db.execAsync(`ALTER TABLE animal ADD COLUMN ${nome} ${tipo}`);
+      }
+    });
     await db.runAsync(
       `INSERT INTO meta_app (chave, valor) VALUES ('schema_versao', ?)
        ON CONFLICT(chave) DO UPDATE SET valor = excluded.valor`,

@@ -2,6 +2,8 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 import {
   ROTULO_STATUS,
+  ROTULO_ORIGEM,
+  ROTULO_REPRODUCAO,
   atendimentosDoAnimal,
   controleLeiteiroDoAnimal,
   historicoCMT,
@@ -113,18 +115,46 @@ export default function FichaDoAnimal() {
         aoTocar={() => router.push(`/anamnese/${animal.id}`)}
       />
 
+      <Espaco h={espaco.sm} />
+      <Botao titulo="Editar cadastro" icone="edit" variante="secundario" aoTocar={() => router.push(`/editar-animal/${animal.id}`)} />
+
       {/* ------------------ Identificação ------------------ */}
       <TituloSecao icone="badge">Identificação</TituloSecao>
       <Cartao>
         <Campo rotulo="Brinco" valor={animal.brinco} />
+        <Campo rotulo="Sexo" valor={animal.sexo === 'F' ? 'Fêmea' : 'Macho'} />
+        <Campo rotulo="Raça ou cruzamento" valor={animal.raca ?? '—'} />
         <Campo rotulo="Tatuagem" valor={animal.tatuagem ?? '—'} />
         <Campo rotulo="Nascimento" valor={formatarBR(animal.data_nascimento)} />
+        {!animal.data_nascimento && animal.idade_estimada_meses != null && <Campo rotulo="Idade estimada no cadastro" valor={`${animal.idade_estimada_meses} mês(es) em ${formatarBR(animal.idade_estimada_em)}`} />}
         <Campo rotulo="Peso ao nascer" valor={animal.peso_nascimento ? `${animal.peso_nascimento} kg` : '—'} />
         <Campo rotulo="Pelagem e sinal" valor={animal.pelagem_sinal ?? '—'} />
-        <Campo rotulo="Pai" valor={animal.pai_nome ?? '—'} />
-        <Campo rotulo="Origem" valor={animal.origem} />
-        <Campo rotulo="Entrada no rebanho" valor={formatarBR(animal.data_entrada)} />
+        <Campo rotulo="Mãe" valor={animal.mae_identificacao ?? '—'} />
+        <Campo rotulo="Pai" valor={animal.pai_identificacao ?? '—'} />
       </Cartao>
+      <TituloSecao icone="move-to-inbox">Entrada na propriedade</TituloSecao>
+      <Cartao>
+        <Campo rotulo="Origem" valor={ROTULO_ORIGEM[animal.origem]} />
+        <Campo rotulo="Entrada no rebanho" valor={formatarBR(animal.data_entrada)} />
+        <Campo rotulo="Peso na entrada" valor={animal.peso_entrada != null ? `${numero(animal.peso_entrada)} kg` : '—'} />
+        <Campo rotulo="Propriedade de origem / vendedor" valor={animal.procedencia ?? '—'} />
+        <Campo rotulo="Valor de aquisição" valor={animal.valor_aquisicao != null ? moeda(animal.valor_aquisicao) : '—'} />
+        <Campo rotulo="Número da GTA" valor={animal.numero_gta ?? '—'} />
+      </Cartao>
+
+      {animal.sexo === 'F' && ['vaca_lactacao', 'vaca_seca', 'novilha'].includes(animal.categoria) && <>
+        <TituloSecao icone="child-care">Reprodução</TituloSecao>
+        <Cartao>
+          <Campo rotulo="Situação reprodutiva informada na entrada" valor={ROTULO_REPRODUCAO[animal.situacao_reprodutiva as keyof typeof ROTULO_REPRODUCAO] ?? 'Não informada'} />
+          <Campo rotulo="Último parto" valor={formatarBR(animal.data_parto)} />
+          <Campo rotulo="Número de lactações" valor={animal.numero_lactacao != null ? String(animal.numero_lactacao) : '—'} />
+          <Campo rotulo="Próximo parto previsto (cobertura registrada)" valor={formatarBR(animal.data_provavel_parto)} />
+        </Cartao>
+      </>}
+      {animal.observacoes && <>
+        <TituloSecao icone="description">Observações cadastrais</TituloSecao>
+        <Cartao><Txt>{animal.observacoes}</Txt></Cartao>
+      </>}
 
       {/* ------------------ Produção ------------------ */}
       {animal.categoria === 'vaca_lactacao' && (
@@ -151,6 +181,10 @@ export default function FichaDoAnimal() {
       {/* ------------------ Saúde ------------------ */}
       <TituloSecao icone="health-and-safety">Saúde</TituloSecao>
 
+      {animal.historico_sanitario && <Cartao>
+        <Txt v="h3">Histórico sanitário informado na entrada</Txt>
+        <Txt>{animal.historico_sanitario}</Txt>
+      </Cartao>}
       {ultimoCmt ? (
         <Cartao>
           <Txt v="h3">Último CMT — {formatarBR(ultimoCmt.data)}</Txt>
