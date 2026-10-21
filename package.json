@@ -1,0 +1,30 @@
+{
+  "name": "dr-moo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dr. Moo — sistema especialista de anamnese e triagem de bovinos leiteiros em lactação",
+  "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run web -w mobile",
+    "web": "npm run web -w mobile",
+    "start": "npm run start -w mobile",
+    "android": "npm run android -w mobile",
+    "ios": "npm run ios -w mobile",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "verify": "npm run typecheck && npm run test",
+    "docs": "vite-node scripts/gerar-docs.ts",
+    "docx": "python3 scripts/gerar_docx.py",
+    "pptx": "python3 scripts/gerar_pptx.py",
+    "entrega": "npm run docs && npm run docx && npm run pptx"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.3",
+    "vitest": "^3.2.4"
+  }
+}

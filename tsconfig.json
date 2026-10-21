@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "paths": {
+      "@drmoo/engine": ["./packages/engine/src/index.ts"],
+      "@drmoo/engine/*": ["./packages/engine/src/*"],
+      "@drmoo/knowledge": ["./packages/knowledge/src/index.ts"],
+      "@drmoo/knowledge/*": ["./packages/knowledge/src/*"],
+      "@drmoo/domain": ["./packages/domain/src/index.ts"],
+      "@drmoo/domain/*": ["./packages/domain/src/*"],
+      "@drmoo/db": ["./packages/db/src/index.ts"],
+      "@drmoo/db/*": ["./packages/db/src/*"],
+      "@drmoo/ui": ["./packages/ui/src/index.ts"],
+      "@drmoo/ui/*": ["./packages/ui/src/*"]
+    }
+  },
+  "include": ["packages/*/src/**/*", "packages/*/tests/**/*", "apps/mobile/app/**/*", "apps/mobile/src/**/*"],
+  "exclude": ["node_modules", "**/node_modules", "**/dist"]
+}
