@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "backgroundColor": "#FFFFFF",
     "splash": {
@@ -32,7 +32,11 @@
       "bundler": "metro",
       "output": "single"
     },
-    "plugins": ["expo-router", "expo-sqlite", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      "expo-font"
+    ],
     "experiments": {
       "typedRoutes": false
     }

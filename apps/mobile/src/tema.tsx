@@ -1,6 +1,5 @@
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
-import { useColorScheme } from 'react-native';
-import { espaco, raio, temaClaro, temaEscuro, tipografia, toque, type TemaCores } from '@drmoo/ui';
+import { espaco, raio, temaClaro, tipografia, toque, type TemaCores } from '@drmoo/ui';
 
 interface Tema {
   c: TemaCores;
@@ -14,12 +13,10 @@ interface Tema {
 const TemaContexto = createContext<Tema | null>(null);
 
 export function ProvedorDeTema({ children }: { children: ReactNode }) {
-  const esquema = useColorScheme();
-  const escuro = esquema === 'dark';
-
+  // O app usa apenas o tema claro, independente da preferência do sistema.
   const valor = useMemo<Tema>(
-    () => ({ c: escuro ? temaEscuro : temaClaro, escuro, espaco, raio, t: tipografia, toque }),
-    [escuro],
+    () => ({ c: temaClaro, escuro: false, espaco, raio, t: tipografia, toque }),
+    [],
   );
 
   return <TemaContexto.Provider value={valor}>{children}</TemaContexto.Provider>;
