@@ -80,13 +80,34 @@ export type GrupoRegra =
   | 'mastite'
   | 'metabolicas'
   | 'pos_parto'
+  | 'reprodutivas'
   | 'digestivas'
   | 'locomotor'
+  | 'pele'
+  | 'nutricionais'
+  | 'toxicologicas'
   | 'parasitarias'
   | 'notificacao_obrigatoria'
   | 'emergencia'
   | 'bezerras'
   | 'rebanho';
+
+/**
+ * Grupos cujas regras passam na frente de todas as outras na resolução de
+ * conflito, e cujo peso é amplificado na escolha da próxima pergunta.
+ *
+ * Em triagem, errar para o lado da urgência é a escolha certa — e com uma base
+ * de muitos sistemas, a lista de grupos urgentes precisa morar num lugar só.
+ */
+export const GRUPOS_URGENTES: readonly GrupoRegra[] = [
+  'emergencia',
+  'notificacao_obrigatoria',
+  'toxicologicas',
+];
+
+export function grupoUrgente(g: GrupoRegra): boolean {
+  return GRUPOS_URGENTES.includes(g);
+}
 
 export interface Regra {
   id: string;
@@ -160,6 +181,16 @@ export interface HipoteseDef {
    * (foi o degrau que levou até aqui), mas some do ranking do parecer.
    */
   substitui?: string[];
+  /**
+   * Hipótese de exclusão: só sobrevive no parecer se NENHUMA outra hipótese
+   * tiver chegado ao limiar de diagnóstico.
+   *
+   * É o caso de "sem alteração detectada": a regra de triagem olha apenas os
+   * sinais que ela pesquisa, então um CMT positivo pode concluir mastite
+   * subclínica e, ao mesmo tempo, deixar a triagem negativa de pé. Dizer as
+   * duas coisas no mesmo parecer é contradição, não cautela.
+   */
+  apenasSeNadaMais?: boolean;
 }
 
 export interface BaseDeConhecimento {
@@ -201,12 +232,25 @@ export interface PassoDoTraco {
 // Sessão
 // ---------------------------------------------------------------------------
 
+/**
+ * Como uma hipótese se relaciona com a líder do parecer.
+ *
+ * Numa base de um só sistema isso não importava: tudo concorria com tudo. Com
+ * quinze grupos de doença, duas hipóteses podem ser coisas diferentes
+ * acontecendo na mesma vaca — mastite num quarto e laminite num casco não são
+ * alternativas, são dois problemas. Misturá-las num ranking único sugere ao
+ * produtor uma escolha que não existe.
+ */
+export type RelacaoHipotese = 'principal' | 'diferencial' | 'concomitante';
+
 export interface Hipotese {
   id: string;
   rotulo: string;
   descricao: string;
   grupo: GrupoRegra;
   cf: CF;
+  /** `diferencial` = alternativa à líder (mesmo sistema) · `concomitante` = outro sistema. */
+  relacao: RelacaoHipotese;
   /** Rótulo verbal conforme §4.6 ("Muito provável", "Provável", …). */
   confianca: string;
   bandeiraVermelha: boolean;
@@ -240,6 +284,10 @@ export interface JustificativaPergunta {
   var: string;
   texto: string;
   regrasPendentes: { id: string; titulo: string; porque: string; hipoteses: string[] }[];
+  /** Sistema que o motor está investigando agora — alimenta o rótulo de foco na tela. */
+  grupoFoco?: GrupoRegra;
+  /** Verdadeiro quando a pergunta serve para separar hipóteses concorrentes. */
+  discrimina?: boolean;
 }
 
 export interface Parecer {
