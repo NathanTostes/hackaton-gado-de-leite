@@ -13,6 +13,12 @@ const estado = vi.hoisted(() => ({
 
 vi.mock('@drmoo/db', () => ({
   obterPropriedade: vi.fn(), salvarPropriedade: vi.fn(), recriarDemonstracao: estado.recriar,
+  // A tela também avisa sobre banco temporário e exporta/importa planilha.
+  bancoEmMemoria: () => false,
+  exportarPlanilha: vi.fn(), importarPlanilha: vi.fn(),
+}));
+vi.mock('../../../apps/mobile/src/arquivos', () => ({
+  entregarArquivo: vi.fn(), escolherArquivo: vi.fn(),
 }));
 vi.mock('../../../apps/mobile/src/hooks', () => ({
   useDados: () => ({ dados: null, carregando: false, recarregar: estado.recarregar, erro: estado.erroCarga }),
@@ -28,13 +34,18 @@ vi.mock('react-native', () => ({
     return createElement('div', null, children);
   },
   TextInput: () => createElement('input'),
+  Platform: { OS: 'web' },
 }));
 vi.mock('../../../apps/mobile/src/componentes/base', async () => {
   const { View } = await import('react-native');
   const Texto = ({ children }: PropsWithChildren) => createElement('span', null, children);
   return {
     Tela: View, Cartao: View, Linha: View, Txt: Texto, TituloSecao: Texto,
-    Espaco: () => null, Separador: () => null, Carregando: () => null,
+    Espaco: () => null, Separador: () => null, Carregando: () => null, Chip: Texto,
+    CabecalhoPagina: ({ titulo }: { titulo: string }) => createElement('span', null, titulo),
+    // A barra de ações só agrupa botões; o teste olha os botões, não o arranjo.
+    Acoes: ({ children, aviso }: PropsWithChildren<{ aviso?: unknown }>) =>
+      createElement('div', null, children, aviso as never),
     Alerta: ({ texto }: { texto: string }) => createElement('span', null, texto),
     Botao: (props: (typeof estado.botoes)[number]) => { estado.botoes.push(props); return null; },
   };
