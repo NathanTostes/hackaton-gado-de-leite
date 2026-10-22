@@ -1,12 +1,23 @@
 import { useEffect, useState } from 'react';
-import { TextInput, View } from 'react-native';
-import { obterPropriedade, salvarPropriedade, recriarDemonstracao } from '@drmoo/db';
+import { Platform, TextInput, View } from 'react-native';
+import {
+  bancoEmMemoria,
+  exportarPlanilha,
+  importarPlanilha,
+  obterPropriedade,
+  recriarDemonstracao,
+  salvarPropriedade,
+  type RelatorioImportacao,
+} from '@drmoo/db';
 import { METAS } from '@drmoo/domain';
 import {
+  Acoes,
   Alerta,
+  CabecalhoPagina,
   Botao,
   Cartao,
   Carregando,
+  Chip,
   Espaco,
   Linha,
   Separador,
@@ -14,6 +25,7 @@ import {
   TituloSecao,
   Txt,
 } from '../src/componentes/base';
+import { entregarArquivo, escolherArquivo } from '../src/arquivos';
 import { useDados } from '../src/hooks';
 import { useTema } from '../src/tema';
 
@@ -36,6 +48,10 @@ export default function Configuracoes() {
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState('');
   const [demoRecriada, setDemoRecriada] = useState(false);
+  const [planilhaOcupada, setPlanilhaOcupada] = useState<'exportando' | 'importando' | null>(null);
+  const [avisoPlanilha, setAvisoPlanilha] = useState<string | null>(null);
+  const [relatorio, setRelatorio] = useState<RelatorioImportacao | null>(null);
+  const [substituir, setSubstituir] = useState(false);
 
   useEffect(() => {
     if (!dados) return;
@@ -99,9 +115,69 @@ export default function Configuracoes() {
     setSalvo(false);
   };
 
+  const baixarPlanilha = async () => {
+    setPlanilhaOcupada('exportando');
+    setAvisoPlanilha(null);
+    setRelatorio(null);
+    try {
+      const bytes = await exportarPlanilha();
+      const destino = await entregarArquivo({
+        nome: `drmoo-${(dados?.nome ?? 'propriedade').replace(/\s+/g, '-').toLowerCase()}-${new Date()
+          .toISOString()
+          .slice(0, 10)}.xlsx`,
+        bytes,
+        titulo: 'Planilha da propriedade — Dr. Moo',
+      });
+      setAvisoPlanilha(
+        destino === 'download'
+          ? 'Planilha baixada. Ela já vem com os dados atuais e serve como modelo para preencher e importar de volta.'
+          : destino === 'compartilhado'
+            ? 'Planilha gerada. Escolha para onde enviar.'
+            : 'Planilha gerada e salva neste aparelho.',
+      );
+    } catch (e) {
+      setAvisoPlanilha(e instanceof Error ? e.message : String(e));
+    } finally {
+      setPlanilhaOcupada(null);
+    }
+  };
+
+  const importar = async () => {
+    setAvisoPlanilha(null);
+    setRelatorio(null);
+    try {
+      const arquivo = await escolherArquivo(['xlsx']);
+      if (!arquivo) return;
+      setPlanilhaOcupada('importando');
+      const resultado = await importarPlanilha(arquivo.bytes, { substituir });
+      setRelatorio(resultado);
+      recarregar();
+      setAvisoPlanilha(
+        `${resultado.total} registro(s) gravados a partir de ${arquivo.nome}` +
+          (resultado.erros.length ? ` · ${resultado.erros.length} linha(s) com problema` : ''),
+      );
+    } catch (e) {
+      setAvisoPlanilha(e instanceof Error ? e.message : String(e));
+    } finally {
+      setPlanilhaOcupada(null);
+    }
+  };
+
   return (
     <Tela>
+      <CabecalhoPagina
+        titulo="Configurações"
+        subtitulo="Dados da propriedade, metas, planilha e dados de demonstração"
+      />
       {!!(erro || erroCarga) && <Alerta tipo="alerta" titulo="Não foi possível concluir" texto={erro || erroCarga || ''} />}
+      {bancoEmMemoria() && (
+        <Alerta
+          tipo="atencao"
+          icone="memory"
+          titulo="Esta aba está usando um banco temporário"
+          texto="O arquivo do banco já está aberto em outra aba ou janela do navegador, e o navegador só permite um acesso de escrita por vez. Esta aba funciona normalmente, mas o que você alterar aqui não será salvo. Feche as outras abas do Dr. Moo e recarregue a página."
+        />
+      )}
       <TituloSecao icone="home-work">Propriedade</TituloSecao>
       <Cartao>
         <Campo rotulo="Nome da propriedade" valor={form.nome} aoMudar={(v) => alterarCampo('nome', v)} numerico={false} />
@@ -168,11 +244,105 @@ export default function Configuracoes() {
       </Cartao>
 
       <Espaco h={espaco.lg} />
-      {salvo && <Alerta tipo="ok" titulo="Configurações salvas" />}
-      <Espaco h={espaco.sm} />
-      <Botao grande titulo={salvando ? "Salvando…" : "Salvar"} icone="save" desabilitado={resetando || salvando || carregando || !!erroCarga} aoTocar={salvar} />
+      <Acoes aviso={salvo ? <Alerta tipo="ok" titulo="Configurações salvas" /> : null}>
+        <Botao
+          grande
+          titulo={salvando ? 'Salvando…' : 'Salvar'}
+          icone="save"
+          desabilitado={resetando || salvando || carregando || !!erroCarga}
+          aoTocar={salvar}
+        />
+      </Acoes>
 
-      {demoRecriada && <Alerta tipo="ok" titulo="Dados de demonstração recriados" />}
+      <TituloSecao icone="table-view">Planilha da propriedade (Excel)</TituloSecao>
+      <Cartao>
+        <Txt v="label" cor={c.textoSecundario}>
+          A planilha exportada JÁ É o modelo: uma aba por cadastro, cabeçalhos em português
+          e os dados atuais dentro. Preencha ou corrija no Excel e importe de volta. Os
+          animais são identificados pelo brinco, e lote, medicamento e vacina pelo nome.
+        </Txt>
+        <Espaco h={espaco.md} />
+        <Acoes>
+          <Botao
+            titulo={
+              planilhaOcupada === 'exportando'
+                ? 'Gerando planilha…'
+                : Platform.OS === 'web'
+                  ? 'Baixar planilha'
+                  : 'Exportar planilha'
+            }
+            icone={Platform.OS === 'web' ? 'download' : 'share'}
+            desabilitado={planilhaOcupada !== null}
+            aoTocar={() => void baixarPlanilha()}
+          />
+          <Botao
+            titulo={planilhaOcupada === 'importando' ? 'Importando…' : 'Importar planilha preenchida'}
+            icone="upload-file"
+            variante="secundario"
+            desabilitado={planilhaOcupada !== null}
+            aoTocar={() => void importar()}
+          />
+        </Acoes>
+        <Espaco h={espaco.md} />
+        <Linha gap={espaco.sm}>
+          <Chip
+            texto={substituir ? 'Vai APAGAR os dados atuais' : 'Acrescenta e atualiza'}
+            icone={substituir ? 'delete-forever' : 'playlist-add'}
+            cor={substituir ? c.alerta : c.primaria}
+            ativo={substituir}
+            aoTocar={() => setSubstituir((v) => !v)}
+          />
+          <Txt v="caption" cor={c.textoSecundario} style={{ flex: 1 }}>
+            {substituir
+              ? 'Modo substituição: o banco é esvaziado antes de importar.'
+              : 'Modo padrão: linhas novas entram, linhas existentes são atualizadas pelo brinco/nome/data.'}
+          </Txt>
+        </Linha>
+
+        {avisoPlanilha && (
+          <>
+            <Espaco h={espaco.md} />
+            <Alerta
+              tipo={relatorio?.erros.length ? 'atencao' : 'ok'}
+              icone="table-chart"
+              titulo="Planilha"
+              texto={avisoPlanilha}
+            />
+          </>
+        )}
+
+        {relatorio && (
+          <>
+            <Separador />
+            <Txt v="corpoForte">Resumo da importação</Txt>
+            {Object.entries(relatorio.gravadas).map(([aba, total]) => (
+              <Linha key={aba} entre style={{ minHeight: 28 }}>
+                <Txt v="label">{aba}</Txt>
+                <Txt v="label" cor={c.textoSecundario}>{`${total} registro(s)`}</Txt>
+              </Linha>
+            ))}
+            {relatorio.erros.length > 0 && (
+              <>
+                <Separador />
+                <Txt v="corpoForte" cor={c.alerta}>
+                  {`${relatorio.erros.length} linha(s) não entraram`}
+                </Txt>
+                {relatorio.erros.slice(0, 12).map((e, i) => (
+                  <Txt key={`${e.aba}-${e.linha}-${i}`} v="caption" cor={c.textoSecundario}>
+                    {`${e.aba}, linha ${e.linha}${e.coluna ? ` (${e.coluna})` : ''}: ${e.motivo}`}
+                  </Txt>
+                ))}
+                {relatorio.erros.length > 12 && (
+                  <Txt v="caption" cor={c.textoSecundario}>
+                    {`… e mais ${relatorio.erros.length - 12}.`}
+                  </Txt>
+                )}
+              </>
+            )}
+          </>
+        )}
+      </Cartao>
+
       <TituloSecao icone="science">Demonstração</TituloSecao>
       <Cartao>
         <Txt v="label" cor={c.textoSecundario}>
@@ -180,13 +350,15 @@ export default function Configuracoes() {
           todos os dados atuais. O gerador é determinístico: o resultado é sempre o mesmo.
         </Txt>
         <Espaco h={espaco.md} />
-        <Botao
-          titulo={resetando ? 'Recriando…' : 'Recriar dados de demonstração'}
-          icone="refresh"
-          variante="perigo"
-          desabilitado={resetando || salvando || carregando}
-          aoTocar={recriarDemo}
-        />
+        <Acoes aviso={demoRecriada ? <Alerta tipo="ok" titulo="Dados recriados" /> : null}>
+          <Botao
+            titulo={resetando ? 'Recriando…' : 'Recriar dados de demonstração'}
+            icone="refresh"
+            variante="perigo"
+            desabilitado={resetando || salvando || carregando}
+            aoTocar={recriarDemo}
+          />
+        </Acoes>
       </Cartao>
     </Tela>
   );
