@@ -1,0 +1,12 @@
+{
+  "name": "@drmoo/relatorio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Relatórios em HTML (prontuário e estatísticas) para virar PDF no app",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "@drmoo/domain": "1.0.0"
+  }
+}
