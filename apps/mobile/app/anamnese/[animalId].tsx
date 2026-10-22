@@ -481,13 +481,13 @@ function Resposta({
         <Linha gap={espaco.sm}>
           <Botao
             titulo="Acho que sim"
-            variante="texto"
+            variante="secundario"
             style={{ flex: 1 }}
             aoTocar={() => aoResponder(pergunta.var, true, CF_RESPOSTA.achoQueSim)}
           />
           <Botao
             titulo="Acho que não"
-            variante="texto"
+            variante="secundario"
             style={{ flex: 1 }}
             aoTocar={() => aoResponder(pergunta.var, false, CF_RESPOSTA.achoQueSim)}
           />
