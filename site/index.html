@@ -29,6 +29,8 @@
         --branco: #ffffff;
         --verde: #2e8b5a;
         --ambar: #9a6410;
+        --largura-conteudo: 1040px;
+        --respiro-horizontal: clamp(16px, 4vw, 32px);
       }
 
       * {
@@ -44,12 +46,17 @@
         -webkit-font-smoothing: antialiased;
       }
 
+      img {
+        max-width: 100%;
+      }
+
       .faixa {
-        padding: 0 20px;
+        padding-inline: var(--respiro-horizontal);
       }
 
       .limite {
-        max-width: 1040px;
+        width: 100%;
+        max-width: var(--largura-conteudo);
         margin: 0 auto;
       }
 
@@ -57,7 +64,7 @@
       header {
         background: linear-gradient(160deg, var(--teal) 0%, var(--teal-escuro) 100%);
         color: var(--branco);
-        padding: 56px 20px 64px;
+        padding-block: clamp(40px, 6vw, 64px) clamp(64px, 7vw, 88px);
       }
 
       .marca {
@@ -73,6 +80,11 @@
         border-radius: 11px;
         object-fit: cover;
         display: block;
+        flex: none;
+      }
+
+      .marca > div {
+        min-width: 0;
       }
 
       .marca strong {
@@ -86,7 +98,7 @@
       }
 
       h1 {
-        font-size: clamp(30px, 5vw, 46px);
+        font-size: clamp(32px, 5vw, 48px);
         line-height: 1.15;
         margin: 0 0 16px;
         max-width: 18ch;
@@ -108,12 +120,16 @@
 
       .botao {
         display: inline-flex;
+        min-height: 48px;
         align-items: center;
+        justify-content: center;
         gap: 8px;
         padding: 14px 22px;
         border-radius: 10px;
         font-weight: 600;
         font-size: 16px;
+        line-height: 1.3;
+        text-align: center;
         text-decoration: none;
         border: 1px solid transparent;
         transition: transform 0.12s ease, opacity 0.12s ease;
@@ -150,6 +166,7 @@
         background: rgba(255, 255, 255, 0.18);
         padding: 2px 8px;
         border-radius: 999px;
+        white-space: nowrap;
       }
 
       .nota-topo {
@@ -161,14 +178,16 @@
       /* ------------------------------------------------------- números */
       .numeros {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 16px;
         margin: -36px auto 0;
-        max-width: 1040px;
-        padding: 0 20px;
+        max-width: calc(var(--largura-conteudo) + var(--respiro-horizontal) + var(--respiro-horizontal));
+        padding-inline: var(--respiro-horizontal);
+        position: relative;
       }
 
       .numero {
+        min-width: 0;
         background: var(--branco);
         border: 1px solid var(--borda);
         border-radius: 12px;
@@ -190,7 +209,7 @@
 
       /* -------------------------------------------------------- seções */
       section {
-        padding: 56px 20px;
+        padding-block: clamp(40px, 5vw, 64px);
       }
 
       section.alternada {
@@ -211,11 +230,12 @@
 
       .cartoes {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 18px;
       }
 
       .cartao {
+        min-width: 0;
         background: var(--branco);
         border: 1px solid var(--borda);
         border-radius: 12px;
@@ -253,11 +273,12 @@
         padding: 0;
         margin: 0;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 18px;
       }
 
       ol.passos li {
+        min-width: 0;
         counter-increment: passo;
         background: var(--branco);
         border: 1px solid var(--borda);
@@ -293,11 +314,12 @@
       /* -------------------------------------------------------- download */
       .plataformas {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
         gap: 16px;
       }
 
       .plataforma {
+        min-width: 0;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -353,7 +375,7 @@
       footer {
         background: var(--teal-escuro);
         color: rgba(255, 255, 255, 0.78);
-        padding: 36px 20px;
+        padding-block: 36px;
         font-size: 14px;
       }
 
@@ -367,6 +389,88 @@
         gap: 10px 26px;
         justify-content: space-between;
         align-items: center;
+      }
+
+      footer .linha > div {
+        flex: 1 1 300px;
+        min-width: 0;
+      }
+
+      @media (max-width: 900px) {
+        .numeros,
+        .cartoes {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 640px) {
+        header {
+          padding-block: 32px 64px;
+        }
+
+        .marca {
+          margin-bottom: 32px;
+        }
+
+        .marca span {
+          line-height: 1.35;
+        }
+
+        h1 {
+          max-width: 100%;
+        }
+
+        .chamada {
+          margin-bottom: 28px;
+        }
+
+        .acoes {
+          align-items: stretch;
+        }
+
+        .acoes > .botao {
+          width: 100%;
+        }
+
+        .numeros {
+          gap: 12px;
+          margin-top: -28px;
+        }
+
+        .numero {
+          padding: 16px;
+        }
+
+        .cartoes,
+        ol.passos,
+        .plataformas {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .cartao,
+        ol.passos li,
+        .plataforma {
+          padding: 20px;
+        }
+
+        .plataforma > .botao,
+        .plataforma > .acoes {
+          width: 100%;
+        }
+
+        footer {
+          padding-block: 32px;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .numero {
+          padding: 14px 12px;
+        }
+
+        .numero b {
+          font-size: 25px;
+        }
       }
 
       [hidden] {
