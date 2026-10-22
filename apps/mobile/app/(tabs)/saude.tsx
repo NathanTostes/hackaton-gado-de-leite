@@ -1,13 +1,16 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
+import type { PanoramaDiagnosticos } from '@drmoo/db';
 import {
   lancarCMT,
   listarMedicamentos,
   listarRebanho,
   painelMastite,
+  panoramaDiagnosticos,
   vacasEmCarencia,
 } from '@drmoo/db';
+import { ROTULO_GRUPO, hipotesesPorGrupo } from '@drmoo/knowledge';
 import { METAS, diasDeCarenciaRestantes, formatarBR, hoje, moeda, percentual, type ResultadoCMT } from '@drmoo/domain';
 import { corCMT, siglaCMT } from '@drmoo/ui';
 import {
@@ -32,6 +35,110 @@ import { useTema } from '../../src/tema';
 
 const ORDEM_CMT: ResultadoCMT[] = ['N', 'T', '1', '2', '3', 'PP'];
 
+/**
+ * O que o rebanho teve, por grupo de doença.
+ *
+ * A mastite tem painel próprio porque tem dado próprio (CMT, CCS, casos), mas
+ * o sistema diagnostica muito mais do que úbere: metabólicas, pós-parto,
+ * digestivas, locomotor, parasitárias, bezerras e as de notificação
+ * obrigatória. Quando ainda não há atendimento no período, a tela mostra o que
+ * a base sabe diagnosticar em vez de uma caixa vazia.
+ */
+function PainelDiagnosticos({ panorama }: { panorama: PanoramaDiagnosticos }) {
+  const { c, espaco } = useTema();
+  const porGrupo = hipotesesPorGrupo();
+
+  return (
+    <>
+      <TituloSecao icone="medical-information">Diagnósticos dos últimos 180 dias</TituloSecao>
+
+      {panorama.diagnosticos.length === 0 ? (
+        <Cartao>
+          <Txt v="label" cor={c.textoSecundario}>
+            Nenhum atendimento concluído no período. O Dr. Moo diagnostica
+            {` ${[...porGrupo.values()].reduce((t, l) => t + l.length, 0)} `}
+            condições, em {porGrupo.size} grupos — não só mastite:
+          </Txt>
+          <Espaco h={espaco.sm} />
+          {[...porGrupo.entries()].map(([grupo, hipoteses]) => (
+            <View key={grupo} style={{ marginBottom: espaco.sm }}>
+              <Txt v="corpoForte">{ROTULO_GRUPO[grupo] ?? grupo}</Txt>
+              <Txt v="caption" cor={c.textoSecundario}>
+                {hipoteses.map((h) => h.rotulo).join(' · ')}
+              </Txt>
+            </View>
+          ))}
+          <Separador />
+          <Botao
+            titulo="Iniciar uma anamnese"
+            icone="medical-services"
+            variante="secundario"
+            aoTocar={() => router.push('/anamnese')}
+          />
+        </Cartao>
+      ) : (
+        <>
+          <Grade minimo={240}>
+            <Kpi rotulo="Atendimentos no período" valor={String(panorama.atendimentos)} />
+            <Kpi
+              rotulo="Condições diferentes"
+              valor={String(panorama.diagnosticos.length)}
+              meta={`em ${panorama.porGrupo.length} grupo(s) de doença`}
+            />
+          </Grade>
+
+          {panorama.bandeirasVermelhas.length > 0 && (
+            <>
+              <Espaco h={espaco.md} />
+              <Alerta
+                tipo="alerta"
+                icone="flag"
+                titulo="Bandeira vermelha no período"
+                texto={panorama.bandeirasVermelhas
+                  .map((d) => `${d.rotulo} (${d.total})`)
+                  .join(' · ')}
+              />
+            </>
+          )}
+
+          <Espaco h={espaco.md} />
+          <Linha gap={6} style={{ flexWrap: 'wrap' }}>
+            {panorama.porGrupo.map((g) => (
+              <Chip key={g.grupo} texto={`${ROTULO_GRUPO[g.grupo] ?? g.grupo}: ${g.total}`} />
+            ))}
+          </Linha>
+
+          <Espaco h={espaco.md} />
+          <Cartao>
+            {panorama.diagnosticos.map((d, i) => (
+              <View key={d.id}>
+                {i > 0 && <Separador />}
+                <Linha entre>
+                  <View style={{ flex: 1 }}>
+                    <Txt v="corpoForte">{d.rotulo}</Txt>
+                    <Txt v="caption" cor={c.textoSecundario} numberOfLines={2}>
+                      {ROTULO_GRUPO[d.grupo] ?? d.grupo} · último em {formatarBR(d.ultimaEm.slice(0, 10))} ·{' '}
+                      {d.ocorrencias
+                        .slice(0, 6)
+                        .map((o) => o.brinco)
+                        .join(', ')}
+                    </Txt>
+                  </View>
+                  <Chip
+                    texto={`${d.total}`}
+                    cor={d.bandeiraVermelha ? c.alerta : c.primaria}
+                    ativo={d.bandeiraVermelha}
+                  />
+                </Linha>
+              </View>
+            ))}
+          </Cartao>
+        </>
+      )}
+    </>
+  );
+}
+
 export default function Saude() {
   const { c, espaco } = useTema();
   const agora = new Date();
@@ -40,17 +147,18 @@ export default function Saude() {
   const [salvando, setSalvando] = useState(false);
 
   const { dados, carregando, recarregar } = useDados(async () => {
-    const [mastite, vacas, carencia, medicamentos] = await Promise.all([
+    const [mastite, vacas, carencia, medicamentos, diagnosticos] = await Promise.all([
       painelMastite(agora.getFullYear(), agora.getMonth() + 1),
       listarRebanho({ categorias: ['vaca_lactacao'] }),
       vacasEmCarencia(),
       listarMedicamentos(),
+      panoramaDiagnosticos(180),
     ]);
-    return { mastite, vacas, carencia, medicamentos };
+    return { mastite, vacas, carencia, medicamentos, diagnosticos };
   }, []);
 
   if (carregando || !dados) return <Carregando />;
-  const { mastite, vacas, carencia, medicamentos } = dados;
+  const { mastite, vacas, carencia, medicamentos, diagnosticos } = dados;
 
   const ciclar = (animalId: string, indice: number) =>
     setLancamentos((atual) => {
@@ -85,8 +193,11 @@ export default function Saude() {
     <Tela>
       <CabecalhoPagina
         titulo="Saúde do rebanho"
-        subtitulo="Mastite, CMT, carência de medicamento e estoque"
+        subtitulo="Diagnósticos de todos os grupos de doenças, mastite e CMT, carência e estoque"
       />
+
+      <PainelDiagnosticos panorama={diagnosticos} />
+
       <TituloSecao icone="coronavirus">Mastite no rebanho</TituloSecao>
       <Grade minimo={240}>
         <Kpi

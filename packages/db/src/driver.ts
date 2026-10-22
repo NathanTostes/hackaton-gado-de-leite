@@ -26,18 +26,44 @@ export const NOME_BANCO = 'drmoo.db';
 let backendInjetado: BackendSQLite | null = null;
 let conexao: BackendSQLite | null = null;
 let abrindo: Promise<BackendSQLite> | null = null;
+let emMemoria = false;
 
 /** Substitui o backend (usado nos testes). `null` volta ao expo-sqlite. */
 export function definirBackend(b: BackendSQLite | null): void {
   backendInjetado = b;
   conexao = null;
   abrindo = null;
+  emMemoria = false;
+}
+
+/**
+ * Verdadeiro quando esta aba caiu no banco em memória por não conseguir o
+ * arquivo persistente (outra aba já o mantém aberto). Só faz sentido na web.
+ */
+export function bancoEmMemoria(): boolean {
+  return emMemoria;
+}
+
+/** O banco em memória só existe na web; no aparelho uma falha é falha mesmo. */
+function podeCairParaMemoria(): boolean {
+  return typeof document !== 'undefined';
 }
 
 async function abrirExpoSqlite(): Promise<BackendSQLite> {
   // Import dinâmico: mantém o pacote utilizável fora do runtime do Expo.
   const SQLite = await import('expo-sqlite');
-  const db = await SQLite.openDatabaseAsync(NOME_BANCO);
+  let db: Awaited<ReturnType<typeof SQLite.openDatabaseAsync>>;
+  try {
+    db = await SQLite.openDatabaseAsync(NOME_BANCO);
+  } catch (e) {
+    // No navegador o arquivo fica no OPFS, que só aceita UM acesso de escrita por
+    // vez: a segunda aba/janela aberta no mesmo navegador falha ao abrir o banco.
+    // Em vez de travar a aba, ela trabalha num banco em memória — o app abre e
+    // funciona normalmente (o seed de demonstração é refeito), só não persiste.
+    if (!podeCairParaMemoria()) throw e;
+    db = await SQLite.openDatabaseAsync(':memory:');
+    emMemoria = true;
+  }
   return {
     execAsync: (sql) => db.execAsync(sql),
     runAsync: async (sql, params) => {
@@ -74,6 +100,20 @@ export async function abrirBanco(): Promise<BackendSQLite> {
   })();
 
   return abrindo;
+}
+
+/**
+ * Esquece a conexão atual e tenta abrir de novo.
+ *
+ * Serve à tela que avisa "já está aberto em outra aba": depois de fechar a
+ * outra aba, o usuário pede para tentar de novo e o app segue com o banco de
+ * verdade, sem recarregar a página.
+ */
+export async function reabrirBanco(): Promise<BackendSQLite> {
+  conexao = null;
+  abrindo = null;
+  emMemoria = false;
+  return abrirBanco();
 }
 
 export async function consultar<T>(sql: string, params: Parametro[] = []): Promise<T[]> {

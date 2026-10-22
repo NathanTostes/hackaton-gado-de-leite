@@ -52,22 +52,170 @@ execução — depois do `npm install`, o app funciona com a máquina desconecta
 Para voltar o banco ao estado inicial: **Mais → Configurações → Recriar dados de
 demonstração**. O gerador é determinístico, então o resultado é sempre o mesmo.
 
+No navegador, o banco fica num arquivo do OPFS, e o navegador só permite **um acesso de
+escrita por vez**. Abrir o Dr. Moo numa segunda aba mostra uma tela explicando isso, com duas
+saídas: tentar de novo (depois de fechar a outra aba) ou continuar ali num banco temporário, que
+funciona mas **não salva** — e diz isso com todas as letras. Para usar dois ambientes de verdade
+ao mesmo tempo, use dois aparelhos — ou dois navegadores diferentes — e sincronize pela rede
+local.
+
+### Dois aparelhos na mesma rede
+
+Cada aparelho tem o seu próprio banco. Para que conversem, um deles (normalmente o
+computador que já serve o app) roda o servidor da propriedade:
+
+```bash
+npm run sync         # escuta na porta 8787 e imprime endereço + código de 6 dígitos
+```
+
+Nos aparelhos, abra **Mais → Rede local**, informe o endereço (`http://<ip-do-servidor>:8787`),
+o código de pareamento e toque em **Sincronizar agora**.
+
+Cada sincronização é uma única ida e volta: o aparelho envia o instantâneo do seu banco, o
+servidor mescla com o que já tinha e devolve o resultado, que o aparelho grava. O conflito é
+resolvido por *last-write-wins* sobre `updated_at` (com `deleted_at` para exclusão lógica) e a
+mesclagem é comutativa e idempotente — os aparelhos convergem independentemente da ordem.
+Registro recusado pelo banco local (brinco repetido criado nos dois aparelhos) não derruba a
+sincronização: aparece como conflito na tela, para decisão humana.
+
+Continua tudo offline: o servidor escuta apenas na LAN da propriedade, não abre conexão de
+saída e guarda a base mesclada em `.drmoo-sync/estado.json`. Variáveis opcionais:
+`PORTA_SYNC`, `CODIGO_SYNC`, `NOME_PROPRIEDADE`.
+
+## Planilha, PDF e estatísticas
+
+- **Planilha da propriedade** (Configurações → Planilha): exporta um `.xlsx` com **uma aba por
+  cadastro** e os dados atuais dentro — o arquivo exportado **é** o template. Preencha no Excel
+  e importe de volta. Animais são referenciados pelo **brinco**; lote, medicamento e vacina pelo
+  **nome**. A importação atualiza o que já existe (sem duplicar), relata linha a linha o que não
+  entrou e tem um modo "substituir" que troca a base inteira.
+- **Prontuário em PDF** (tela do prontuário): no computador abre a janela de impressão para
+  salvar em PDF; no celular gera o PDF e abre o compartilhamento do sistema — WhatsApp inclusive.
+- **Estatísticas** (Mais → Estatísticas): todos os gráficos da propriedade numa tela, com
+  exportação do relatório completo em PDF pelo mesmo caminho.
+
+Tudo é gerado dentro do app, offline: nenhum arquivo passa por servidor.
+
+## Builds e deploy
+
+```bash
+npm run build:web      # exporta o app estático em dist-web/
+npm run servir:web     # serve dist-web em http://localhost:8080 para conferir
+npm run build:android  # prebuild + gradlew assembleRelease (APK)
+```
+
+| Alvo | Como gerar | Deploy mais simples |
+|---|---|---|
+| **Web** | `npm run build:web` → `dist-web/` (HTML, JS e wasm estáticos) | arrastar `dist-web/` no Netlify/Vercel, ou o workflow `publicar-web.yml` (GitHub Pages) |
+| **Android** | `npx eas build -p android --profile preview` (APK na nuvem, sem SDK local) ou `npm run build:android` com Android SDK instalado | enviar o APK direto (link/QR). Loja só se quiser distribuição pública |
+| **Desktop (Linux, Windows, macOS)** | `npm run build:linux` — empacota o `dist-web/` com o invólucro de `desktop/` | copiar a pasta gerada em `dist-desktop/` e executar o binário |
+
+### Aplicativo para Linux
+
+```bash
+npm run desktop       # abre a janela do app no computador (sem empacotar)
+npm run build:linux   # gera dist-desktop/Dr. Moo-linux-x64/ com o executável
+./"dist-desktop/Dr. Moo-linux-x64/Dr. Moo"   # roda o aplicativo gerado
+```
+
+O invólucro é uma janela que carrega o `dist-web/` (`desktop/main.js`, ~50 linhas). O Electron
+**não** é dependência do repositório: `npx` o baixa na hora de empacotar, então o `npm install`
+do dia a dia continua leve. Para Windows ou macOS, troque `--platform=linux` por `--platform=win32`
+ou `--platform=darwin` no script `build:linux` (empacotar para macOS exige um Mac).
+
+Se preferir binário menor, o mesmo `dist-web/` serve para o **Tauri** (exige Rust instalado).
+
+### O que vai ao ar
+
+| Endereço | Conteúdo |
+|---|---|
+| `/` | página de apresentação (`site/index.html`) — o que é a solução, com links para o app |
+| `/app/` | o aplicativo web |
+| Release com tag `v*` | aplicativos de computador para Linux, Windows e macOS |
+
+Os links de download na página de apresentação são montados a partir da **última Release** do
+repositório: enquanto não houver uma, a seção fica escondida e um aviso explica o motivo — link
+quebrado é pior do que link ausente. Para gerar os binários:
+
+```bash
+git tag v1.0.0 && git push --tags   # dispara .github/workflows/publicar-desktop.yml
+```
+
+### Publicar a web (do mais simples ao mais automático)
+
+1. **Arrastar a pasta** — `npm run build:web` e solte `dist-web/` em
+   [app.netlify.com/drop](https://app.netlify.com/drop). Sai no ar em segundos, sem conta nem
+   configuração, servido na raiz do domínio.
+2. **EAS Hosting** — `npx eas-cli deploy --prod` publica o mesmo `dist-web/` com a conta Expo
+   que você já vai criar para a Play Store.
+3. **GitHub Pages** — `publicar-web.yml` faz tudo a cada merge na `main`; basta ligar
+   *Settings → Pages → Source: GitHub Actions* (repositório público, ou GitHub Pro se privado).
+   O workflow já ajusta o caminho base (num Pages de projeto o site fica em `/<repositorio>/`) e
+   já copia `index.html` para `404.html`, para abrir `/configuracoes` direto ou apertar F5 não
+   cair na página de erro do GitHub.
+
+**Atenção à sincronização em rede local**: hospedado em HTTPS (Pages, Netlify, EAS), o navegador
+**bloqueia** as chamadas ao servidor da propriedade, que fala `http://` num IP da LAN — é a
+regra de conteúdo misto, não um defeito do app. Para demonstrar a sincronização, use o app
+servido localmente (`npm run web`, em `http://`), o APK no celular ou o aplicativo de desktop.
+O resto do sistema funciona igual na versão hospedada.
+
+### Publicar na Play Store
+
+```bash
+npm run build:aab     # AAB assinado na nuvem (formato que a loja aceita)
+npm run enviar:play   # envia para o Google Play Console
+```
+
+Os perfis estão em `eas.json`: `preview` gera APK para instalar direto no celular, `producao`
+gera o AAB da loja com `versionCode` incrementado automaticamente. Antes do primeiro envio é
+preciso ter a conta de desenvolvedor do Google Play (taxa única de US$ 25) e uma chave de conta
+de serviço — `eas submit` explica o passo a passo na primeira execução.
+
+### CI/CD já configurado
+
+`.github/workflows/verificar.yml` roda typecheck e testes em todo push e pull request;
+`publicar-web.yml` verifica e publica a web a cada merge na `main`. Build de Android no CI exige
+uma conta Expo e o segredo `EXPO_TOKEN` — fora isso, nada a configurar.
+
+### Testar web, celular e desktop juntos
+
+```bash
+npm run sync           # terminal 1: servidor da propriedade (porta 8787)
+npm run web            # terminal 2: app web (porta 8081)
+npm start              # terminal 3: QR code para o Expo Go no celular
+```
+
+Com os três abertos na mesma rede Wi-Fi: cadastre um animal no celular, sincronize, sincronize
+no navegador e confira que ele apareceu. É o mesmo teste que vale para o desktop, que carrega o
+`dist-web/` e fala com o mesmo servidor.
+
 ## Verificar
 
 ```bash
-npm run verify       # typecheck + 81 testes
+npm run verify          # typecheck + 283 testes
+npm run test:cobertura  # o mesmo, com relatório de cobertura em coverage/
 ```
+
+Cobertura atual: **74% das linhas** no total, concentrada onde importa — `domain` 99%,
+`relatorio` 98%, `planilha` 95%, `engine` 95%, `db` 92%, `sync` 87%. O que puxa a média para
+baixo são os componentes de interface (`apps/mobile/src/componentes`), testados por
+renderização nas telas críticas e não linha a linha.
 
 ## Entregáveis
 
 ```bash
-npm run entrega      # regera a documentação e a apresentação
+npm run entrega      # regera documentação, diagramas e apresentação
 ```
 
 | Arquivo | O que é |
 |---|---|
-| `docs/DrMoo-Documentacao.docx` | documentação técnica completa num só arquivo — capa, sumário, arquitetura, as 44 regras de produção, motor de inferência, processo com IA e casos de teste |
+| `docs/DrMoo-Documentacao.docx` | documentação técnica completa num só arquivo — capa, sumário, arquitetura, as 44 regras de produção, motor de inferência, processo com IA, casos de teste, funcionamento do sistema e diagrama de classes |
+| `docs/DrMoo-DiagramaDeClasses.docx` | só os diagramas de classes, em paisagem: domínio persistido, motor de inferência e serviços de aplicação |
 | `docs/DrMoo-Apresentacao.pptx` | 18 slides com animações e notas do apresentador |
+
+Os diagramas saem de `npm run diagrama`, que desenha as figuras a partir do modelo descrito em
+`scripts/gerar_diagrama_classes.py` — elas acompanham o código, não um desenho esquecido.
 
 Os arquivos `docs/02-*` e `docs/05-*` são **gerados a partir da própria base de conhecimento**
 (`npm run docs`): documentação escrita à mão sobre uma base que muda vira documentação errada.
@@ -79,7 +227,11 @@ A suíte cobre:
 | `engine` | álgebra de fatores de certeza, encadeamento progressivo e regressivo, refração, retração, resolução de conflito, subsunção, bandeira vermelha, reprodutibilidade |
 | `knowledge` | integridade da base e os **28 casos de teste com resultado esperado** |
 | `domain` | fórmulas da Embrapa — inclusive a reprodução exata dos números publicados no exemplo da propriedade do Sr. João |
-| `db` | esquema, seed e repositórios contra um SQLite real (`node:sqlite`) |
+| `db` | esquema, seed e repositórios contra um SQLite real (`node:sqlite`), e a sincronização entre dois aparelhos ponta a ponta |
+| `sync` | mesclagem dos instantâneos: last-write-wins, comutatividade, idempotência e validação do que chega pela rede |
+| `relatorio` | HTML dos relatórios e os gráficos SVG do PDF, inclusive casos sem dado nenhum |
+| `planilha` | normalização de data, número e sim/não; tradução aba ↔ tabela; leitura e escrita do `.xlsx` |
+| `db` (planilha) | exportar, reimportar sem duplicar, relatar linha inválida e o modo substituir |
 
 ---
 
@@ -91,7 +243,11 @@ packages/engine  Motor de inferência — TypeScript puro, zero dependências
 packages/knowledge  Base de conhecimento (JSON) + casos de teste
 packages/domain  Cálculos zootécnicos e econômico-financeiros (funções puras)
 packages/db      SQLite local: esquema, repositórios e pré-carga de fatos
+packages/sync    Sincronização na rede local: instantâneo, mesclagem e cliente HTTP
+packages/planilha  Mapa planilha ↔ banco, leitura e escrita do .xlsx
+packages/relatorio Relatórios em HTML + gráficos SVG, que viram PDF no app
 packages/ui      Design system (tokens extraídos da logo)
+scripts/         Geração de documentação e servidor de sincronização da propriedade
 docs/            Documentação da entrega
 ```
 
@@ -99,7 +255,9 @@ O motor não importa React, nem SQLite, nem nada de I/O: recebe
 `(base de conhecimento, fatos)` e devolve `(próxima pergunta | parecer, traço)`.
 É isso que o torna testável em milissegundos e auditável.
 
-Detalhes em [`docs/01-arquitetura.md`](docs/01-arquitetura.md).
+Detalhes em [`docs/01-arquitetura.md`](docs/01-arquitetura.md), com o passo a passo de cada
+funcionalidade em [`docs/06-funcionamento.md`](docs/06-funcionamento.md) e o modelo de classes em
+[`docs/07-diagrama-de-classes.md`](docs/07-diagrama-de-classes.md).
 
 ---
 
@@ -122,6 +280,16 @@ Detalhes em [`docs/01-arquitetura.md`](docs/01-arquitetura.md).
   e pela triagem de entrada.
 - **Financeiro** nas categorias e indicadores da planilha da Embrapa, mais a **margem por vaca**
   (produção × gastos com remédios × leite descartado por carência).
+- **Diagnóstico muito além da mastite**: 28 condições em 10 grupos — metabólicas, pós-parto,
+  digestivas, locomotor, parasitárias, de bezerras, indicadores de rebanho e as de notificação
+  obrigatória —, com painel por grupo de doença na tela de Saúde.
+- **Análise de lucro por vaca** no recorte explícito tratamentos médicos × produção de leite;
+  os indicadores gerais da Embrapa ficam à parte, rotulados como contexto.
+- **Busca detalhada do rebanho**: texto livre por palavras (sem acento e sem caixa) sobre brinco,
+  nome, tatuagem, raça, pelagem, lote, procedência, GTA, pais e observações, mais filtros de
+  situação, sexo, lote, CMT, prenhez, DEL, idade e produção, com ordenação em oito critérios.
+- **Planilha Excel** de ida e volta e **PDF** do prontuário e das estatísticas.
+- **Sincronização entre aparelhos** na rede local da propriedade, sem nuvem.
 - **Base de conhecimento** inspecionável na própria interface, com os casos de teste rodando ao vivo.
 
 ---

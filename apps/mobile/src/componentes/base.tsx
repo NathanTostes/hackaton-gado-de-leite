@@ -239,6 +239,52 @@ export function Linha({
   );
 }
 
+/**
+ * Barra de ações de uma tela.
+ *
+ * No celular, botão é faixa: o dedo acerta a largura inteira e a ordem vertical
+ * é a ordem de importância. No computador, faixa de 860 px para "Salvar" é
+ * desperdício e fica estranho — os botões viram uma linha, com largura própria,
+ * alinhados à esquerda e com o aviso ("Salvo", "Importando…") ao lado.
+ */
+export function Acoes({
+  children,
+  aviso,
+  alinhar = 'esquerda',
+}: {
+  children: ReactNode;
+  /** Texto curto de estado, mostrado ao lado dos botões no computador. */
+  aviso?: ReactNode;
+  alinhar?: 'esquerda' | 'direita';
+}) {
+  const { espaco } = useTema();
+  const { amplo } = useLayout();
+
+  if (!amplo) {
+    return (
+      <View style={{ gap: espaco.sm }}>
+        {children}
+        {aviso}
+      </View>
+    );
+  }
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        gap: espaco.sm,
+        justifyContent: alinhar === 'direita' ? 'flex-end' : 'flex-start',
+      }}
+    >
+      {children}
+      {aviso ? <View style={{ marginLeft: espaco.sm }}>{aviso}</View> : null}
+    </View>
+  );
+}
+
 export function Espaco({ h = 12 }: { h?: number }) {
   return <View style={{ height: h }} />;
 }

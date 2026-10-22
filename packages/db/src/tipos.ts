@@ -80,6 +80,8 @@ export interface AnimalComResumo extends Animal {
   carencia_leite_ate: string | null;
   tem_peito_perdido: boolean;
   data_provavel_parto: string | null;
+  /** Idade em meses: pela data de nascimento ou, na falta dela, pela estimativa do cadastro. */
+  idade_meses: number | null;
 }
 
 export interface ExameCMT {

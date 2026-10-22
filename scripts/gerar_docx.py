@@ -48,6 +48,8 @@ ARQUIVOS = [
     "03-motor-de-inferencia.md",
     "04-processo-com-ia.md",
     "05-casos-de-teste.md",
+    "06-funcionamento.md",
+    "07-diagrama-de-classes.md",
 ]
 
 
@@ -284,6 +286,27 @@ def converter(doc: Document, markdown: str, deslocamento: int = 0) -> None:
                 buffer.append(linhas[i].lstrip()[1:].strip())
                 i += 1
             citacao(doc, buffer)
+            continue
+
+        # Figura: ![legenda](caminho relativo a docs/)
+        m = re.match(r"^!\[(.*?)\]\((.+?)\)\s*$", cru.strip())
+        if m:
+            caminho = (DOCS / m.group(2)).resolve()
+            if caminho.exists():
+                p = doc.add_paragraph()
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                # Largura útil da página A4 retrato com as margens deste documento.
+                p.add_run().add_picture(str(caminho), width=Inches(6.3))
+                legenda = doc.add_paragraph()
+                legenda.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                r = legenda.add_run(m.group(1))
+                r.font.size = Pt(8.5)
+                r.font.color.rgb = CINZA_CLARO
+                r.font.name = FONTE
+                r.italic = True
+            else:
+                print(f"  (figura ausente: {m.group(2)})")
+            i += 1
             continue
 
         # Régua

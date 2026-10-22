@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Cartao, Espaco, Linha, MaterialIcons, Tela, Txt } from '../src/componentes/base';
+import { CabecalhoPagina, Cartao, Espaco, Linha, MaterialIcons, Tela, Txt } from '../src/componentes/base';
 import { FormularioAnimal } from '../src/componentes/formularioAnimal';
 import { useTema } from '../src/tema';
 
@@ -13,6 +13,7 @@ export default function Triagem() {
   if (modo === 'escolha') {
     return (
       <Tela>
+        <CabecalhoPagina titulo="Triagem" subtitulo="Entrada de animais na propriedade" />
         <Txt v="h2">O que você está registrando?</Txt>
         <Espaco h={espaco.lg} />
         <Cartao aoTocar={() => setModo('nascimento')}>

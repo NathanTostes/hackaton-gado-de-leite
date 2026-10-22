@@ -1,0 +1,95 @@
+# Publica o site no GitHub Pages a cada push na main.
+#
+# O que vai ao ar:
+#   /            → página de apresentação (site/index.html)
+#   /app/        → o aplicativo web (export do Expo)
+#   /404.html    → cópia do index do app, para as rotas internas dele
+#
+# Tudo estático: não há servidor, e o banco continua no navegador de quem
+# acessa — a página publicada não guarda dado de ninguém.
+#
+# Para ligar: Settings → Pages → Source: "GitHub Actions". Nada mais.
+name: Publicar web
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Falhar aqui é melhor do que publicar um app quebrado.
+      - run: npm run verify
+
+      # No Pages de um projeto o site mora em /<repositorio>/, e aqui o app
+      # ainda fica um nível abaixo, em /app/ — a raiz é da apresentação. O
+      # export do Expo escreve caminhos a partir de "/", então sem este ajuste
+      # a página abre e nenhum script carrega. O patch vale só no CI, para o
+      # `npm run web` local continuar na raiz.
+      - name: Ajustar o caminho base para o GitHub Pages
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const arquivo = "apps/mobile/app.json";
+            const config = JSON.parse(fs.readFileSync(arquivo, "utf8"));
+            config.expo.experiments = {
+              ...config.expo.experiments,
+              baseUrl: "/${{ github.event.repository.name }}/app",
+            };
+            fs.writeFileSync(arquivo, JSON.stringify(config, null, 2) + "\n");
+          '
+
+      - name: Exportar o app web
+        run: npm run build:web
+
+      # Monta o que vai ao ar: apresentação na raiz, aplicativo em /app/.
+      # O 404.html é cópia do index do app porque o app é uma SPA e o Pages
+      # não reescreve rota: sem ele, abrir /app/configuracoes direto (ou dar
+      # F5 nessa tela) cairia na página de erro do GitHub.
+      - name: Montar o site
+        run: |
+          rm -rf publicar
+          mkdir -p publicar/app
+          cp -r dist-web/. publicar/app/
+          cp site/index.html publicar/index.html
+          # Duas cópias do index do app: o Pages procura o 404.html da raiz,
+          # mas também o da pasta — e as rotas internas vivem sob /app/.
+          cp dist-web/index.html publicar/404.html
+          cp dist-web/index.html publicar/app/404.html
+          ls -R publicar | head -20
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: publicar
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

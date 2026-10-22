@@ -1,0 +1,9 @@
+{
+  "name": "@drmoo/sync",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sincronização entre aparelhos na rede local da propriedade (sem internet)",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "types": "src/index.ts"
+}

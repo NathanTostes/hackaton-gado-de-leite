@@ -149,6 +149,39 @@ export const rotulos: Map<string, string> = new Map([
   ),
 ]);
 
+/**
+ * Nome legível de cada grupo de doenças da base.
+ *
+ * Mora aqui, junto da base, porque a lista de grupos é dela: a tela de saúde, a
+ * base de conhecimento na interface e o gerador de documentação precisam dizer
+ * o mesmo nome para o mesmo grupo.
+ */
+export const ROTULO_GRUPO: Record<string, string> = {
+  triagem: 'Triagem geral',
+  mastite: 'Mastite',
+  metabolicas: 'Metabólicas',
+  pos_parto: 'Pós-parto / reprodutivas',
+  digestivas: 'Digestivas',
+  locomotor: 'Locomotor',
+  parasitarias: 'Parasitárias e infecciosas',
+  notificacao_obrigatoria: 'Notificação obrigatória',
+  emergencia: 'Emergências',
+  bezerras: 'Bezerras',
+  rebanho: 'Indicadores de rebanho',
+};
+
+/** Hipóteses da base agrupadas por grupo de doença — o que o sistema sabe diagnosticar. */
+export const hipotesesPorGrupo = (): Map<string, HipoteseDef[]> => {
+  const mapa = new Map<string, HipoteseDef[]>();
+  for (const h of baseDeConhecimento.hipoteses) {
+    if (h.id === 'sem_alteracao') continue;
+    const lista = mapa.get(h.grupo) ?? [];
+    lista.push(h);
+    mapa.set(h.grupo, lista);
+  }
+  return mapa;
+};
+
 export const regrasPorGrupo = (): Map<string, Regra[]> => {
   const mapa = new Map<string, Regra[]>();
   for (const r of baseDeConhecimento.regras) {

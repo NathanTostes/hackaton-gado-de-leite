@@ -1,7 +1,6 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs } from 'expo-router';
-import { View } from 'react-native';
-import { BarraLateral } from '../../src/componentes/navegacaoDesktop';
+import { MarcaCabecalho } from '../../src/componentes/marca';
 import { useLayout } from '../../src/responsivo';
 import { useTema } from '../../src/tema';
 
@@ -18,6 +17,9 @@ export default function LayoutAbas() {
         // No computador, quem mostra onde você está é a barra lateral, e a marca
         // já está no cabeçalho fixo. Um segundo cabeçalho só rouba altura.
         headerShown: !amplo,
+        // A marca no celular: o cabeçalho das abas é o único lugar em que ela
+        // cabe sem custar altura de conteúdo.
+        headerLeft: () => <MarcaCabecalho />,
         tabBarActiveTintColor: c.primaria,
         tabBarInactiveTintColor: c.textoSecundario,
         tabBarStyle: amplo
@@ -81,12 +83,7 @@ export default function LayoutAbas() {
     </Tabs>
   );
 
-  if (!amplo) return navegador;
-
-  return (
-    <View style={{ flex: 1, flexDirection: 'row', backgroundColor: c.fundo }}>
-      <BarraLateral />
-      <View style={{ flex: 1 }}>{navegador}</View>
-    </View>
-  );
+  // A barra lateral do computador é montada no layout raiz, para continuar
+  // visível também nas telas de gestão empilhadas por cima das abas.
+  return navegador;
 }

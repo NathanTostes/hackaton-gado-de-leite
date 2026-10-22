@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dr. Moo — anamnese e triagem de bovinos leiteiros</title>
+    <meta
+      name="description"
+      content="Sistema especialista que ajuda o produtor de leite a identificar o que a vaca tem, explicando cada passo. Funciona offline, no celular e no computador."
+    />
+    <meta name="repositorio" content="NathanTostes/hackaton-gado-de-leite" />
+    <link rel="icon" href="./app/favicon.ico" />
+    <style>
+      /*
+        Página de apresentação do Dr. Moo.
+        Arquivo único, sem dependência externa: ela precisa abrir rápido numa
+        conexão de sítio, e continuar funcionando se nada mais carregar.
+      */
+      :root {
+        --teal: #015b66;
+        --teal-escuro: #01434b;
+        --teal-claro: #0e7f8c;
+        --teal-suave: #e0f0f2;
+        --preto: #0f1f2c;
+        --cinza: #424e57;
+        --cinza-claro: #7a858d;
+        --borda: #dce1e4;
+        --fundo: #f6f7f8;
+        --branco: #ffffff;
+        --verde: #2e8b5a;
+        --ambar: #9a6410;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--branco);
+        color: var(--preto);
+        font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .faixa {
+        padding: 0 20px;
+      }
+
+      .limite {
+        max-width: 1040px;
+        margin: 0 auto;
+      }
+
+      /* ---------------------------------------------------------- topo */
+      header {
+        background: linear-gradient(160deg, var(--teal) 0%, var(--teal-escuro) 100%);
+        color: var(--branco);
+        padding: 56px 20px 64px;
+      }
+
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 40px;
+      }
+
+      .marca img {
+        width: 44px;
+        height: 44px;
+        border-radius: 11px;
+        display: block;
+      }
+
+      .marca strong {
+        font-size: 20px;
+      }
+
+      .marca span {
+        display: block;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      h1 {
+        font-size: clamp(30px, 5vw, 46px);
+        line-height: 1.15;
+        margin: 0 0 16px;
+        max-width: 18ch;
+      }
+
+      .chamada {
+        font-size: clamp(16px, 2.2vw, 20px);
+        color: rgba(255, 255, 255, 0.9);
+        max-width: 60ch;
+        margin: 0 0 32px;
+      }
+
+      .acoes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .botao {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 22px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        border: 1px solid transparent;
+        transition: transform 0.12s ease, opacity 0.12s ease;
+      }
+
+      .botao:hover {
+        transform: translateY(-1px);
+      }
+
+      .botao-principal {
+        background: var(--branco);
+        color: var(--teal);
+      }
+
+      .botao-contorno {
+        border-color: rgba(255, 255, 255, 0.45);
+        color: var(--branco);
+      }
+
+      .botao-desativado {
+        border-color: rgba(255, 255, 255, 0.25);
+        color: rgba(255, 255, 255, 0.6);
+        cursor: default;
+      }
+
+      .botao-desativado:hover {
+        transform: none;
+      }
+
+      .etiqueta {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        background: rgba(255, 255, 255, 0.18);
+        padding: 2px 8px;
+        border-radius: 999px;
+      }
+
+      .nota-topo {
+        margin-top: 20px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      /* ------------------------------------------------------- números */
+      .numeros {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 16px;
+        margin: -36px auto 0;
+        max-width: 1040px;
+        padding: 0 20px;
+      }
+
+      .numero {
+        background: var(--branco);
+        border: 1px solid var(--borda);
+        border-radius: 12px;
+        padding: 18px 20px;
+        box-shadow: 0 6px 20px rgba(15, 31, 44, 0.06);
+      }
+
+      .numero b {
+        display: block;
+        font-size: 28px;
+        color: var(--teal);
+        line-height: 1.2;
+      }
+
+      .numero span {
+        font-size: 13px;
+        color: var(--cinza-claro);
+      }
+
+      /* -------------------------------------------------------- seções */
+      section {
+        padding: 56px 20px;
+      }
+
+      section.alternada {
+        background: var(--fundo);
+      }
+
+      h2 {
+        font-size: clamp(22px, 3vw, 30px);
+        margin: 0 0 8px;
+        color: var(--teal);
+      }
+
+      .subtitulo {
+        color: var(--cinza);
+        margin: 0 0 28px;
+        max-width: 70ch;
+      }
+
+      .cartoes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+
+      .cartao {
+        background: var(--branco);
+        border: 1px solid var(--borda);
+        border-radius: 12px;
+        padding: 22px;
+      }
+
+      .cartao h3 {
+        margin: 0 0 6px;
+        font-size: 17px;
+      }
+
+      .cartao p {
+        margin: 0;
+        color: var(--cinza);
+        font-size: 15px;
+      }
+
+      .icone {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: var(--teal-suave);
+        color: var(--teal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-bottom: 12px;
+      }
+
+      /* ---------------------------------------------------- passo a passo */
+      ol.passos {
+        counter-reset: passo;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+      }
+
+      ol.passos li {
+        counter-increment: passo;
+        background: var(--branco);
+        border: 1px solid var(--borda);
+        border-radius: 12px;
+        padding: 22px;
+      }
+
+      ol.passos li::before {
+        content: counter(passo);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--teal);
+        color: var(--branco);
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+
+      ol.passos h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+
+      ol.passos p {
+        margin: 0;
+        color: var(--cinza);
+        font-size: 15px;
+      }
+
+      /* -------------------------------------------------------- download */
+      .plataformas {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .plataforma {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+        background: var(--branco);
+        border: 1px solid var(--borda);
+        border-radius: 12px;
+        padding: 22px;
+      }
+
+      .plataforma .nome {
+        font-weight: 700;
+        font-size: 17px;
+      }
+
+      .plataforma .detalhe {
+        color: var(--cinza-claro);
+        font-size: 14px;
+        flex: 1;
+      }
+
+      .botao-escuro {
+        background: var(--teal);
+        color: var(--branco);
+        padding: 11px 18px;
+        font-size: 15px;
+      }
+
+      .botao-cinza {
+        background: var(--fundo);
+        color: var(--cinza-claro);
+        border-color: var(--borda);
+        padding: 11px 18px;
+        font-size: 15px;
+        cursor: default;
+      }
+
+      .botao-cinza:hover {
+        transform: none;
+      }
+
+      .aviso {
+        margin-top: 18px;
+        border-left: 4px solid var(--ambar);
+        background: #fff4e5;
+        padding: 14px 16px;
+        border-radius: 0 10px 10px 0;
+        font-size: 14px;
+        color: var(--cinza);
+      }
+
+      /* --------------------------------------------------------- rodapé */
+      footer {
+        background: var(--teal-escuro);
+        color: rgba(255, 255, 255, 0.78);
+        padding: 36px 20px;
+        font-size: 14px;
+      }
+
+      footer a {
+        color: var(--branco);
+      }
+
+      footer .linha {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 26px;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="faixa">
+      <div class="limite">
+        <div class="marca">
+          <img src="./app/favicon.ico" alt="" />
+          <div>
+            <strong>Dr. Moo</strong>
+            <span>Anamnese e triagem de bovinos leiteiros</span>
+          </div>
+        </div>
+
+        <h1>O que essa vaca tem — e por quê</h1>
+        <p class="chamada">
+          Um sistema especialista que conduz a anamnese pergunta a pergunta, chega a um parecer com
+          grau de confiança e mostra a regra e a fonte que sustentam cada conclusão. Funciona sem
+          internet, no celular do curral e no computador do escritório.
+        </p>
+
+        <div class="acoes">
+          <a class="botao botao-principal" href="./app/">Abrir o aplicativo web</a>
+          <span class="botao botao-desativado">
+            Google Play <span class="etiqueta">em breve</span>
+          </span>
+          <a class="botao botao-contorno" href="#computador">Baixar para o computador</a>
+        </div>
+
+        <p class="nota-topo">
+          Nenhum cadastro, nenhuma conta. Os dados ficam no seu aparelho.
+        </p>
+      </div>
+    </header>
+
+    <div class="numeros">
+      <div class="numero"><b>44</b><span>regras de produção versionadas</span></div>
+      <div class="numero"><b>28</b><span>condições que o sistema diagnostica</span></div>
+      <div class="numero"><b>10</b><span>grupos de doença, além da mastite</span></div>
+      <div class="numero"><b>0</b><span>chamadas à internet em uso</span></div>
+    </div>
+
+    <section class="faixa">
+      <div class="limite">
+        <h2>O problema</h2>
+        <p class="subtitulo">
+          Na propriedade leiteira familiar, a decisão sobre uma vaca doente costuma acontecer sem
+          veterinário por perto, sem histórico à mão e sob pressão do horário da ordenha. O prejuízo
+          raramente aparece como susto: aparece como leite descartado, tratamento repetido e vaca
+          que nunca volta ao que era.
+        </p>
+
+        <div class="cartoes">
+          <div class="cartao">
+            <div class="icone">🩺</div>
+            <h3>Anamnese guiada</h3>
+            <p>
+              Uma pergunta por vez, escolhida pelo que ainda pode mudar o diagnóstico, dividida pelo
+              custo de obter a resposta. O sistema responde sempre “por que essa pergunta?”.
+            </p>
+          </div>
+          <div class="cartao">
+            <div class="icone">📖</div>
+            <h3>Conhecimento explícito</h3>
+            <p>
+              As regras estão em arquivos versionados, com a página da cartilha da Embrapa citada
+              regra a regra. O que é consenso veterinário sem fonte primária vem marcado como tal.
+            </p>
+          </div>
+          <div class="cartao">
+            <div class="icone">🚩</div>
+            <h3>Bandeira vermelha</h3>
+            <p>
+              Suspeita de doença de notificação obrigatória ou quadro de emergência interrompe o
+              questionário na hora e orienta a conduta imediata.
+            </p>
+          </div>
+          <div class="cartao">
+            <div class="icone">💰</div>
+            <h3>Tratamento × leite</h3>
+            <p>
+              Para cada vaca: o leite que ela rendeu contra o que custou tratá-la, incluindo o leite
+              descartado na carência. É o argumento econômico da anamnese precoce.
+            </p>
+          </div>
+          <div class="cartao">
+            <div class="icone">📶</div>
+            <h3>Offline de verdade</h3>
+            <p>
+              Sem servidor, sem nuvem, sem chave de API. O banco fica no aparelho — e dois aparelhos
+              da mesma propriedade se sincronizam pelo Wi-Fi local, sem sair para a internet.
+            </p>
+          </div>
+          <div class="cartao">
+            <div class="icone">📄</div>
+            <h3>Prontuário que se confere</h3>
+            <p>
+              Reabrir um atendimento re-executa o motor com os fatos da época. O PDF leva o parecer,
+              a conduta, as fontes e o traço completo do raciocínio.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faixa alternada">
+      <div class="limite">
+        <h2>Como funciona</h2>
+        <p class="subtitulo">
+          Nenhum modelo de linguagem participa do diagnóstico. A inteligência está na base de
+          conhecimento e no motor de inferência — ambos auditáveis dentro do próprio aplicativo.
+        </p>
+
+        <ol class="passos">
+          <li>
+            <h3>O caderno já responde</h3>
+            <p>
+              O motor começa sabendo idade, dias em lactação, produção média e histórico de CMT. Não
+              pergunta o que já está registrado.
+            </p>
+          </li>
+          <li>
+            <h3>Pergunta o que importa</h3>
+            <p>
+              Entre o que ainda está em aberto, escolhe a pergunta de maior ganho pelo menor custo —
+              observar é barato, exame de laboratório é caro.
+            </p>
+          </li>
+          <li>
+            <h3>Conclui com grau de confiança</h3>
+            <p>
+              Fatores de certeza combinam as evidências. O parecer traz as hipóteses ordenadas, a
+              conduta sugerida e a fonte de cada regra.
+            </p>
+          </li>
+          <li>
+            <h3>Fica registrado</h3>
+            <p>
+              Atendimento, tratamento, carência do leite e calendário sanitário — tudo no banco local,
+              pronto para virar relatório ou planilha.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="faixa" id="computador">
+      <div class="limite">
+        <h2>Onde usar</h2>
+        <p class="subtitulo">
+          O mesmo sistema, nos três lugares em que a decisão acontece.
+        </p>
+
+        <div class="plataformas">
+          <div class="plataforma">
+            <div class="nome">🌐 Navegador</div>
+            <div class="detalhe">
+              Abre e já funciona, com a propriedade de demonstração carregada. Nada é enviado para
+              lugar nenhum.
+            </div>
+            <a class="botao botao-escuro" href="./app/">Abrir o aplicativo</a>
+          </div>
+
+          <div class="plataforma">
+            <div class="nome">📱 Android</div>
+            <div class="detalhe">
+              Pensado para a mão suja e a tela pequena do curral, com toques grandes e leitura ao
+              sol.
+            </div>
+            <span class="botao botao-cinza">Google Play — em breve</span>
+          </div>
+
+          <div class="plataforma" id="cartao-desktop" hidden>
+            <div class="nome">💻 Computador</div>
+            <div class="detalhe">
+              Aplicativo instalável, para o escritório da propriedade. Roda offline, com o banco na
+              própria máquina.
+            </div>
+            <div class="acoes" id="links-desktop"></div>
+          </div>
+        </div>
+
+        <div class="aviso" id="aviso-desktop" hidden>
+          Os aplicativos de computador ainda não têm uma versão publicada. Assim que a primeira
+          Release sair, os links de Linux, Windows e macOS aparecem aqui automaticamente.
+        </div>
+      </div>
+    </section>
+
+    <section class="faixa alternada">
+      <div class="limite">
+        <h2>Feito para ser conferido</h2>
+        <p class="subtitulo">
+          A base de conhecimento é inspecionável dentro do aplicativo, com os casos de teste rodando
+          ao vivo. A documentação técnica, o diagrama de classes e a suíte de testes acompanham o
+          código.
+        </p>
+        <div class="acoes">
+          <a
+            class="botao botao-escuro"
+            href="https://github.com/NathanTostes/hackaton-gado-de-leite"
+            rel="noopener"
+            >Ver o código no GitHub</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <footer class="faixa">
+      <div class="limite linha">
+        <div>
+          <strong>Dr. Moo</strong> — Hackathon UFJF 2026 · XXVIII Semana da Computação do DCC/UFJF ·
+          RERUM Engenharia de Sistemas
+        </div>
+        <div>
+          Apoio à decisão. Não substitui a avaliação de médico veterinário.
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      /*
+        Links de download do aplicativo de computador.
+        Em vez de endereços fixos — que quebrariam a cada versão —, a página
+        pergunta ao GitHub qual é a última Release e monta os links com os
+        arquivos que realmente existem. Sem Release publicada, a seção fica
+        escondida e um aviso explica o porquê: link quebrado é pior do que
+        link ausente.
+      */
+      (async () => {
+        const cartao = document.getElementById('cartao-desktop');
+        const destino = document.getElementById('links-desktop');
+        const aviso = document.getElementById('aviso-desktop');
+        const repositorio = document.querySelector('meta[name="repositorio"]')?.content;
+        if (!repositorio || !cartao || !destino || !aviso) return;
+
+        const SISTEMAS = [
+          { nome: 'Linux', marca: 'linux' },
+          { nome: 'Windows', marca: 'win32' },
+          { nome: 'macOS', marca: 'darwin' },
+        ];
+
+        try {
+          const resposta = await fetch(`https://api.github.com/repos/${repositorio}/releases/latest`);
+          if (!resposta.ok) throw new Error(String(resposta.status));
+          const release = await resposta.json();
+
+          const encontrados = SISTEMAS.map((sistema) => ({
+            ...sistema,
+            arquivo: (release.assets ?? []).find(
+              (a) => a.name.includes(sistema.marca) && a.name.endsWith('.zip'),
+            ),
+          })).filter((s) => s.arquivo);
+
+          if (!encontrados.length) throw new Error('sem binários nesta release');
+
+          for (const { nome, arquivo } of encontrados) {
+            const link = document.createElement('a');
+            link.className = 'botao botao-escuro';
+            link.href = arquivo.browser_download_url;
+            link.textContent = nome;
+            link.rel = 'noopener';
+            destino.appendChild(link);
+          }
+
+          const versao = document.createElement('div');
+          versao.className = 'detalhe';
+          versao.style.width = '100%';
+          versao.textContent = `Versão ${release.tag_name}`;
+          destino.appendChild(versao);
+
+          cartao.hidden = false;
+        } catch {
+          // Sem release (ou sem internet): nada de link quebrado.
+          aviso.hidden = false;
+        }
+      })();
+    </script>
+  </body>
+</html>

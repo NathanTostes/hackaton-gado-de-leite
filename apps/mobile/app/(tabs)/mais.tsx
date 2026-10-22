@@ -20,7 +20,7 @@ const ITENS: { rota: string; icone: NomeIcone; titulo: string; texto: string }[]
     rota: '/financeiro',
     icone: 'payments',
     titulo: 'Financeiro',
-    texto: 'Receitas, despesas e indicadores da planilha Embrapa, mais a margem por vaca.',
+    texto: 'Lucro por vaca: tratamentos médicos × produção de leite (e o contexto da propriedade).',
   },
   {
     rota: '/conhecimento',
@@ -35,10 +35,16 @@ const ITENS: { rota: string; icone: NomeIcone; titulo: string; texto: string }[]
     texto: 'Animal novo no rebanho (quarentena) e bezerra recém-nascida (colostro).',
   },
   {
+    rota: '/estatisticas',
+    icone: 'insights',
+    titulo: 'Estatísticas',
+    texto: 'Todos os gráficos da propriedade, com exportação do relatório em PDF.',
+  },
+  {
     rota: '/rede-local',
     icone: 'wifi-tethering',
     titulo: 'Rede local',
-    texto: 'Protótipo de sincronização entre aparelhos da propriedade.',
+    texto: 'Sincronizar com outros aparelhos da propriedade, pelo Wi-Fi local.',
   },
   {
     rota: '/configuracoes',

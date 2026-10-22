@@ -9,6 +9,7 @@ import { useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { ENGINE_VERSAO, regraEmLinguagemNatural, type Regra } from '@drmoo/engine';
 import {
+  ROTULO_GRUPO,
   baseCompilada,
   baseDeConhecimento,
   casos,
@@ -18,6 +19,7 @@ import {
 } from '@drmoo/knowledge';
 import {
   Alerta,
+  CabecalhoPagina,
   Botao,
   Cartao,
   Chip,
@@ -31,20 +33,6 @@ import {
   Vazio,
 } from '../src/componentes/base';
 import { useTema } from '../src/tema';
-
-const ROTULO_GRUPO: Record<string, string> = {
-  triagem: 'Triagem geral',
-  mastite: 'Mastite',
-  metabolicas: 'Metabólicas',
-  pos_parto: 'Pós-parto / reprodutivas',
-  digestivas: 'Digestivas',
-  locomotor: 'Locomotor',
-  parasitarias: 'Parasitárias e infecciosas',
-  notificacao_obrigatoria: 'Notificação obrigatória',
-  emergencia: 'Emergências',
-  bezerras: 'Bezerras',
-  rebanho: 'Indicadores de rebanho',
-};
 
 export default function BaseDeConhecimento() {
   const { c, espaco } = useTema();
@@ -84,6 +72,10 @@ export default function BaseDeConhecimento() {
 
   return (
     <Tela>
+      <CabecalhoPagina
+        titulo="Base de conhecimento"
+        subtitulo="As regras que o motor usa, com fonte e status de validação"
+      />
       <Cartao>
         <Txt v="h2">Base de conhecimento v{baseDeConhecimento.versao}</Txt>
         <Espaco h={espaco.sm} />

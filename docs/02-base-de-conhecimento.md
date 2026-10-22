@@ -489,7 +489,7 @@ ENTÃO diagnóstico = cetose (CF 0,80 — Provável)
 
 ---
 
-### Pós-parto e reprodutivas
+### Pós-parto / reprodutivas
 
 #### `PP-RETENCAO-PLACENTA` — Retenção de placenta
 

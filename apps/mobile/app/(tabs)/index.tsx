@@ -212,9 +212,10 @@ export default function Inicio() {
       </Grade>
 
       {/* ---------------- Financeiro ---------------- */}
-      <TituloSecao icone="payments">{`Financeiro — ${NOMES_MES[anterior.getMonth()]}`}</TituloSecao>
+      <TituloSecao icone="payments">{`Contexto econômico — ${NOMES_MES[anterior.getMonth()]}`}</TituloSecao>
       <Txt v="caption" cor={c.textoSecundario} style={{ marginTop: -6, marginBottom: espaco.sm }}>
-        Último mês fechado. O mês em curso ainda tem produção parcial.
+        Último mês fechado, nas categorias da Embrapa. A análise de lucro do Dr. Moo é outra:
+        tratamentos médicos × produção de leite, por vaca, na tela Financeiro.
       </Txt>
       <Grade minimo={210}>
         <Kpi

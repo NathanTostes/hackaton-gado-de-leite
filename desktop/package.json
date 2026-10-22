@@ -1,0 +1,9 @@
+{
+  "name": "dr-moo-desktop",
+  "productName": "Dr. Moo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dr. Moo para computador — janela sobre o app web exportado, 100% offline",
+  "license": "MIT",
+  "main": "main.js"
+}

@@ -1,0 +1,31 @@
+{
+  "cli": {
+    "version": ">= 12.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "preview": {
+      "comment": "APK para instalar direto no celular (link ou QR). Não serve para a Play Store.",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "producao": {
+      "comment": "AAB assinado — este é o formato que a Play Store aceita.",
+      "autoIncrement": true,
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  },
+  "submit": {
+    "producao": {
+      "android": {
+        "comment": "track: internal → teste fechado; production → público. Mude quando for lançar.",
+        "track": "internal",
+        "releaseStatus": "draft"
+      }
+    }
+  }
+}

@@ -14,6 +14,7 @@ import {
 } from '@drmoo/domain';
 import {
   Alerta,
+  CabecalhoPagina,
   Cartao,
   Carregando,
   Chip,
@@ -67,9 +68,125 @@ export default function Financeiro() {
 
   const melhores = panorama.slice(0, 3);
   const piores = [...panorama].reverse().slice(0, 3);
+  // Só vale desenhar barra de quem gastou alguma coisa; as dez maiores contam a história.
+  const custoPorVaca = [...panorama]
+    .filter((v) => v.custoTratamentos > 0)
+    .sort((a, b) => b.custoTratamentos - a.custoTratamentos)
+    .slice(0, 10)
+    .map((v) => ({ rotulo: v.brinco, valor: v.custoTratamentos }));
+
+  // Totais do recorte: a soma do que as vacas produziram contra o que custou
+  // tratá-las. É esta a conta que a tela se propõe a fazer.
+  const totalRelacao = panorama.reduce(
+    (t, v) => ({
+      receita: t.receita + v.receitaEstimada,
+      tratamentos: t.tratamentos + v.custoTratamentos,
+      descarte: t.descarte + v.perdaPorDescarte,
+      margem: t.margem + v.margem,
+      litros: t.litros + v.litros,
+    }),
+    { receita: 0, tratamentos: 0, descarte: 0, margem: 0, litros: 0 },
+  );
+  const comPrejuizo = panorama.filter((v) => v.margem < 0);
 
   return (
     <Tela>
+      <CabecalhoPagina
+        titulo="Tratamentos × produção de leite"
+        subtitulo="O lucro mostrado aqui é só desta relação — não é o resultado contábil da fazenda"
+      />
+      <Alerta
+        tipo="info"
+        icone="info"
+        titulo="O que esta análise considera"
+        texto="Apenas duas coisas: o leite que cada vaca produziu e o que foi gasto para tratá-la (remédios aplicados e o leite jogado fora durante a carência). Terra, alimentação, mão de obra, financiamento e demais custos da propriedade NÃO entram nesta conta — eles aparecem mais abaixo, separados, apenas como contexto."
+      />
+      <Espaco h={espaco.md} />
+
+      {/* ---------- A relação: tratamentos médicos × produção de leite ---------- */}
+      <TituloSecao icone="pets">Lucro por vaca nos últimos 90 dias</TituloSecao>
+      <View style={estilos.grade}>
+        <Kpi
+          rotulo="Leite aproveitado (receita)"
+          valor={moeda(totalRelacao.receita)}
+          meta={`${numero(totalRelacao.litros, 0)} L produzidos no período`}
+        />
+        <Kpi
+          rotulo="Gasto com tratamentos"
+          valor={moeda(totalRelacao.tratamentos)}
+          meta="remédios aplicados nas vacas"
+        />
+        <Kpi
+          rotulo="Leite perdido na carência"
+          valor={moeda(totalRelacao.descarte)}
+          meta="leite que não pôde ir ao tanque"
+        />
+        <Kpi
+          rotulo="Resultado da relação"
+          valor={moeda(totalRelacao.margem)}
+          bom={totalRelacao.margem > 0}
+          meta="receita do leite − tratamentos"
+        />
+      </View>
+
+      {comPrejuizo.length > 0 && (
+        <>
+          <Espaco h={espaco.md} />
+          <Alerta
+            tipo="atencao"
+            icone="trending-down"
+            titulo={`${comPrejuizo.length} vaca(s) com resultado negativo`}
+            texto="Nestas vacas, o tratamento custou mais do que o leite aproveitado rendeu no período. É aqui que a anamnese precoce se paga."
+          />
+        </>
+      )}
+
+      <Espaco h={espaco.md} />
+      <Cartao>
+        <Txt v="label" cor={c.textoSecundario}>
+          Para cada vaca: (leite aproveitado × preço recebido) − (custo dos remédios).
+          O leite descartado durante a carência sai da receita, porque não foi vendido.
+          Nenhum outro custo da propriedade entra nesta conta.
+        </Txt>
+
+        <Separador />
+        <Txt v="corpoForte" cor={c.alerta}>
+          Vacas em que o tratamento mais pesou
+        </Txt>
+        <Espaco h={6} />
+        {piores.map((v) => (
+          <LinhaVaca key={v.animalId} vaca={v} />
+        ))}
+
+        <Separador />
+        <Txt v="corpoForte" cor={c.ok}>
+          Vacas com melhor relação
+        </Txt>
+        <Espaco h={6} />
+        {melhores.map((v) => (
+          <LinhaVaca key={v.animalId} vaca={v} />
+        ))}
+
+        {custoPorVaca.length > 0 && (
+          <>
+            <Separador />
+            <Txt v="corpoForte">Gasto com tratamentos por vaca</Txt>
+            <Espaco h={6} />
+            <GraficoBarras itens={custoPorVaca} formatar={moeda} />
+          </>
+        )}
+      </Cartao>
+
+      {/* ---------- Contexto: fora da relação acima ---------- */}
+      <TituloSecao icone="account-balance">Contexto da propriedade</TituloSecao>
+      <Alerta
+        tipo="atencao"
+        icone="fact-check"
+        titulo="Daqui para baixo não faz parte da análise de lucro"
+        texto="Os números a seguir são o acompanhamento econômico geral da propriedade, nas categorias da Embrapa. Eles existem para dar contexto — o lucro de que esta tela trata é apenas a relação tratamentos × produção de leite, mostrada acima."
+      />
+      <Espaco h={espaco.md} />
+
       <Linha gap={espaco.sm}>
         {[0, 1, 2].map((d) => {
           const r = new Date(agora.getFullYear(), agora.getMonth() - d, 1);
@@ -97,8 +214,8 @@ export default function Financeiro() {
       )}
 
       {/* -------------------- Resultado -------------------- */}
-      <TituloSecao icone="account-balance">
-        {`Resultado de ${NOMES_MES[referencia.getMonth()]}`}
+      <TituloSecao icone="calculate">
+        {`Resultado contábil de ${NOMES_MES[referencia.getMonth()]} (propriedade inteira)`}
       </TituloSecao>
       <View style={estilos.grade}>
         <Kpi
@@ -209,33 +326,6 @@ export default function Financeiro() {
         />
         <LinhaIndicador rotulo="Leite / área / mês" valor={`${numero(tecnicos.leitePorAreaMes, 0)} L/ha`} />
         <LinhaIndicador rotulo="Leite / área / ano" valor={`${numero(tecnicos.leitePorAreaAno, 0)} L/ha`} />
-      </Cartao>
-
-      {/* -------------------- Panorama por vaca -------------------- */}
-      <TituloSecao icone="pets">Panorama por vaca (90 dias)</TituloSecao>
-      <Cartao>
-        <Txt v="label" cor={c.textoSecundario}>
-          Receita estimada do leite aproveitado, menos o custo dos tratamentos e o leite
-          descartado por carência. É o que liga a saúde da vaca ao bolso.
-        </Txt>
-
-        <Separador />
-        <Txt v="corpoForte" cor={c.ok}>
-          Melhores margens
-        </Txt>
-        <Espaco h={6} />
-        {melhores.map((v) => (
-          <LinhaVaca key={v.animalId} vaca={v} />
-        ))}
-
-        <Separador />
-        <Txt v="corpoForte" cor={c.alerta}>
-          Vacas que mais custam
-        </Txt>
-        <Espaco h={6} />
-        {piores.map((v) => (
-          <LinhaVaca key={v.animalId} vaca={v} />
-        ))}
       </Cartao>
 
       <Espaco h={espaco.lg} />
