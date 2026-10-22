@@ -27,7 +27,6 @@ let backendInjetado: BackendSQLite | null = null;
 let conexao: BackendSQLite | null = null;
 let abrindo: Promise<BackendSQLite> | null = null;
 let emMemoria = false;
-let liberadaPorOutraAba = false;
 
 /** Substitui o backend (usado nos testes). `null` volta ao expo-sqlite. */
 export function definirBackend(b: BackendSQLite | null): void {
@@ -35,7 +34,6 @@ export function definirBackend(b: BackendSQLite | null): void {
   conexao = null;
   abrindo = null;
   emMemoria = false;
-  liberadaPorOutraAba = false;
 }
 
 /**
@@ -46,87 +44,26 @@ export function bancoEmMemoria(): boolean {
   return emMemoria;
 }
 
-/**
- * Verdadeiro quando esta aba TINHA a conexão real, mas uma aba mais nova a
- * pediu e esta a liberou. A aba mais nova é sempre quem fica com o arquivo —
- * esta precisa avisar o usuário e parar de fingir que está salvando.
- */
-export function bancoLiberadoPorOutraAba(): boolean {
-  return liberadaPorOutraAba;
-}
-
 /** O banco em memória só existe na web; no aparelho uma falha é falha mesmo. */
 function podeCairParaMemoria(): boolean {
   return typeof document !== 'undefined';
 }
 
-const NOME_CANAL = 'drmoo-banco';
-const INSTANCIA_ID = `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-
-type MensagemCanal = { tipo: 'pedido-abertura'; origem: string } | { tipo: 'liberado'; origem: string };
-
-let canal: BroadcastChannel | null = null;
-let dbAtualWeb: { closeAsync(): Promise<void> } | null = null;
-
-/**
- * Coordena as abas pelo `BroadcastChannel`: a aba mais nova é sempre quem
- * deve ficar com o arquivo do OPFS. Antes de tentar abrir, ela avisa as
- * outras; qualquer aba que esteja com a conexão real a fecha e libera o
- * arquivo, para que a abertura seguinte (na aba nova) tenha vez.
- */
-function garantirCanal(): BroadcastChannel | null {
-  if (!podeCairParaMemoria() || typeof BroadcastChannel === 'undefined') return null;
-  if (canal) return canal;
-  canal = new BroadcastChannel(NOME_CANAL);
-  canal.onmessage = (ev: MessageEvent<MensagemCanal>) => {
-    const msg = ev.data;
-    if (msg.tipo === 'pedido-abertura' && msg.origem !== INSTANCIA_ID && dbAtualWeb) {
-      const db = dbAtualWeb;
-      dbAtualWeb = null;
-      conexao = null;
-      abrindo = null;
-      liberadaPorOutraAba = true;
-      void db.closeAsync();
-    }
-  };
-  return canal;
-}
-
-/** Espera um pouco para dar tempo da outra aba fechar o arquivo que liberou. */
-function espera(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 async function abrirExpoSqlite(): Promise<BackendSQLite> {
   // Import dinâmico: mantém o pacote utilizável fora do runtime do Expo.
   const SQLite = await import('expo-sqlite');
-  const canalAtual = garantirCanal();
-  let db: Awaited<ReturnType<typeof SQLite.openDatabaseAsync>> | undefined;
-
-  if (canalAtual) canalAtual.postMessage({ tipo: 'pedido-abertura', origem: INSTANCIA_ID });
-
-  const TENTATIVAS = canalAtual ? 5 : 1;
-  for (let i = 0; i < TENTATIVAS && !db; i++) {
-    try {
-      if (i > 0) await espera(120);
-      db = await SQLite.openDatabaseAsync(NOME_BANCO);
-    } catch (e) {
-      // No navegador o arquivo fica no OPFS, que só aceita UM acesso de escrita
-      // por vez. Pedimos à aba antiga para liberar (acima) e tentamos de novo
-      // algumas vezes; se mesmo assim não der (ex.: outra aba sem este código,
-      // ou aparelho nativo), caímos para um banco em memória — o app abre e
-      // funciona, só não persiste.
-      if (i === TENTATIVAS - 1) {
-        if (!podeCairParaMemoria()) throw e;
-        db = await SQLite.openDatabaseAsync(':memory:');
-        emMemoria = true;
-      }
-    }
+  let db: Awaited<ReturnType<typeof SQLite.openDatabaseAsync>>;
+  try {
+    db = await SQLite.openDatabaseAsync(NOME_BANCO);
+  } catch (e) {
+    // No navegador o arquivo fica no OPFS, que só aceita UM acesso de escrita por
+    // vez: a segunda aba/janela aberta no mesmo navegador falha ao abrir o banco.
+    // Em vez de travar a aba, ela trabalha num banco em memória — o app abre e
+    // funciona normalmente (o seed de demonstração é refeito), só não persiste.
+    if (!podeCairParaMemoria()) throw e;
+    db = await SQLite.openDatabaseAsync(':memory:');
+    emMemoria = true;
   }
-  if (!db) throw new Error('Não foi possível abrir o banco local');
-
-  if (canalAtual && !emMemoria) dbAtualWeb = db;
-
   return {
     execAsync: (sql) => db.execAsync(sql),
     runAsync: async (sql, params) => {
@@ -166,35 +103,6 @@ export async function abrirBanco(): Promise<BackendSQLite> {
 }
 
 /**
- * Chamado pela aba que perdeu o arquivo para uma aba mais nova e decidiu
- * continuar mesmo assim: assume de vez um banco em memória, em vez de voltar
- * a disputar o arquivo com quem já o tomou.
- */
-export async function continuarEmMemoria(): Promise<BackendSQLite> {
-  conexao = null;
-  abrindo = null;
-  liberadaPorOutraAba = false;
-  emMemoria = true;
-  abrindo = (async () => {
-    const SQLite = await import('expo-sqlite');
-    const db = await SQLite.openDatabaseAsync(':memory:');
-    const backend: BackendSQLite = {
-      execAsync: (sql) => db.execAsync(sql),
-      runAsync: async (sql, params) => {
-        await db.runAsync(sql, params);
-      },
-      getAllAsync: (sql, params) => db.getAllAsync(sql, params),
-      getFirstAsync: async (sql, params) => (await db.getFirstAsync(sql, params)) ?? null,
-      withTransactionAsync: (fn) => db.withTransactionAsync(fn),
-    };
-    await backend.execAsync(DDL);
-    conexao = backend;
-    return backend;
-  })();
-  return abrindo;
-}
-
-/**
  * Esquece a conexão atual e tenta abrir de novo.
  *
  * Serve à tela que avisa "já está aberto em outra aba": depois de fechar a
@@ -205,7 +113,6 @@ export async function reabrirBanco(): Promise<BackendSQLite> {
   conexao = null;
   abrindo = null;
   emMemoria = false;
-  liberadaPorOutraAba = false;
   return abrirBanco();
 }
 
