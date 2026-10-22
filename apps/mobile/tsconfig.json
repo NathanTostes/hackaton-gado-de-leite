@@ -1,11 +1,28 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
+    "module": "preserve",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "customConditions": [
+      "react-native"
+    ],
+    "noEmit": true,
+    "skipLibCheck": true,
+    "target": "ESNext",
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
     "paths": {
-      "expo-sqlite": ["./node_modules/expo-sqlite"],
+      "expo-sqlite": [
+        "./node_modules/expo-sqlite"
+      ],
       "@/*": [
         "./src/*"
       ],
@@ -21,6 +38,15 @@
       "@drmoo/db": [
         "../../packages/db/src/index.ts"
       ],
+      "@drmoo/planilha": [
+        "../../packages/planilha/src/index.ts"
+      ],
+      "@drmoo/relatorio": [
+        "../../packages/relatorio/src/index.ts"
+      ],
+      "@drmoo/sync": [
+        "../../packages/sync/src/index.ts"
+      ],
       "@drmoo/ui": [
         "../../packages/ui/src/index.ts"
       ]
@@ -29,5 +55,12 @@
   "include": [
     "**/*.ts",
     "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "android",
+    "ios",
+    "babel.config.js",
+    "metro.config.js"
   ]
 }
