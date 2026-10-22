@@ -6,9 +6,8 @@
     <title>Dr. Moo — anamnese e triagem de bovinos leiteiros</title>
     <meta
       name="description"
-      content="Sistema especialista que ajuda o produtor de leite a identificar o que a vaca tem, explicando cada passo. Funciona offline, no celular e no computador."
+      content="Sistema especialista que ajuda o produtor de leite a identificar o que a vaca tem, explicando cada passo. Funciona offline, no celular e no navegador."
     />
-    <meta name="repositorio" content="NathanTostes/hackaton-gado-de-leite" />
     <link rel="icon" href="./app/favicon.ico" />
     <style>
       /*
@@ -127,11 +126,6 @@
         color: var(--teal);
       }
 
-      .botao-contorno {
-        border-color: rgba(255, 255, 255, 0.45);
-        color: var(--branco);
-      }
-
       .botao-desativado {
         border-color: rgba(255, 255, 255, 0.25);
         color: rgba(255, 255, 255, 0.6);
@@ -241,8 +235,28 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
         margin-bottom: 12px;
+      }
+
+      /* O sprite só guarda os contornos; nada dele é desenhado na página. */
+      .sprite {
+        display: none;
+      }
+
+      /*
+        Ícone do Material Icons desenhado como SVG: `currentColor` faz com que
+        ele herde a cor do texto ao redor, como acontece no aplicativo.
+      */
+      .ico {
+        width: 1.25em;
+        height: 1.25em;
+        fill: currentColor;
+        flex: none;
+      }
+
+      .icone .ico {
+        width: 22px;
+        height: 22px;
       }
 
       /* ---------------------------------------------------- passo a passo */
@@ -310,6 +324,14 @@
       .plataforma .nome {
         font-weight: 700;
         font-size: 17px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* No título da plataforma, só o ícone é teal — o texto segue preto. */
+      .plataforma .nome .ico {
+        color: var(--teal);
       }
 
       .plataforma .detalhe {
@@ -374,6 +396,21 @@
     </style>
   </head>
   <body>
+    <!--
+      Ícones: os MESMOS glifos do Material Icons que o aplicativo usa (a fonte
+      do `@expo/vector-icons`), extraídos como contorno para a página não
+      depender de fonte externa nem de CDN. Nomes abaixo = nomes usados no app.
+    -->
+    <svg class="sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-medical-services" viewBox="0 0 24 24"><path d="M20.015625 6.0H15.984375V3.984375Q15.984375 3.1875 15.3984375 2.6015625Q14.8125 2.015625 14.015625 2.015625H9.984375Q9.1875 2.015625 8.6015625 2.6015625Q8.015625 3.1875 8.015625 3.984375V6.0H3.984375Q3.1875 6.0 2.6015625 6.5859375Q2.015625 7.171875 2.015625 8.015625V20.015625Q2.015625 20.8125 2.6015625 21.3984375Q3.1875 21.984375 3.984375 21.984375H20.015625Q20.8125 21.984375 21.3984375 21.3984375Q21.984375 20.8125 21.984375 20.015625V8.015625Q21.984375 7.171875 21.3984375 6.5859375Q20.8125 6.0 20.015625 6.0ZM9.984375 3.984375H14.015625V6.0H9.984375ZM15.984375 15.0H12.984375V18.0H11.015625V15.0H8.015625V12.984375H11.015625V9.984375H12.984375V12.984375H15.984375Z" /></symbol>
+      <symbol id="i-account-tree" viewBox="0 0 24 24"><path d="M21.984375 11.015625H15.0V8.015625H12.984375V15.984375H15.0V12.984375H21.984375V21.0H15.0V18.0H11.015625V8.015625H9.0V11.015625H2.015625V3.0H9.0V6.0H15.0V3.0H21.984375Z" /></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><path d="M14.390625 6.0H20.015625V15.984375H12.984375L12.609375 14.015625H6.984375V21.0H5.015625V3.984375H14.015625Z" /></symbol>
+      <symbol id="i-payments" viewBox="0 0 24 24"><path d="M18.984375 14.015625V6.0Q18.984375 5.15625 18.3984375 4.5703125Q17.8125 3.984375 17.015625 3.984375H3.0Q2.15625 3.984375 1.5703125 4.5703125Q0.984375 5.15625 0.984375 6.0V14.015625Q0.984375 14.8125 1.5703125 15.3984375Q2.15625 15.984375 3.0 15.984375H17.015625Q17.8125 15.984375 18.3984375 15.3984375Q18.984375 14.8125 18.984375 14.015625ZM9.984375 12.984375Q9.1875 12.984375 8.5078125 12.5859375Q7.828125 12.1875 7.40625 11.5078125Q6.984375 10.828125 6.984375 9.984375Q6.984375 9.1875 7.40625 8.5078125Q7.828125 7.828125 8.5078125 7.40625Q9.1875 6.984375 9.984375 6.984375Q10.828125 6.984375 11.5078125 7.40625Q12.1875 7.828125 12.5859375 8.5078125Q12.984375 9.1875 12.984375 9.984375Q12.984375 10.828125 12.5859375 11.5078125Q12.1875 12.1875 11.5078125 12.5859375Q10.828125 12.984375 9.984375 12.984375ZM23.015625 6.984375V18.0Q23.015625 18.84375 22.4296875 19.4296875Q21.84375 20.015625 21.0 20.015625H3.984375V18.0H21.0V6.984375Z" /></symbol>
+      <symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M9.0 17.015625Q10.265625 15.75 12.0 15.75Q13.734375 15.75 15.0 17.015625L12.0 20.015625ZM2.015625 3.046875 3.28125 1.78125 20.25 18.75 18.984375 20.015625 11.90625 12.9375Q10.734375 12.9375 9.28125 13.546875Q7.828125 14.15625 6.984375 15.0L5.015625 13.03125V12.984375Q6.84375 11.15625 9.421875 10.453125L7.171875 8.25Q4.875 9.1875 3.0 11.015625L0.984375 9.0Q2.8125 7.171875 5.0625 6.09375ZM18.984375 12.984375 18.046875 13.96875 14.484375 10.453125Q17.15625 11.15625 18.984375 12.984375ZM22.96875 9.0 21.0 11.015625Q17.0625 6.984375 11.34375 7.3125L8.859375 4.78125Q12.65625 3.984375 16.3828125 5.0625Q20.109375 6.140625 22.96875 9.0Z" /></symbol>
+      <symbol id="i-description" viewBox="0 0 24 24"><path d="M12.984375 9.0H18.515625L12.984375 3.515625ZM15.984375 14.015625V12.0H8.015625V14.015625ZM15.984375 18.0V15.984375H8.015625V18.0ZM14.015625 2.015625 20.015625 8.015625V20.015625Q20.015625 20.8125 19.40625 21.3984375Q18.796875 21.984375 18.0 21.984375H6.0Q5.203125 21.984375 4.59375 21.3984375Q3.984375 20.8125 3.984375 20.015625L4.03125 3.984375Q4.03125 3.1875 4.6171875 2.6015625Q5.203125 2.015625 6.0 2.015625Z" /></symbol>
+      <symbol id="i-language" viewBox="0 0 24 24"><path d="M16.359375 14.015625H19.734375Q20.015625 12.703125 20.015625 12.0Q20.015625 11.296875 19.734375 9.984375H16.359375Q16.5 10.96875 16.5 12.0Q16.5 13.03125 16.359375 14.015625ZM14.578125 19.546875Q15.75 19.171875 17.015625 18.1171875Q18.28125 17.0625 18.9375 15.984375H15.984375Q15.515625 17.859375 14.578125 19.546875ZM14.34375 14.015625Q14.484375 13.03125 14.484375 12.0Q14.484375 10.96875 14.34375 9.984375H9.65625Q9.515625 10.96875 9.515625 12.0Q9.515625 13.03125 9.65625 14.015625ZM12.0 19.96875Q13.3125 18.046875 13.921875 15.984375H10.078125Q10.6875 18.046875 12.0 19.96875ZM8.015625 8.015625Q8.578125 6.0 9.421875 4.453125Q8.25 4.828125 6.9609375 5.8828125Q5.671875 6.9375 5.0625 8.015625ZM5.0625 15.984375Q5.671875 17.0625 6.9609375 18.1171875Q8.25 19.171875 9.421875 19.546875Q8.484375 17.859375 8.015625 15.984375ZM4.265625 14.015625H7.640625Q7.5 13.03125 7.5 12.0Q7.5 10.96875 7.640625 9.984375H4.265625Q3.984375 11.296875 3.984375 12.0Q3.984375 12.703125 4.265625 14.015625ZM12.0 4.03125Q10.6875 5.953125 10.078125 8.015625H13.921875Q13.3125 5.953125 12.0 4.03125ZM18.9375 8.015625Q18.28125 6.9375 17.015625 5.8828125Q15.75 4.828125 14.578125 4.453125Q15.421875 6.0 15.984375 8.015625ZM4.9453125 4.9453125Q7.875 2.015625 12.0 2.015625Q16.125 2.015625 19.0546875 4.9453125Q21.984375 7.875 21.984375 12.0Q21.984375 16.125 19.0546875 19.0546875Q16.125 21.984375 12.0 21.984375Q7.875 21.984375 4.9453125 19.0546875Q2.015625 16.125 2.015625 12.0Q2.015625 7.875 4.9453125 4.9453125Z" /></symbol>
+      <symbol id="i-smartphone" viewBox="0 0 24 24"><path d="M17.015625 18.984375V5.015625H6.984375V18.984375ZM17.015625 1.03125Q17.8125 1.03125 18.3984375 1.6171875Q18.984375 2.203125 18.984375 3.0V21.0Q18.984375 21.796875 18.3984375 22.40625Q17.8125 23.015625 17.015625 23.015625H6.984375Q6.1875 23.015625 5.6015625 22.40625Q5.015625 21.796875 5.015625 21.0V3.0Q5.015625 2.203125 5.6015625 1.59375Q6.1875 0.984375 6.984375 0.984375Z" /></symbol>
+    </svg>
     <header class="faixa">
       <div class="limite">
         <div class="marca">
@@ -388,7 +425,7 @@
         <p class="chamada">
           Um sistema especialista que conduz a anamnese pergunta a pergunta, chega a um parecer com
           grau de confiança e mostra a regra e a fonte que sustentam cada conclusão. Funciona sem
-          internet, no celular do curral e no computador do escritório.
+          internet, no celular do curral e no navegador do escritório.
         </p>
 
         <div class="acoes">
@@ -396,7 +433,6 @@
           <span class="botao botao-desativado">
             Google Play <span class="etiqueta">em breve</span>
           </span>
-          <a class="botao botao-contorno" href="#computador">Baixar para o computador</a>
         </div>
 
         <p class="nota-topo">
@@ -424,7 +460,7 @@
 
         <div class="cartoes">
           <div class="cartao">
-            <div class="icone">🩺</div>
+            <div class="icone"><svg class="ico" aria-hidden="true"><use href="#i-medical-services" /></svg></div>
             <h3>Anamnese guiada</h3>
             <p>
               Uma pergunta por vez, escolhida pelo que ainda pode mudar o diagnóstico, dividida pelo
@@ -432,7 +468,7 @@
             </p>
           </div>
           <div class="cartao">
-            <div class="icone">📖</div>
+            <div class="icone"><svg class="ico" aria-hidden="true"><use href="#i-account-tree" /></svg></div>
             <h3>Conhecimento explícito</h3>
             <p>
               As regras estão em arquivos versionados, com a página da cartilha da Embrapa citada
@@ -440,7 +476,7 @@
             </p>
           </div>
           <div class="cartao">
-            <div class="icone">🚩</div>
+            <div class="icone"><svg class="ico" aria-hidden="true"><use href="#i-flag" /></svg></div>
             <h3>Bandeira vermelha</h3>
             <p>
               Suspeita de doença de notificação obrigatória ou quadro de emergência interrompe o
@@ -448,7 +484,7 @@
             </p>
           </div>
           <div class="cartao">
-            <div class="icone">💰</div>
+            <div class="icone"><svg class="ico" aria-hidden="true"><use href="#i-payments" /></svg></div>
             <h3>Tratamento × leite</h3>
             <p>
               Para cada vaca: o leite que ela rendeu contra o que custou tratá-la, incluindo o leite
@@ -456,7 +492,7 @@
             </p>
           </div>
           <div class="cartao">
-            <div class="icone">📶</div>
+            <div class="icone"><svg class="ico" aria-hidden="true"><use href="#i-wifi-off" /></svg></div>
             <h3>Offline de verdade</h3>
             <p>
               Sem servidor, sem nuvem, sem chave de API. O banco fica no aparelho — e dois aparelhos
@@ -464,7 +500,7 @@
             </p>
           </div>
           <div class="cartao">
-            <div class="icone">📄</div>
+            <div class="icone"><svg class="ico" aria-hidden="true"><use href="#i-description" /></svg></div>
             <h3>Prontuário que se confere</h3>
             <p>
               Reabrir um atendimento re-executa o motor com os fatos da época. O PDF leva o parecer,
@@ -516,45 +552,31 @@
       </div>
     </section>
 
-    <section class="faixa" id="computador">
+    <section class="faixa">
       <div class="limite">
         <h2>Onde usar</h2>
         <p class="subtitulo">
-          O mesmo sistema, nos três lugares em que a decisão acontece.
+          O mesmo sistema, nos dois lugares em que a decisão acontece.
         </p>
 
         <div class="plataformas">
           <div class="plataforma">
-            <div class="nome">🌐 Navegador</div>
+            <div class="nome"><svg class="ico" aria-hidden="true"><use href="#i-language" /></svg> Navegador</div>
             <div class="detalhe">
-              Abre e já funciona, com a propriedade de demonstração carregada. Nada é enviado para
-              lugar nenhum.
+              Abre e já funciona, no computador ou no celular. Os dados da propriedade entram pela
+              planilha, e nada é enviado para lugar nenhum.
             </div>
             <a class="botao botao-escuro" href="./app/">Abrir o aplicativo</a>
           </div>
 
           <div class="plataforma">
-            <div class="nome">📱 Android</div>
+            <div class="nome"><svg class="ico" aria-hidden="true"><use href="#i-smartphone" /></svg> Android</div>
             <div class="detalhe">
               Pensado para a mão suja e a tela pequena do curral, com toques grandes e leitura ao
               sol.
             </div>
             <span class="botao botao-cinza">Google Play — em breve</span>
           </div>
-
-          <div class="plataforma" id="cartao-desktop" hidden>
-            <div class="nome">💻 Computador</div>
-            <div class="detalhe">
-              Aplicativo instalável, para o escritório da propriedade. Roda offline, com o banco na
-              própria máquina.
-            </div>
-            <div class="acoes" id="links-desktop"></div>
-          </div>
-        </div>
-
-        <div class="aviso" id="aviso-desktop" hidden>
-          Os aplicativos de computador ainda não têm uma versão publicada. Assim que a primeira
-          Release sair, os links de Linux, Windows e macOS aparecem aqui automaticamente.
         </div>
       </div>
     </section>
@@ -589,64 +611,5 @@
         </div>
       </div>
     </footer>
-
-    <script>
-      /*
-        Links de download do aplicativo de computador.
-        Em vez de endereços fixos — que quebrariam a cada versão —, a página
-        pergunta ao GitHub qual é a última Release e monta os links com os
-        arquivos que realmente existem. Sem Release publicada, a seção fica
-        escondida e um aviso explica o porquê: link quebrado é pior do que
-        link ausente.
-      */
-      (async () => {
-        const cartao = document.getElementById('cartao-desktop');
-        const destino = document.getElementById('links-desktop');
-        const aviso = document.getElementById('aviso-desktop');
-        const repositorio = document.querySelector('meta[name="repositorio"]')?.content;
-        if (!repositorio || !cartao || !destino || !aviso) return;
-
-        const SISTEMAS = [
-          { nome: 'Linux', marca: 'linux' },
-          { nome: 'Windows', marca: 'win32' },
-          { nome: 'macOS', marca: 'darwin' },
-        ];
-
-        try {
-          const resposta = await fetch(`https://api.github.com/repos/${repositorio}/releases/latest`);
-          if (!resposta.ok) throw new Error(String(resposta.status));
-          const release = await resposta.json();
-
-          const encontrados = SISTEMAS.map((sistema) => ({
-            ...sistema,
-            arquivo: (release.assets ?? []).find(
-              (a) => a.name.includes(sistema.marca) && a.name.endsWith('.zip'),
-            ),
-          })).filter((s) => s.arquivo);
-
-          if (!encontrados.length) throw new Error('sem binários nesta release');
-
-          for (const { nome, arquivo } of encontrados) {
-            const link = document.createElement('a');
-            link.className = 'botao botao-escuro';
-            link.href = arquivo.browser_download_url;
-            link.textContent = nome;
-            link.rel = 'noopener';
-            destino.appendChild(link);
-          }
-
-          const versao = document.createElement('div');
-          versao.className = 'detalhe';
-          versao.style.width = '100%';
-          versao.textContent = `Versão ${release.tag_name}`;
-          destino.appendChild(versao);
-
-          cartao.hidden = false;
-        } catch {
-          // Sem release (ou sem internet): nada de link quebrado.
-          aviso.hidden = false;
-        }
-      })();
-    </script>
   </body>
 </html>
