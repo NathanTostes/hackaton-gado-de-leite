@@ -9,6 +9,7 @@ import {
   instantaneoVazio,
   mesclar,
   normalizarEndereco,
+  perdedoresDaChaveNatural,
   validarInstantaneo,
   type Instantaneo,
   type Linha,
@@ -111,6 +112,83 @@ describe('mesclagem de instantâneos', () => {
       lote: [{ id: 'L1', nome: 'Lactação', created_at: 'x', updated_at: 'x' }],
     });
     expect(contarLinhas(i)).toBe(2);
+  });
+});
+
+describe('colapso por chave natural', () => {
+  const ordenha = (id: string, data: string, manha: number, updated: string): Linha => ({
+    id,
+    animal_id: 'A1',
+    data,
+    litros_manha: manha,
+    litros_tarde: 0,
+    litros_total: manha,
+    observacoes: null,
+    created_at: updated,
+    updated_at: updated,
+  });
+
+  it('o mesmo dia lançado nos dois aparelhos vira uma linha só', () => {
+    const a = instantaneo('A', { controle_leiteiro: [ordenha('c1', '2026-10-20', 11, '2026-10-20T07:00:00.000Z')] });
+    const b = instantaneo('B', { controle_leiteiro: [ordenha('c2', '2026-10-20', 9, '2026-10-20T18:00:00.000Z')] });
+
+    const r = mesclar(a, b);
+
+    expect(r.tabelas.controle_leiteiro?.map((l) => l.id)).toEqual(['c2']);
+  });
+
+  it('dias diferentes do mesmo animal continuam lado a lado', () => {
+    const a = instantaneo('A', {
+      controle_leiteiro: [
+        ordenha('c1', '2026-10-20', 11, '2026-10-20T07:00:00.000Z'),
+        ordenha('c2', '2026-10-21', 10, '2026-10-21T07:00:00.000Z'),
+      ],
+    });
+
+    const r = mesclar(a, instantaneoVazio('B'));
+
+    expect(r.tabelas.controle_leiteiro?.map((l) => l.id)).toEqual(['c1', 'c2']);
+  });
+
+  it('vale também para a produção da propriedade, que tem UNIQUE na data', () => {
+    const linha = (id: string, updated: string): Linha => ({
+      id,
+      data: '2026-10-20',
+      litros_total: 100,
+      created_at: updated,
+      updated_at: updated,
+    });
+    const a = instantaneo('A', { producao_propriedade: [linha('p1', '2026-10-20T10:00:00.000Z')] });
+    const b = instantaneo('B', { producao_propriedade: [linha('p2', '2026-10-20T11:00:00.000Z')] });
+
+    expect(mesclar(a, b).tabelas.producao_propriedade?.map((l) => l.id)).toEqual(['p2']);
+  });
+
+  it('o vencedor não depende da ordem em que os aparelhos sincronizam', () => {
+    const a = instantaneo('A', { controle_leiteiro: [ordenha('c1', '2026-10-20', 11, '2026-10-20T07:00:00.000Z')] });
+    const b = instantaneo('B', { controle_leiteiro: [ordenha('c2', '2026-10-20', 9, '2026-10-20T07:00:00.000Z')] });
+
+    expect(mesclar(a, b).tabelas.controle_leiteiro).toEqual(mesclar(b, a).tabelas.controle_leiteiro);
+  });
+
+  it('brinco repetido não é colapsado: animal tem histórico e filiação', () => {
+    const a = instantaneo('A', { animal: [vaca('A1', 'Mimosa', '2026-10-01T00:00:00.000Z')] });
+    const b = instantaneo('B', { animal: [{ ...vaca('B1', 'Mimosa', '2026-10-02T00:00:00.000Z'), brinco: 'A1' }] });
+
+    expect(mesclar(a, b).tabelas.animal).toHaveLength(2);
+  });
+
+  it('aponta a linha que o aparelho precisa apagar', () => {
+    const local = instantaneo('A', { controle_leiteiro: [ordenha('c1', '2026-10-20', 11, '2026-10-20T07:00:00.000Z')] });
+    const mesclado = instantaneo('B', { controle_leiteiro: [ordenha('c2', '2026-10-20', 9, '2026-10-20T18:00:00.000Z')] });
+
+    expect(perdedoresDaChaveNatural(local, mesclado)).toEqual({ controle_leiteiro: ['c1'] });
+  });
+
+  it('não manda apagar nada quando a linha local sobreviveu', () => {
+    const local = instantaneo('A', { controle_leiteiro: [ordenha('c1', '2026-10-20', 11, '2026-10-20T07:00:00.000Z')] });
+
+    expect(perdedoresDaChaveNatural(local, mesclar(local, instantaneoVazio('B')))).toEqual({});
   });
 });
 
