@@ -7,7 +7,21 @@
  * Convenções: `id TEXT PRIMARY KEY`, timestamps ISO, `deleted_at` para exclusão
  * lógica (prepara a sincronização em rede local, hoje apenas protótipo).
  */
-export const SCHEMA_VERSAO = 1;
+export const SCHEMA_VERSAO = 2;
+
+export const COLUNAS_CADASTRO = {
+  mae_nome: 'TEXT',
+  idade_estimada_meses: 'INTEGER',
+  idade_estimada_em: 'TEXT',
+  peso_entrada: 'REAL',
+  procedencia: 'TEXT',
+  valor_aquisicao: 'REAL',
+  numero_gta: 'TEXT',
+  historico_sanitario: 'TEXT',
+  situacao_reprodutiva: 'TEXT',
+  ultimo_parto_entrada: 'TEXT',
+  numero_lactacoes_entrada: 'INTEGER',
+} as const;
 
 export const DDL = `
 PRAGMA journal_mode = WAL;
@@ -49,6 +63,17 @@ CREATE TABLE IF NOT EXISTS animal (
   pai_id TEXT REFERENCES animal(id),
   mae_id TEXT REFERENCES animal(id),
   pai_nome TEXT,
+  mae_nome TEXT,
+  idade_estimada_meses INTEGER,
+  idade_estimada_em TEXT,
+  peso_entrada REAL,
+  procedencia TEXT,
+  valor_aquisicao REAL,
+  numero_gta TEXT,
+  historico_sanitario TEXT,
+  situacao_reprodutiva TEXT,
+  ultimo_parto_entrada TEXT,
+  numero_lactacoes_entrada INTEGER,
   lote_id TEXT REFERENCES lote(id),
   status TEXT NOT NULL DEFAULT 'saudavel',
   origem TEXT NOT NULL DEFAULT 'nascimento',

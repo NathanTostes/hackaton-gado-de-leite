@@ -3,4 +3,5 @@ export * from './driver';
 export * from './tipos';
 export * from './repositorios';
 export * from './fatos';
-export { semear, bancoVazio } from './seed';
+export * from './cadastro';
+export { semear, bancoVazio, recriarDemonstracao } from './seed';

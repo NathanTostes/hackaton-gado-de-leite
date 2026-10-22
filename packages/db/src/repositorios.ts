@@ -25,7 +25,9 @@ import {
   type PanoramaVaca,
   type ResultadoCMT,
 } from '@drmoo/domain';
-import { agoraISO, consultar, consultarUm, executar, novoId } from './driver';
+import { agoraISO, consultar, consultarUm, emTransacao, executar, novoId } from './driver';
+import { COLUNAS_CADASTRO } from './schema';
+import { validarCadastroAnimal } from './cadastro';
 import type {
   Animal,
   AnimalComResumo,
@@ -117,9 +119,13 @@ export interface FiltrosRebanho {
 const SQL_ANIMAL_RESUMO = `
 SELECT
   a.*,
+  COALESCE(a.mae_nome, (SELECT p.brinco || COALESCE(' — ' || p.nome, '')
+    FROM animal p WHERE p.id=a.mae_id)) AS mae_identificacao,
+  COALESCE(a.pai_nome, (SELECT p.brinco || COALESCE(' — ' || p.nome, '')
+    FROM animal p WHERE p.id=a.pai_id)) AS pai_identificacao,
   l.nome AS lote_nome,
-  lac.data_parto,
-  lac.numero AS numero_lactacao,
+  COALESCE(lac.data_parto, a.ultimo_parto_entrada) AS data_parto,
+  COALESCE(lac.numero, a.numero_lactacoes_entrada) AS numero_lactacao,
   (SELECT ROUND(AVG(cl.litros_total), 2) FROM controle_leiteiro cl
      WHERE cl.animal_id = a.id AND cl.data >= date('now', '-90 day')) AS producao_media_dia,
   (SELECT c.data FROM exame_cmt c WHERE c.animal_id = a.id ORDER BY c.data DESC LIMIT 1) AS data_ultimo_cmt,
@@ -127,7 +133,7 @@ SELECT
      FROM exame_cmt c WHERE c.animal_id = a.id ORDER BY c.data DESC LIMIT 1) AS cmt_quartos,
   (SELECT COUNT(DISTINCT substr(c.data, 1, 7)) FROM exame_cmt c
      WHERE c.animal_id = a.id
-       AND (lac.data_parto IS NULL OR c.data >= lac.data_parto)
+       AND (COALESCE(lac.data_parto, a.ultimo_parto_entrada) IS NULL OR c.data >= COALESCE(lac.data_parto, a.ultimo_parto_entrada))
        AND (c.ad IN ('1','2','3') OR c.ae IN ('1','2','3')
             OR c.pd IN ('1','2','3') OR c.pe IN ('1','2','3'))) AS cmt_positivo_meses,
   (SELECT MAX(t.carencia_leite_ate) FROM tratamento t
@@ -146,6 +152,8 @@ WHERE a.deleted_at IS NULL
 `;
 
 interface LinhaResumo extends Animal {
+  mae_identificacao: string | null;
+  pai_identificacao: string | null;
   lote_nome: string | null;
   data_parto: string | null;
   numero_lactacao: number | null;
@@ -184,10 +192,10 @@ export async function listarRebanho(f: FiltrosRebanho = {}): Promise<AnimalComRe
     // Atenção: em SQLite, aspas duplas são IDENTIFICADORES, não literais de
     // texto. `COALESCE(a.nome, "")` procura uma coluna chamada "" e falha.
     where.push(
-      `(a.brinco LIKE ? OR COALESCE(a.nome, '') LIKE ? OR COALESCE(a.tatuagem, '') LIKE ?)`,
+      `(a.brinco LIKE ? OR COALESCE(a.nome, '') LIKE ? OR COALESCE(a.tatuagem, '') LIKE ? OR COALESCE(a.raca, '') LIKE ? OR COALESCE(a.pelagem_sinal, '') LIKE ?)`,
     );
     const t = `%${f.busca.trim()}%`;
-    params.push(t, t, t);
+    params.push(t, t, t, t, t);
   }
   if (f.categorias?.length) {
     where.push(`a.categoria IN (${f.categorias.map(() => '?').join(',')})`);
@@ -249,66 +257,113 @@ export async function obterAnimal(id: string): Promise<AnimalComResumo | null> {
   return linha ? montarResumo(linha, hoje()) : null;
 }
 
+const CAMPOS_ANIMAL = [
+  'brinco', 'nome', 'tatuagem', 'categoria', 'sexo', 'raca', 'data_nascimento',
+  'peso_nascimento', 'pelagem_sinal', 'pai_id', 'mae_id', 'pai_nome', 'lote_id',
+  'status', 'origem', 'data_entrada', 'observacoes', ...Object.keys(COLUNAS_CADASTRO),
+] as (keyof Animal)[];
+
 export async function salvarAnimal(a: Partial<Animal> & { brinco: string }): Promise<string> {
+  const atual = a.id ? await obterAnimal(a.id) : null;
+  if (a.id && !atual) throw new Error('Animal não encontrado.');
+  const dados = {
+    categoria: 'vaca_lactacao', sexo: 'F', status: 'saudavel', origem: 'nascimento',
+    data_entrada: hoje(), ...atual, ...a, brinco: a.brinco.trim(),
+  } as Animal;
+  validarCadastroAnimal(dados);
+  const duplicado = await consultarUm<{ id: string }>(
+    'SELECT id FROM animal WHERE brinco=? AND id<>?', [dados.brinco, a.id ?? ''],
+  );
+  if (duplicado) throw new Error('Já existe um animal com este brinco.');
   const agora = agoraISO();
+  const valores = CAMPOS_ANIMAL.map((campo) => dados[campo] ?? null);
   if (a.id) {
     await executar(
-      `UPDATE animal SET brinco=?, nome=?, tatuagem=?, categoria=?, sexo=?, raca=?,
-       data_nascimento=?, peso_nascimento=?, pelagem_sinal=?, mae_id=?, pai_nome=?, lote_id=?,
-       status=?, origem=?, data_entrada=?, observacoes=?, updated_at=? WHERE id=?`,
-      [
-        a.brinco,
-        a.nome ?? null,
-        a.tatuagem ?? null,
-        a.categoria ?? 'vaca_lactacao',
-        a.sexo ?? 'F',
-        a.raca ?? null,
-        a.data_nascimento ?? null,
-        a.peso_nascimento ?? null,
-        a.pelagem_sinal ?? null,
-        a.mae_id ?? null,
-        a.pai_nome ?? null,
-        a.lote_id ?? null,
-        a.status ?? 'saudavel',
-        a.origem ?? 'nascimento',
-        a.data_entrada ?? null,
-        a.observacoes ?? null,
-        agora,
-        a.id,
-      ],
+      `UPDATE animal SET ${CAMPOS_ANIMAL.map((campo) => `${campo}=?`).join(',')}, updated_at=? WHERE id=?`,
+      [...valores, agora, a.id],
     );
+    // Ajusta somente lembretes de entrada ainda pendentes; preserva o histórico concluído.
+    if (dados.data_entrada && dados.data_entrada !== atual?.data_entrada) {
+      await executar(
+        `UPDATE evento_calendario SET data=?, updated_at=? WHERE animal_id=?
+         AND tipo='quarentena' AND origem='regra' AND status IN ('pendente','atrasado')`,
+        [somarDias(dados.data_entrada, 30), agora, a.id],
+      );
+      await executar(
+        `UPDATE evento_calendario SET data=?, updated_at=? WHERE animal_id=?
+         AND tipo='exame_cmt' AND origem='regra' AND titulo LIKE 'CMT antes de entrar%'
+         AND status IN ('pendente','atrasado')`,
+        [somarDias(dados.data_entrada, 28), agora, a.id],
+      );
+    }
+    if (dados.data_nascimento && dados.data_nascimento !== atual?.data_nascimento) {
+      for (const [tipo, data] of [
+        ['consulta', dados.data_nascimento], ['desmame', somarDias(dados.data_nascimento, 60)],
+      ]) {
+        await executar(
+          `UPDATE evento_calendario SET data=?, updated_at=? WHERE animal_id=? AND tipo=?
+           AND ((tipo='consulta' AND origem='regra' AND titulo LIKE 'Conferir colostragem%')
+             OR (tipo='desmame' AND origem='automatico')) AND status IN ('pendente','atrasado')`,
+          [data!, agora, a.id, tipo!],
+        );
+      }
+    }
+    if (dados.sexo !== 'F' || dados.categoria !== 'vaca_lactacao') {
+      await executar(
+        `UPDATE evento_calendario SET status='cancelado', updated_at=? WHERE animal_id=?
+         AND tipo='exame_cmt' AND origem='regra' AND titulo LIKE 'CMT antes de entrar%'
+         AND status IN ('pendente','atrasado')`, [agora, a.id],
+      );
+    }
     return a.id;
   }
-
   const id = novoId('ani');
   await executar(
-    `INSERT INTO animal
-     (id, brinco, nome, tatuagem, categoria, sexo, raca, data_nascimento, peso_nascimento,
-      pelagem_sinal, mae_id, pai_nome, lote_id, status, origem, data_entrada, observacoes,
-      created_at, updated_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-    [
-      id,
-      a.brinco,
-      a.nome ?? null,
-      a.tatuagem ?? null,
-      a.categoria ?? 'vaca_lactacao',
-      a.sexo ?? 'F',
-      a.raca ?? null,
-      a.data_nascimento ?? null,
-      a.peso_nascimento ?? null,
-      a.pelagem_sinal ?? null,
-      a.mae_id ?? null,
-      a.pai_nome ?? null,
-      a.lote_id ?? null,
-      a.status ?? 'saudavel',
-      a.origem ?? 'nascimento',
-      a.data_entrada ?? hoje(),
-      a.observacoes ?? null,
-      agora,
-      agora,
-    ],
+    `INSERT INTO animal (id,${CAMPOS_ANIMAL.join(',')},created_at,updated_at)
+     VALUES (${Array(CAMPOS_ANIMAL.length + 3).fill('?').join(',')})`,
+    [id, ...valores, agora, agora],
   );
+  return id;
+}
+
+/** Cadastro e lembretes são gravados juntos; editar não cria eventos duplicados. */
+export async function registrarEntradaAnimal(
+  animal: Partial<Animal> & { brinco: string },
+  modo: 'novo' | 'nascimento',
+): Promise<string> {
+  let id = '';
+  await emTransacao(async () => {
+    if (!animal.id && modo === 'nascimento' && !animal.data_nascimento) {
+      throw new Error('Informe a data de nascimento.');
+    }
+    id = await salvarAnimal(animal);
+    if (animal.id) return;
+    if (modo === 'nascimento') {
+      await criarEvento({
+        tipo: 'consulta', animalId: id, titulo: `Conferir colostragem — ${animal.brinco}`,
+        descricao: 'Verificar se recebeu colostro de boa qualidade nas primeiras 6 horas.',
+        data: animal.data_nascimento!, origem: 'regra',
+      });
+      await criarEvento({
+        tipo: 'desmame', animalId: id, titulo: `Desmame previsto — ${animal.brinco}`,
+        data: somarDias(animal.data_nascimento!, 60), origem: 'automatico',
+      });
+    } else {
+      const entrada = animal.data_entrada ?? hoje();
+      await criarEvento({
+        tipo: 'quarentena', animalId: id, titulo: `Fim da quarentena — ${animal.brinco}`,
+        descricao: 'Revisar os exames de entrada antes de liberar para o rebanho.',
+        data: somarDias(entrada, 30), origem: 'regra',
+      });
+      if (animal.sexo === 'F' && animal.categoria === 'vaca_lactacao') {
+        await criarEvento({
+          tipo: 'exame_cmt', animalId: id,
+          titulo: `CMT antes de entrar na ordenha — ${animal.brinco}`,
+          data: somarDias(entrada, 28), origem: 'regra',
+        });
+      }
+    }
+  });
   return id;
 }
 

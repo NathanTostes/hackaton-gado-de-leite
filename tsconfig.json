@@ -17,6 +17,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "paths": {
+      "expo-sqlite": ["./apps/mobile/node_modules/expo-sqlite"],
       "@drmoo/engine": ["./packages/engine/src/index.ts"],
       "@drmoo/engine/*": ["./packages/engine/src/*"],
       "@drmoo/knowledge": ["./packages/knowledge/src/index.ts"],

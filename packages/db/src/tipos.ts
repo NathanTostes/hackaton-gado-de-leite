@@ -45,6 +45,17 @@ export interface Animal {
   pai_id: string | null;
   mae_id: string | null;
   pai_nome: string | null;
+  mae_nome: string | null;
+  idade_estimada_meses: number | null;
+  idade_estimada_em: string | null;
+  peso_entrada: number | null;
+  procedencia: string | null;
+  valor_aquisicao: number | null;
+  numero_gta: string | null;
+  historico_sanitario: string | null;
+  situacao_reprodutiva: string | null;
+  ultimo_parto_entrada: string | null;
+  numero_lactacoes_entrada: number | null;
   lote_id: string | null;
   status: StatusAnimal;
   origem: 'nascimento' | 'compra' | 'transferencia';
@@ -56,6 +67,8 @@ export interface Animal {
 
 /** Animal com os campos derivados que a lista e a ficha precisam exibir. */
 export interface AnimalComResumo extends Animal {
+  mae_identificacao: string | null;
+  pai_identificacao: string | null;
   lote_nome: string | null;
   data_parto: string | null;
   numero_lactacao: number | null;

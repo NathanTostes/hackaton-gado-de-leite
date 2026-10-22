@@ -118,6 +118,7 @@ function Navegacao() {
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="editar-animal/[id]" options={{ title: 'Editar cadastro' }} />
       <Stack.Screen name="animal/[id]" options={{ title: 'Ficha do animal' }} />
       <Stack.Screen name="anamnese/index" options={{ title: 'Nova anamnese' }} />
       <Stack.Screen name="anamnese/[animalId]" options={{ title: 'Consulta Dr. Moo' }} />

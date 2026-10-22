@@ -130,3 +130,23 @@ Dois detalhes importam:
   prefere mandar refazer o teste a decidir com dado velho;
 - o usuário pode **descartar** qualquer fato pré-carregado na tela, e a sessão é recomputada do
   zero. Quem está olhando a vaca tem a última palavra sobre o que é verdade.
+
+## 1.7 Cadastro de nascimento e entrada
+
+Os dois fluxos de triagem e a edição pela ficha do animal compartilham o componente
+`apps/mobile/src/componentes/formularioAnimal.tsx`. Raça, pelagem, filiação, nascimento e peso
+ao nascer são dados comuns. A entrada também registra categoria, compra ou transferência,
+procedência, GTA, peso na entrada, valor de aquisição, histórico sanitário e informações
+reprodutivas. O valor de aquisição é cadastral; não gera um lançamento financeiro automático.
+
+A idade estimada é registrada em meses, com a data de referência, sem inventar uma data de
+nascimento nem pré-carregar uma idade exata na anamnese. O último parto e o número de lactações
+informados na entrada são usados quando não há lactação registrada; registros de lactação têm
+prioridade. A situação reprodutiva da entrada é apresentada como histórico informado, sem
+substituir os registros de cobertura.
+
+O esquema v2 acrescenta os campos em bancos já instalados por migração aditiva, preservando os
+registros existentes. O repositório valida datas, números, brinco duplicado e categoria/sexo.
+Cadastro e eventos de entrada são gravados na mesma transação. As datas dos lembretes são
+calculadas a partir do nascimento ou da entrada informados. Editar não duplica eventos e corrige
+os lembretes pendentes relacionados às datas alteradas.

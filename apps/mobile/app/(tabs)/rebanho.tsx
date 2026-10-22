@@ -26,6 +26,8 @@ const CATEGORIAS: CategoriaAnimal[] = [
   'bezerro_desmamado',
   'bezerro_mamando',
   'touro',
+  'novilho',
+  'boi_carro',
 ];
 
 const ORDENS: { chave: NonNullable<FiltrosRebanho['ordenarPor']>; rotulo: string }[] = [
@@ -87,7 +89,7 @@ export default function Rebanho() {
           <TextInput
             value={busca}
             onChangeText={setBusca}
-            placeholder="Buscar por brinco, nome ou tatuagem"
+            placeholder="Buscar por brinco, nome, raça ou pelagem"
             placeholderTextColor={c.textoSecundario}
             style={{
               flex: 1,
@@ -242,6 +244,7 @@ function ItemRebanho({ animal }: { animal: AnimalComResumo }) {
         </Txt>
         <Txt v="caption" cor={c.textoSecundario} numberOfLines={1}>
           {ROTULO_CATEGORIA[animal.categoria]}
+          {animal.raca ? ` · ${animal.raca}` : ''}
           {animal.del !== null ? ` · ${animal.del} DEL` : ''}
           {animal.producao_media_dia ? ` · ${numero(animal.producao_media_dia)} L/dia` : ''}
         </Txt>
