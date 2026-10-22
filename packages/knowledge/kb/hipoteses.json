@@ -3,7 +3,8 @@
     "id": "sem_alteracao",
     "rotulo": "Sem alteração detectada",
     "grupo": "triagem",
-    "descricao": "Os sinais pesquisados não apontaram alteração. Mantenha a rotina de testes: caneca de fundo escuro todos os dias e CMT uma vez por mês."
+    "descricao": "Os sinais pesquisados não apontaram alteração. Mantenha a rotina de testes: caneca de fundo escuro todos os dias e CMT uma vez por mês.",
+    "apenasSeNadaMais": true
   },
 
   {
@@ -54,6 +55,13 @@
     "descricao": "Queda de cálcio no sangue logo após o parto, típica de vaca de alta produção e multípara. Apesar do nome, não dá febre — o animal fica frio."
   },
   {
+    "id": "hipomagnesemia",
+    "rotulo": "Hipomagnesemia (tetania de pasto)",
+    "grupo": "emergencia",
+    "descricao": "Queda de magnésio no sangue, típica de pasto novo e adubado no início das chuvas. Diferente da hipocalcemia: o animal fica agitado, com tremores e convulsões, não caído e mole.",
+    "bandeiraVermelha": true
+  },
+  {
     "id": "cetose",
     "rotulo": "Cetose",
     "grupo": "metabolicas",
@@ -71,6 +79,25 @@
     "rotulo": "Metrite / endometrite",
     "grupo": "pos_parto",
     "descricao": "Infecção do útero no pós-parto, com corrimento fétido e, nos casos graves, febre e apatia."
+  },
+
+  {
+    "id": "anestro_pos_parto",
+    "rotulo": "Anestro pós-parto prolongado",
+    "grupo": "reprodutivas",
+    "descricao": "A vaca passou do período esperado para voltar a entrar no cio após o parto, sem sinais de cio observados."
+  },
+  {
+    "id": "cisto_ovariano",
+    "rotulo": "Suspeita de cisto ovariano",
+    "grupo": "reprodutivas",
+    "descricao": "Cios frequentes e irregulares, ou ausência total de cio por longo período, sugerindo alteração ovariana que exige exame de palpação ou ultrassom."
+  },
+  {
+    "id": "repeticao_cio",
+    "rotulo": "Repetição de cio (falha de concepção)",
+    "grupo": "reprodutivas",
+    "descricao": "A vaca volta a manifestar cio depois de inseminada ou coberta, três vezes ou mais, sem emprenhar."
   },
 
   {
@@ -106,6 +133,31 @@
   },
 
   {
+    "id": "sarna",
+    "rotulo": "Sarna (ácaros)",
+    "grupo": "pele",
+    "descricao": "Coceira intensa, perda de pelo e crostas na pele, mais comum na cabeça, pescoço e base da cauda."
+  },
+  {
+    "id": "dermatofitose",
+    "rotulo": "Dermatofitose (\"craveiro\", micose de pele)",
+    "grupo": "pele",
+    "descricao": "Placas arredondadas e esbranquiçadas de pele descamada, sem coceira intensa, mais comuns em animais jovens."
+  },
+  {
+    "id": "fotossensibilizacao",
+    "rotulo": "Fotossensibilização",
+    "grupo": "pele",
+    "descricao": "Pele clara (focinho, úbere) avermelhada, inchada e com feridas após exposição ao sol, ligada a certas plantas ou problema de fígado."
+  },
+  {
+    "id": "abscesso_mamario",
+    "rotulo": "Abscesso mamário",
+    "grupo": "mastite",
+    "descricao": "Bolsa localizada de pus na mama, geralmente sequela de uma mastite anterior mal resolvida."
+  },
+
+  {
     "id": "tristeza_parasitaria",
     "rotulo": "Tristeza parasitária bovina",
     "grupo": "parasitarias",
@@ -122,6 +174,27 @@
     "rotulo": "Pneumonia / problema respiratório",
     "grupo": "parasitarias",
     "descricao": "Tosse, secreção nasal, respiração acelerada e febre."
+  },
+
+  {
+    "id": "deficiencia_fosforo",
+    "rotulo": "Deficiência de fósforo",
+    "grupo": "nutricionais",
+    "descricao": "A vaca lambe e rói objetos, terra ou ossos (\"botulismo nutricional\" por pica), perde peso e demora a entrar no cio de novo."
+  },
+  {
+    "id": "deficiencia_mineral_geral",
+    "rotulo": "Deficiência mineral geral",
+    "grupo": "nutricionais",
+    "descricao": "Pelo áspero e sem brilho, queda de produção e de fertilidade sem outra causa aparente — sinal de suplementação mineral insuficiente."
+  },
+
+  {
+    "id": "intoxicacao_planta_toxica",
+    "rotulo": "Suspeita de intoxicação por planta tóxica",
+    "grupo": "toxicologicas",
+    "descricao": "Sinais agudos (nervosos, digestivos ou morte súbita) após acesso a pasto ou área nova, compatíveis com ingestão de planta tóxica.",
+    "bandeiraVermelha": true
   },
 
   {

@@ -174,6 +174,22 @@
     "custo": 1
   },
   {
+    "var": "agitacao_convulsao",
+    "pergunta": "A vaca está agitada, com espasmos ou convulsão?",
+    "tipo": "boolean",
+    "ajuda": "Diferente da hipocalcemia, que deixa a vaca mole e caída, a hipomagnesemia deixa o animal agitado, hiperreativo a barulho e toque, podendo evoluir para convulsão.",
+    "custo": 1,
+    "fonte": "Consenso veterinário geral sobre tetania hipomagnesêmica — PENDENTE de validação."
+  },
+  {
+    "var": "pasto_novo_adubado",
+    "pergunta": "O lote está em pasto novo, de rebrota, ou recém-adubado com nitrogênio ou potássio?",
+    "tipo": "boolean",
+    "ajuda": "Pasto novo de inverno/primavera e adubação pesada reduzem a absorção de magnésio e são o principal fator de risco da tetania de pasto.",
+    "custo": 1,
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
+  },
+  {
     "var": "halito_adocicado",
     "pergunta": "O hálito da vaca está adocicado (cheiro de acetona ou de maçã passada)?",
     "tipo": "boolean",
@@ -199,6 +215,34 @@
     "tipo": "boolean",
     "custo": 1,
     "preRequisito": { "var": "del", "op": "<=", "val": 45 }
+  },
+
+  {
+    "var": "dias_desde_parto_sem_cio",
+    "pergunta": "Quantos dias se passaram desde o parto sem nenhum cio observado?",
+    "tipo": "numero",
+    "unidade": "dias",
+    "min": 0,
+    "max": 400,
+    "ajuda": "Considere o último parto e a data de hoje, perguntando ao produtor se já notou algum cio (vaca montando as outras, inquieta, aceitando monta) desde então.",
+    "custo": 1,
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação."
+  },
+  {
+    "var": "cio_irregular_frequente",
+    "pergunta": "Esta vaca tem apresentado cios frequentes e irregulares (menos de 18 dias de intervalo)?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
+  },
+  {
+    "var": "inseminacoes_sem_prenhez",
+    "pergunta": "Quantas inseminações ou coberturas esta vaca já recebeu nesta lactação sem confirmar prenhez?",
+    "tipo": "numero",
+    "min": 0,
+    "max": 10,
+    "custo": 1,
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
   },
 
   {
@@ -258,6 +302,51 @@
     "tipo": "boolean",
     "custo": 3,
     "preRequisito": { "var": "claudicacao", "op": "=", "val": true }
+  },
+
+  {
+    "var": "coceira_intensa",
+    "pergunta": "O animal se coça muito, com perda de pelo visível?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
+  },
+  {
+    "var": "crostas_pele",
+    "pergunta": "Há crostas na pele, principalmente na cabeça, pescoço ou base da cauda?",
+    "tipo": "boolean",
+    "custo": 1,
+    "preRequisito": { "var": "coceira_intensa", "op": "=", "val": true },
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
+  },
+  {
+    "var": "placas_descamadas",
+    "pergunta": "Há placas arredondadas e esbranquiçadas de pele descamada?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
+  },
+  {
+    "var": "idade_jovem",
+    "pergunta": "Este animal é uma novilha ou bezerra já desmamada?",
+    "tipo": "boolean",
+    "custo": 1,
+    "preRequisito": { "var": "placas_descamadas", "op": "=", "val": true },
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
+  },
+  {
+    "var": "pele_clara_ferida_sol",
+    "pergunta": "A pele clara (focinho, úbere) está avermelhada, inchada ou ferida após exposição ao sol?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
+  },
+  {
+    "var": "caroco_localizado_mama",
+    "pergunta": "Há uma bolsa ou caroço localizado e amolecido na mama, diferente de um endurecimento difuso?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
   },
 
   {
@@ -352,5 +441,43 @@
     "tipo": "boolean",
     "custo": 1,
     "preRequisito": { "var": "idade_dias", "op": "<=", "val": 90 }
+  },
+
+  {
+    "var": "lambe_roi_objetos",
+    "pergunta": "A vaca lambe ou rói terra, ossos, madeira ou outros objetos fora do normal?",
+    "tipo": "boolean",
+    "ajuda": "Esse comportamento, chamado de pica, é um sinal clássico de deficiência de fósforo em pastagens pobres.",
+    "custo": 1,
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação."
+  },
+  {
+    "var": "pelo_aspero_sem_brilho",
+    "pergunta": "O pelo da vaca está áspero e sem brilho?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação."
+  },
+  {
+    "var": "suplementacao_mineral_regular",
+    "pergunta": "O rebanho recebe suplementação mineral regularmente (sal mineral à vontade)?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação."
+  },
+
+  {
+    "var": "acesso_pasto_area_nova",
+    "pergunta": "O animal teve acesso recente a um pasto, área ou planta nova/desconhecida?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
+  },
+  {
+    "var": "morte_subita_lote",
+    "pergunta": "Outro animal do mesmo lote morreu de forma súbita recentemente?",
+    "tipo": "boolean",
+    "custo": 1,
+    "fonte": "Consenso veterinário geral — PENDENTE de validação."
   }
 ]

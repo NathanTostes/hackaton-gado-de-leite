@@ -30,6 +30,9 @@ import g07 from '../kb/grupos/07-parasitarias.json';
 import g08 from '../kb/grupos/08-notificacao-obrigatoria.json';
 import g09 from '../kb/grupos/09-bezerras.json';
 import g10 from '../kb/grupos/10-rebanho.json';
+import g11 from '../kb/grupos/11-reprodutivas.json';
+import g12 from '../kb/grupos/12-pele.json';
+import g13 from '../kb/grupos/13-nutricionais-toxicologicas.json';
 
 export { default as metaKb } from '../kb/meta.json';
 
@@ -44,6 +47,9 @@ const GRUPOS: { arquivo: string; regras: unknown[] }[] = [
   { arquivo: '08-notificacao-obrigatoria', regras: g08 },
   { arquivo: '09-bezerras', regras: g09 },
   { arquivo: '10-rebanho', regras: g10 },
+  { arquivo: '11-reprodutivas', regras: g11 },
+  { arquivo: '12-pele', regras: g12 },
+  { arquivo: '13-nutricionais-toxicologicas', regras: g13 },
 ];
 
 export class ErroDeBase extends Error {}
@@ -160,9 +166,13 @@ export const ROTULO_GRUPO: Record<string, string> = {
   triagem: 'Triagem geral',
   mastite: 'Mastite',
   metabolicas: 'Metabólicas',
-  pos_parto: 'Pós-parto / reprodutivas',
+  pos_parto: 'Pós-parto',
+  reprodutivas: 'Reprodutivas',
   digestivas: 'Digestivas',
   locomotor: 'Locomotor',
+  pele: 'Pele',
+  nutricionais: 'Nutricionais',
+  toxicologicas: 'Toxicológicas',
   parasitarias: 'Parasitárias e infecciosas',
   notificacao_obrigatoria: 'Notificação obrigatória',
   emergencia: 'Emergências',

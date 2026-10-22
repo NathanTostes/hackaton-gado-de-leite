@@ -10,14 +10,16 @@ import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { abrirBanco, bancoEmMemoria, bancoVazio, obterPropriedade, reabrirBanco, semear } from '@drmoo/db';
+import { abrirBanco, bancoEmMemoria, obterPropriedade, reabrirBanco } from '@drmoo/db';
 import { cores } from '@drmoo/ui';
 import { AvisoDuasAbas } from '../src/componentes/avisoDuasAbas';
 import { Carregando, Txt } from '../src/componentes/base';
 import { MarcaCabecalho } from '../src/componentes/marca';
 import { BarraLateral, BarraSuperior } from '../src/componentes/navegacaoDesktop';
+import { ProvedorDeModoVoz, useModoVoz } from '../src/modoVoz';
 import { ProvedorDeTema, useTema } from '../src/tema';
 import { useLayout } from '../src/responsivo';
+import AnamneseVoz from '../src/telas/anamneseVoz';
 
 export default function LayoutRaiz() {
   const [fontesCarregadas] = useFonts({
@@ -34,9 +36,8 @@ export default function LayoutRaiz() {
 
   const prepararBanco = useCallback(async () => {
     await abrirBanco();
-    // Primeira abertura: popula com a propriedade de demonstração para que o
-    // app nunca abra vazio na apresentação.
-    if (await bancoVazio()) await semear();
+    // O app abre vazio de propósito: os dados entram pela importação da
+    // planilha, não por um seed embutido.
     return !bancoEmMemoria();
   }, []);
 
@@ -61,7 +62,6 @@ export default function LayoutRaiz() {
   const tentarDeNovo = useCallback(async () => {
     try {
       await reabrirBanco();
-      if (await bancoVazio()) await semear();
     } catch {
       return false;
     }
@@ -76,14 +76,16 @@ export default function LayoutRaiz() {
   return (
     <SafeAreaProvider>
       <ProvedorDeTema>
-        <StatusBar style="dark" />
-        <Inicializacao
-          erro={erro}
-          pronto={fontesCarregadas && bancoPronto}
-          duasAbas={duasAbas}
-          aoTentarNovamente={tentarDeNovo}
-          aoContinuarSemSalvar={() => setDuasAbas(false)}
-        />
+        <ProvedorDeModoVoz>
+          <StatusBar style="dark" />
+          <Inicializacao
+            erro={erro}
+            pronto={fontesCarregadas && bancoPronto}
+            duasAbas={duasAbas}
+            aoTentarNovamente={tentarDeNovo}
+            aoContinuarSemSalvar={() => setDuasAbas(false)}
+          />
+        </ProvedorDeModoVoz>
       </ProvedorDeTema>
     </SafeAreaProvider>
   );
@@ -139,6 +141,7 @@ function Aplicacao() {
   const { c } = useTema();
   const { amplo } = useLayout();
   const [propriedade, setPropriedade] = useState<string | null>(null);
+  const modoVoz = useModoVoz();
 
   useEffect(() => {
     let ativo = true;
@@ -149,6 +152,24 @@ function Aplicacao() {
       ativo = false;
     };
   }, []);
+
+  // Espera a leitura da preferência antes de decidir o que mostrar: sem isso,
+  // o app normal pisca na tela por um instante mesmo quando o modo leitura em
+  // voz alta está ativo.
+  if (!modoVoz.carregado) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', backgroundColor: c.fundo }}>
+        <Carregando />
+      </View>
+    );
+  }
+
+  // Modo leitura em voz alta: substitui TODA a navegação — abas, barra
+  // lateral, pilha de telas — por uma única tela de atendimento. É o modo
+  // inteiro do app enquanto estiver ativo, não uma tela a mais dentro dele.
+  if (modoVoz.ativo) {
+    return <AnamneseVoz aoSair={() => void modoVoz.definir(false)} />;
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: c.fundo }}>

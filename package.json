@@ -16,8 +16,6 @@
     "ios": "npm run ios -w mobile",
     "build:web": "npm run build:web -w mobile && node scripts/normalizar-tsconfig.mjs",
     "build:android": "npm run prebuild:android -w mobile && node scripts/normalizar-tsconfig.mjs && cd apps/mobile/android && ./gradlew assembleRelease",
-    "desktop": "npm run build:web && npx --yes electron@33 desktop",
-    "build:linux": "npm run build:web && rm -rf desktop/dist-web && cp -r dist-web desktop/dist-web && npx --yes @electron/packager@18 desktop \"Dr. Moo\" --platform=linux --arch=x64 --electron-version=33.4.11 --out=dist-desktop --overwrite",
     "build:apk": "npx --yes eas-cli build --platform android --profile preview",
     "build:aab": "npx --yes eas-cli build --platform android --profile producao",
     "enviar:play": "npx --yes eas-cli submit --platform android --profile producao",

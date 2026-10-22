@@ -1,0 +1,111 @@
+[
+  {
+    "id": "NUT-FOSFORO-PICA",
+    "versao": "1.0.0",
+    "grupo": "nutricionais",
+    "titulo": "Deficiência de fósforo (pica)",
+    "prioridade": 55,
+    "se": { "var": "lambe_roi_objetos", "op": "=", "val": true },
+    "entao": [{ "var": "diagnostico", "val": "deficiencia_fosforo", "cf": 0.6 }],
+    "porque": "O hábito de lamber ou roer terra, ossos, madeira ou outros objetos (pica) é o sinal comportamental mais característico de deficiência de fósforo, comum em pastagens pobres sem suplementação mineral adequada.",
+    "conduta": [
+      "Reveja com o técnico a suplementação mineral do rebanho: sal mineral à vontade, formulado para a categoria do animal.",
+      "Em casos mais graves, o veterinário pode indicar um suplemento fosfatado injetável para correção mais rápida.",
+      "Observe se outros animais do lote têm o mesmo comportamento — deficiência mineral costuma ser de rebanho, não de um animal isolado.",
+      "Em casos de pica intensa, procure o veterinário: há risco de ingestão de objetos perigosos (pregos, arame, plástico)."
+    ],
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "NUT-FOSFORO-SEM-MINERAL",
+    "versao": "1.0.0",
+    "grupo": "nutricionais",
+    "titulo": "Ausência de suplementação mineral reforça deficiência de fósforo",
+    "prioridade": 40,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "deficiencia_fosforo" },
+        { "nao": { "var": "suplementacao_mineral_regular", "op": "=", "val": true } }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "deficiencia_fosforo", "cf": 0.5 }],
+    "porque": "A ausência de suplementação mineral regular é o principal fator de risco de rebanho para a deficiência de fósforo, que praticamente não existe apenas na dieta de pasto em boa parte do Brasil.",
+    "conduta": ["Implante o fornecimento de sal mineral à vontade para todo o rebanho."],
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "NUT-MINERAL-GERAL",
+    "versao": "1.0.0",
+    "grupo": "nutricionais",
+    "titulo": "Deficiência mineral geral",
+    "prioridade": 45,
+    "se": {
+      "todas": [
+        { "var": "pelo_aspero_sem_brilho", "op": "=", "val": true },
+        { "nao": { "var": "suplementacao_mineral_regular", "op": "=", "val": true } }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "deficiencia_mineral_geral", "cf": 0.55 }],
+    "porque": "Pelo áspero e sem brilho, num animal sem suplementação mineral regular, sugere carência mineral mais ampla, que também costuma reduzir produção e fertilidade do rebanho.",
+    "conduta": [
+      "Implante o fornecimento de sal mineral à vontade, formulado para a categoria do rebanho.",
+      "Converse com o técnico sobre análise de solo e forragem para ajustar a formulação.",
+      "Acompanhe produção e índices reprodutivos nos meses seguintes à correção."
+    ],
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-PLANTA-NERVOSO",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Suspeita de intoxicação por planta tóxica — sinais nervosos agudos",
+    "prioridade": 90,
+    "se": {
+      "todas": [
+        { "var": "acesso_pasto_area_nova", "op": "=", "val": true },
+        {
+          "alguma": [
+            { "var": "sinais_nervosos", "op": "=", "val": true },
+            { "var": "agitacao_convulsao", "op": "=", "val": true }
+          ]
+        }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "intoxicacao_planta_toxica", "cf": 0.6 }],
+    "porque": "Sinais nervosos agudos logo após acesso a pasto, área ou planta nova é o padrão clássico de intoxicação por planta tóxica — o Brasil tem dezenas de espécies capazes de causar quadros assim, e o tempo de reação é curto.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Remova imediatamente todo o lote da área suspeita.",
+      "Se a ingestão foi recente, o veterinário pode indicar carvão ativado para reduzir a absorção do tóxico — não administre por conta própria.",
+      "Tente identificar e levar uma amostra da planta que pode ter sido ingerida — isso ajuda muito o diagnóstico e o tratamento.",
+      "Observe de perto os demais animais do lote: outros podem adoecer nas próximas horas."
+    ],
+    "fonte": "Consenso veterinário geral sobre plantas tóxicas de interesse pecuário — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-MORTE-LOTE",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Morte súbita no lote reforça intoxicação",
+    "prioridade": 85,
+    "se": {
+      "todas": [
+        { "var": "acesso_pasto_area_nova", "op": "=", "val": true },
+        { "var": "morte_subita_lote", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "intoxicacao_planta_toxica", "cf": 0.65 }],
+    "porque": "Morte súbita de outro animal do mesmo lote, associada a acesso recente a área nova, é um dos sinais mais fortes de intoxicação por planta tóxica em rebanho — várias espécies brasileiras matam em poucas horas.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA e, se possível, solicite necropsia do animal morto.",
+      "Isole imediatamente todo o lote da área suspeita.",
+      "Não descarte a carcaça antes da avaliação veterinária, se for seguro esperar."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  }
+]

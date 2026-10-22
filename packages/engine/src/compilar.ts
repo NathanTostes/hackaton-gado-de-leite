@@ -7,7 +7,7 @@
  * referências à variável-objetivo são reescritas, uma única vez na carga, para
  * chaves do tipo `diagnostico=mastite_clinica_g2` com valor booleano.
  */
-import type { BaseDeConhecimento, Condicao, Regra, Valor } from './types';
+import type { BaseDeConhecimento, Condicao, HipoteseDef, Pergunta, Regra, Valor } from './types';
 import { ehAlguma, ehCondicaoSimples, ehNao, ehTodas } from './match';
 
 export const SEP_OBJETIVO = '=';
@@ -49,7 +49,22 @@ export interface BaseCompilada extends BaseDeConhecimento {
   regrasCompiladas: RegraCompilada[];
   /** Índice: chave de memória → regras que a produzem (encadeamento regressivo). */
   produzidaPor: Map<string, RegraCompilada[]>;
-  perguntaPorVar: Map<string, BaseDeConhecimento['perguntas'][number]>;
+  perguntaPorVar: Map<string, Pergunta>;
+  /**
+   * Pré-requisito de cada pergunta, com as referências à variável-objetivo já
+   * reescritas.
+   *
+   * Sem esta reescrita um pré-requisito não poderia falar de hipótese ("só
+   * pergunte sobre o teto azulado se já houver mastite clínica"), porque
+   * `diagnostico` nunca existe como chave de memória — quem existe é
+   * `diagnostico=mastite_clinica_g1`. Com a base inteira num só sistema isso não
+   * fazia falta; com quinze grupos, é o que mantém o questionário no assunto.
+   */
+  preRequisitoCompilado: Map<string, Condicao>;
+  /** Posição da pergunta na declaração — desempate determinístico da escolha. */
+  ordemPergunta: Map<string, number>;
+  /** Índice: id da hipótese → definição (grupo, subsunção, bandeira vermelha). */
+  hipotesePorId: Map<string, HipoteseDef>;
 }
 
 export function compilarBase(kb: BaseDeConhecimento): BaseCompilada {
@@ -74,6 +89,22 @@ export function compilarBase(kb: BaseDeConhecimento): BaseCompilada {
   }
 
   const perguntaPorVar = new Map(kb.perguntas.map((p) => [p.var, p] as const));
+  const ordemPergunta = new Map(kb.perguntas.map((p, i) => [p.var, i] as const));
 
-  return { ...kb, regrasCompiladas, produzidaPor, perguntaPorVar };
+  const preRequisitoCompilado = new Map<string, Condicao>();
+  for (const p of kb.perguntas) {
+    if (p.preRequisito) preRequisitoCompilado.set(p.var, reescrever(p.preRequisito, objetivo));
+  }
+
+  const hipotesePorId = new Map(kb.hipoteses.map((h) => [h.id, h] as const));
+
+  return {
+    ...kb,
+    regrasCompiladas,
+    produzidaPor,
+    perguntaPorVar,
+    preRequisitoCompilado,
+    ordemPergunta,
+    hipotesePorId,
+  };
 }

@@ -5,7 +5,6 @@ import {
   exportarPlanilha,
   importarPlanilha,
   obterPropriedade,
-  recriarDemonstracao,
   salvarPropriedade,
   type RelatorioImportacao,
 } from '@drmoo/db';
@@ -27,6 +26,7 @@ import {
 } from '../src/componentes/base';
 import { entregarArquivo, escolherArquivo } from '../src/arquivos';
 import { useDados } from '../src/hooks';
+import { useModoVoz } from '../src/modoVoz';
 import { useTema } from '../src/tema';
 
 export default function Configuracoes() {
@@ -44,14 +44,13 @@ export default function Configuracoes() {
     gestacao_dias: '',
   });
   const [salvo, setSalvo] = useState(false);
-  const [resetando, setResetando] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState('');
-  const [demoRecriada, setDemoRecriada] = useState(false);
   const [planilhaOcupada, setPlanilhaOcupada] = useState<'exportando' | 'importando' | null>(null);
   const [avisoPlanilha, setAvisoPlanilha] = useState<string | null>(null);
   const [relatorio, setRelatorio] = useState<RelatorioImportacao | null>(null);
   const [substituir, setSubstituir] = useState(false);
+  const modoVoz = useModoVoz();
 
   useEffect(() => {
     if (!dados) return;
@@ -91,22 +90,6 @@ export default function Configuracoes() {
       setErro(e instanceof Error ? e.message : String(e));
     } finally {
       setSalvando(false);
-    }
-  };
-
-  const recriarDemo = async () => {
-    setResetando(true);
-    setErro('');
-    setSalvo(false);
-    setDemoRecriada(false);
-    try {
-      await recriarDemonstracao();
-      setDemoRecriada(true);
-      recarregar();
-    } catch (e) {
-      setErro(e instanceof Error ? e.message : String(e));
-    } finally {
-      setResetando(false);
     }
   };
 
@@ -167,7 +150,7 @@ export default function Configuracoes() {
     <Tela>
       <CabecalhoPagina
         titulo="Configurações"
-        subtitulo="Dados da propriedade, metas, planilha e dados de demonstração"
+        subtitulo="Dados da propriedade, metas e planilha"
       />
       {!!(erro || erroCarga) && <Alerta tipo="alerta" titulo="Não foi possível concluir" texto={erro || erroCarga || ''} />}
       {bancoEmMemoria() && (
@@ -178,6 +161,24 @@ export default function Configuracoes() {
           texto="O arquivo do banco já está aberto em outra aba ou janela do navegador, e o navegador só permite um acesso de escrita por vez. Esta aba funciona normalmente, mas o que você alterar aqui não será salvo. Feche as outras abas do Dr. Moo e recarregue a página."
         />
       )}
+      <TituloSecao icone="record-voice-over">Modo leitura em voz alta</TituloSecao>
+      <Cartao>
+        <Txt v="label" cor={c.textoSecundario}>
+          Troca o app inteiro por uma única tela de prontuário, com botões bem grandes
+          e o aparelho falando cada pergunta e o resultado em voz alta. Pensado para
+          quem prefere ouvir a ler. Um botão discreto no canto da tela volta ao app normal
+          a qualquer momento.
+        </Txt>
+        <Espaco h={espaco.md} />
+        <Chip
+          texto={modoVoz.ativo ? 'Ativado' : 'Desativado'}
+          icone={modoVoz.ativo ? 'check-circle' : 'record-voice-over'}
+          cor={modoVoz.ativo ? c.ok : c.primaria}
+          ativo={modoVoz.ativo}
+          aoTocar={() => void modoVoz.definir(!modoVoz.ativo)}
+        />
+      </Cartao>
+
       <TituloSecao icone="home-work">Propriedade</TituloSecao>
       <Cartao>
         <Campo rotulo="Nome da propriedade" valor={form.nome} aoMudar={(v) => alterarCampo('nome', v)} numerico={false} />
@@ -249,7 +250,7 @@ export default function Configuracoes() {
           grande
           titulo={salvando ? 'Salvando…' : 'Salvar'}
           icone="save"
-          desabilitado={resetando || salvando || carregando || !!erroCarga}
+          desabilitado={salvando || carregando || !!erroCarga}
           aoTocar={salvar}
         />
       </Acoes>
@@ -343,23 +344,6 @@ export default function Configuracoes() {
         )}
       </Cartao>
 
-      <TituloSecao icone="science">Demonstração</TituloSecao>
-      <Cartao>
-        <Txt v="label" cor={c.textoSecundario}>
-          Recria o rebanho de demonstração (propriedade do Sr. João, da cartilha). Apaga
-          todos os dados atuais. O gerador é determinístico: o resultado é sempre o mesmo.
-        </Txt>
-        <Espaco h={espaco.md} />
-        <Acoes aviso={demoRecriada ? <Alerta tipo="ok" titulo="Dados recriados" /> : null}>
-          <Botao
-            titulo={resetando ? 'Recriando…' : 'Recriar dados de demonstração'}
-            icone="refresh"
-            variante="perigo"
-            desabilitado={resetando || salvando || carregando}
-            aoTocar={recriarDemo}
-          />
-        </Acoes>
-      </Cartao>
     </Tela>
   );
 }

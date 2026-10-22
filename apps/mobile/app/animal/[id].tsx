@@ -175,6 +175,13 @@ export default function FichaDoAnimal() {
               Controle leiteiro mensal — manhã + tarde, conforme a ficha da Embrapa.
             </Txt>
           </Cartao>
+          <Espaco h={espaco.sm} />
+          <Botao
+            titulo="Lançar produção de leite"
+            icone="water-drop"
+            variante="secundario"
+            aoTocar={() => router.push(`/animal/leite/${animal.id}`)}
+          />
         </>
       )}
 

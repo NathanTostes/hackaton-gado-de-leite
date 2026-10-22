@@ -79,6 +79,20 @@ const MEDICAMENTOS = [
   { nome: 'Anti-inflamatório', principio: 'Flunixin meglumine', apres: 'Frasco 50 mL', custo: 78.0, carenciaLeite: 3, carenciaCarne: 12, estoque: 4 },
   { nome: 'Cálcio injetável', principio: 'Borogluconato de cálcio', apres: 'Frasco 500 mL', custo: 23.0, carenciaLeite: 0, carenciaCarne: 0, estoque: 10 },
   { nome: 'Carrapaticida', principio: 'Cipermetrina + clorpirifós', apres: 'Frasco 1 L', custo: 95.0, carenciaLeite: 0, carenciaCarne: 5, estoque: 3 },
+  // Ampliação da gama: cobre as hipóteses que o motor passou a diagnosticar
+  // (hipomagnesemia, sarna/dermatofitose, deficiência de fósforo, reprodutivas,
+  // cetose e intoxicação) e que antes não tinham nenhum item correspondente
+  // no estoque — a conduta dizia "procure o veterinário" sem o produto existir
+  // no cadastro da propriedade.
+  { nome: 'Magnésio injetável', principio: 'Sulfato de magnésio', apres: 'Frasco 500 mL', custo: 31.0, carenciaLeite: 0, carenciaCarne: 0, estoque: 6 },
+  { nome: 'Endectocida (vermífugo e carrapaticida)', principio: 'Ivermectina 1%', apres: 'Frasco 500 mL', custo: 68.0, carenciaLeite: 0, carenciaCarne: 35, estoque: 5 },
+  { nome: 'Antifúngico/antissárnico tópico', principio: 'Enxofre + iodo tópico', apres: 'Frasco 1 L', custo: 42.0, carenciaLeite: 0, carenciaCarne: 0, estoque: 4 },
+  { nome: 'Suplemento fosfatado injetável', principio: 'Fósforo orgânico + vitaminas ADE', apres: 'Frasco 100 mL', custo: 36.0, carenciaLeite: 0, carenciaCarne: 0, estoque: 8 },
+  { nome: 'Energético oral (cetose)', principio: 'Propilenoglicol', apres: 'Frasco 1 L', custo: 29.0, carenciaLeite: 0, carenciaCarne: 0, estoque: 10 },
+  { nome: 'Hormônio reprodutivo', principio: 'Prostaglandina F2alfa (dinoprost)', apres: 'Frasco 20 mL', custo: 54.0, carenciaLeite: 0, carenciaCarne: 0, estoque: 3 },
+  { nome: 'Antibiótico intrauterino', principio: 'Cefapirina benzatina', apres: 'Bisnaga uterina', custo: 26.0, carenciaLeite: 4, carenciaCarne: 8, estoque: 6 },
+  { nome: 'Soro de reidratação oral', principio: 'Eletrólitos + glicose', apres: 'Sachê 80 g', custo: 7.5, carenciaLeite: 0, carenciaCarne: 0, estoque: 30 },
+  { nome: 'Carvão ativado veterinário', principio: 'Carvão ativado', apres: 'Frasco 500 g', custo: 45.0, carenciaLeite: 0, carenciaCarne: 0, estoque: 2 },
 ];
 
 const VACINAS = [
@@ -86,6 +100,10 @@ const VACINAS = [
   { nome: 'Raiva', doenca: 'Raiva dos herbívoros', intervalo: 12, obrigatoria: 1 },
   { nome: 'Brucelose (B19)', doenca: 'Brucelose', intervalo: 0, obrigatoria: 1 },
   { nome: 'Clostridioses', doenca: 'Carbúnculo, botulismo', intervalo: 12, obrigatoria: 0 },
+  // Cobrem causas infecciosas de repetição de cio e de problema respiratório
+  // que o motor passou a diagnosticar (grupos reprodutivas e parasitárias).
+  { nome: 'Leptospirose', doenca: 'Leptospirose (aborto e repetição de cio)', intervalo: 6, obrigatoria: 0 },
+  { nome: 'IBR/BVD', doenca: 'Rinotraqueíte e diarreia viral bovina', intervalo: 12, obrigatoria: 0 },
 ];
 
 export async function semear(): Promise<void> {

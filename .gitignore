@@ -104,10 +104,6 @@ dist-web/
 # === Relatório de cobertura ===
 coverage/
 
-# === Build desktop ===
-dist-desktop/
-desktop/dist-web/
-
 # === Montagem do site (CI e testes locais) ===
 publicar/
 

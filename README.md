@@ -45,12 +45,13 @@ npm run android
 
 ### Em qualquer um dos dois
 
-Na primeira abertura o app cria o banco SQLite local e o popula com a propriedade de
-demonstração. Não há servidor, backend, chave de API ou acesso à internet em tempo de
-execução — depois do `npm install`, o app funciona com a máquina desconectada.
+Na primeira abertura o app cria o banco SQLite local **vazio**. Não há servidor, backend,
+chave de API ou acesso à internet em tempo de execução — depois do `npm install`, o app
+funciona com a máquina desconectada.
 
-Para voltar o banco ao estado inicial: **Mais → Configurações → Recriar dados de
-demonstração**. O gerador é determinístico, então o resultado é sempre o mesmo.
+Os dados entram pela planilha: **Mais → Configurações → Planilha da propriedade**. A
+planilha exportada já é o modelo (uma aba por cadastro, cabeçalhos em português); preencha
+no Excel e importe de volta. O modo **substituição** esvazia o banco antes de importar.
 
 No navegador, o banco fica num arquivo do OPFS, e o navegador só permite **um acesso de
 escrita por vez**. Abrir o Dr. Moo numa segunda aba mostra uma tela explicando isso, com duas
@@ -108,22 +109,6 @@ npm run build:android  # prebuild + gradlew assembleRelease (APK)
 |---|---|---|
 | **Web** | `npm run build:web` → `dist-web/` (HTML, JS e wasm estáticos) | arrastar `dist-web/` no Netlify/Vercel, ou o workflow `publicar-web.yml` (GitHub Pages) |
 | **Android** | `npx eas build -p android --profile preview` (APK na nuvem, sem SDK local) ou `npm run build:android` com Android SDK instalado | enviar o APK direto (link/QR). Loja só se quiser distribuição pública |
-| **Desktop (Linux, Windows, macOS)** | `npm run build:linux` — empacota o `dist-web/` com o invólucro de `desktop/` | copiar a pasta gerada em `dist-desktop/` e executar o binário |
-
-### Aplicativo para Linux
-
-```bash
-npm run desktop       # abre a janela do app no computador (sem empacotar)
-npm run build:linux   # gera dist-desktop/Dr. Moo-linux-x64/ com o executável
-./"dist-desktop/Dr. Moo-linux-x64/Dr. Moo"   # roda o aplicativo gerado
-```
-
-O invólucro é uma janela que carrega o `dist-web/` (`desktop/main.js`, ~50 linhas). O Electron
-**não** é dependência do repositório: `npx` o baixa na hora de empacotar, então o `npm install`
-do dia a dia continua leve. Para Windows ou macOS, troque `--platform=linux` por `--platform=win32`
-ou `--platform=darwin` no script `build:linux` (empacotar para macOS exige um Mac).
-
-Se preferir binário menor, o mesmo `dist-web/` serve para o **Tauri** (exige Rust instalado).
 
 ### O que vai ao ar
 
@@ -131,15 +116,6 @@ Se preferir binário menor, o mesmo `dist-web/` serve para o **Tauri** (exige Ru
 |---|---|
 | `/` | página de apresentação (`site/index.html`) — o que é a solução, com links para o app |
 | `/app/` | o aplicativo web |
-| Release com tag `v*` | aplicativos de computador para Linux, Windows e macOS |
-
-Os links de download na página de apresentação são montados a partir da **última Release** do
-repositório: enquanto não houver uma, a seção fica escondida e um aviso explica o motivo — link
-quebrado é pior do que link ausente. Para gerar os binários:
-
-```bash
-git tag v1.0.0 && git push --tags   # dispara .github/workflows/publicar-desktop.yml
-```
 
 ### Publicar a web (do mais simples ao mais automático)
 
@@ -157,7 +133,7 @@ git tag v1.0.0 && git push --tags   # dispara .github/workflows/publicar-desktop
 **Atenção à sincronização em rede local**: hospedado em HTTPS (Pages, Netlify, EAS), o navegador
 **bloqueia** as chamadas ao servidor da propriedade, que fala `http://` num IP da LAN — é a
 regra de conteúdo misto, não um defeito do app. Para demonstrar a sincronização, use o app
-servido localmente (`npm run web`, em `http://`), o APK no celular ou o aplicativo de desktop.
+servido localmente (`npm run web`, em `http://`) ou o APK no celular.
 O resto do sistema funciona igual na versão hospedada.
 
 ### Publicar na Play Store
@@ -178,7 +154,7 @@ de serviço — `eas submit` explica o passo a passo na primeira execução.
 `publicar-web.yml` verifica e publica a web a cada merge na `main`. Build de Android no CI exige
 uma conta Expo e o segredo `EXPO_TOKEN` — fora isso, nada a configurar.
 
-### Testar web, celular e desktop juntos
+### Testar web e celular juntos
 
 ```bash
 npm run sync           # terminal 1: servidor da propriedade (porta 8787)
@@ -187,8 +163,7 @@ npm start              # terminal 3: QR code para o Expo Go no celular
 ```
 
 Com os três abertos na mesma rede Wi-Fi: cadastre um animal no celular, sincronize, sincronize
-no navegador e confira que ele apareceu. É o mesmo teste que vale para o desktop, que carrega o
-`dist-web/` e fala com o mesmo servidor.
+no navegador e confira que ele apareceu.
 
 ## Verificar
 

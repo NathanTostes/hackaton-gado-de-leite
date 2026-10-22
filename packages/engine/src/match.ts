@@ -36,11 +36,24 @@ export function variaveisDaCondicao(c: Condicao, acc: Set<string> = new Set()): 
   return acc;
 }
 
-/** Quantas condições simples existem — mede a especificidade da regra (§4.7). */
+/**
+ * Quantas condições simples a regra realmente EXIGE — mede a especificidade (§4.7).
+ *
+ * Numa conjunção, todas as condições são exigidas, então somam. Numa disjunção,
+ * basta um ramo: exigir "grumos OU cor OU consistência" é exigir um sinal, não
+ * três. Contar os ramos de um `alguma` como se fossem exigências fazia uma regra
+ * de triagem com seis alternativas parecer mais específica que um diagnóstico
+ * encadeado de duas condições obrigatórias — e vencer a resolução de conflito
+ * que deveria perder. O erro passava batido numa base de um só sistema, onde as
+ * regras concorrentes tinham forma parecida; com muitos grupos, não passa mais.
+ */
 export function especificidade(c: Condicao): number {
   if (ehCondicaoSimples(c)) return 1;
   if (ehTodas(c)) return c.todas.reduce((n, sub) => n + especificidade(sub), 0);
-  if (ehAlguma(c)) return c.alguma.reduce((n, sub) => n + especificidade(sub), 0);
+  if (ehAlguma(c)) {
+    // O ramo mais exigente define o piso do que a disjunção pede.
+    return c.alguma.reduce((max, sub) => Math.max(max, especificidade(sub)), 0);
+  }
   if (ehNao(c)) return especificidade(c.nao);
   return 0;
 }

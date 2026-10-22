@@ -5,5 +5,6 @@ export * from './repositorios';
 export * from './fatos';
 export * from './cadastro';
 export * from './sincronizacao';
+export * from './preferencias';
 export * from './planilha';
 export { semear, bancoVazio, recriarDemonstracao } from './seed';

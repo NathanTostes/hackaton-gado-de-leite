@@ -22,16 +22,19 @@ const kbMinima: BaseDeConhecimento = {
     { nome: 'sinal_b', rotulo: 'sinal B', tipo: 'boolean' },
     { nome: 'sinal_caro', rotulo: 'exame caro', tipo: 'boolean' },
     { nome: 'contexto', rotulo: 'contexto', tipo: 'numero' },
+    { nome: 'sinal_outro_sistema', rotulo: 'sinal de outro sistema', tipo: 'boolean' },
   ],
   hipoteses: [
     { id: 'alfa', rotulo: 'Alfa', grupo: 'triagem', descricao: '' },
     { id: 'beta', rotulo: 'Beta', grupo: 'triagem', descricao: '', substitui: ['alfa'] },
     { id: 'urgente', rotulo: 'Urgente', grupo: 'emergencia', descricao: '', bandeiraVermelha: true },
+    { id: 'gama', rotulo: 'Gama', grupo: 'locomotor', descricao: '' },
   ],
   perguntas: [
     { var: 'sinal_a', pergunta: 'Sinal A?', tipo: 'boolean', custo: 1 },
     { var: 'sinal_b', pergunta: 'Sinal B?', tipo: 'boolean', custo: 1 },
     { var: 'sinal_caro', pergunta: 'Exame caro?', tipo: 'boolean', custo: 5 },
+    { var: 'sinal_outro_sistema', pergunta: 'Sinal de outro sistema?', tipo: 'boolean', custo: 1 },
   ],
   regras: [
     {
@@ -72,6 +75,18 @@ const kbMinima: BaseDeConhecimento = {
       se: { var: 'sinal_caro', op: '=', val: true },
       entao: [{ var: 'diagnostico', val: 'urgente', cf: 0.9 }],
       porque: 'emergência',
+      fonte: 'teste',
+      status: 'validada',
+    },
+    {
+      id: 'R-GAMA',
+      versao: '1',
+      grupo: 'locomotor',
+      titulo: 'Gama',
+      prioridade: 50,
+      se: { var: 'sinal_outro_sistema', op: '=', val: true },
+      entao: [{ var: 'diagnostico', val: 'gama', cf: 0.9 }],
+      porque: 'porque outro sistema',
       fonte: 'teste',
       status: 'validada',
     },
@@ -187,8 +202,24 @@ describe('parada e bandeira vermelha', () => {
     expect(passo.parecer?.bandeiraVermelha?.id).toBe('urgente');
   });
 
-  it('encerra por confiança suficiente', () => {
+  it('não encerra por confiança enquanto outro sistema tem pergunta pendente', () => {
     const s = new Sessao(kbMinima, [fato('sinal_a', true), fato('sinal_b', true)], { agora });
+    // beta (triagem) já está bem confiante, mas R-GAMA (locomotor) ainda
+    // depende de sinal_outro_sistema — o questionário precisa continuar.
+    expect(s.proximo().tipo).toBe('pergunta');
+  });
+
+  it('encerra por confiança suficiente quando não há mais pergunta de outro sistema', () => {
+    const s = new Sessao(
+      kbMinima,
+      [
+        fato('sinal_a', true),
+        fato('sinal_b', true),
+        fato('sinal_outro_sistema', false),
+        fato('sinal_caro', false),
+      ],
+      { agora },
+    );
     expect(s.proximo().parecer?.motivoParada).toBe('confianca_suficiente');
   });
 
@@ -217,5 +248,76 @@ describe('retração e reprodutibilidade', () => {
     const reproduzido = restaurada.proximo().parecer!;
 
     expect(JSON.stringify(reproduzido)).toBe(JSON.stringify(original));
+  });
+});
+
+describe('hipótese de exclusão ("apenasSeNadaMais")', () => {
+  const kbComExclusao: BaseDeConhecimento = {
+    ...kbMinima,
+    hipoteses: [
+      ...kbMinima.hipoteses,
+      { id: 'nenhuma', rotulo: 'Nenhuma alteração', grupo: 'triagem', descricao: '', apenasSeNadaMais: true },
+    ],
+    regras: [
+      ...kbMinima.regras,
+      {
+        id: 'R-NENHUMA',
+        versao: '1',
+        grupo: 'triagem',
+        titulo: 'Nenhuma alteração',
+        prioridade: 10,
+        se: { nao: { var: 'sinal_a', op: '=', val: true } },
+        entao: [{ var: 'diagnostico', val: 'nenhuma', cf: 0.85 }],
+        porque: 'nada encontrado',
+        fonte: 'teste',
+        status: 'validada',
+      },
+    ],
+  };
+
+  it('sobrevive quando nada mais é concluído', () => {
+    const s = new Sessao(kbComExclusao, [fato('sinal_a', false)], { agora });
+    expect(s.hipoteses().map((h) => h.id)).toEqual(['nenhuma']);
+  });
+
+  it('some do ranking assim que outra hipótese chega ao limiar de diagnóstico', () => {
+    const s = new Sessao(
+      kbComExclusao,
+      [fato('sinal_a', true), fato('sinal_b', true), fato('sinal_outro_sistema', true)],
+      { agora },
+    );
+    const ids = s.hipoteses().map((h) => h.id);
+    expect(ids).not.toContain('nenhuma');
+    expect(ids).toContain('beta');
+    expect(ids).toContain('gama');
+  });
+});
+
+describe('relação entre hipóteses (principal/diferencial/concomitante)', () => {
+  it('a líder é "principal", uma alternativa do mesmo grupo é "diferencial"', () => {
+    const s = new Sessao(kbMinima, [fato('sinal_a', true)], { agora });
+    const hip = s.hipoteses();
+    const alfa = hip.find((h) => h.id === 'alfa')!;
+    expect(alfa.relacao).toBe('principal');
+  });
+
+  it('uma hipótese de outro grupo de doença é "concomitante", não disputa o ranking', () => {
+    const s = new Sessao(kbMinima, [fato('sinal_a', true), fato('sinal_outro_sistema', true)], {
+      agora,
+    });
+    const hip = s.hipoteses();
+    const gama = hip.find((h) => h.id === 'gama')!;
+    expect(gama.relacao).toBe('concomitante');
+  });
+});
+
+describe('seleção de perguntas: foco clínico e discriminação', () => {
+  it('justificativa identifica o grupo em foco quando há sinal naquele sistema', () => {
+    // "Acho que sim" (cf 0.6) deixa alfa viva (cf 0,57) sem fechar o parecer —
+    // sinal parcial o bastante para criar foco no grupo, mas não para concluir.
+    const s = new Sessao(kbMinima, [fato('sinal_a', true, CF_RESPOSTA.achoQueSim)], { agora });
+    const passo = s.proximo();
+    expect(passo.tipo).toBe('pergunta');
+    expect(passo.justificativa?.grupoFoco).toBe('triagem');
   });
 });

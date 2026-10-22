@@ -588,6 +588,41 @@ export async function controleLeiteiroDoAnimal(
   );
 }
 
+/**
+ * Lança (ou corrige) a produção de leite de uma vaca num dia: um lançamento
+ * por animal+data, como a ficha de controle leiteiro da Embrapa — manhã e
+ * tarde somadas no total que alimenta a média de produção e os gráficos.
+ */
+export async function registrarControleLeiteiro(
+  animalId: string,
+  data: string,
+  litrosManha: number,
+  litrosTarde: number,
+  observacoes: string | null = null,
+): Promise<void> {
+  const agora = agoraISO();
+  const litrosTotal = litrosManha + litrosTarde;
+  const existente = await consultarUm<{ id: string }>(
+    'SELECT id FROM controle_leiteiro WHERE animal_id=? AND data=?',
+    [animalId, data],
+  );
+  if (existente) {
+    await executar(
+      `UPDATE controle_leiteiro
+       SET litros_manha=?, litros_tarde=?, litros_total=?, observacoes=?, updated_at=?
+       WHERE id=?`,
+      [litrosManha, litrosTarde, litrosTotal, observacoes, agora, existente.id],
+    );
+    return;
+  }
+  await executar(
+    `INSERT INTO controle_leiteiro
+       (id, animal_id, data, litros_manha, litros_tarde, litros_total, observacoes, created_at, updated_at)
+     VALUES (?,?,?,?,?,?,?,?,?)`,
+    [novoId('controle'), animalId, data, litrosManha, litrosTarde, litrosTotal, observacoes, agora, agora],
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Mastite
 // ---------------------------------------------------------------------------
