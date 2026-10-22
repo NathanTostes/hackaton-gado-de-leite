@@ -77,13 +77,19 @@ vi.mock('react-native', () => {
     FlatList: ({
       data,
       renderItem,
+      ListHeaderComponent,
+      ListEmptyComponent,
     }: {
       data: unknown[];
+      ListHeaderComponent?: ReactElement;
+      ListEmptyComponent?: ReactElement;
       renderItem?: (info: { item: unknown; index: number }) => ReactElement;
     }) =>
       createElement(
         'div',
         null,
+        ListHeaderComponent,
+        data.length === 0 ? ListEmptyComponent : null,
         renderItem ? data.map((item, index) => createElement('div', { key: index }, renderItem({ item, index }))) : null,
       ),
   };

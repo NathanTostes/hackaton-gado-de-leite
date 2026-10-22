@@ -9,3 +9,5 @@ export * from './preferencias';
 export * from './diagnosticoRebanho';
 export * from './planilha';
 export { semear, bancoVazio, recriarDemonstracao } from './seed';
+
+export * from './saidas';

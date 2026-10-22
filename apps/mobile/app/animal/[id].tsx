@@ -56,6 +56,7 @@ export default function FichaDoAnimal() {
   if (!dados.animal) return <Vazio icone="error-outline" titulo="Animal não encontrado" />;
 
   const { animal, controle, cmt, atendimentos, tratamentos } = dados;
+  const ativo = !['morto', 'vendido', 'descartado'].includes(animal.status);
   const ultimoCmt = cmt[0];
   const curva = [...controle].reverse().map((p) => p.litros_total);
 
@@ -111,12 +112,26 @@ export default function FichaDoAnimal() {
       <Botao
         grande
         titulo="Fazer anamnese neste animal"
+        desabilitado={!ativo}
         icone="medical-services"
         aoTocar={() => router.push(`/anamnese/${animal.id}`)}
       />
 
       <Espaco h={espaco.sm} />
       <Botao titulo="Editar cadastro" icone="edit" variante="secundario" aoTocar={() => router.push(`/editar-animal/${animal.id}`)} />
+
+      <TituloSecao icone="exit-to-app">Saída e histórico</TituloSecao>
+      {!ativo && <Alerta tipo="info" titulo={ROTULO_STATUS[animal.status]}
+        texto={animal.data_saida ? `Saída registrada em ${formatarBR(animal.data_saida)}. Os prontuários foram preservados.` : 'Consulte o histórico de saídas deste animal.'} />}
+      {ativo && <>
+        <Botao titulo="Registrar falecimento" icone="event-busy" variante="perigo" aoTocar={() => router.push(`/registrar-saida/${id}?tipo=falecimento`)} />
+        <Espaco />
+        <Botao titulo="Registrar venda" icone="sell" variante="secundario" aoTocar={() => router.push(`/registrar-saida/${id}?tipo=venda`)} />
+      </>}
+      <Espaco />
+      <Botao titulo="Ver gado falecido" icone="history" variante="secundario" aoTocar={() => router.push('/falecidos')} />
+      <Espaco />
+      <Botao titulo="Ver gado vendido" icone="sell" variante="secundario" aoTocar={() => router.push('/vendidos')} />
 
       {/* ------------------ Identificação ------------------ */}
       <TituloSecao icone="badge">Identificação</TituloSecao>
@@ -178,6 +193,7 @@ export default function FichaDoAnimal() {
           <Espaco h={espaco.sm} />
           <Botao
             titulo="Lançar produção de leite"
+            desabilitado={!ativo}
             icone="water-drop"
             variante="secundario"
             aoTocar={() => router.push(`/animal/leite/${animal.id}`)}

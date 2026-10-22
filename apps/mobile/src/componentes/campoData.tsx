@@ -10,19 +10,20 @@ const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julh
 const SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
 /** Datas de calendário em ISO, sem conversão para UTC ou dependência de rede. */
-export function CampoData({ rotulo, valor, aoMudar, obrigatorio = false }: {
+export function CampoData({ rotulo, valor, aoMudar, obrigatorio = false, permitirFuturas = false }: {
   rotulo: string;
   valor: string;
   aoMudar: (valor: string) => void;
   obrigatorio?: boolean;
+  permitirFuturas?: boolean;
 }) {
   const { c, espaco, raio } = useTema();
   const campo = useCampoFormulario(rotulo);
   const erroId = useId();
   const data = dataCadastro(valor);
-  const limite = hoje();
+  const limite = permitirFuturas ? '9999-12-31' : hoje();
   const [aberto, setAberto] = useState(false);
-  const [mes, setMes] = useState(() => (data || limite).slice(0, 7));
+  const [mes, setMes] = useState(() => (data || hoje()).slice(0, 7));
   const [ano, numeroMes] = mes.split('-').map(Number) as [number, number];
   const primeiroDia = new Date(ano, numeroMes - 1, 1).getDay();
   const dias = new Date(ano, numeroMes, 0).getDate();
@@ -54,7 +55,7 @@ export function CampoData({ rotulo, valor, aoMudar, obrigatorio = false }: {
         <>
           <Pressable accessibilityRole="button" accessibilityLabel={rotulo}
             accessibilityHint={campo.erro ?? 'Abre o calendário para selecionar a data'}
-            onPress={() => { setMes((data || limite).slice(0, 7)); setAberto(true); }}
+            onPress={() => { setMes((data || hoje()).slice(0, 7)); setAberto(true); }}
             style={{ minHeight: 48, borderWidth: 1, borderColor: borda, borderRadius: raio.input,
               padding: espaco.md, marginTop: 4, backgroundColor: c.superficieAlt }}>
             <Txt cor={data ? c.texto : c.textoSecundario}>{data ? formatarBR(data) : 'Selecionar data'}</Txt>

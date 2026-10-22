@@ -211,6 +211,9 @@ function Navegacao() {
       {/* Telas de detalhe: chega-se a elas de dentro de outra tela, então o
           cabeçalho com voltar faz falta mesmo no computador. */}
       <Stack.Screen name="editar-animal/[id]" options={{ title: 'Editar cadastro' }} />
+      <Stack.Screen name="falecidos" options={{ title: 'Gado falecido' }} />
+      <Stack.Screen name="vendidos" options={{ title: 'Gado vendido' }} />
+      <Stack.Screen name="registrar-saida/[id]" options={{ title: 'Registrar saída' }} />
       <Stack.Screen name="animal/[id]" options={{ title: 'Ficha do animal' }} />
       <Stack.Screen name="anamnese/index" options={{ title: 'Nova anamnese' }} />
       <Stack.Screen name="anamnese/[animalId]" options={{ title: 'Consulta Dr. Moo' }} />

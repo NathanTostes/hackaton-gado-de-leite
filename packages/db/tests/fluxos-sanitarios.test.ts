@@ -159,7 +159,8 @@ describe('integridade dos fluxos sanitários', () => {
     expect((await obterAnimal(animalId))?.status).toBe('saudavel');
     falhar = null;
     await registrarTratamento(tratamento);
-    for (const t of ['tratamento', 'evento_calendario', 'despesa']) expect(contar(t)).toBe(1);
+    for (const t of ['tratamento', 'despesa']) expect(contar(t)).toBe(1);
+    expect(contar('evento_calendario')).toBe(3);
     expect((await obterAnimal(animalId))?.status).toBe('em_carencia');
   });
 

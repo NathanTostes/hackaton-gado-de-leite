@@ -427,6 +427,8 @@ export const Chip = memo(function Chip({
       accessibilityRole={aoTocar ? 'button' : undefined}
       style={{
         flexDirection: 'row',
+        maxWidth: '100%',
+        minWidth: 0,
         alignItems: 'center',
         gap: 4,
         borderRadius: raio.chip,
@@ -441,7 +443,7 @@ export const Chip = memo(function Chip({
       {icone && (
         <MaterialIcons name={icone} size={15} color={ativo ? c.primariaTexto : corBase} />
       )}
-      <Text style={[t.caption, { color: ativo ? c.primariaTexto : corBase, fontSize: 13 }]}>
+      <Text style={[t.caption, { color: ativo ? c.primariaTexto : corBase, fontSize: 13, flexShrink: 1 }]}>
         {texto}
       </Text>
     </Comp>

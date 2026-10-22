@@ -8,7 +8,8 @@ export type StatusAnimal =
   | 'mastite_cronica'
   | 'quarentena'
   | 'descartado'
-  | 'morto';
+  | 'morto'
+  | 'vendido';
 
 export const ROTULO_STATUS: Record<StatusAnimal, string> = {
   saudavel: 'Saudável',
@@ -19,6 +20,7 @@ export const ROTULO_STATUS: Record<StatusAnimal, string> = {
   quarentena: 'Quarentena',
   descartado: 'Descartado',
   morto: 'Morto',
+  vendido: 'Vendido',
 };
 
 export interface Propriedade {
@@ -201,6 +203,7 @@ export interface EventoCalendario {
 }
 
 export interface EventoComAnimal extends EventoCalendario {
+  atendimento_id?: string | null;
   brinco: string | null;
   animal_nome: string | null;
 }

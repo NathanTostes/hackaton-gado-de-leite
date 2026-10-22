@@ -320,6 +320,7 @@ export async function listarRebanho(f: FiltrosRebanho = {}): Promise<AnimalComRe
     where.push(`a.status IN (${f.status.map(() => '?').join(',')})`);
     params.push(...f.status);
   }
+  if (!f.status?.length) where.push("a.status NOT IN ('morto','descartado','vendido')");
   if (f.loteId) {
     where.push('a.lote_id = ?');
     params.push(f.loteId);
@@ -414,7 +415,7 @@ export interface LoteComContagem {
 export async function listarLotes(): Promise<LoteComContagem[]> {
   return consultar<LoteComContagem>(
     `SELECT l.id, l.nome,
-            (SELECT COUNT(*) FROM animal a WHERE a.lote_id = l.id AND a.deleted_at IS NULL) AS animais
+            (SELECT COUNT(*) FROM animal a WHERE a.lote_id = l.id AND a.deleted_at IS NULL AND a.status NOT IN ('morto','descartado','vendido')) AS animais
      FROM lote l ORDER BY l.nome`,
   );
 }
@@ -565,7 +566,7 @@ export async function atualizarStatusAposTriagem(
 export async function composicaoRebanho(): Promise<ComposicaoRebanho> {
   const linhas = await consultar<{ categoria: CategoriaAnimal; n: number }>(
     `SELECT categoria, COUNT(*) AS n FROM animal
-     WHERE deleted_at IS NULL AND status NOT IN ('morto','descartado')
+     WHERE deleted_at IS NULL AND status NOT IN ('morto','descartado','vendido')
      GROUP BY categoria`,
   );
   const c: ComposicaoRebanho = {};
@@ -726,7 +727,7 @@ export async function painelMastite(ano: number, mes: number): Promise<PainelMas
 
   const vacas = await consultarUm<{ n: number }>(
     `SELECT COUNT(*) AS n FROM animal
-     WHERE categoria='vaca_lactacao' AND deleted_at IS NULL AND status NOT IN ('morto','descartado')`,
+     WHERE categoria='vaca_lactacao' AND deleted_at IS NULL AND status NOT IN ('morto','descartado','vendido')`,
   );
 
   const testes = await consultarUm<{ testadas: number; positivas: number }>(
@@ -1069,6 +1070,13 @@ export async function registrarTratamento(t: {
 
     await atualizarStatus(t.animalId, 'em_carencia');
 
+    await criarEvento({ tipo: 'medicacao', animalId: t.animalId,
+      titulo: `Início do tratamento — ${t.descricao}`, data: t.dataInicio,
+      descricao: 'Data de início registrada para o tratamento.', origem: 'automatico', referenciaId: id });
+    if (dataFim !== t.dataInicio) await criarEvento({ tipo: 'medicacao', animalId: t.animalId,
+      titulo: `Fim do tratamento — ${t.descricao}`, data: dataFim,
+      descricao: 'Data de fim registrada para o tratamento.', origem: 'automatico', referenciaId: id });
+
     await criarEvento({
       tipo: 'medicacao',
       animalId: t.animalId,
@@ -1142,13 +1150,25 @@ export async function criarEvento(e: {
   return id;
 }
 
+/** Eventos vinculados ao atendimento, incluindo os já concluídos. */
+export async function eventosDoAtendimento(atendimentoId: string): Promise<EventoComAnimal[]> {
+  return consultar<EventoComAnimal>(
+    `SELECT e.*, a.brinco, a.nome AS animal_nome, at.id AS atendimento_id
+     FROM evento_calendario e LEFT JOIN animal a ON a.id=e.animal_id
+     JOIN atendimento at ON at.id=e.referencia_id
+     WHERE e.referencia_id=? AND e.status <> 'cancelado' ORDER BY e.data, e.titulo`, [atendimentoId],
+  );
+}
+
 export async function listarEventos(de: string, ate: string): Promise<EventoComAnimal[]> {
   return consultar<EventoComAnimal>(
-    `SELECT e.*, a.brinco, a.nome AS animal_nome
+    `SELECT e.*, a.brinco, a.nome AS animal_nome, at.id AS atendimento_id
      FROM evento_calendario e LEFT JOIN animal a ON a.id = e.animal_id
-     WHERE e.data BETWEEN ? AND ? AND e.status <> 'cancelado'
+     LEFT JOIN atendimento at ON at.id = e.referencia_id
+     WHERE ((e.data BETWEEN ? AND ?) OR (e.data < ? AND e.status IN ('pendente','atrasado')))
+       AND e.status <> 'cancelado'
      ORDER BY e.data, e.tipo`,
-    [de, ate],
+    [de, ate, de],
   );
 }
 

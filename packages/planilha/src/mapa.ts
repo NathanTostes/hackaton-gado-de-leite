@@ -62,6 +62,7 @@ const STATUS = [
   'quarentena',
   'descartado',
   'morto',
+  'vendido',
 ] as const;
 
 const RESULTADOS_CMT = ['N', 'T', '1', '2', '3', 'PP'] as const;
@@ -123,6 +124,8 @@ export const ABAS: AbaPlanilha[] = [
       { coluna: 'status', titulo: 'Situação', tipo: 'texto', valores: STATUS, exemplo: 'saudavel' },
       { coluna: 'origem', titulo: 'Origem', tipo: 'texto', valores: ['nascimento', 'compra', 'transferencia', 'doacao'], exemplo: 'nascimento' },
       { coluna: 'data_entrada', titulo: 'Entrada no rebanho', tipo: 'data' },
+      { coluna: 'data_saida', titulo: 'Data de saída', tipo: 'data' },
+      { coluna: 'motivo_saida', titulo: 'Motivo de saída', tipo: 'texto' },
       { coluna: 'procedencia', titulo: 'Procedência', tipo: 'texto' },
       numeroDe('valor_aquisicao', 'Valor de aquisição (R$)'),
       { coluna: 'numero_gta', titulo: 'Número da GTA', tipo: 'texto' },
@@ -284,6 +287,7 @@ export const ABAS: AbaPlanilha[] = [
     colunas: [
       { coluna: 'animal_id', titulo: 'Brinco', tipo: 'texto', obrigatoria: true, referencia: 'animal' },
       { coluna: 'data', titulo: 'Data', tipo: 'data', obrigatoria: true },
+      { coluna: 'hora', titulo: 'Hora (HH:mm)', tipo: 'texto' },
       { coluna: 'categoria_na_morte', titulo: 'Categoria na morte', tipo: 'texto' },
       { coluna: 'causa', titulo: 'Causa', tipo: 'texto', obrigatoria: true },
       { coluna: 'orientacoes', titulo: 'Orientações', tipo: 'texto' },
@@ -308,6 +312,7 @@ export const ABAS: AbaPlanilha[] = [
     colunas: [
       { coluna: 'data', titulo: 'Data', tipo: 'data', obrigatoria: true },
       { coluna: 'categoria', titulo: 'Categoria', tipo: 'texto', obrigatoria: true, exemplo: 'leite' },
+      { coluna: 'destinatario', titulo: 'Destinatário', tipo: 'texto' },
       { coluna: 'descricao', titulo: 'Descrição', tipo: 'texto' },
       { coluna: 'valor', titulo: 'Valor (R$)', tipo: 'numero', obrigatoria: true },
       { coluna: 'animal_id', titulo: 'Brinco (se for de um animal)', tipo: 'texto', referencia: 'animal' },

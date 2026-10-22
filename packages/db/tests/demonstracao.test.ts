@@ -55,7 +55,7 @@ describe('recriação da demonstração', () => {
     for (let i = 0; i < 2; i++) {
       await recriarDemonstracao();
       const animais = await listarRebanho();
-      expect(animais).toHaveLength(91);
+      expect(animais).toHaveLength(90);
       expect(animais.filter((a) => a.status !== 'morto')).toHaveLength(90);
       expect((await obterPropriedade())?.nome).toBe('Sítio Boa Esperança');
       const agora = new Date();

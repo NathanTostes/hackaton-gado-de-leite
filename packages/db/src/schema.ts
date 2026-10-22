@@ -7,7 +7,10 @@
  * Convenções: `id TEXT PRIMARY KEY`, timestamps ISO, `deleted_at` para exclusão
  * lógica (prepara a sincronização em rede local, hoje apenas protótipo).
  */
-export const SCHEMA_VERSAO = 3;
+export const SCHEMA_VERSAO = 4;
+
+export const COLUNAS_MORTE = { hora: 'TEXT' } as const;
+export const COLUNAS_RECEITA = { destinatario: 'TEXT' } as const;
 
 export const COLUNAS_PROPRIEDADE = {
   estado: 'TEXT',
@@ -158,6 +161,7 @@ CREATE TABLE IF NOT EXISTS morte (
   id TEXT PRIMARY KEY,
   animal_id TEXT NOT NULL REFERENCES animal(id),
   data TEXT NOT NULL,
+  hora TEXT,
   categoria_na_morte TEXT,
   causa TEXT NOT NULL,
   orientacoes TEXT,
@@ -331,6 +335,7 @@ CREATE INDEX IF NOT EXISTS ix_despesa_data ON despesa(data, categoria);
 
 CREATE TABLE IF NOT EXISTS receita (
   id TEXT PRIMARY KEY,
+  destinatario TEXT,
   data TEXT NOT NULL,
   categoria TEXT NOT NULL,
   descricao TEXT,
