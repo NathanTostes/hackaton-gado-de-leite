@@ -13,6 +13,7 @@ import {
 } from '@drmoo/engine';
 import { baseCompilada } from '@drmoo/knowledge';
 import {
+  diagnosticarRebanho,
   fatosDoAnimal,
   obterAnimal,
   type AnimalComResumo,
@@ -129,6 +130,12 @@ export default function Anamnese() {
     setErroSalvar(null);
     try {
       const id = await salvarConsulta(animalId, s, parecer, [...condutaMarcada]);
+
+      // Cada anamnese pode ter mudado os indicadores do mês (um novo caso de
+      // mastite, um CMT recém-lançado): reavalia as regras de rebanho e grava
+      // no calendário as medidas que passaram a valer para a propriedade toda.
+      await diagnosticarRebanho();
+
       setSalvo(id);
     } catch (e) {
       setErroSalvar(e instanceof Error ? e.message : String(e));
