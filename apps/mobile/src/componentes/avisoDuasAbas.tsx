@@ -91,13 +91,13 @@ export function AvisoDuasAbas({
         </View>
 
         <Txt v="h1" cor={cores.preto} style={{ textAlign: 'center' }}>
-          O Dr. Moo foi aberto em outra aba
+          O Dr. Moo já está aberto em outra aba
         </Txt>
 
         <Txt v="corpo" cor={cores.cinza700} style={{ textAlign: 'center' }}>
           O caderno da propriedade é um arquivo guardado dentro do navegador, e o navegador deixa
-          só uma aba escrever nele por vez. A aba mais nova é sempre quem fica com o arquivo — é o
-          que impede duas abas de gravarem por cima uma da outra e perderem o registro da ordenha.
+          só uma aba escrever nele por vez. É o que impede duas abas de gravarem por cima uma da
+          outra e perderem o registro da ordenha.
         </Txt>
 
         <View
@@ -109,7 +109,7 @@ export function AvisoDuasAbas({
             gap: 8,
           }}
         >
-          <Passo numero={1} texto="Volte à aba mais nova do Dr. Moo e continue por lá." />
+          <Passo numero={1} texto="Volte à outra aba do Dr. Moo e continue por lá." />
           <Passo numero={2} texto="Ou feche a outra aba e toque em “Tentar de novo” aqui." />
         </View>
 
