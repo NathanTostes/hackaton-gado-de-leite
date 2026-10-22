@@ -100,17 +100,92 @@ export async function salvarPropriedade(p: Partial<Propriedade>): Promise<void> 
 // ---------------------------------------------------------------------------
 
 export interface FiltrosRebanho {
+  /** Texto livre. Cada palavra precisa aparecer em algum campo do animal. */
   busca?: string;
   categorias?: CategoriaAnimal[];
   status?: StatusAnimal[];
   loteId?: string | null;
+  /** Animais sem lote definido. */
+  semLote?: boolean;
+  sexo?: 'M' | 'F';
   delMin?: number;
   delMax?: number;
+  idadeMinMeses?: number;
+  idadeMaxMeses?: number;
   producaoMin?: number;
+  producaoMax?: number;
   cmtPositivo?: boolean;
+  /** Pior resultado de CMT no último exame igual ou acima deste grau. */
+  cmtMinimo?: '1' | '2' | '3';
+  peitoPerdido?: boolean;
   emCarencia?: boolean;
-  ordenarPor?: 'brinco' | 'producao' | 'del' | 'alerta';
+  prenhe?: boolean;
+  /** Parto previsto dentro dos próximos N dias. */
+  partoEmDias?: number;
+  ordenarPor?: 'brinco' | 'nome' | 'producao' | 'del' | 'idade' | 'cmt' | 'lote' | 'parto' | 'alerta';
+  decrescente?: boolean;
 }
+
+/**
+ * Normaliza acento e caixa dentro do SQLite.
+ *
+ * `lower()` do SQLite só conhece ASCII e `LIKE` não ignora acento: sem isso,
+ * procurar "holandes" não acha "Holandês" e "Mimosa" não acha "mimosa" se a
+ * acentuação divergir. Trocar letra a letra é feio, mas é determinístico e não
+ * exige extensão nenhuma — o mesmo código roda no navegador, no aparelho e nos
+ * testes.
+ */
+const ACENTOS: [string, string][] = [
+  ['á', 'a'], ['à', 'a'], ['â', 'a'], ['ã', 'a'], ['ä', 'a'],
+  ['é', 'e'], ['è', 'e'], ['ê', 'e'], ['ë', 'e'],
+  ['í', 'i'], ['ì', 'i'], ['î', 'i'], ['ï', 'i'],
+  ['ó', 'o'], ['ò', 'o'], ['ô', 'o'], ['õ', 'o'], ['ö', 'o'],
+  ['ú', 'u'], ['ù', 'u'], ['û', 'u'], ['ü', 'u'],
+  ['ç', 'c'], ['ñ', 'n'],
+  ['Á', 'a'], ['À', 'a'], ['Â', 'a'], ['Ã', 'a'], ['Ä', 'a'],
+  ['É', 'e'], ['È', 'e'], ['Ê', 'e'], ['Ë', 'e'],
+  ['Í', 'i'], ['Ì', 'i'], ['Î', 'i'], ['Ï', 'i'],
+  ['Ó', 'o'], ['Ò', 'o'], ['Ô', 'o'], ['Õ', 'o'], ['Ö', 'o'],
+  ['Ú', 'u'], ['Ù', 'u'], ['Û', 'u'], ['Ü', 'u'],
+  ['Ç', 'c'], ['Ñ', 'n'],
+];
+
+function semAcentosSQL(expressao: string): string {
+  return ACENTOS.reduce((sql, [de, para]) => `replace(${sql}, '${de}', '${para}')`, `lower(${expressao})`);
+}
+
+/** A mesma normalização, do lado do JavaScript, para o termo digitado. */
+export function normalizarBusca(texto: string): string {
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+/** Campos varridos pela busca livre. */
+const CAMPOS_BUSCA = [
+  'a.brinco',
+  'a.nome',
+  'a.tatuagem',
+  'a.raca',
+  'a.pelagem_sinal',
+  'a.categoria',
+  'a.status',
+  'a.procedencia',
+  'a.numero_gta',
+  'a.observacoes',
+  'a.pai_nome',
+  'a.mae_nome',
+  'l.nome',
+];
+
+const EXPRESSAO_IDADE_MESES = `
+  COALESCE(
+    CAST((julianday('now') - julianday(a.data_nascimento)) / 30.44 AS INTEGER),
+    a.idade_estimada_meses
+      + CAST((julianday('now') - julianday(COALESCE(a.idade_estimada_em, a.created_at))) / 30.44 AS INTEGER)
+  )`;
 
 /**
  * Query única com os campos derivados que a lista precisa.
@@ -142,7 +217,9 @@ SELECT
      AND ('PP' IN (c.ad, c.ae, c.pd, c.pe))) AS qtd_pp,
   (SELECT cob.data_provavel_parto FROM cobertura cob
      WHERE cob.animal_id = a.id AND cob.confirmada_prenhe = 1
-     ORDER BY cob.data DESC LIMIT 1) AS data_provavel_parto
+     ORDER BY cob.data DESC LIMIT 1) AS data_provavel_parto,
+  ${EXPRESSAO_IDADE_MESES} AS idade_meses,
+  ${semAcentosSQL(CAMPOS_BUSCA.map((campo) => `COALESCE(${campo}, '')`).join(` || ' ' || `))} AS texto_busca
 FROM animal a
 LEFT JOIN lote l ON l.id = a.lote_id
 LEFT JOIN lactacao lac ON lac.id = (
@@ -164,6 +241,7 @@ interface LinhaResumo extends Animal {
   carencia_leite_ate: string | null;
   qtd_pp: number | null;
   data_provavel_parto: string | null;
+  idade_meses: number | null;
 }
 
 function montarResumo(l: LinhaResumo, referencia: string): AnimalComResumo {
@@ -181,22 +259,51 @@ function montarResumo(l: LinhaResumo, referencia: string): AnimalComResumo {
     carencia_leite_ate: l.carencia_leite_ate,
     tem_peito_perdido: (l.qtd_pp ?? 0) > 0,
     data_provavel_parto: l.data_provavel_parto,
+    idade_meses: l.idade_meses,
   };
+}
+
+/**
+ * ORDER BY da lista. O desempate é sempre o brinco: sem ele, animais com o
+ * mesmo valor trocam de lugar entre consultas e a lista "pisca" ao filtrar.
+ */
+function montarOrdenacao(f: FiltrosRebanho): string {
+  const dir = f.decrescente ? 'DESC' : 'ASC';
+  switch (f.ordenarPor) {
+    case 'producao':
+      return `COALESCE(producao_media_dia, 0) ${f.decrescente === false ? 'ASC' : 'DESC'}, brinco`;
+    case 'del':
+      // Mais recém-parida primeiro = data de parto mais nova primeiro.
+      return `data_parto IS NULL, data_parto ${f.decrescente ? 'ASC' : 'DESC'}, brinco`;
+    case 'idade':
+      return `idade_meses IS NULL, idade_meses ${dir}, brinco`;
+    case 'nome':
+      return `COALESCE(NULLIF(nome, ''), brinco) ${dir}`;
+    case 'lote':
+      return `lote_nome IS NULL, lote_nome ${dir}, brinco`;
+    case 'parto':
+      return `data_provavel_parto IS NULL, data_provavel_parto ${dir}, brinco`;
+    case 'cmt':
+      // Pior resultado primeiro: 3 > 2 > 1 > traço > sem exame.
+      return `CASE
+                WHEN cmt_quartos LIKE '%3%' THEN 0
+                WHEN cmt_quartos LIKE '%2%' THEN 1
+                WHEN cmt_quartos LIKE '%1%' THEN 2
+                WHEN cmt_quartos LIKE '%T%' THEN 3
+                WHEN cmt_quartos IS NULL THEN 5
+                ELSE 4 END ${dir}, brinco`;
+    case 'alerta':
+      return `CASE status WHEN 'em_tratamento' THEN 0 WHEN 'em_carencia' THEN 1
+              WHEN 'mastite_cronica' THEN 2 WHEN 'quarentena' THEN 3 ELSE 4 END ${dir}, brinco`;
+    default:
+      return `brinco ${dir}`;
+  }
 }
 
 export async function listarRebanho(f: FiltrosRebanho = {}): Promise<AnimalComResumo[]> {
   const where: string[] = [];
   const params: (string | number)[] = [];
 
-  if (f.busca?.trim()) {
-    // Atenção: em SQLite, aspas duplas são IDENTIFICADORES, não literais de
-    // texto. `COALESCE(a.nome, "")` procura uma coluna chamada "" e falha.
-    where.push(
-      `(a.brinco LIKE ? OR COALESCE(a.nome, '') LIKE ? OR COALESCE(a.tatuagem, '') LIKE ? OR COALESCE(a.raca, '') LIKE ? OR COALESCE(a.pelagem_sinal, '') LIKE ?)`,
-    );
-    const t = `%${f.busca.trim()}%`;
-    params.push(t, t, t, t, t);
-  }
   if (f.categorias?.length) {
     where.push(`a.categoria IN (${f.categorias.map(() => '?').join(',')})`);
     params.push(...f.categorias);
@@ -209,9 +316,26 @@ export async function listarRebanho(f: FiltrosRebanho = {}): Promise<AnimalComRe
     where.push('a.lote_id = ?');
     params.push(f.loteId);
   }
+  if (f.semLote) {
+    where.push('a.lote_id IS NULL');
+  }
+  if (f.sexo) {
+    where.push('a.sexo = ?');
+    params.push(f.sexo);
+  }
 
   // Filtros sobre colunas derivadas precisam ficar fora do WHERE base.
   const having: string[] = [];
+
+  // Busca por palavras: cada termo precisa aparecer em algum campo do animal,
+  // então "holandesa lactação" encontra a vaca holandesa em lactação, e não
+  // tudo que tem uma coisa ou outra. Acento e caixa já vêm normalizados na
+  // coluna `texto_busca`.
+  for (const termo of normalizarBusca(f.busca ?? '').split(/\s+/).filter(Boolean)) {
+    having.push('texto_busca LIKE ?');
+    params.push(`%${termo}%`);
+  }
+
   if (f.delMin !== undefined) {
     having.push("CAST(julianday('now') - julianday(data_parto) AS INTEGER) >= ?");
     params.push(f.delMin);
@@ -220,26 +344,46 @@ export async function listarRebanho(f: FiltrosRebanho = {}): Promise<AnimalComRe
     having.push("CAST(julianday('now') - julianday(data_parto) AS INTEGER) <= ?");
     params.push(f.delMax);
   }
+  if (f.idadeMinMeses !== undefined) {
+    having.push('idade_meses >= ?');
+    params.push(f.idadeMinMeses);
+  }
+  if (f.idadeMaxMeses !== undefined) {
+    having.push('idade_meses IS NOT NULL AND idade_meses <= ?');
+    params.push(f.idadeMaxMeses);
+  }
   if (f.producaoMin !== undefined) {
     having.push('COALESCE(producao_media_dia, 0) >= ?');
     params.push(f.producaoMin);
   }
+  if (f.producaoMax !== undefined) {
+    having.push('COALESCE(producao_media_dia, 0) <= ?');
+    params.push(f.producaoMax);
+  }
   if (f.cmtPositivo) {
     having.push("(cmt_quartos LIKE '%1%' OR cmt_quartos LIKE '%2%' OR cmt_quartos LIKE '%3%')");
+  }
+  if (f.cmtMinimo) {
+    // '3' só casa com 3; '2' casa com 2 e 3; '1' com 1, 2 e 3.
+    const graus = ['1', '2', '3'].filter((g) => g >= f.cmtMinimo!);
+    having.push(`(${graus.map(() => 'cmt_quartos LIKE ?').join(' OR ')})`);
+    params.push(...graus.map((g) => `%${g}%`));
+  }
+  if (f.peitoPerdido) {
+    having.push('qtd_pp > 0');
   }
   if (f.emCarencia) {
     having.push('carencia_leite_ate IS NOT NULL');
   }
+  if (f.prenhe) {
+    having.push('data_provavel_parto IS NOT NULL');
+  }
+  if (f.partoEmDias !== undefined) {
+    having.push("data_provavel_parto IS NOT NULL AND data_provavel_parto BETWEEN date('now') AND date('now', ?)");
+    params.push(`+${f.partoEmDias} day`);
+  }
 
-  const ordem =
-    f.ordenarPor === 'producao'
-      ? 'COALESCE(producao_media_dia, 0) DESC'
-      : f.ordenarPor === 'del'
-        ? 'data_parto DESC'
-        : f.ordenarPor === 'alerta'
-          ? `CASE status WHEN 'em_tratamento' THEN 0 WHEN 'em_carencia' THEN 1
-             WHEN 'mastite_cronica' THEN 2 WHEN 'quarentena' THEN 3 ELSE 4 END, brinco`
-          : 'brinco';
+  const ordem = montarOrdenacao(f);
 
   const sql = `
     SELECT * FROM (${SQL_ANIMAL_RESUMO} ${where.length ? `AND ${where.join(' AND ')}` : ''})
@@ -250,6 +394,21 @@ export async function listarRebanho(f: FiltrosRebanho = {}): Promise<AnimalComRe
   const linhas = await consultar<LinhaResumo>(sql, params);
   const ref = hoje();
   return linhas.map((l) => montarResumo(l, ref));
+}
+
+export interface LoteComContagem {
+  id: string;
+  nome: string;
+  animais: number;
+}
+
+/** Lotes da propriedade, com quantos animais vivos cada um tem. */
+export async function listarLotes(): Promise<LoteComContagem[]> {
+  return consultar<LoteComContagem>(
+    `SELECT l.id, l.nome,
+            (SELECT COUNT(*) FROM animal a WHERE a.lote_id = l.id AND a.deleted_at IS NULL) AS animais
+     FROM lote l ORDER BY l.nome`,
+  );
 }
 
 export async function obterAnimal(id: string): Promise<AnimalComResumo | null> {
@@ -595,6 +754,147 @@ export async function atendimentosRecentes(limite = 10): Promise<
      ORDER BY at.data_hora DESC LIMIT ?`,
     [limite],
   );
+}
+
+// ---------------------------------------------------------------------------
+// Panorama de diagnósticos — todas as doenças, não só mastite
+// ---------------------------------------------------------------------------
+
+/** Uma hipótese como ficou gravada no atendimento (saída do motor). */
+interface ConclusaoGravada {
+  id: string;
+  rotulo: string;
+  grupo: string;
+  cf: number;
+  confianca: string;
+  bandeiraVermelha: boolean;
+}
+
+export interface OcorrenciaDiagnostico {
+  atendimentoId: string;
+  animalId: string;
+  brinco: string;
+  nome: string | null;
+  em: string;
+  confianca: string;
+  cf: number;
+}
+
+export interface DiagnosticoDoRebanho {
+  id: string;
+  rotulo: string;
+  grupo: string;
+  total: number;
+  ultimaEm: string;
+  bandeiraVermelha: boolean;
+  ocorrencias: OcorrenciaDiagnostico[];
+}
+
+export interface PanoramaDiagnosticos {
+  desde: string;
+  /** Atendimentos concluídos no período. */
+  atendimentos: number;
+  /** Atendimentos que terminaram sem hipótese acima do limiar. */
+  semConclusao: number;
+  porGrupo: { grupo: string; total: number }[];
+  diagnosticos: DiagnosticoDoRebanho[];
+  bandeirasVermelhas: DiagnosticoDoRebanho[];
+}
+
+/** Abaixo disso a hipótese é dúvida, não diagnóstico — não entra na contagem. */
+const CF_MINIMO_DIAGNOSTICO = 0.5;
+
+/**
+ * O que o rebanho teve, por doença e por grupo, segundo os atendimentos.
+ *
+ * Lê as conclusões gravadas pelo motor — qualquer uma das 28 hipóteses da base,
+ * de hipocalcemia a laminite — e não só os casos de mastite, que têm tabela
+ * própria por causa do CMT. Sem isto, a tela de saúde só sabia falar de úbere.
+ *
+ * O JSON é interpretado em JavaScript porque SQLite sem a extensão JSON1 não o
+ * lê; o custo é limitado pela janela de dias, não pelo tamanho do histórico.
+ */
+export async function panoramaDiagnosticos(dias = 180): Promise<PanoramaDiagnosticos> {
+  const desde = somarDias(hoje(), -dias);
+  const linhas = await consultar<{
+    id: string;
+    animal_id: string;
+    data_hora: string;
+    conclusoes: string;
+    brinco: string;
+    animal_nome: string | null;
+  }>(
+    `SELECT at.id, at.animal_id, at.data_hora, at.conclusoes, a.brinco, a.nome AS animal_nome
+     FROM atendimento at JOIN animal a ON a.id = at.animal_id
+     WHERE at.status = 'concluido' AND date(at.data_hora) >= ?
+     ORDER BY at.data_hora DESC`,
+    [desde],
+  );
+
+  const porId = new Map<string, DiagnosticoDoRebanho>();
+  let semConclusao = 0;
+
+  for (const linha of linhas) {
+    let conclusoes: ConclusaoGravada[] = [];
+    try {
+      const bruto: unknown = JSON.parse(linha.conclusoes || '[]');
+      conclusoes = Array.isArray(bruto) ? (bruto as ConclusaoGravada[]) : [];
+    } catch {
+      // Atendimento gravado por uma versão anterior: conta como sem conclusão
+      // em vez de derrubar o painel inteiro.
+    }
+
+    const relevantes = conclusoes.filter(
+      (c) => c && c.id && c.id !== 'sem_alteracao' && (c.cf ?? 0) >= CF_MINIMO_DIAGNOSTICO,
+    );
+    if (!relevantes.length) {
+      semConclusao += 1;
+      continue;
+    }
+
+    for (const c of relevantes) {
+      const atual = porId.get(c.id) ?? {
+        id: c.id,
+        rotulo: c.rotulo ?? c.id,
+        grupo: c.grupo ?? 'triagem',
+        total: 0,
+        ultimaEm: linha.data_hora,
+        bandeiraVermelha: Boolean(c.bandeiraVermelha),
+        ocorrencias: [],
+      };
+      atual.total += 1;
+      atual.bandeiraVermelha = atual.bandeiraVermelha || Boolean(c.bandeiraVermelha);
+      if (linha.data_hora > atual.ultimaEm) atual.ultimaEm = linha.data_hora;
+      atual.ocorrencias.push({
+        atendimentoId: linha.id,
+        animalId: linha.animal_id,
+        brinco: linha.brinco,
+        nome: linha.animal_nome,
+        em: linha.data_hora,
+        confianca: c.confianca ?? '',
+        cf: c.cf ?? 0,
+      });
+      porId.set(c.id, atual);
+    }
+  }
+
+  const diagnosticos = [...porId.values()].sort(
+    (a, b) => b.total - a.total || (a.ultimaEm < b.ultimaEm ? 1 : -1),
+  );
+
+  const grupos = new Map<string, number>();
+  for (const d of diagnosticos) grupos.set(d.grupo, (grupos.get(d.grupo) ?? 0) + d.total);
+
+  return {
+    desde,
+    atendimentos: linhas.length,
+    semConclusao,
+    porGrupo: [...grupos.entries()]
+      .map(([grupo, total]) => ({ grupo, total }))
+      .sort((a, b) => b.total - a.total),
+    diagnosticos,
+    bandeirasVermelhas: diagnosticos.filter((d) => d.bandeiraVermelha),
+  };
 }
 
 export async function registrarCasoMastite(c: {
