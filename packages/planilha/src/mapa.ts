@@ -55,6 +55,7 @@ const CATEGORIAS = [
 
 const STATUS = [
   'saudavel',
+  'suspeito',
   'em_tratamento',
   'em_carencia',
   'mastite_cronica',

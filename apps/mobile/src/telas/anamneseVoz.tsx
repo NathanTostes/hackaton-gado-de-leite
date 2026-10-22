@@ -29,13 +29,10 @@ import { baseCompilada } from '@drmoo/knowledge';
 import {
   definirModoLeituraVoz,
   fatosDoAnimal,
-  lancarCMT,
   listarRebanho,
-  registrarCasoMastite,
-  salvarAtendimento,
   type AnimalComResumo,
 } from '@drmoo/db';
-import { ROTULO_CATEGORIA, hoje } from '@drmoo/domain';
+import { ROTULO_CATEGORIA } from '@drmoo/domain';
 import { Carregando, Txt } from '../componentes/base';
 import {
   BotaoCantoSair,
@@ -45,6 +42,7 @@ import {
 } from '../componentes/acessibilidade';
 import { falar, pararDeFalar } from '../voz';
 import { useTema } from '../tema';
+import { salvarConsulta } from '../salvarConsulta';
 
 export default function AnamneseVoz({ aoSair }: { aoSair: () => void }) {
   const [animal, setAnimal] = useState<AnimalComResumo | null>(null);
@@ -178,44 +176,7 @@ function Atendimento({
     if (!s || salvando) return;
     setSalvando(true);
     try {
-      const serializado = s.serializar();
-      const id = await salvarAtendimento({
-        animal_id: animal.id,
-        data_hora: new Date().toISOString(),
-        queixa_principal: null,
-        kb_versao: parecer.kbVersao,
-        engine_versao: parecer.engineVersao,
-        fatos_iniciais: JSON.stringify(serializado.fatosIniciais),
-        respostas: JSON.stringify(serializado.respostas),
-        conclusoes: JSON.stringify(parecer.hipoteses),
-        traco: JSON.stringify(parecer.traco),
-        conduta_check: JSON.stringify([]),
-        motivo_parada: parecer.motivoParada,
-        status: 'concluido',
-        observacoes: null,
-      });
-
-      const principal = parecer.hipoteses[0];
-      if (principal?.id.startsWith('mastite_clinica')) {
-        await registrarCasoMastite({
-          animalId: animal.id,
-          quartos: 1,
-          tipo: 'clinica',
-          grau: Number(principal.id.slice(-1)) || null,
-          dataInicio: hoje(),
-          atendimentoId: id,
-        });
-      }
-
-      const cmt = s.memoria.get('cmt_pior_quarto');
-      if (cmt && typeof cmt.valor === 'string' && cmt.origem === 'pergunta') {
-        await lancarCMT(animal.id, hoje(), {
-          ad: cmt.valor as 'N' | 'T' | '1' | '2' | '3' | 'PP',
-          ae: null,
-          pd: null,
-          pe: null,
-        });
-      }
+      await salvarConsulta(animal.id, s, parecer, []);
 
       setSalvo(true);
       falar('Prontuário salvo.');

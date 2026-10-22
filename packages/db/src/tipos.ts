@@ -2,6 +2,7 @@ import type { CategoriaAnimal, CategoriaDespesa, CategoriaReceita, ResultadoCMT 
 
 export type StatusAnimal =
   | 'saudavel'
+  | 'suspeito'
   | 'em_tratamento'
   | 'em_carencia'
   | 'mastite_cronica'
@@ -11,6 +12,7 @@ export type StatusAnimal =
 
 export const ROTULO_STATUS: Record<StatusAnimal, string> = {
   saudavel: 'Saudável',
+  suspeito: 'Suspeita clínica',
   em_tratamento: 'Em tratamento',
   em_carencia: 'Em carência',
   mastite_cronica: 'Mastite crônica',

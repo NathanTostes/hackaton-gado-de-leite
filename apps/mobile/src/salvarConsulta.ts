@@ -1,5 +1,5 @@
 import type { Parecer, Sessao } from '@drmoo/engine';
-import { emTransacao, lancarCMT, registrarCasoMastite, salvarAtendimento } from '@drmoo/db';
+import { atualizarStatusAposTriagem, emTransacao, lancarCMT, registrarCasoMastite, salvarAtendimento } from '@drmoo/db';
 import { hoje, type ResultadoCMT } from '@drmoo/domain';
 
 /** Prontuário, caso sanitário e exame só ficam salvos se a consulta inteira gravar. */
@@ -28,6 +28,8 @@ export async function salvarConsulta(
       status: 'concluido',
       observacoes: null,
     });
+
+    await atualizarStatusAposTriagem(animalId, parecer.hipoteses, parecer.bandeiraVermelha !== null);
 
     // O ranking é por confiança. A clínica pode coexistir com outra hipótese
     // mais acima; registra um único caso, com o maior grau clínico identificado.

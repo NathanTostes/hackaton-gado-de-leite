@@ -60,7 +60,7 @@ const CATEGORIAS: CategoriaAnimal[] = [
 
 // 'morto' e 'descartado' saem da lista por outro caminho (exclusão lógica e
 // registro de morte); filtrar por eles aqui só confundiria.
-const STATUS: StatusAnimal[] = ['saudavel', 'em_tratamento', 'em_carencia', 'mastite_cronica', 'quarentena'];
+const STATUS: StatusAnimal[] = ['saudavel', 'suspeito', 'em_tratamento', 'em_carencia', 'mastite_cronica', 'quarentena'];
 
 const ORDENS: { chave: NonNullable<FiltrosRebanho['ordenarPor']>; rotulo: string }[] = [
   { chave: 'brinco', rotulo: 'Brinco' },
@@ -452,15 +452,17 @@ function ItemRebanho({ animal }: { animal: AnimalComResumo }) {
   const { c, espaco, raio } = useTema();
   const cmt = animal.ultimo_cmt;
   const alerta =
-    animal.status === 'em_carencia'
-      ? { cor: c.alerta, icone: 'block' as const }
-      : animal.status === 'em_tratamento'
-        ? { cor: c.atencao, icone: 'medication' as const }
-        : animal.status === 'mastite_cronica'
-          ? { cor: c.alerta, icone: 'coronavirus' as const }
-          : animal.status === 'quarentena'
-            ? { cor: c.atencao, icone: 'shield' as const }
-            : null;
+    animal.status === 'suspeito'
+      ? { cor: c.alerta, icone: 'warning' as const }
+      : animal.status === 'em_carencia'
+        ? { cor: c.alerta, icone: 'block' as const }
+        : animal.status === 'em_tratamento'
+          ? { cor: c.atencao, icone: 'medication' as const }
+          : animal.status === 'mastite_cronica'
+            ? { cor: c.alerta, icone: 'coronavirus' as const }
+            : animal.status === 'quarentena'
+              ? { cor: c.atencao, icone: 'shield' as const }
+              : null;
 
   const idade = idadeLegivel(animal.idade_meses);
   const detalhes = [

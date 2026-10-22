@@ -88,6 +88,15 @@ describe('planilha da propriedade', () => {
     });
   });
 
+  it('preserva o estado de suspeita clínica na exportação e importação', async () => {
+    await salvarAnimal({ brinco: '901', categoria: 'vaca_lactacao', sexo: 'F', status: 'suspeito' });
+    const bytes = await exportarPlanilha();
+    definirBackend(backendNode());
+    const relatorio = await importarPlanilha(bytes);
+    expect(relatorio.erros).toEqual([]);
+    expect((await listarRebanho())[0]?.status).toBe('suspeito');
+  });
+
   it('importa animais, lotes e produção referenciando por brinco e nome do lote', async () => {
     const arquivo = await arquivoCom({
       Lotes: [{ Lote: 'Vacas em lactação', Descrição: 'Alta produção' }],

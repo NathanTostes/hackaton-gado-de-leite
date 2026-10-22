@@ -302,7 +302,7 @@ function montarOrdenacao(f: FiltrosRebanho): string {
                 ELSE 4 END ${dir}, brinco`;
     case 'alerta':
       return `CASE status WHEN 'em_tratamento' THEN 0 WHEN 'em_carencia' THEN 1
-              WHEN 'mastite_cronica' THEN 2 WHEN 'quarentena' THEN 3 ELSE 4 END ${dir}, brinco`;
+              WHEN 'mastite_cronica' THEN 2 WHEN 'suspeito' THEN 3 WHEN 'quarentena' THEN 4 ELSE 5 END ${dir}, brinco`;
     default:
       return `brinco ${dir}`;
   }
@@ -540,6 +540,26 @@ export async function atualizarStatus(animalId: string, status: StatusAnimal): P
     agoraISO(),
     animalId,
   ]);
+}
+
+/**
+ * A triagem indica suspeita, não confirma doença nem inicia tratamento.
+ * Só sai de saudável: uma consulta inconclusiva não equivale a alta clínica.
+ * Chamado dentro da transação que grava o prontuário e seus exames.
+ */
+export async function atualizarStatusAposTriagem(
+  animalId: string,
+  hipoteses: readonly { id: string; grupo: string; cf: number }[],
+  bandeiraVermelha = false,
+): Promise<void> {
+  const suspeita = bandeiraVermelha || hipoteses.some((h) =>
+    h.id !== 'sem_alteracao' && h.grupo !== 'rebanho' && Number.isFinite(h.cf) && h.cf > 0,
+  );
+  if (!suspeita) return;
+  await executar(
+    "UPDATE animal SET status='suspeito', updated_at=? WHERE id=? AND status='saudavel' AND deleted_at IS NULL",
+    [agoraISO(), animalId],
+  );
 }
 
 export async function composicaoRebanho(): Promise<ComposicaoRebanho> {

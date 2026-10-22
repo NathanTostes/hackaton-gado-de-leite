@@ -27,6 +27,7 @@ const estado = vi.hoisted(() => ({
 vi.mock('@drmoo/db', () => ({
   ROTULO_STATUS: {
     saudavel: 'Saudável',
+    suspeito: 'Suspeita clínica',
     em_tratamento: 'Em tratamento',
     em_carencia: 'Em carência',
     mastite_cronica: 'Mastite crônica',
@@ -152,6 +153,13 @@ describe('tela de rebanho', () => {
     expect(html).toContain('Lactação');
     expect(html).toContain('120 DEL');
     expect(html).toContain('16,4 L/dia');
+  });
+
+  it('mostra o alerta de suspeita clínica no animal após a anamnese', () => {
+    estado.animais[0]!.status = 'suspeito';
+    const html = renderizar();
+    expect(html).toContain('Suspeita clínica');
+    expect(estado.chips.some((chip) => chip.texto === 'Suspeita clínica')).toBe(true);
   });
 
   it('a primeira consulta vai sem filtro e ordenada por brinco', () => {
