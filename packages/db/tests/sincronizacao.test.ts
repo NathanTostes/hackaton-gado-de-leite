@@ -140,7 +140,7 @@ describe('sincronização entre dois aparelhos da mesma rede', () => {
     const linhas = [filha, mae, avo].map((id) => foto.tabelas.animal!.find((a) => a.id === id)!);
     usar(aparelhoB);
     const resultado = await aplicarLinhas({ animal: linhas });
-    expect(resultado).toEqual({ aplicadas: { animal: 3 }, conflitos: [] });
+    expect(resultado).toEqual({ aplicadas: { animal: 3 }, removidas: {}, conflitos: [] });
     expect((await obterAnimal(filha))?.mae_id).toBe(mae);
     expect((await obterAnimal(mae))?.mae_id).toBe(avo);
     expect(await consultar('PRAGMA foreign_key_check')).toEqual([]);

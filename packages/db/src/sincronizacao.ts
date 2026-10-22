@@ -19,6 +19,7 @@ import {
   diferenca,
   enviarInstantaneo,
   normalizarEndereco,
+  perdedoresDaChaveNatural,
   type DispositivoConhecido,
   type Instantaneo,
   type Linha,
@@ -92,11 +93,17 @@ export async function instantaneoLocal(dispositivo?: string): Promise<Instantane
  * Linha a linha, e não em bloco: uma única linha recusada (brinco repetido
  * criado nos dois aparelhos, por exemplo) não pode derrubar a sincronização
  * inteira — ela vira um conflito relatado ao usuário, e o resto entra.
+ *
+ * `remover` são os ids que a base mesclada descartou (a duplicata que perdeu a
+ * chave natural). Saem antes das gravações, e na mesma transação: é a linha
+ * perdedora que ocupa a chave UNIQUE de quem está entrando.
  */
 export async function aplicarLinhas(
   porTabela: Record<string, Linha[]>,
-): Promise<Pick<ResultadoSincronizacao, 'aplicadas' | 'conflitos'>> {
+  remover: Record<string, string[]> = {},
+): Promise<Pick<ResultadoSincronizacao, 'aplicadas' | 'removidas' | 'conflitos'>> {
   const aplicadas: Record<string, number> = {};
+  const removidas: Record<string, number> = {};
   const conflitos: ResultadoSincronizacao['conflitos'] = [];
 
   const operacoes: { tabela: string; id: string; sql: string; params: Parametro[] }[] = [];
@@ -117,6 +124,17 @@ export async function aplicarLinhas(
   }
 
   await emTransacao(async () => {
+    for (const tabela of TABELAS_SINCRONIZADAS) {
+      for (const id of remover[tabela] ?? []) {
+        try {
+          await executar(`DELETE FROM ${tabela} WHERE id = ?`, [id]);
+          removidas[tabela] = (removidas[tabela] ?? 0) + 1;
+        } catch (e) {
+          conflitos.push({ tabela, id, motivo: e instanceof Error ? e.message : String(e) });
+        }
+      }
+    }
+
     // Mantém as constraints ativas e tenta novamente quem dependia de uma linha
     // ainda não gravada (por exemplo, filha cadastrada antes da mãe).
     // Ao parar de avançar, os conflitos reais são relatados sem desfazer os válidos.
@@ -141,7 +159,7 @@ export async function aplicarLinhas(
     }
   });
 
-  return { aplicadas, conflitos };
+  return { aplicadas, removidas, conflitos };
 }
 
 export async function verificarServidor(endereco: string): Promise<Saude> {
@@ -165,7 +183,8 @@ export async function sincronizar(opcoes: OpcoesSincronizacao): Promise<Resultad
   const resposta = await enviarInstantaneo(base, opcoes.codigo.trim(), local);
 
   const novidades = diferenca(local, resposta.instantaneo);
-  const { aplicadas, conflitos } = await aplicarLinhas(novidades);
+  const perdedoras = perdedoresDaChaveNatural(local, resposta.instantaneo);
+  const { aplicadas, removidas, conflitos } = await aplicarLinhas(novidades, perdedoras);
 
   const em = agoraISO();
   if (opcoes.lembrar !== false) {
@@ -175,6 +194,7 @@ export async function sincronizar(opcoes: OpcoesSincronizacao): Promise<Resultad
 
   return {
     aplicadas,
+    removidas,
     conflitos,
     enviadas: contarLinhas(local),
     dispositivos: resposta.dispositivos as DispositivoConhecido[],
