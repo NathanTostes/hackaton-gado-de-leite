@@ -1,0 +1,1504 @@
+{
+  "versao": "1.0.0",
+  "descricao": "Rebanho sintético de 100 animais com prontuário clínico e diagnóstico esperado. Os quadros foram redigidos a partir da semiologia de bovinos leiteiros (sinais que o produtor observa no curral), sem partir das regras da base — servem como teste de caixa-preta do motor de inferência.",
+  "prontuarios": [
+    {
+      "id": "P001",
+      "animal": { "brinco": "0001", "nome": "Mimosa", "raca": "Holandesa", "sexo": "F", "idade_meses": 54, "lactante": true, "numero_lactacao": 3, "del": 45, "producao_media_dia": 28 },
+      "queixa": "Grumos nos primeiros jatos do teto traseiro direito; úbere normal ao tato",
+      "fatos": {
+        "caneca_grumos": true,
+        "caneca_cor_alterada": false,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "palpacao_endurecido": false,
+        "palpacao_vermelhidao": false,
+        "febre": false,
+        "apetite_reduzido": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g1", "naoDeveConcluir": ["mastite_clinica_g2", "mastite_clinica_g3", "sem_alteracao"] }
+    },
+    {
+      "id": "P002",
+      "animal": { "brinco": "0002", "nome": "Estrela", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 42, "lactante": true, "numero_lactacao": 2, "del": 120, "producao_media_dia": 19 },
+      "queixa": "Leite aguado e amarelado na caneca, mama sem inflamação",
+      "fatos": {
+        "caneca_grumos": false,
+        "caneca_cor_alterada": true,
+        "caneca_consistencia_alterada": true,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "palpacao_endurecido": false,
+        "palpacao_vermelhidao": false,
+        "febre": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g1", "naoDeveConcluir": ["mastite_clinica_g2", "sem_alteracao"] }
+    },
+    {
+      "id": "P003",
+      "animal": { "brinco": "0003", "nome": "Preta", "raca": "Jersey", "sexo": "F", "idade_meses": 61, "lactante": true, "numero_lactacao": 4, "del": 200, "producao_media_dia": 15 },
+      "queixa": "Leite com pus; não aceita ser ordenhada nesse quarto",
+      "fatos": {
+        "caneca_grumos": true,
+        "caneca_consistencia_alterada": true,
+        "nao_deixa_ordenhar": true,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "palpacao_endurecido": false,
+        "febre": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g1", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P004",
+      "animal": { "brinco": "0004", "nome": "Lua", "raca": "Holandesa", "sexo": "F", "idade_meses": 38, "lactante": true, "numero_lactacao": 1, "del": 30, "producao_media_dia": 22 },
+      "queixa": "Primeiros jatos com coágulos, descoberto no teste da caneca da manhã",
+      "fatos": {
+        "caneca_grumos": true,
+        "caneca_cor_alterada": false,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "palpacao_vermelhidao": false,
+        "palpacao_endurecido": false,
+        "ubere_aumento_tamanho": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g1", "naoDeveConcluir": ["mastite_clinica_g2", "sem_alteracao"] }
+    },
+    {
+      "id": "P005",
+      "animal": { "brinco": "0005", "nome": "Flor", "raca": "Pardo Suíço", "sexo": "F", "idade_meses": 70, "lactante": true, "numero_lactacao": 5, "del": 95, "producao_media_dia": 17 },
+      "queixa": "Leite avermelhado em um quarto, sem outros sinais",
+      "fatos": {
+        "caneca_grumos": false,
+        "caneca_cor_alterada": true,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "palpacao_endurecido": false,
+        "palpacao_vermelhidao": false,
+        "febre": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g1", "naoDeveConcluir": ["mastite_clinica_g3", "sem_alteracao"] }
+    },
+
+    {
+      "id": "P006",
+      "animal": { "brinco": "0006", "nome": "Malhada", "raca": "Holandesa", "sexo": "F", "idade_meses": 48, "lactante": true, "numero_lactacao": 3, "del": 60, "producao_media_dia": 25 },
+      "queixa": "Quarto traseiro quente, inchado e dolorido; leite com grumos. Vaca come normal",
+      "fatos": {
+        "caneca_grumos": true,
+        "caneca_consistencia_alterada": true,
+        "palpacao_dor": true,
+        "palpacao_inchaco": true,
+        "palpacao_vermelhidao": true,
+        "ubere_aumento_tamanho": true,
+        "febre": false,
+        "apetite_reduzido": false,
+        "apatia": false,
+        "decubito": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g2", "naoDeveConcluir": ["mastite_clinica_g3", "sem_alteracao"] }
+    },
+    {
+      "id": "P007",
+      "animal": { "brinco": "0007", "nome": "Boneca", "raca": "Girolando 3/4", "sexo": "F", "idade_meses": 55, "lactante": true, "numero_lactacao": 4, "del": 150, "producao_media_dia": 18 },
+      "queixa": "Mama endurecida e dolorida, leite grosso, mas a vaca está ativa e comendo",
+      "fatos": {
+        "caneca_grumos": true,
+        "caneca_consistencia_alterada": true,
+        "palpacao_dor": true,
+        "palpacao_endurecido": true,
+        "palpacao_inchaco": true,
+        "febre": false,
+        "apetite_reduzido": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g2", "naoDeveConcluir": ["mastite_clinica_g3", "sem_alteracao"] }
+    },
+    {
+      "id": "P008",
+      "animal": { "brinco": "0008", "nome": "Jurema", "raca": "Gir Leiteiro", "sexo": "F", "idade_meses": 66, "lactante": true, "numero_lactacao": 5, "del": 80, "producao_media_dia": 14 },
+      "queixa": "Úbere aumentado e vermelho de um lado, leite alterado, não deixa ordenhar",
+      "fatos": {
+        "caneca_cor_alterada": true,
+        "caneca_consistencia_alterada": true,
+        "palpacao_dor": true,
+        "palpacao_vermelhidao": true,
+        "ubere_aumento_tamanho": true,
+        "nao_deixa_ordenhar": true,
+        "febre": false,
+        "apatia": false,
+        "desidratacao": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g2", "naoDeveConcluir": ["mastite_clinica_g3", "sem_alteracao"] }
+    },
+    {
+      "id": "P009",
+      "animal": { "brinco": "0009", "nome": "Chita", "raca": "Holandesa", "sexo": "F", "idade_meses": 44, "lactante": true, "numero_lactacao": 2, "del": 25, "producao_media_dia": 27 },
+      "queixa": "Quarto dianteiro inchado e dolorido com leite em grumos desde ontem",
+      "fatos": {
+        "caneca_grumos": true,
+        "palpacao_dor": true,
+        "palpacao_inchaco": true,
+        "palpacao_endurecido": true,
+        "febre": false,
+        "apetite_reduzido": false,
+        "apatia": false,
+        "decubito": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g2", "naoDeveConcluir": ["mastite_clinica_g3", "sem_alteracao"] }
+    },
+
+    {
+      "id": "P010",
+      "animal": { "brinco": "0010", "nome": "Rainha", "raca": "Holandesa", "sexo": "F", "idade_meses": 50, "lactante": true, "numero_lactacao": 3, "del": 15, "producao_media_dia": 30 },
+      "queixa": "Mama muito inchada, leite aguado e sanguinolento, vaca febril, apática e sem comer",
+      "fatos": {
+        "caneca_grumos": true,
+        "caneca_cor_alterada": true,
+        "caneca_consistencia_alterada": true,
+        "palpacao_dor": true,
+        "palpacao_inchaco": true,
+        "palpacao_vermelhidao": true,
+        "ubere_aumento_tamanho": true,
+        "febre": true,
+        "apetite_reduzido": true,
+        "apatia": true,
+        "desidratacao": true,
+        "queda_producao_subita": true
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g3", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P011",
+      "animal": { "brinco": "0011", "nome": "Diamante", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 58, "lactante": true, "numero_lactacao": 4, "del": 10, "producao_media_dia": 24 },
+      "queixa": "Vaca caída, orelhas quentes, mama roxa e dura, leite parecendo água com sangue",
+      "fatos": {
+        "caneca_cor_alterada": true,
+        "caneca_consistencia_alterada": true,
+        "palpacao_dor": true,
+        "palpacao_endurecido": true,
+        "palpacao_vermelhidao": true,
+        "ubere_aumento_tamanho": true,
+        "febre": true,
+        "apetite_reduzido": true,
+        "apatia": true,
+        "decubito": true,
+        "desidratacao": true
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g3", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P012",
+      "animal": { "brinco": "0012", "nome": "Pintada", "raca": "Jersey", "sexo": "F", "idade_meses": 40, "lactante": true, "numero_lactacao": 2, "del": 70, "producao_media_dia": 20 },
+      "queixa": "Febre alta, prostração, úbere inflamado e secreção purulenta",
+      "fatos": {
+        "caneca_grumos": true,
+        "caneca_consistencia_alterada": true,
+        "palpacao_dor": true,
+        "palpacao_inchaco": true,
+        "febre": true,
+        "apetite_reduzido": true,
+        "apatia": true,
+        "ruminacao_reduzida": true,
+        "queda_producao_subita": true
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_clinica_g3", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P013",
+      "animal": { "brinco": "0013", "nome": "Sereia", "raca": "Holandesa", "sexo": "F", "idade_meses": 52, "lactante": true, "numero_lactacao": 3, "del": 110, "producao_media_dia": 23, "cmt_pior_quarto": "2", "cmt_positivo_meses": 1 },
+      "queixa": "Leite de aparência normal, mas CMT da semana deu 2 no quarto traseiro esquerdo",
+      "fatos": {
+        "caneca_grumos": false,
+        "caneca_cor_alterada": false,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "palpacao_endurecido": false,
+        "febre": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_subclinica", "naoDeveConcluir": ["mastite_clinica_g1", "sem_alteracao"] }
+    },
+    {
+      "id": "P014",
+      "animal": { "brinco": "0014", "nome": "Joia", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 46, "lactante": true, "numero_lactacao": 2, "del": 180, "producao_media_dia": 16, "cmt_pior_quarto": "1", "cmt_positivo_meses": 1 },
+      "queixa": "CMT fraco positivo (1) e queda discreta de produção; leite sem alteração visível",
+      "fatos": {
+        "caneca_grumos": false,
+        "caneca_cor_alterada": false,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_subclinica", "naoDeveConcluir": ["mastite_clinica_g1", "sem_alteracao"] }
+    },
+    {
+      "id": "P015",
+      "animal": { "brinco": "0015", "nome": "Canela", "raca": "Pardo Suíço", "sexo": "F", "idade_meses": 63, "lactante": true, "numero_lactacao": 4, "del": 140, "producao_media_dia": 18 },
+      "queixa": "CCS individual do laboratório veio em 1.200.000 células/mL; leite normal na caneca",
+      "fatos": {
+        "ccs_individual": 1200000,
+        "caneca_grumos": false,
+        "caneca_cor_alterada": false,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_subclinica", "naoDeveConcluir": ["mastite_clinica_g1", "sem_alteracao"] }
+    },
+    {
+      "id": "P016",
+      "animal": { "brinco": "0016", "nome": "Fumaça", "raca": "Holandesa", "sexo": "F", "idade_meses": 36, "lactante": true, "numero_lactacao": 1, "del": 60, "producao_media_dia": 21, "cmt_pior_quarto": "3", "cmt_positivo_meses": 1 },
+      "queixa": "Novilha de primeira cria com CMT 3 em um quarto; nenhuma alteração visível no leite",
+      "fatos": {
+        "caneca_grumos": false,
+        "caneca_cor_alterada": false,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "palpacao_endurecido": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_subclinica", "naoDeveConcluir": ["mastite_clinica_g1", "sem_alteracao"] }
+    },
+    {
+      "id": "P017",
+      "animal": { "brinco": "0017", "nome": "Guria", "raca": "Girolando 3/4", "sexo": "F", "idade_meses": 49, "lactante": true, "numero_lactacao": 3, "del": 90, "producao_media_dia": 20, "cmt_pior_quarto": "T", "cmt_positivo_meses": 1 },
+      "queixa": "CMT traço em dois quartos, CCS de 780 mil; produção caindo devagar",
+      "fatos": {
+        "ccs_individual": 780000,
+        "caneca_grumos": false,
+        "caneca_cor_alterada": false,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_subclinica", "naoDeveConcluir": ["mastite_clinica_g1", "sem_alteracao"] }
+    },
+
+    {
+      "id": "P018",
+      "animal": { "brinco": "0018", "nome": "Teimosa", "raca": "Holandesa", "sexo": "F", "idade_meses": 75, "lactante": true, "numero_lactacao": 6, "del": 210, "producao_media_dia": 12, "cmt_pior_quarto": "3", "cmt_positivo_meses": 4 },
+      "queixa": "Quatro meses seguidos de CMT positivo no mesmo quarto, já tratada duas vezes; caroços após a ordenha",
+      "fatos": {
+        "caroco_apos_ordenha": true,
+        "caneca_grumos": false,
+        "caneca_cor_alterada": false,
+        "palpacao_dor": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_cronica", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P019",
+      "animal": { "brinco": "0019", "nome": "Velha", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 88, "lactante": true, "numero_lactacao": 7, "del": 250, "producao_media_dia": 9, "cmt_pior_quarto": "2", "cmt_positivo_meses": 3 },
+      "queixa": "Mastite que vai e volta há três meses; quarto com área endurecida permanente",
+      "fatos": {
+        "caroco_apos_ordenha": true,
+        "palpacao_endurecido": true,
+        "caneca_grumos": false,
+        "febre": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_cronica", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P020",
+      "animal": { "brinco": "0020", "nome": "Nega", "raca": "Jersey", "sexo": "F", "idade_meses": 80, "lactante": true, "numero_lactacao": 6, "del": 190, "producao_media_dia": 10, "cmt_pior_quarto": "3", "cmt_positivo_meses": 5 },
+      "queixa": "CMT alto desde o começo da lactação, cinco meses seguidos, sem resposta ao tratamento",
+      "fatos": {
+        "caroco_apos_ordenha": true,
+        "caneca_grumos": false,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "mastite_cronica", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P021",
+      "animal": { "brinco": "0021", "nome": "Mocinha", "raca": "Holandesa", "sexo": "F", "idade_meses": 84, "lactante": true, "numero_lactacao": 6, "del": 160, "producao_media_dia": 11 },
+      "queixa": "Quarto traseiro direito secou de vez depois de uma mastite grave; não sai leite",
+      "fatos": {
+        "quarto_sem_leite": true,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "febre": false,
+        "caneca_grumos": false
+      },
+      "esperado": { "diagnosticoPrincipal": "peito_perdido", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P022",
+      "animal": { "brinco": "0022", "nome": "Sorte", "raca": "Guzerá", "sexo": "F", "idade_meses": 92, "lactante": true, "numero_lactacao": 7, "del": 230, "producao_media_dia": 8 },
+      "queixa": "Um quarto atrofiado e sem produção desde a lactação passada",
+      "fatos": {
+        "quarto_sem_leite": true,
+        "palpacao_endurecido": true,
+        "palpacao_dor": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "peito_perdido", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P023",
+      "animal": { "brinco": "0023", "nome": "Bonita", "raca": "Holandesa", "sexo": "F", "idade_meses": 47, "lactante": true, "numero_lactacao": 3, "del": 130, "producao_media_dia": 21 },
+      "queixa": "Bolsa mole e bem delimitada na lateral da mama, do tamanho de um ovo; leite normal",
+      "fatos": {
+        "caroco_localizado_mama": true,
+        "palpacao_dor": true,
+        "caneca_grumos": false,
+        "caneca_cor_alterada": false,
+        "caneca_consistencia_alterada": false,
+        "febre": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "abscesso_mamario", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P024",
+      "animal": { "brinco": "0024", "nome": "Dengosa", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 59, "lactante": true, "numero_lactacao": 4, "del": 100, "producao_media_dia": 17 },
+      "queixa": "Caroço localizado e amolecido perto do teto depois de um trauma na porteira; ordenha normal",
+      "fatos": {
+        "caroco_localizado_mama": true,
+        "palpacao_inchaco": true,
+        "caneca_grumos": false,
+        "caneca_cor_alterada": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "abscesso_mamario", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P025",
+      "animal": { "brinco": "0025", "nome": "Carinhosa", "raca": "Holandesa", "sexo": "F", "idade_meses": 62, "lactante": true, "numero_lactacao": 4, "del": 1, "producao_media_dia": 26 },
+      "queixa": "Pariu ontem; hoje está caída, com orelhas frias e tremendo, sem febre",
+      "fatos": {
+        "decubito": true,
+        "extremidades_frias": true,
+        "tremores_musculares": true,
+        "febre": false,
+        "apatia": true,
+        "apetite_reduzido": true,
+        "agitacao_convulsao": false,
+        "pasto_novo_adubado": false
+      },
+      "esperado": { "diagnosticoPrincipal": "hipocalcemia", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P026",
+      "animal": { "brinco": "0026", "nome": "Paciência", "raca": "Girolando 3/4", "sexo": "F", "idade_meses": 71, "lactante": true, "numero_lactacao": 5, "del": 2, "producao_media_dia": 22 },
+      "queixa": "Dois dias de parida, não levanta, cabeça virada para o flanco, extremidades geladas",
+      "fatos": {
+        "decubito": true,
+        "extremidades_frias": true,
+        "apatia": true,
+        "febre": false,
+        "ruminacao_reduzida": true,
+        "agitacao_convulsao": false,
+        "pasto_novo_adubado": false
+      },
+      "esperado": { "diagnosticoPrincipal": "hipocalcemia", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P027",
+      "animal": { "brinco": "0027", "nome": "Rosa", "raca": "Jersey", "sexo": "F", "idade_meses": 56, "lactante": true, "numero_lactacao": 3, "del": 0, "producao_media_dia": 20 },
+      "queixa": "Parto hoje de manhã; cambaleou e deitou, tremores finos pelo corpo, temperatura baixa",
+      "fatos": {
+        "decubito": true,
+        "tremores_musculares": true,
+        "extremidades_frias": true,
+        "febre": false,
+        "apatia": true,
+        "pasto_novo_adubado": false,
+        "agitacao_convulsao": false
+      },
+      "esperado": { "diagnosticoPrincipal": "hipocalcemia", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P028",
+      "animal": { "brinco": "0028", "nome": "Lourdes", "raca": "Holandesa", "sexo": "F", "idade_meses": 90, "lactante": true, "numero_lactacao": 7, "del": 3, "producao_media_dia": 31 },
+      "queixa": "Vaca velha de alta produção, terceiro dia pós-parto, deitada e fraca, sem apetite",
+      "fatos": {
+        "decubito": true,
+        "extremidades_frias": true,
+        "apetite_reduzido": true,
+        "apatia": true,
+        "febre": false,
+        "pasto_novo_adubado": false,
+        "agitacao_convulsao": false
+      },
+      "esperado": { "diagnosticoPrincipal": "hipocalcemia", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P029",
+      "animal": { "brinco": "0029", "nome": "Fogosa", "raca": "Holandesa", "sexo": "F", "idade_meses": 53, "lactante": true, "numero_lactacao": 3, "del": 75, "producao_media_dia": 24 },
+      "queixa": "Lote mudou ontem para pasto novo adubado; vaca agitada, tremendo, caiu em convulsão",
+      "fatos": {
+        "pasto_novo_adubado": true,
+        "tremores_musculares": true,
+        "agitacao_convulsao": true,
+        "decubito": true,
+        "febre": false,
+        "extremidades_frias": false
+      },
+      "esperado": { "diagnosticoPrincipal": "hipomagnesemia", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P030",
+      "animal": { "brinco": "0030", "nome": "Ventania", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 65, "lactante": true, "numero_lactacao": 4, "del": 50, "producao_media_dia": 19 },
+      "queixa": "Pasto recém-adubado com nitrogênio; vaca andando duro, espasmos musculares e mugido alterado",
+      "fatos": {
+        "pasto_novo_adubado": true,
+        "tremores_musculares": true,
+        "agitacao_convulsao": true,
+        "febre": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "hipomagnesemia", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P031",
+      "animal": { "brinco": "0031", "nome": "Tormenta", "raca": "Pardo Suíço", "sexo": "F", "idade_meses": 58, "lactante": true, "numero_lactacao": 4, "del": 40, "producao_media_dia": 23 },
+      "queixa": "Entrou em piquete novo de capim de inverno; encontrada tremendo e com espasmos, depois caída",
+      "fatos": {
+        "pasto_novo_adubado": true,
+        "tremores_musculares": true,
+        "decubito": true,
+        "agitacao_convulsao": true,
+        "extremidades_frias": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "hipomagnesemia", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P032",
+      "animal": { "brinco": "0032", "nome": "Doce", "raca": "Holandesa", "sexo": "F", "idade_meses": 51, "lactante": true, "numero_lactacao": 3, "del": 20, "producao_media_dia": 25 },
+      "queixa": "Hálito com cheiro adocicado de acetona, comendo pouco, produção despencou e está magra",
+      "fatos": {
+        "halito_adocicado": true,
+        "apetite_reduzido": true,
+        "queda_producao_subita": true,
+        "perda_escore_corporal": true,
+        "febre": false,
+        "decubito": false,
+        "fezes_escassas": false
+      },
+      "esperado": { "diagnosticoPrincipal": "cetose", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P033",
+      "animal": { "brinco": "0033", "nome": "Mel", "raca": "Jersey", "sexo": "F", "idade_meses": 44, "lactante": true, "numero_lactacao": 2, "del": 35, "producao_media_dia": 21 },
+      "queixa": "Recusa o concentrado e prefere volumoso, hálito doce, emagrecendo rápido",
+      "fatos": {
+        "halito_adocicado": true,
+        "apetite_reduzido": true,
+        "perda_escore_corporal": true,
+        "queda_producao_subita": true,
+        "ruminacao_reduzida": true,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "cetose", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P034",
+      "animal": { "brinco": "0034", "nome": "Açucena", "raca": "Holandesa", "sexo": "F", "idade_meses": 68, "lactante": true, "numero_lactacao": 5, "del": 12, "producao_media_dia": 29 },
+      "queixa": "Pós-parto recente, apática, perdeu peso visivelmente e a produção caiu pela metade; hálito estranho adocicado",
+      "fatos": {
+        "halito_adocicado": true,
+        "queda_producao_subita": true,
+        "perda_escore_corporal": true,
+        "apatia": true,
+        "apetite_reduzido": true,
+        "febre": false,
+        "decubito": false
+      },
+      "esperado": { "diagnosticoPrincipal": "cetose", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P035",
+      "animal": { "brinco": "0035", "nome": "Nuvem", "raca": "Girolando 3/4", "sexo": "F", "idade_meses": 49, "lactante": true, "numero_lactacao": 3, "del": 55, "producao_media_dia": 22 },
+      "queixa": "Emagrecimento e queda de leite no pico da lactação, com cheiro adocicado na respiração",
+      "fatos": {
+        "halito_adocicado": true,
+        "perda_escore_corporal": true,
+        "queda_producao_subita": true,
+        "apetite_reduzido": true,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "cetose", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P036",
+      "animal": { "brinco": "0036", "nome": "Primavera", "raca": "Holandesa", "sexo": "F", "idade_meses": 60, "lactante": true, "numero_lactacao": 4, "del": 1, "producao_media_dia": 24 },
+      "queixa": "Pariu há 18 horas e a placenta continua pendurada",
+      "fatos": {
+        "placenta_retida_12h": true,
+        "corrimento_vulvar_fetido": false,
+        "febre": false,
+        "apetite_reduzido": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "retencao_placenta", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P037",
+      "animal": { "brinco": "0037", "nome": "Aurora", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 45, "lactante": true, "numero_lactacao": 2, "del": 2, "producao_media_dia": 18 },
+      "queixa": "Parto gemelar anteontem; placenta não saiu, mas a vaca come e produz normal",
+      "fatos": {
+        "placenta_retida_12h": true,
+        "corrimento_vulvar_fetido": false,
+        "febre": false,
+        "apetite_reduzido": false
+      },
+      "esperado": { "diagnosticoPrincipal": "retencao_placenta", "naoDeveConcluir": ["sem_alteracao", "metrite"] }
+    },
+    {
+      "id": "P038",
+      "animal": { "brinco": "0038", "nome": "Manhã", "raca": "Holandesa", "sexo": "F", "idade_meses": 78, "lactante": true, "numero_lactacao": 6, "del": 1, "producao_media_dia": 27 },
+      "queixa": "Mais de 24 horas do parto e a placenta segue retida; sem cheiro ruim ainda",
+      "fatos": {
+        "placenta_retida_12h": true,
+        "corrimento_vulvar_fetido": false,
+        "febre": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "retencao_placenta", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P039",
+      "animal": { "brinco": "0039", "nome": "Saudade", "raca": "Holandesa", "sexo": "F", "idade_meses": 57, "lactante": true, "numero_lactacao": 4, "del": 12, "producao_media_dia": 20 },
+      "queixa": "Corrimento vulvar achocolatado e com mau cheiro forte, febre e sem apetite",
+      "fatos": {
+        "corrimento_vulvar_fetido": true,
+        "febre": true,
+        "apetite_reduzido": true,
+        "apatia": true,
+        "queda_producao_subita": true,
+        "placenta_retida_12h": true
+      },
+      "esperado": { "diagnosticoPrincipal": "metrite", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P040",
+      "animal": { "brinco": "0040", "nome": "Gaita", "raca": "Gir Leiteiro", "sexo": "F", "idade_meses": 64, "lactante": true, "numero_lactacao": 5, "del": 20, "producao_media_dia": 15 },
+      "queixa": "Secreção vulvar fétida duas semanas depois do parto, com febre",
+      "fatos": {
+        "corrimento_vulvar_fetido": true,
+        "febre": true,
+        "apetite_reduzido": true,
+        "placenta_retida_12h": false
+      },
+      "esperado": { "diagnosticoPrincipal": "metrite", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P041",
+      "animal": { "brinco": "0041", "nome": "Viola", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 41, "lactante": true, "numero_lactacao": 2, "del": 30, "producao_media_dia": 17 },
+      "queixa": "Corrimento purulento pela vulva há dias, sem febre, mas com queda de produção",
+      "fatos": {
+        "corrimento_vulvar_fetido": true,
+        "febre": false,
+        "queda_producao_subita": true,
+        "apetite_reduzido": false,
+        "placenta_retida_12h": false
+      },
+      "esperado": { "diagnosticoPrincipal": "metrite", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P042",
+      "animal": { "brinco": "0042", "nome": "Quietinha", "raca": "Holandesa", "sexo": "F", "idade_meses": 67, "lactante": true, "numero_lactacao": 4, "del": 130, "producao_media_dia": 18 },
+      "queixa": "Pariu há mais de quatro meses e nunca foi vista em cio",
+      "fatos": {
+        "dias_desde_parto_sem_cio": 130,
+        "cio_irregular_frequente": false,
+        "corrimento_vulvar_fetido": false,
+        "perda_escore_corporal": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "anestro_pos_parto", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P043",
+      "animal": { "brinco": "0043", "nome": "Lenta", "raca": "Girolando 3/4", "sexo": "F", "idade_meses": 54, "lactante": true, "numero_lactacao": 3, "del": 100, "producao_media_dia": 16 },
+      "queixa": "Mais de 90 dias de parida sem nenhum cio observado; escore corporal baixo",
+      "fatos": {
+        "dias_desde_parto_sem_cio": 100,
+        "perda_escore_corporal": true,
+        "cio_irregular_frequente": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "anestro_pos_parto", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P044",
+      "animal": { "brinco": "0044", "nome": "Demora", "raca": "Guzerá", "sexo": "F", "idade_meses": 72, "lactante": true, "numero_lactacao": 5, "del": 160, "producao_media_dia": 12 },
+      "queixa": "Cinco meses pós-parto, nunca manifestou cio e já perdeu a estação de monta",
+      "fatos": {
+        "dias_desde_parto_sem_cio": 160,
+        "cio_irregular_frequente": false,
+        "febre": false,
+        "apatia": false
+      },
+      "esperado": { "diagnosticoPrincipal": "anestro_pos_parto", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P045",
+      "animal": { "brinco": "0045", "nome": "Dançarina", "raca": "Holandesa", "sexo": "F", "idade_meses": 50, "lactante": true, "numero_lactacao": 3, "del": 120, "producao_media_dia": 21 },
+      "queixa": "Entra em cio a cada poucos dias, monta nas outras vacas e não concebe",
+      "fatos": {
+        "cio_irregular_frequente": true,
+        "inseminacoes_sem_prenhez": 2,
+        "dias_desde_parto_sem_cio": 0,
+        "corrimento_vulvar_fetido": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "cisto_ovariano", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P046",
+      "animal": { "brinco": "0046", "nome": "Inquieta", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 43, "lactante": true, "numero_lactacao": 2, "del": 95, "producao_media_dia": 19 },
+      "queixa": "Cios irregulares e muito frequentes, às vezes dois na mesma semana",
+      "fatos": {
+        "cio_irregular_frequente": true,
+        "inseminacoes_sem_prenhez": 1,
+        "febre": false,
+        "corrimento_vulvar_fetido": false
+      },
+      "esperado": { "diagnosticoPrincipal": "cisto_ovariano", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P047",
+      "animal": { "brinco": "0047", "nome": "Repetida", "raca": "Holandesa", "sexo": "F", "idade_meses": 55, "lactante": true, "numero_lactacao": 3, "del": 180, "producao_media_dia": 20 },
+      "queixa": "Quatro inseminações com cio normal a cada 21 dias e nenhuma prenhez confirmada",
+      "fatos": {
+        "inseminacoes_sem_prenhez": 4,
+        "cio_irregular_frequente": false,
+        "dias_desde_parto_sem_cio": 0,
+        "corrimento_vulvar_fetido": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "repeticao_cio", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P048",
+      "animal": { "brinco": "0048", "nome": "Insistente", "raca": "Jersey", "sexo": "F", "idade_meses": 48, "lactante": true, "numero_lactacao": 2, "del": 200, "producao_media_dia": 16 },
+      "queixa": "Três coberturas sem pegar; cios regulares e bem visíveis",
+      "fatos": {
+        "inseminacoes_sem_prenhez": 3,
+        "cio_irregular_frequente": false,
+        "corrimento_vulvar_fetido": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "repeticao_cio", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P049",
+      "animal": { "brinco": "0049", "nome": "Torta", "raca": "Holandesa", "sexo": "F", "idade_meses": 61, "lactante": true, "numero_lactacao": 4, "del": 14, "producao_media_dia": 23 },
+      "queixa": "Duas semanas de parida, parou de comer concentrado, fezes escassas e flanco esquerdo estufado em forma de triângulo",
+      "fatos": {
+        "flanco_esquerdo_distendido": true,
+        "apetite_reduzido": true,
+        "fezes_escassas": true,
+        "queda_producao_subita": true,
+        "ruminacao_reduzida": true,
+        "halito_adocicado": true,
+        "febre": false,
+        "respiracao_acelerada": false
+      },
+      "esperado": { "diagnosticoPrincipal": "deslocamento_abomaso", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P050",
+      "animal": { "brinco": "0050", "nome": "Entortada", "raca": "Holandesa", "sexo": "F", "idade_meses": 70, "lactante": true, "numero_lactacao": 5, "del": 8, "producao_media_dia": 28 },
+      "queixa": "Primeira semana pós-parto; recusa comida, quase não defeca e o lado esquerdo está abaulado",
+      "fatos": {
+        "flanco_esquerdo_distendido": true,
+        "apetite_reduzido": true,
+        "fezes_escassas": true,
+        "queda_producao_subita": true,
+        "ruminacao_reduzida": true,
+        "febre": false,
+        "apatia": true
+      },
+      "esperado": { "diagnosticoPrincipal": "deslocamento_abomaso", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P051",
+      "animal": { "brinco": "0051", "nome": "Virada", "raca": "Girolando 3/4", "sexo": "F", "idade_meses": 52, "lactante": true, "numero_lactacao": 3, "del": 25, "producao_media_dia": 21 },
+      "queixa": "Pós-parto com dieta de muito concentrado; apetite seletivo, fezes pastosas e escassas, flanco esquerdo distendido",
+      "fatos": {
+        "flanco_esquerdo_distendido": true,
+        "fezes_escassas": true,
+        "apetite_reduzido": true,
+        "ruminacao_reduzida": true,
+        "queda_producao_subita": true,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "deslocamento_abomaso", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P052",
+      "animal": { "brinco": "0052", "nome": "Ácida", "raca": "Holandesa", "sexo": "F", "idade_meses": 46, "lactante": true, "numero_lactacao": 2, "del": 85, "producao_media_dia": 24 },
+      "queixa": "Trato com muito milho e pouco volumoso; fezes líquidas com bolhas, gordura do leite caiu e rumina pouco",
+      "fatos": {
+        "dieta_muito_concentrado": true,
+        "fezes_liquidas_bolhosas": true,
+        "queda_gordura_leite": true,
+        "ruminacao_reduzida": true,
+        "claudicacao": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "acidose_ruminal", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P053",
+      "animal": { "brinco": "0053", "nome": "Ligeira", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 39, "lactante": true, "numero_lactacao": 1, "del": 70, "producao_media_dia": 20 },
+      "queixa": "Mudança brusca de dieta para alto concentrado; diarreia espumosa e teor de gordura em queda no lote",
+      "fatos": {
+        "dieta_muito_concentrado": true,
+        "fezes_liquidas_bolhosas": true,
+        "queda_gordura_leite": true,
+        "ruminacao_reduzida": true,
+        "febre": false,
+        "apetite_reduzido": false
+      },
+      "esperado": { "diagnosticoPrincipal": "acidose_ruminal", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P054",
+      "animal": { "brinco": "0054", "nome": "Fartura", "raca": "Holandesa", "sexo": "F", "idade_meses": 58, "lactante": true, "numero_lactacao": 4, "del": 110, "producao_media_dia": 26 },
+      "queixa": "Ração à vontade no cocho; fezes moles e bolhosas, rumina pouco e a gordura do leite despencou",
+      "fatos": {
+        "dieta_muito_concentrado": true,
+        "fezes_liquidas_bolhosas": true,
+        "queda_gordura_leite": true,
+        "ruminacao_reduzida": true,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "acidose_ruminal", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P055",
+      "animal": { "brinco": "0055", "nome": "Balão", "raca": "Holandesa", "sexo": "F", "idade_meses": 44, "lactante": true, "numero_lactacao": 2, "del": 140, "producao_media_dia": 19 },
+      "queixa": "Entrou em pasto de leguminosa; inchou o lado esquerdo em poucas horas e respira ofegante",
+      "fatos": {
+        "flanco_esquerdo_distendido": true,
+        "respiracao_acelerada": true,
+        "apatia": true,
+        "ruminacao_reduzida": true,
+        "acesso_pasto_area_nova": true,
+        "fezes_escassas": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "timpanismo", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P056",
+      "animal": { "brinco": "0056", "nome": "Estufada", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 50, "lactante": true, "numero_lactacao": 3, "del": 90, "producao_media_dia": 18 },
+      "queixa": "Barriga inchada de repente do lado esquerdo, dor, respiração acelerada e boca aberta",
+      "fatos": {
+        "flanco_esquerdo_distendido": true,
+        "respiracao_acelerada": true,
+        "ruminacao_reduzida": true,
+        "apetite_reduzido": true,
+        "fezes_escassas": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "timpanismo", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P057",
+      "animal": { "brinco": "0057", "nome": "Infladinha", "raca": "Nelore x Holandesa", "sexo": "F", "idade_meses": 30, "lactante": false },
+      "queixa": "Novilha solta em piquete de alfafa molhada; estufou o flanco esquerdo e ficou aflita",
+      "fatos": {
+        "flanco_esquerdo_distendido": true,
+        "respiracao_acelerada": true,
+        "acesso_pasto_area_nova": true,
+        "ruminacao_reduzida": true,
+        "febre": false,
+        "sinais_nervosos": false,
+        "morte_subita_lote": false
+      },
+      "esperado": { "diagnosticoPrincipal": "timpanismo", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P058",
+      "animal": { "brinco": "0058", "nome": "Manca", "raca": "Holandesa", "sexo": "F", "idade_meses": 56, "lactante": true, "numero_lactacao": 3, "del": 100, "producao_media_dia": 22 },
+      "queixa": "Manqueira nos dois membros da frente, anda com as costas arqueadas; dieta com muito concentrado; cascos quentes",
+      "fatos": {
+        "claudicacao": true,
+        "casco_quente_inchado": true,
+        "dieta_muito_concentrado": true,
+        "mau_cheiro_casco": false,
+        "queda_gordura_leite": true,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "laminite", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P059",
+      "animal": { "brinco": "0059", "nome": "Dolorida", "raca": "Girolando 3/4", "sexo": "F", "idade_meses": 49, "lactante": true, "numero_lactacao": 2, "del": 60, "producao_media_dia": 20 },
+      "queixa": "Pisa com cuidado em todos os cascos, que estão quentes e sensíveis; sem ferida nem cheiro ruim",
+      "fatos": {
+        "claudicacao": true,
+        "casco_quente_inchado": true,
+        "mau_cheiro_casco": false,
+        "dieta_muito_concentrado": true,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "laminite", "naoDeveConcluir": ["sem_alteracao", "pododermatite"] }
+    },
+    {
+      "id": "P060",
+      "animal": { "brinco": "0060", "nome": "Durinha", "raca": "Holandesa", "sexo": "F", "idade_meses": 63, "lactante": true, "numero_lactacao": 4, "del": 170, "producao_media_dia": 17 },
+      "queixa": "Claudicação há semanas depois de episódio de acidose; cascos deformados e quentes",
+      "fatos": {
+        "claudicacao": true,
+        "casco_quente_inchado": true,
+        "dieta_muito_concentrado": true,
+        "mau_cheiro_casco": false,
+        "febre": false,
+        "apetite_reduzido": false
+      },
+      "esperado": { "diagnosticoPrincipal": "laminite", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P061",
+      "animal": { "brinco": "0061", "nome": "Pezinho", "raca": "Holandesa", "sexo": "F", "idade_meses": 47, "lactante": true, "numero_lactacao": 2, "del": 130, "producao_media_dia": 21 },
+      "queixa": "Manqueira só numa pata, com ferida malcheirosa entre os dedos e inchaço acima do casco",
+      "fatos": {
+        "claudicacao": true,
+        "mau_cheiro_casco": true,
+        "casco_quente_inchado": true,
+        "dieta_muito_concentrado": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "pododermatite", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P062",
+      "animal": { "brinco": "0062", "nome": "Lameira", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 54, "lactante": true, "numero_lactacao": 3, "del": 150, "producao_media_dia": 18 },
+      "queixa": "Curral alagado e sujo; vaca mancando de um pé, fenda interdigital com pus e cheiro forte",
+      "fatos": {
+        "claudicacao": true,
+        "mau_cheiro_casco": true,
+        "casco_quente_inchado": true,
+        "febre": true,
+        "apetite_reduzido": true,
+        "dieta_muito_concentrado": false
+      },
+      "esperado": { "diagnosticoPrincipal": "pododermatite", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P063",
+      "animal": { "brinco": "0063", "nome": "Pata", "raca": "Pardo Suíço", "sexo": "F", "idade_meses": 59, "lactante": true, "numero_lactacao": 4, "del": 190, "producao_media_dia": 15 },
+      "queixa": "Mancando de um membro traseiro, com mau cheiro no vão dos dedos e lesão na linha branca",
+      "fatos": {
+        "claudicacao": true,
+        "mau_cheiro_casco": true,
+        "dieta_muito_concentrado": false,
+        "casco_quente_inchado": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "pododermatite", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P064",
+      "animal": { "brinco": "0064", "nome": "Coceirinha", "raca": "Holandesa", "sexo": "F", "idade_meses": 20, "lactante": false },
+      "queixa": "Novilha se coça sem parar nas cercas, perdeu pelo no pescoço e na base da cauda, com crostas",
+      "fatos": {
+        "coceira_intensa": true,
+        "crostas_pele": true,
+        "placas_descamadas": false,
+        "pele_clara_ferida_sol": false,
+        "febre": false,
+        "apetite_reduzido": false
+      },
+      "esperado": { "diagnosticoPrincipal": "sarna", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P065",
+      "animal": { "brinco": "0065", "nome": "Peladinha", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 48, "lactante": true, "numero_lactacao": 3, "del": 120, "producao_media_dia": 19 },
+      "queixa": "Coceira intensa com falhas de pelo espalhadas e casquinhas; outras vacas do lote começaram igual",
+      "fatos": {
+        "coceira_intensa": true,
+        "crostas_pele": true,
+        "placas_descamadas": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "sarna", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P066",
+      "animal": { "brinco": "0066", "nome": "Moeda", "raca": "Holandesa", "sexo": "F", "idade_meses": 14, "lactante": false },
+      "queixa": "Bezerra desmamada com manchas redondas de pelo faltando na cabeça, pele cinzenta descamando; não se coça",
+      "fatos": {
+        "placas_descamadas": true,
+        "coceira_intensa": false,
+        "crostas_pele": true,
+        "pele_clara_ferida_sol": false,
+        "idade_jovem": true,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "dermatofitose", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P067",
+      "animal": { "brinco": "0067", "nome": "Rodelinha", "raca": "Jersey", "sexo": "F", "idade_meses": 11, "lactante": false },
+      "queixa": "Placas arredondadas e descamadas ao redor dos olhos e no pescoço, sem coceira",
+      "fatos": {
+        "placas_descamadas": true,
+        "coceira_intensa": false,
+        "idade_jovem": true,
+        "pele_clara_ferida_sol": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "dermatofitose", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P068",
+      "animal": { "brinco": "0068", "nome": "Queimada", "raca": "Holandesa", "sexo": "F", "idade_meses": 52, "lactante": true, "numero_lactacao": 3, "del": 110, "producao_media_dia": 20 },
+      "queixa": "Pele branca do focinho e dos tetos avermelhada e ferida depois de dias de sol forte em pasto com planta nova",
+      "fatos": {
+        "pele_clara_ferida_sol": true,
+        "coceira_intensa": false,
+        "placas_descamadas": false,
+        "acesso_pasto_area_nova": true,
+        "mucosas_amareladas": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "fotossensibilizacao", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P069",
+      "animal": { "brinco": "0069", "nome": "Branquinha", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 45, "lactante": true, "numero_lactacao": 2, "del": 140, "producao_media_dia": 17 },
+      "queixa": "Só as áreas de pelo branco do úbere ficaram vermelhas, inchadas e descolando",
+      "fatos": {
+        "pele_clara_ferida_sol": true,
+        "coceira_intensa": false,
+        "placas_descamadas": false,
+        "febre": false,
+        "caneca_grumos": false
+      },
+      "esperado": { "diagnosticoPrincipal": "fotossensibilizacao", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P070",
+      "animal": { "brinco": "0070", "nome": "Importada", "raca": "Holandesa", "sexo": "F", "idade_meses": 34, "lactante": true, "numero_lactacao": 1, "del": 50, "producao_media_dia": 25 },
+      "queixa": "Vaca holandesa recém-chegada, cheia de carrapatos, gengiva branca, urina cor de vinho e febre",
+      "fatos": {
+        "infestacao_carrapatos": true,
+        "mucosas_palidas": true,
+        "urina_escura": true,
+        "febre": true,
+        "apatia": true,
+        "apetite_reduzido": true,
+        "queda_producao_subita": true,
+        "mucosas_amareladas": true
+      },
+      "esperado": { "diagnosticoPrincipal": "tristeza_parasitaria", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P071",
+      "animal": { "brinco": "0071", "nome": "Amarelinha", "raca": "Jersey", "sexo": "F", "idade_meses": 28, "lactante": false },
+      "queixa": "Novilha europeia com muitos carrapatos, mucosas amareladas, fraca e com febre",
+      "fatos": {
+        "infestacao_carrapatos": true,
+        "mucosas_amareladas": true,
+        "mucosas_palidas": true,
+        "febre": true,
+        "apatia": true,
+        "urina_escura": true
+      },
+      "esperado": { "diagnosticoPrincipal": "tristeza_parasitaria", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P072",
+      "animal": { "brinco": "0072", "nome": "Vinho", "raca": "Pardo Suíço", "sexo": "F", "idade_meses": 40, "lactante": true, "numero_lactacao": 2, "del": 80, "producao_media_dia": 21 },
+      "queixa": "Urina escura como café, febre, prostração e carrapatos no corpo",
+      "fatos": {
+        "urina_escura": true,
+        "infestacao_carrapatos": true,
+        "febre": true,
+        "apatia": true,
+        "mucosas_palidas": true,
+        "queda_producao_subita": true
+      },
+      "esperado": { "diagnosticoPrincipal": "tristeza_parasitaria", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P073",
+      "animal": { "brinco": "0073", "nome": "Franguinha", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 10, "lactante": false },
+      "queixa": "Bezerra desmamada magra, pelo arrepiado e sem brilho, diarreia e gengiva pálida",
+      "fatos": {
+        "idade_jovem": true,
+        "pelo_aspero_sem_brilho": true,
+        "perda_escore_corporal": true,
+        "fezes_liquidas": true,
+        "mucosas_palidas": true,
+        "infestacao_carrapatos": false,
+        "febre": false,
+        "tosse": false
+      },
+      "esperado": { "diagnosticoPrincipal": "verminose", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P074",
+      "animal": { "brinco": "0074", "nome": "Magrinha", "raca": "Holandesa", "sexo": "F", "idade_meses": 15, "lactante": false },
+      "queixa": "Novilha em pasto lotado, não ganha peso, pelo feio, diarreia intermitente e papo d'água no queixo",
+      "fatos": {
+        "idade_jovem": true,
+        "pelo_aspero_sem_brilho": true,
+        "perda_escore_corporal": true,
+        "fezes_liquidas": true,
+        "mucosas_palidas": true,
+        "febre": false,
+        "lambe_roi_objetos": false
+      },
+      "esperado": { "diagnosticoPrincipal": "verminose", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P075",
+      "animal": { "brinco": "0075", "nome": "Esqueleto", "raca": "Nelore x Gir", "sexo": "M", "idade_meses": 12, "lactante": false },
+      "queixa": "Garrote atrasado no desenvolvimento, pelo áspero, diarreia e anemia",
+      "fatos": {
+        "idade_jovem": true,
+        "pelo_aspero_sem_brilho": true,
+        "fezes_liquidas": true,
+        "perda_escore_corporal": true,
+        "mucosas_palidas": true,
+        "febre": false,
+        "suplementacao_mineral_regular": true
+      },
+      "esperado": { "diagnosticoPrincipal": "verminose", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P076",
+      "animal": { "brinco": "0076", "nome": "Chiado", "raca": "Holandesa", "sexo": "M", "idade_meses": 4, "lactante": false },
+      "queixa": "Bezerro em bezerreiro fechado, tossindo, com nariz escorrendo e respiração puxada; febre",
+      "fatos": {
+        "tosse": true,
+        "secrecao_nasal": true,
+        "respiracao_acelerada": true,
+        "febre": true,
+        "apetite_reduzido": true,
+        "idade_jovem": true,
+        "fezes_liquidas": false
+      },
+      "esperado": { "diagnosticoPrincipal": "pneumonia", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P077",
+      "animal": { "brinco": "0077", "nome": "Assoprada", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 7, "lactante": false },
+      "queixa": "Bezerra desmamada com tosse seca, secreção nasal purulenta e respiração acelerada",
+      "fatos": {
+        "tosse": true,
+        "secrecao_nasal": true,
+        "respiracao_acelerada": true,
+        "febre": true,
+        "idade_jovem": true,
+        "apatia": true
+      },
+      "esperado": { "diagnosticoPrincipal": "pneumonia", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P078",
+      "animal": { "brinco": "0078", "nome": "Rouca", "raca": "Holandesa", "sexo": "F", "idade_meses": 50, "lactante": true, "numero_lactacao": 3, "del": 160, "producao_media_dia": 19 },
+      "queixa": "Vaca adulta tossindo há dias, com secreção no nariz, respiração curta e febre",
+      "fatos": {
+        "tosse": true,
+        "secrecao_nasal": true,
+        "respiracao_acelerada": true,
+        "febre": true,
+        "apetite_reduzido": true,
+        "queda_producao_subita": true,
+        "vesiculas_boca_tetos_cascos": false,
+        "salivacao_intensa": false
+      },
+      "esperado": { "diagnosticoPrincipal": "pneumonia", "naoDeveConcluir": ["sem_alteracao", "suspeita_aftosa"] }
+    },
+
+    {
+      "id": "P079",
+      "animal": { "brinco": "0079", "nome": "Lambedora", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 26, "lactante": false },
+      "queixa": "Novilha roendo ossos no pasto e lambendo terra; pelo áspero; propriedade não dá mistura mineral",
+      "fatos": {
+        "lambe_roi_objetos": true,
+        "suplementacao_mineral_regular": false,
+        "pelo_aspero_sem_brilho": true,
+        "perda_escore_corporal": true,
+        "fezes_liquidas": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "deficiencia_fosforo", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P080",
+      "animal": { "brinco": "0080", "nome": "Ossinho", "raca": "Guzerá", "sexo": "F", "idade_meses": 55, "lactante": true, "numero_lactacao": 3, "del": 150, "producao_media_dia": 11 },
+      "queixa": "Vaca lambe parede de barro e mastiga ossos; sal mineral acabou há meses",
+      "fatos": {
+        "lambe_roi_objetos": true,
+        "suplementacao_mineral_regular": false,
+        "pelo_aspero_sem_brilho": true,
+        "febre": false,
+        "claudicacao": false
+      },
+      "esperado": { "diagnosticoPrincipal": "deficiencia_fosforo", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P081",
+      "animal": { "brinco": "0081", "nome": "Apagada", "raca": "Girolando 3/4", "sexo": "F", "idade_meses": 48, "lactante": true, "numero_lactacao": 3, "del": 170, "producao_media_dia": 10 },
+      "queixa": "Rebanho sem suplementação mineral; vaca com pelo áspero, magra e produzindo pouco, mas sem roer objetos",
+      "fatos": {
+        "suplementacao_mineral_regular": false,
+        "pelo_aspero_sem_brilho": true,
+        "perda_escore_corporal": true,
+        "lambe_roi_objetos": false,
+        "fezes_liquidas": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "deficiencia_mineral_geral", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P082",
+      "animal": { "brinco": "0082", "nome": "Sem Brilho", "raca": "Mestiça", "sexo": "F", "idade_meses": 33, "lactante": false },
+      "queixa": "Novilha de pelo opaco e arrepiado, desenvolvimento atrasado, sem cocho de sal na propriedade",
+      "fatos": {
+        "suplementacao_mineral_regular": false,
+        "pelo_aspero_sem_brilho": true,
+        "perda_escore_corporal": true,
+        "lambe_roi_objetos": false,
+        "febre": false,
+        "fezes_liquidas": false
+      },
+      "esperado": { "diagnosticoPrincipal": "deficiencia_mineral_geral", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P083",
+      "animal": { "brinco": "0083", "nome": "Aventureira", "raca": "Holandesa", "sexo": "F", "idade_meses": 46, "lactante": true, "numero_lactacao": 2, "del": 95, "producao_media_dia": 20 },
+      "queixa": "Cerca arrebentou e o lote invadiu capoeira; uma vaca morreu de repente e esta está incoordenada, babando e com diarreia",
+      "fatos": {
+        "acesso_pasto_area_nova": true,
+        "morte_subita_lote": true,
+        "sinais_nervosos": true,
+        "salivacao_intensa": true,
+        "fezes_liquidas": true,
+        "apatia": true,
+        "febre": false,
+        "vesiculas_boca_tetos_cascos": false
+      },
+      "esperado": { "diagnosticoPrincipal": "intoxicacao_planta_toxica", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P084",
+      "animal": { "brinco": "0084", "nome": "Andarilha", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 37, "lactante": false },
+      "queixa": "Novilha solta em área nova de mata; dois animais do lote morreram sem sinal prévio e ela está tremendo e caída",
+      "fatos": {
+        "acesso_pasto_area_nova": true,
+        "morte_subita_lote": true,
+        "tremores_musculares": true,
+        "decubito": true,
+        "apatia": true,
+        "febre": false,
+        "pasto_novo_adubado": false
+      },
+      "esperado": { "diagnosticoPrincipal": "intoxicacao_planta_toxica", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P085",
+      "animal": { "brinco": "0085", "nome": "Gotinha", "raca": "Holandesa", "sexo": "F", "idade_meses": 0, "idade_dias": 8, "lactante": false },
+      "queixa": "Bezerra de 8 dias com diarreia amarelada e aguada, olhos fundos e prega de pele lenta",
+      "fatos": {
+        "fezes_liquidas": true,
+        "desidratacao": true,
+        "apatia": true,
+        "apetite_reduzido": true,
+        "idade_jovem": true,
+        "colostro_primeiras_6h": true,
+        "umbigo_inchado_quente": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "diarreia_neonatal", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P086",
+      "animal": { "brinco": "0086", "nome": "Pingo", "raca": "Girolando 1/2", "sexo": "M", "idade_meses": 0, "idade_dias": 14, "lactante": false },
+      "queixa": "Bezerro de duas semanas com diarreia esbranquiçada há três dias, fraco e desidratado",
+      "fatos": {
+        "fezes_liquidas": true,
+        "desidratacao": true,
+        "apatia": true,
+        "idade_jovem": true,
+        "colostro_primeiras_6h": true,
+        "umbigo_inchado_quente": false
+      },
+      "esperado": { "diagnosticoPrincipal": "diarreia_neonatal", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P087",
+      "animal": { "brinco": "0087", "nome": "Respingo", "raca": "Jersey", "sexo": "F", "idade_meses": 0, "idade_dias": 20, "lactante": false },
+      "queixa": "Bezerra de 20 dias com fezes líquidas, apatia e perda de apetite; umbigo seco e normal",
+      "fatos": {
+        "fezes_liquidas": true,
+        "desidratacao": true,
+        "apetite_reduzido": true,
+        "idade_jovem": true,
+        "umbigo_inchado_quente": false,
+        "colostro_primeiras_6h": true,
+        "tosse": false
+      },
+      "esperado": { "diagnosticoPrincipal": "diarreia_neonatal", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P088",
+      "animal": { "brinco": "0088", "nome": "Umbigão", "raca": "Holandesa", "sexo": "M", "idade_meses": 0, "idade_dias": 6, "lactante": false },
+      "queixa": "Bezerro nascido em baia suja; umbigo grosso, quente e dolorido, com febre",
+      "fatos": {
+        "umbigo_inchado_quente": true,
+        "febre": true,
+        "apatia": true,
+        "idade_jovem": true,
+        "fezes_liquidas": false,
+        "colostro_primeiras_6h": true
+      },
+      "esperado": { "diagnosticoPrincipal": "onfalite", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P089",
+      "animal": { "brinco": "0089", "nome": "Nózinho", "raca": "Girolando 3/4", "sexo": "F", "idade_meses": 0, "idade_dias": 11, "lactante": false },
+      "queixa": "Umbigo da bezerra está inchado e quente, com secreção; mama pouco",
+      "fatos": {
+        "umbigo_inchado_quente": true,
+        "apetite_reduzido": true,
+        "idade_jovem": true,
+        "febre": true,
+        "fezes_liquidas": false
+      },
+      "esperado": { "diagnosticoPrincipal": "onfalite", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P090",
+      "animal": { "brinco": "0090", "nome": "Órfã", "raca": "Holandesa", "sexo": "F", "idade_meses": 0, "idade_dias": 5, "lactante": false },
+      "queixa": "Vaca morreu no parto e a bezerra não mamou colostro nas primeiras horas; já está apática",
+      "fatos": {
+        "colostro_primeiras_6h": false,
+        "idade_jovem": true,
+        "apatia": true,
+        "fezes_liquidas": false,
+        "umbigo_inchado_quente": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "falha_transferencia_imunidade", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P091",
+      "animal": { "brinco": "0091", "nome": "Tardia", "raca": "Mestiça", "sexo": "M", "idade_meses": 0, "idade_dias": 3, "lactante": false },
+      "queixa": "Bezerro só mamou no dia seguinte ao nascimento; parto à noite sem assistência",
+      "fatos": {
+        "colostro_primeiras_6h": false,
+        "idade_jovem": true,
+        "apatia": false,
+        "fezes_liquidas": false,
+        "umbigo_inchado_quente": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "falha_transferencia_imunidade", "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P092",
+      "animal": { "brinco": "0092", "nome": "Babona", "raca": "Holandesa", "sexo": "F", "idade_meses": 54, "lactante": true, "numero_lactacao": 3, "del": 120, "producao_media_dia": 20 },
+      "queixa": "Aftas e bolhas na língua e nos tetos, babando muito, mancando e com febre; outras vacas do lote iguais",
+      "fatos": {
+        "vesiculas_boca_tetos_cascos": true,
+        "salivacao_intensa": true,
+        "febre": true,
+        "claudicacao": true,
+        "apetite_reduzido": true,
+        "queda_producao_subita": true,
+        "sinais_nervosos": false,
+        "dificuldade_deglutir": false
+      },
+      "esperado": { "diagnosticoPrincipal": "suspeita_aftosa", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P093",
+      "animal": { "brinco": "0093", "nome": "Bolha", "raca": "Girolando 1/2", "sexo": "M", "idade_meses": 18, "lactante": false },
+      "queixa": "Garrote com vesículas entre os cascos e no focinho, salivação intensa e febre alta",
+      "fatos": {
+        "vesiculas_boca_tetos_cascos": true,
+        "salivacao_intensa": true,
+        "febre": true,
+        "claudicacao": true,
+        "apetite_reduzido": true,
+        "sinais_nervosos": false
+      },
+      "esperado": { "diagnosticoPrincipal": "suspeita_aftosa", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P094",
+      "animal": { "brinco": "0094", "nome": "Estranha", "raca": "Holandesa", "sexo": "F", "idade_meses": 60, "lactante": true, "numero_lactacao": 4, "del": 200, "producao_media_dia": 15 },
+      "queixa": "Vaca agressiva, mugido rouco, babando e sem conseguir engolir água; trem posterior fraquejando. Morcegos no galpão",
+      "fatos": {
+        "sinais_nervosos": true,
+        "dificuldade_deglutir": true,
+        "salivacao_intensa": true,
+        "apetite_reduzido": true,
+        "vesiculas_boca_tetos_cascos": false,
+        "febre": false,
+        "pasto_novo_adubado": false
+      },
+      "esperado": { "diagnosticoPrincipal": "suspeita_raiva", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+    {
+      "id": "P095",
+      "animal": { "brinco": "0095", "nome": "Perdida", "raca": "Guzerá", "sexo": "F", "idade_meses": 42, "lactante": false },
+      "queixa": "Novilha incoordenada, com paralisia do trem posterior, salivando e engasgando; não come nem bebe",
+      "fatos": {
+        "sinais_nervosos": true,
+        "dificuldade_deglutir": true,
+        "salivacao_intensa": true,
+        "decubito": true,
+        "febre": false,
+        "vesiculas_boca_tetos_cascos": false,
+        "morte_subita_lote": false,
+        "acesso_pasto_area_nova": false
+      },
+      "esperado": { "diagnosticoPrincipal": "suspeita_raiva", "bandeiraVermelha": true, "naoDeveConcluir": ["sem_alteracao"] }
+    },
+
+    {
+      "id": "P096",
+      "animal": { "brinco": "0096", "nome": "Sadia", "raca": "Holandesa", "sexo": "F", "idade_meses": 50, "lactante": true, "numero_lactacao": 3, "del": 100, "producao_media_dia": 24, "cmt_pior_quarto": "N", "cmt_positivo_meses": 0 },
+      "queixa": "Exame de rotina na ordenha, sem queixa",
+      "fatos": {
+        "caneca_grumos": false,
+        "caneca_cor_alterada": false,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "palpacao_endurecido": false,
+        "palpacao_vermelhidao": false,
+        "ubere_aumento_tamanho": false,
+        "febre": false,
+        "apetite_reduzido": false,
+        "apatia": false,
+        "decubito": false,
+        "claudicacao": false,
+        "queda_producao_subita": false
+      },
+      "esperado": { "diagnosticoPrincipal": "sem_alteracao", "naoDeveConcluir": ["mastite_clinica_g1", "mastite_subclinica"] }
+    },
+    {
+      "id": "P097",
+      "animal": { "brinco": "0097", "nome": "Forte", "raca": "Girolando 1/2", "sexo": "F", "idade_meses": 44, "lactante": true, "numero_lactacao": 2, "del": 70, "producao_media_dia": 22, "cmt_pior_quarto": "N", "cmt_positivo_meses": 0 },
+      "queixa": "Vistoria mensal: vaca em plena produção, nada alterado",
+      "fatos": {
+        "caneca_grumos": false,
+        "caneca_cor_alterada": false,
+        "caneca_consistencia_alterada": false,
+        "palpacao_dor": false,
+        "palpacao_inchaco": false,
+        "palpacao_endurecido": false,
+        "febre": false,
+        "apatia": false,
+        "claudicacao": false,
+        "fezes_liquidas": false,
+        "coceira_intensa": false,
+        "queda_producao_subita": false
+      },
+      "esperado": { "diagnosticoPrincipal": "sem_alteracao", "naoDeveConcluir": ["mastite_clinica_g1", "mastite_subclinica"] }
+    },
+    {
+      "id": "P098",
+      "animal": { "brinco": "0098", "nome": "Bezerro Sadio", "raca": "Holandesa", "sexo": "M", "idade_meses": 0, "idade_dias": 25, "lactante": false },
+      "queixa": "Bezerro de 25 dias em acompanhamento de rotina; mamou colostro na primeira hora",
+      "fatos": {
+        "colostro_primeiras_6h": true,
+        "idade_jovem": true,
+        "fezes_liquidas": false,
+        "desidratacao": false,
+        "umbigo_inchado_quente": false,
+        "tosse": false,
+        "secrecao_nasal": false,
+        "apatia": false,
+        "febre": false
+      },
+      "esperado": { "diagnosticoPrincipal": "sem_alteracao", "naoDeveConcluir": ["diarreia_neonatal", "onfalite", "falha_transferencia_imunidade"] }
+    },
+    {
+      "id": "P099",
+      "animal": { "brinco": "0099", "nome": "Novilha Boa", "raca": "Gir Leiteiro", "sexo": "F", "idade_meses": 22, "lactante": false },
+      "queixa": "Novilha de recria pesada e sadia na avaliação trimestral",
+      "fatos": {
+        "idade_jovem": true,
+        "pelo_aspero_sem_brilho": false,
+        "perda_escore_corporal": false,
+        "suplementacao_mineral_regular": true,
+        "fezes_liquidas": false,
+        "lambe_roi_objetos": false,
+        "coceira_intensa": false,
+        "claudicacao": false,
+        "febre": false,
+        "infestacao_carrapatos": false
+      },
+      "esperado": { "diagnosticoPrincipal": "sem_alteracao", "naoDeveConcluir": ["verminose", "deficiencia_fosforo", "deficiencia_mineral_geral"] }
+    },
+    {
+      "id": "P100",
+      "animal": { "brinco": "0100", "nome": "Touro Firme", "raca": "Girolando 1/2", "sexo": "M", "idade_meses": 48, "lactante": false },
+      "queixa": "Reprodutor em exame semestral, sem nenhuma queixa",
+      "fatos": {
+        "febre": false,
+        "apatia": false,
+        "apetite_reduzido": false,
+        "claudicacao": false,
+        "coceira_intensa": false,
+        "fezes_liquidas": false,
+        "tosse": false,
+        "sinais_nervosos": false,
+        "infestacao_carrapatos": false,
+        "suplementacao_mineral_regular": true
+      },
+      "esperado": { "diagnosticoPrincipal": "sem_alteracao", "naoDeveConcluir": ["verminose", "pneumonia"] }
+    }
+  ]
+}

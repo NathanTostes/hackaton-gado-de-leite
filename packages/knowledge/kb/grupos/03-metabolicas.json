@@ -7,13 +7,37 @@
     "prioridade": 92,
     "se": {
       "todas": [
-        { "var": "del", "op": "<=", "val": 3 },
-        { "var": "numero_lactacao", "op": ">=", "val": 2 },
-        { "var": "decubito", "op": "=", "val": true },
-        { "nao": { "var": "febre", "op": "=", "val": true } }
+        {
+          "var": "del",
+          "op": "<=",
+          "val": 3
+        },
+        {
+          "var": "numero_lactacao",
+          "op": ">=",
+          "val": 2
+        },
+        {
+          "var": "decubito",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        }
       ]
     },
-    "entao": [{ "var": "diagnostico", "val": "hipocalcemia", "cf": 0.85 }],
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipocalcemia",
+        "cf": 0.85
+      }
+    ],
     "porque": "A hipocalcemia ocorre tipicamente nos primeiros dias após o parto em vacas multíparas e de alta produção. Apesar do nome popular \"febre do leite\", o animal NÃO apresenta febre — ao contrário, fica com as extremidades frias.",
     "conduta": [
       "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA: o tratamento é a aplicação de cálcio e precisa ser feito por profissional.",
@@ -32,18 +56,38 @@
     "prioridade": 70,
     "se": {
       "todas": [
-        { "var": "diagnostico", "op": "=", "val": "hipocalcemia" },
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "hipocalcemia"
+        },
         {
           "alguma": [
-            { "var": "extremidades_frias", "op": "=", "val": true },
-            { "var": "tremores_musculares", "op": "=", "val": true }
+            {
+              "var": "extremidades_frias",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "tremores_musculares",
+              "op": "=",
+              "val": true
+            }
           ]
         }
       ]
     },
-    "entao": [{ "var": "diagnostico", "val": "hipocalcemia", "cf": 0.6 }],
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipocalcemia",
+        "cf": 0.6
+      }
+    ],
     "porque": "Extremidades frias e tremores musculares reforçam a suspeita de queda de cálcio no sangue.",
-    "conduta": ["Reforce a urgência do atendimento veterinário."],
+    "conduta": [
+      "Reforce a urgência do atendimento veterinário."
+    ],
     "fonte": "Consenso veterinário geral — PENDENTE de validação.",
     "status": "revisar"
   },
@@ -55,17 +99,42 @@
     "prioridade": 80,
     "se": {
       "todas": [
-        { "var": "del", "op": "entre", "val": [7, 60] },
-        { "var": "apetite_reduzido", "op": "=", "val": true },
+        {
+          "var": "del",
+          "op": "entre",
+          "val": [
+            7,
+            60
+          ]
+        },
+        {
+          "var": "apetite_reduzido",
+          "op": "=",
+          "val": true
+        },
         {
           "alguma": [
-            { "var": "queda_producao_subita", "op": "=", "val": true },
-            { "var": "perda_escore_corporal", "op": "=", "val": true }
+            {
+              "var": "queda_producao_subita",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "perda_escore_corporal",
+              "op": "=",
+              "val": true
+            }
           ]
         }
       ]
     },
-    "entao": [{ "var": "diagnostico", "val": "cetose", "cf": 0.7 }],
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "cetose",
+        "cf": 0.7
+      }
+    ],
     "porque": "A cetose aparece no início da lactação, quando a vaca não consegue comer o suficiente para a produção de leite que faz. Come menos, emagrece e a produção cai.",
     "conduta": [
       "Procure o médico-veterinário para confirmar com teste de corpos cetônicos e indicar o tratamento.",
@@ -83,27 +152,44 @@
     "grupo": "metabolicas",
     "titulo": "Hálito cetônico",
     "prioridade": 85,
-    "se": { "var": "halito_adocicado", "op": "=", "val": true },
-    "entao": [{ "var": "diagnostico", "val": "cetose", "cf": 0.8 }],
+    "se": {
+      "var": "halito_adocicado",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "cetose",
+        "cf": 0.8
+      }
+    ],
     "porque": "O hálito com cheiro adocicado (acetona) é um sinal bastante específico de cetose.",
-    "conduta": ["Procure o médico-veterinário para confirmar e tratar."],
+    "conduta": [
+      "Procure o médico-veterinário para confirmar e tratar."
+    ],
     "fonte": "Consenso veterinário geral — PENDENTE de validação.",
     "status": "revisar"
   },
   {
     "id": "MET-HIPOMAGNESEMIA",
-    "versao": "1.0.0",
+    "versao": "1.1.0",
     "grupo": "emergencia",
     "titulo": "Hipomagnesemia (tetania de pasto)",
     "prioridade": 95,
     "se": {
-      "todas": [
-        { "var": "agitacao_convulsao", "op": "=", "val": true },
-        { "nao": { "var": "decubito", "op": "=", "val": true } }
-      ]
+      "var": "agitacao_convulsao",
+      "op": "=",
+      "val": true
     },
-    "entao": [{ "var": "diagnostico", "val": "hipomagnesemia", "cf": 0.65 }],
-    "porque": "Agitação e convulsão, num animal que ainda se mantém de pé ou que caiu se debatendo (e não mole e caído como na hipocalcemia), é o quadro clássico da tetania hipomagnesêmica — queda de magnésio no sangue.",
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipomagnesemia",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Agitação, espasmos ou convulsão é o sinal cardinal da tetania hipomagnesêmica — queda de magnésio no sangue. Não aparece no quadro clássico de hipocalcemia, em que o animal fica mole e deprimido. Por ser uma emergência que mata em horas, a hipótese é levantada pelo sinal sozinho, sem depender de saber se o animal já caiu ou não.",
     "conduta": [
       "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA: o tratamento é a aplicação de magnésio por via injetável, feito por profissional.",
       "Evite qualquer manipulação ou barulho brusco: estímulo externo pode desencadear nova convulsão.",
@@ -121,13 +207,29 @@
     "prioridade": 60,
     "se": {
       "todas": [
-        { "var": "diagnostico", "op": "=", "val": "hipomagnesemia" },
-        { "var": "pasto_novo_adubado", "op": "=", "val": true }
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "hipomagnesemia"
+        },
+        {
+          "var": "pasto_novo_adubado",
+          "op": "=",
+          "val": true
+        }
       ]
     },
-    "entao": [{ "var": "diagnostico", "val": "hipomagnesemia", "cf": 0.6 }],
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipomagnesemia",
+        "cf": 0.6
+      }
+    ],
     "porque": "Pasto novo, de rebrota, ou recém-adubado com nitrogênio ou potássio reduz a absorção de magnésio pelo animal — é o principal fator de risco de rebanho para a tetania de pasto.",
-    "conduta": ["Retire temporariamente o lote do pasto suspeito até reavaliação do técnico."],
+    "conduta": [
+      "Retire temporariamente o lote do pasto suspeito até reavaliação do técnico."
+    ],
     "fonte": "Consenso veterinário geral — PENDENTE de validação.",
     "status": "revisar"
   },
@@ -139,14 +241,72 @@
     "prioridade": 55,
     "se": {
       "todas": [
-        { "var": "decubito", "op": "=", "val": true },
-        { "var": "tremores_musculares", "op": "=", "val": true },
-        { "nao": { "var": "del", "op": "<=", "val": 3 } }
+        {
+          "var": "decubito",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "tremores_musculares",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "del",
+            "op": "<=",
+            "val": 3
+          }
+        }
       ]
     },
-    "entao": [{ "var": "diagnostico", "val": "hipomagnesemia", "cf": 0.45 }],
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipomagnesemia",
+        "cf": 0.45
+      }
+    ],
     "porque": "Decúbito com tremores fora da janela típica da hipocalcemia (3 dias pós-parto) levanta a hipótese de hipomagnesemia, que também pode cursar com decúbito nos casos mais avançados.",
-    "conduta": ["Peça ao veterinário que avalie magnésio e cálcio juntos antes de decidir o tratamento."],
+    "conduta": [
+      "Peça ao veterinário que avalie magnésio e cálcio juntos antes de decidir o tratamento."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-HIPOMAGNESEMIA-EM-PE",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Convulsão em animal que ainda não caiu reforça hipomagnesemia",
+    "prioridade": 58,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "hipomagnesemia"
+        },
+        {
+          "nao": {
+            "var": "decubito",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipomagnesemia",
+        "cf": 0.45
+      }
+    ],
+    "porque": "Animal em crise convulsiva que ainda se mantém de pé, ou que caiu se debatendo — e não mole e caído como na hipocalcemia — é o quadro mais característico da tetania de pasto.",
+    "conduta": [
+      "Mantenha o animal em local plano e sem obstáculos até o veterinário chegar."
+    ],
     "fonte": "Consenso veterinário geral — PENDENTE de validação.",
     "status": "revisar"
   }

@@ -7,11 +7,25 @@
     "prioridade": 80,
     "se": {
       "todas": [
-        { "var": "del", "op": "<=", "val": 30 },
-        { "var": "placenta_retida_12h", "op": "=", "val": true }
+        {
+          "var": "del",
+          "op": "<=",
+          "val": 30
+        },
+        {
+          "var": "placenta_retida_12h",
+          "op": "=",
+          "val": true
+        }
       ]
     },
-    "entao": [{ "var": "diagnostico", "val": "retencao_placenta", "cf": 0.9 }],
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "retencao_placenta",
+        "cf": 0.9
+      }
+    ],
     "porque": "A placenta deve ser eliminada em até 12 horas após o parto. Passado esse prazo, considera-se retenção de placenta, que aumenta muito o risco de infecção do útero.",
     "conduta": [
       "NÃO puxe a placenta: isso machuca o útero e piora o quadro.",
@@ -30,11 +44,25 @@
     "prioridade": 85,
     "se": {
       "todas": [
-        { "var": "del", "op": "<=", "val": 45 },
-        { "var": "corrimento_vulvar_fetido", "op": "=", "val": true }
+        {
+          "var": "del",
+          "op": "<=",
+          "val": 45
+        },
+        {
+          "var": "corrimento_vulvar_fetido",
+          "op": "=",
+          "val": true
+        }
       ]
     },
-    "entao": [{ "var": "diagnostico", "val": "metrite", "cf": 0.85 }],
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "metrite",
+        "cf": 0.85
+      }
+    ],
     "porque": "Corrimento vulvar fétido ou achocolatado no pós-parto indica infecção do útero.",
     "conduta": [
       "Chame o médico-veterinário: o tratamento costuma exigir antibiótico intrauterino ou sistêmico, com prescrição.",
@@ -53,31 +81,71 @@
     "prioridade": 90,
     "se": {
       "todas": [
-        { "var": "diagnostico", "op": "=", "val": "metrite" },
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "metrite"
+        },
         {
           "alguma": [
-            { "var": "febre", "op": "=", "val": true },
-            { "var": "apatia", "op": "=", "val": true }
+            {
+              "var": "febre",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "apatia",
+              "op": "=",
+              "val": true
+            }
           ]
         }
       ]
     },
-    "entao": [{ "var": "diagnostico", "val": "metrite", "cf": 0.7 }],
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "metrite",
+        "cf": 0.7
+      }
+    ],
     "porque": "Quando há febre ou apatia junto do corrimento, a infecção já afeta o organismo todo e o atendimento passa a ser urgente.",
-    "conduta": ["Atendimento veterinário com urgência — quadro sistêmico."],
+    "conduta": [
+      "Atendimento veterinário com urgência — quadro sistêmico."
+    ],
     "fonte": "Consenso veterinário geral — PENDENTE de validação.",
     "status": "revisar"
   },
   {
     "id": "PP-RETENCAO-LEVA-METRITE",
-    "versao": "1.0.0",
+    "versao": "1.1.0",
     "grupo": "pos_parto",
     "titulo": "Retenção de placenta aumenta o risco de metrite",
     "prioridade": 50,
-    "se": { "var": "diagnostico", "op": "=", "val": "retencao_placenta" },
-    "entao": [{ "var": "diagnostico", "val": "metrite", "cf": 0.4 }],
-    "porque": "A retenção de placenta é o principal fator de risco para metrite: a membrana retida serve de meio para os germes.",
-    "conduta": ["Monitore diariamente temperatura e corrimento vulvar nas próximas duas semanas."],
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "retencao_placenta"
+        },
+        {
+          "var": "corrimento_vulvar_fetido",
+          "op": "desconhecido"
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "metrite",
+        "cf": 0.4
+      }
+    ],
+    "porque": "A retenção de placenta é o principal fator de risco para metrite: a membrana retida serve de meio para os germes. Vale como alerta enquanto o corrimento vulvar ainda não foi examinado — se o exame foi feito e não há corrimento fétido, isso é risco a monitorar, não diagnóstico a declarar.",
+    "conduta": [
+      "Monitore diariamente temperatura e corrimento vulvar nas próximas duas semanas."
+    ],
     "fonte": "Consenso veterinário geral — PENDENTE de validação.",
     "status": "revisar"
   }

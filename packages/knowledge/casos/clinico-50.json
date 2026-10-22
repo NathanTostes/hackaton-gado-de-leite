@@ -1,0 +1,1291 @@
+{
+  "versao": "1.0.0",
+  "descricao": "Bateria clínica de 50 casos (1–50) com gabarito externo: quadros descritos em linguagem de semiologia veterinária, sem partir das regras da base.",
+  "prontuarios": [
+    {
+      "id": "C01",
+      "animal": {
+        "brinco": "01",
+        "nome": "Caída",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 72,
+        "lactante": true,
+        "numero_lactacao": 4,
+        "producao_media_dia": 28,
+        "del": 1
+      },
+      "queixa": "1 dia pós-parto, deitada com o pescoço curvado sobre as costelas, focinho seco, extremidades frias, 37,5 °C, pupilas dilatadas",
+      "fatos": {
+        "decubito": true,
+        "posicao_cabeca_flanco": true,
+        "extremidades_frias": true,
+        "febre": false,
+        "pupilas_dilatadas": true,
+        "apatia": true,
+        "apetite_reduzido": true,
+        "agitacao_convulsao": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "hipocalcemia"
+      }
+    },
+    {
+      "id": "C02",
+      "animal": {
+        "brinco": "02",
+        "nome": "Ping",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 60,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 22,
+        "del": 15
+      },
+      "queixa": "15 dias pós-parto, queda abrupta de leite, perda rápida de peso, \"ping\" metálico nas últimas costelas do lado esquerdo, hálito de maçã passada",
+      "fatos": {
+        "ping_flanco_esquerdo": true,
+        "queda_producao_subita": true,
+        "perda_escore_corporal": true,
+        "halito_adocicado": true,
+        "apetite_reduzido": true,
+        "fezes_escassas": true,
+        "ping_flanco_direito": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "deslocamento_abomaso"
+      }
+    },
+    {
+      "id": "C03",
+      "animal": {
+        "brinco": "03",
+        "nome": "Gorda",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 66,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 20,
+        "del": 2
+      },
+      "queixa": "Recém-parida muito gorda (ECC 4,5), letargia profunda, anorexia total, não respondeu ao cálcio intravenoso",
+      "fatos": {
+        "escore_corporal_alto": true,
+        "apatia": true,
+        "apetite_reduzido": true,
+        "nao_responde_calcio": true,
+        "decubito": true,
+        "febre": false,
+        "agitacao_convulsao": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "esteatose_hepatica"
+      }
+    },
+    {
+      "id": "C04",
+      "animal": {
+        "brinco": "04",
+        "nome": "Fita",
+        "raca": "Jersey",
+        "sexo": "F",
+        "idade_meses": 54,
+        "lactante": true,
+        "numero_lactacao": 2,
+        "producao_media_dia": 19,
+        "del": 30
+      },
+      "queixa": "30 dias pós-parto, emagrecimento progressivo, fezes duras, sem febre, fita de urina fortemente positiva para corpos cetônicos",
+      "fatos": {
+        "cetonuria_positiva": true,
+        "perda_escore_corporal": true,
+        "fezes_escassas": true,
+        "febre": false,
+        "apetite_reduzido": true,
+        "ping_flanco_esquerdo": false,
+        "ping_flanco_direito": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "cetose"
+      }
+    },
+    {
+      "id": "C05",
+      "animal": {
+        "brinco": "05",
+        "nome": "Vermelha",
+        "raca": "Girolando 1/2",
+        "sexo": "F",
+        "idade_meses": 58,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 18,
+        "del": 20
+      },
+      "queixa": "20 dias pós-parto, mucosas pálidas, urina avermelhada escura, SEM carrapatos e SEM febre, histórico de dieta pobre em fósforo",
+      "fatos": {
+        "urina_escura": true,
+        "mucosas_palidas": true,
+        "infestacao_carrapatos": false,
+        "febre": false,
+        "suplementacao_mineral_regular": false,
+        "apatia": true
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "hemoglobinuria_puerperal"
+      }
+    },
+    {
+      "id": "C06",
+      "animal": {
+        "brinco": "06",
+        "nome": "Tetania",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 62,
+        "lactante": true,
+        "numero_lactacao": 4,
+        "producao_media_dia": 21,
+        "del": 70
+      },
+      "queixa": "Caiu no curral após pastar aveia/azevém de crescimento rápido; tremores severos, rigidez, convulsões e reação exagerada a barulho",
+      "fatos": {
+        "pasto_novo_adubado": true,
+        "tremores_musculares": true,
+        "agitacao_convulsao": true,
+        "hiperestesia_som": true,
+        "decubito": true,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "hipomagnesemia",
+        "bandeiraVermelha": true
+      }
+    },
+    {
+      "id": "C07",
+      "animal": {
+        "brinco": "07",
+        "nome": "Espuma",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 50,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 24,
+        "del": 90
+      },
+      "queixa": "Excesso de concentrado; diarreia espumosa com grãos inteiros, apatia, cabeça baixa, sem ruminar, temperatura normal",
+      "fatos": {
+        "dieta_muito_concentrado": true,
+        "fezes_liquidas_bolhosas": true,
+        "graos_inteiros_fezes": true,
+        "apatia": true,
+        "ruminacao_reduzida": true,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "acidose_ruminal"
+      }
+    },
+    {
+      "id": "C08",
+      "animal": {
+        "brinco": "08",
+        "nome": "Tambor",
+        "raca": "Girolando 1/2",
+        "sexo": "F",
+        "idade_meses": 20,
+        "lactante": false
+      },
+      "queixa": "Animal de recria estufou muito e rápido do lado esquerdo após trevo/alfafa fresca; respiração de boca aberta, som oco de tambor no flanco",
+      "fatos": {
+        "flanco_esquerdo_distendido": true,
+        "respiracao_acelerada": true,
+        "acesso_pasto_area_nova": true,
+        "ruminacao_reduzida": true,
+        "engasgo_alimento_inteiro": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "timpanismo"
+      }
+    },
+    {
+      "id": "C09",
+      "animal": {
+        "brinco": "09",
+        "nome": "Engasgo",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 55,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 20,
+        "del": 120
+      },
+      "queixa": "Baba saliva limpa em abundância, movimentos de angústia e estufamento rápido do flanco esquerdo após tentar comer laranjas inteiras",
+      "fatos": {
+        "engasgo_alimento_inteiro": true,
+        "salivacao_intensa": true,
+        "flanco_esquerdo_distendido": true,
+        "ruminacao_reduzida": true,
+        "dificuldade_deglutir": true,
+        "sinais_nervosos": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "obstrucao_esofagica"
+      }
+    },
+    {
+      "id": "C10",
+      "animal": {
+        "brinco": "10",
+        "nome": "Arame",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 64,
+        "lactante": true,
+        "numero_lactacao": 4,
+        "producao_media_dia": 17,
+        "del": 60
+      },
+      "queixa": "60 dias em lactação, queda abrupta de leite, andar travado, geme de dor ao beliscar a cernelha, febre leve 39,4 °C",
+      "fatos": {
+        "dor_cernelha": true,
+        "dorso_arqueado": true,
+        "queda_producao_subita": true,
+        "febre": true,
+        "ruminacao_reduzida": true,
+        "apetite_reduzido": true,
+        "corrimento_vulvar_fetido": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "reticuloperitonite"
+      }
+    },
+    {
+      "id": "C11",
+      "animal": {
+        "brinco": "11",
+        "nome": "Johne",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 80,
+        "lactante": true,
+        "numero_lactacao": 6,
+        "producao_media_dia": 8,
+        "del": 200
+      },
+      "queixa": "Emagrecimento crônico e severo (\"puro osso\") com apetite excelente; diarreia em jato constante que não melhora com antibiótico",
+      "fatos": {
+        "diarreia_cronica_refrataria": true,
+        "apetite_preservado": true,
+        "perda_escore_corporal": true,
+        "febre": false,
+        "mucosas_palidas": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "paratuberculose"
+      }
+    },
+    {
+      "id": "C12",
+      "animal": {
+        "brinco": "12",
+        "nome": "Torção",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 61,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 21,
+        "del": 15
+      },
+      "queixa": "15 dias pós-parto, \"ping\" metálico do lado DIREITO, fezes escassas como piche, taquicardia severa e choque rápido",
+      "fatos": {
+        "ping_flanco_direito": true,
+        "ping_flanco_esquerdo": false,
+        "fezes_piche": true,
+        "taquicardia_choque": true,
+        "fezes_escassas": true,
+        "apetite_reduzido": true,
+        "queda_producao_subita": true,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "deslocamento_abomaso_direito",
+        "bandeiraVermelha": true
+      }
+    },
+    {
+      "id": "C13",
+      "animal": {
+        "brinco": "13",
+        "nome": "Vagal",
+        "raca": "Girolando 3/4",
+        "sexo": "F",
+        "idade_meses": 70,
+        "lactante": true,
+        "numero_lactacao": 5,
+        "producao_media_dia": 12,
+        "del": 180
+      },
+      "queixa": "Rúmen estufado cronicamente, arrota com dificuldade; hábito de mastigar cordas e sacos plásticos na fazenda",
+      "fatos": {
+        "timpanismo_cronico": true,
+        "ingestao_corpo_estranho": true,
+        "ruminacao_reduzida": true,
+        "flanco_esquerdo_distendido": true,
+        "engasgo_alimento_inteiro": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "indigestao_vagal"
+      }
+    },
+    {
+      "id": "C14",
+      "animal": {
+        "brinco": "14",
+        "nome": "Ureia",
+        "raca": "Nelore x Holandesa",
+        "sexo": "F",
+        "idade_meses": 30,
+        "lactante": false
+      },
+      "queixa": "Animais morrendo subitamente no pasto; tremores violentos, espuma na boca e dor abdominal severa após chuva molhar o cocho de proteinado",
+      "fatos": {
+        "suplemento_proteinado_molhado": true,
+        "morte_subita_lote": true,
+        "tremores_musculares": true,
+        "salivacao_intensa": true,
+        "apatia": true,
+        "acesso_pasto_area_nova": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "intoxicacao_ureia",
+        "bandeiraVermelha": true
+      }
+    },
+    {
+      "id": "C15",
+      "animal": {
+        "brinco": "15",
+        "nome": "Toxêmica",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 59,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 23,
+        "del": 65
+      },
+      "queixa": "65 dias em lactação, caída, 41 °C, desidratação profunda; um quarto duro como pedra e avermelhado, secreção rala, aquosa e sanguinolenta",
+      "fatos": {
+        "caneca_cor_alterada": true,
+        "caneca_consistencia_alterada": true,
+        "palpacao_endurecido": true,
+        "palpacao_vermelhidao": true,
+        "palpacao_dor": true,
+        "ubere_aumento_tamanho": true,
+        "febre": true,
+        "desidratacao": true,
+        "decubito": true,
+        "apatia": true,
+        "apetite_reduzido": true
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "mastite_clinica_g3",
+        "bandeiraVermelha": true
+      }
+    },
+    {
+      "id": "C16",
+      "animal": {
+        "brinco": "16",
+        "nome": "Teteira",
+        "raca": "Girolando 1/2",
+        "sexo": "F",
+        "idade_meses": 52,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 19,
+        "del": 110
+      },
+      "queixa": "Na ordenha, um quarto inchado, quente e muito dolorido ao colocar a teteira; primeiros jatos com grumos densos. Sem febre e comendo bem",
+      "fatos": {
+        "caneca_grumos": true,
+        "palpacao_dor": true,
+        "palpacao_inchaco": true,
+        "palpacao_vermelhidao": true,
+        "febre": false,
+        "apetite_reduzido": false,
+        "apatia": false,
+        "decubito": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "mastite_clinica_g2"
+      }
+    },
+    {
+      "id": "C17",
+      "animal": {
+        "brinco": "17",
+        "nome": "Cego",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 86,
+        "lactante": true,
+        "numero_lactacao": 6,
+        "producao_media_dia": 9,
+        "del": 190
+      },
+      "queixa": "Um quarto nitidamente menor, repuxado e murcho, duro e fibroso ao toque; não sai leite, apenas gotas (teto cego)",
+      "fatos": {
+        "quarto_sem_leite": true,
+        "palpacao_endurecido": true,
+        "caroco_apos_ordenha": true,
+        "palpacao_dor": false,
+        "febre": false,
+        "caneca_grumos": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "peito_perdido"
+      }
+    },
+    {
+      "id": "C18",
+      "animal": {
+        "brinco": "18",
+        "nome": "Edema",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 34,
+        "lactante": false
+      },
+      "queixa": "Vaca seca a 10 dias do parto; úbere e região do umbigo muito inchados, atrapalhando o caminhar. Inchaço frio, indolor, deixa marca do dedo",
+      "fatos": {
+        "pre_parto": true,
+        "ubere_edema_cacifo": true,
+        "ubere_aumento_tamanho": true,
+        "palpacao_dor": false,
+        "febre": false,
+        "caneca_grumos": false,
+        "palpacao_vermelhidao": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "edema_ubere"
+      }
+    },
+    {
+      "id": "C19",
+      "animal": {
+        "brinco": "19",
+        "nome": "Pendurada",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 63,
+        "lactante": true,
+        "numero_lactacao": 4,
+        "producao_media_dia": 24,
+        "del": 1
+      },
+      "queixa": "24 h pós-parto com as membranas fetais ainda penduradas na vulva, escurecidas e com odor pútrido inicial",
+      "fatos": {
+        "placenta_retida_12h": true
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "retencao_placenta"
+      }
+    },
+    {
+      "id": "C20",
+      "animal": {
+        "brinco": "20",
+        "nome": "Puerperal",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 57,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 18,
+        "del": 5
+      },
+      "queixa": "5 dias pós-parto com histórico de distocia; costas arqueadas, febre alta, queda total no leite, corrimento vulvar muito fétido, marrom-avermelhado e aquoso",
+      "fatos": {
+        "corrimento_vulvar_fetido": true,
+        "febre": true,
+        "queda_producao_subita": true,
+        "parto_distocico_recente": true,
+        "dorso_arqueado": true,
+        "apetite_reduzido": true,
+        "apatia": true,
+        "dor_cernelha": false,
+        "massa_protrai_vulva": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "metrite"
+      }
+    },
+    {
+      "id": "C21",
+      "animal": {
+        "brinco": "21",
+        "nome": "Iogurte",
+        "raca": "Girolando 1/2",
+        "sexo": "F",
+        "idade_meses": 50,
+        "lactante": true,
+        "numero_lactacao": 2,
+        "producao_media_dia": 17,
+        "del": 40
+      },
+      "queixa": "40 dias pós-parto sem cio; ao deitar expulsa corrimento com aspecto de pus grosso. Sem doença sistêmica, apetite normal",
+      "fatos": {
+        "corrimento_vulvar_fetido": true,
+        "dias_desde_parto_sem_cio": 40,
+        "febre": false,
+        "apetite_reduzido": false,
+        "apatia": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "metrite"
+      }
+    },
+    {
+      "id": "C22",
+      "animal": {
+        "brinco": "22",
+        "nome": "Brucela",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 55,
+        "lactante": false
+      },
+      "queixa": "No 8º mês de gestação abortou feto totalmente formado no pasto; não apresenta sinais de doença, mas retém a placenta. Rebanho sem vacinação reprodutiva",
+      "fatos": {
+        "aborto": true,
+        "feto_formado": true,
+        "placenta_retida_12h": true,
+        "vacinada_reproducao": false,
+        "caes_acesso_cocho": false,
+        "febre": false,
+        "apatia": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "brucelose",
+        "bandeiraVermelha": true
+      }
+    },
+    {
+      "id": "C23",
+      "animal": {
+        "brinco": "23",
+        "nome": "Machorra",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 58,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 19,
+        "del": 130
+      },
+      "queixa": "Ciclos de cio muito irregulares, berra constantemente, aceita monta o tempo todo e monta nas outras; aspecto e comportamento masculinizados",
+      "fatos": {
+        "cio_irregular_frequente": true,
+        "comportamento_masculinizado": true,
+        "ovarios_pequenos_lisos": false,
+        "corrimento_vulvar_fetido": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "cisto_ovariano"
+      }
+    },
+    {
+      "id": "C24",
+      "animal": {
+        "brinco": "24",
+        "nome": "Parada",
+        "raca": "Girolando 1/2",
+        "sexo": "F",
+        "idade_meses": 52,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 14,
+        "del": 60
+      },
+      "queixa": "60 dias pós-parto, histórico de subnutrição; ao toque retal os ovários estão pequenos e lisos, sem estruturas. Ausência total de cio",
+      "fatos": {
+        "ovarios_pequenos_lisos": true,
+        "dias_desde_parto_sem_cio": 60,
+        "perda_escore_corporal": true,
+        "cio_irregular_frequente": false,
+        "comportamento_masculinizado": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "anestro_pos_parto"
+      }
+    },
+    {
+      "id": "C25",
+      "animal": {
+        "brinco": "25",
+        "nome": "Rosada",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 40,
+        "lactante": false
+      },
+      "queixa": "No fim da gestação, deitada no pasto, grande massa de tecido rosado protrai da vulva ANTES do parto",
+      "fatos": {
+        "massa_protrai_vulva": true,
+        "massa_com_caruncula": false,
+        "pre_parto": true,
+        "parto_distocico_recente": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "prolapso_vaginal"
+      }
+    },
+    {
+      "id": "C26",
+      "animal": {
+        "brinco": "26",
+        "nome": "Invertido",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 75,
+        "lactante": true,
+        "numero_lactacao": 5,
+        "producao_media_dia": 20,
+        "del": 0
+      },
+      "queixa": "Multípara imediatamente após parto muito difícil e tracionado; enorme massa carnosa com carúnculas invertida e pendurada fora da vulva",
+      "fatos": {
+        "massa_protrai_vulva": true,
+        "massa_com_caruncula": true,
+        "parto_distocico_recente": true,
+        "apatia": true,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "prolapso_uterino",
+        "bandeiraVermelha": true
+      }
+    },
+    {
+      "id": "C27",
+      "animal": {
+        "brinco": "27",
+        "nome": "Neospora",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 48,
+        "lactante": false
+      },
+      "queixa": "Vaca prenhe e vacinada contra doenças reprodutivas abortou aos 5 meses; há cães circulando livremente e defecando nos comedouros",
+      "fatos": {
+        "aborto": true,
+        "caes_acesso_cocho": true,
+        "vacinada_reproducao": true,
+        "feto_formado": true,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "neosporose"
+      }
+    },
+    {
+      "id": "C28",
+      "animal": {
+        "brinco": "28",
+        "nome": "Branca",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 0,
+        "lactante": false,
+        "idade_dias": 5
+      },
+      "queixa": "Bezerra de 5 dias com fezes profusas, aquosas e brancas; prostrada, sem reflexo de sucção, olhos muito afundados",
+      "fatos": {
+        "fezes_liquidas": true,
+        "desidratacao": true,
+        "apatia": true,
+        "apetite_reduzido": true,
+        "colostro_primeiras_6h": true,
+        "umbigo_inchado_quente": false,
+        "juntas_inchadas_quentes": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "diarreia_neonatal"
+      }
+    },
+    {
+      "id": "C29",
+      "animal": {
+        "brinco": "29",
+        "nome": "Umbigo",
+        "raca": "Girolando 1/2",
+        "sexo": "M",
+        "idade_meses": 0,
+        "lactante": false,
+        "idade_dias": 10
+      },
+      "queixa": "Bezerro de 10 dias com umbigo grosso, dolorido, quente e purgando pus fétido; triste e com febre",
+      "fatos": {
+        "umbigo_inchado_quente": true,
+        "febre": true,
+        "apatia": true,
+        "fezes_liquidas": false,
+        "juntas_inchadas_quentes": false,
+        "colostro_primeiras_6h": true
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "onfalite"
+      }
+    },
+    {
+      "id": "C30",
+      "animal": {
+        "brinco": "30",
+        "nome": "Junta",
+        "raca": "Girolando 1/2",
+        "sexo": "M",
+        "idade_meses": 0,
+        "lactante": false,
+        "idade_dias": 14
+      },
+      "queixa": "O mesmo bezerro, sem tratamento, amanhece sem conseguir levantar, com os joelhos muito inchados, quentes e doloridos",
+      "fatos": {
+        "juntas_inchadas_quentes": true,
+        "umbigo_inchado_quente": true,
+        "decubito": true,
+        "febre": true,
+        "apatia": true,
+        "fezes_liquidas": false,
+        "colostro_primeiras_6h": true,
+        "opistotono_rigidez": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "poliartrite_infecciosa"
+      }
+    },
+    {
+      "id": "C31",
+      "animal": {
+        "brinco": "31",
+        "nome": "Pulmonar",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 4,
+        "lactante": false,
+        "idade_dias": 120
+      },
+      "queixa": "Desmamado aos 4 meses: pelagem arrepiada, tosse seca crônica ao correr, abdômen distendido e atraso no desenvolvimento",
+      "fatos": {
+        "tosse": true,
+        "febre": false,
+        "pelo_aspero_sem_brilho": true,
+        "abdomen_distendido": true,
+        "perda_escore_corporal": true,
+        "secrecao_nasal": false,
+        "respiracao_acelerada": false,
+        "mucosas_palidas": false,
+        "edema_submandibular": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "verminose_pulmonar"
+      }
+    },
+    {
+      "id": "C32",
+      "animal": {
+        "brinco": "32",
+        "nome": "Papeira",
+        "raca": "Girolando 1/2",
+        "sexo": "M",
+        "idade_meses": 2,
+        "lactante": false,
+        "idade_dias": 62
+      },
+      "queixa": "Bezerro de 2 meses com palidez severa das mucosas, inchaço mole sob a mandíbula, comendo terra e fezes amolecidas escuras",
+      "fatos": {
+        "mucosas_palidas": true,
+        "edema_submandibular": true,
+        "lambe_roi_objetos": true,
+        "suplementacao_mineral_regular": true,
+        "perda_escore_corporal": true,
+        "febre": false,
+        "tosse": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "verminose"
+      }
+    },
+    {
+      "id": "C33",
+      "animal": {
+        "brinco": "33",
+        "nome": "Tétano",
+        "raca": "Holandesa",
+        "sexo": "M",
+        "idade_meses": 0,
+        "lactante": false,
+        "idade_dias": 15
+      },
+      "queixa": "Bezerro de 15 dias com espasmos musculares, rigidez nos membros e cabeça repuxada para trás; corte de umbigo irregular em ambiente muito sujo",
+      "fatos": {
+        "opistotono_rigidez": true,
+        "tremores_musculares": true,
+        "ferida_contaminada_recente": true,
+        "febre": false,
+        "agitacao_convulsao": false,
+        "decubito": false,
+        "juntas_inchadas_quentes": false,
+        "umbigo_inchado_quente": false,
+        "colostro_primeiras_6h": true,
+        "fezes_liquidas": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "tetano",
+        "bandeiraVermelha": true
+      }
+    },
+    {
+      "id": "C34",
+      "animal": {
+        "brinco": "34",
+        "nome": "Ictérica",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 26,
+        "lactante": false
+      },
+      "queixa": "Novilha com 41,5 °C, mucosas quase brancas e amareladas, urina cor de café e alta infestação de carrapatos",
+      "fatos": {
+        "febre": true,
+        "mucosas_palidas": true,
+        "mucosas_amareladas": true,
+        "urina_escura": true,
+        "infestacao_carrapatos": true,
+        "apatia": true
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "tristeza_parasitaria"
+      }
+    },
+    {
+      "id": "C35",
+      "animal": {
+        "brinco": "35",
+        "nome": "Transporte",
+        "raca": "Holandesa",
+        "sexo": "M",
+        "idade_meses": 24,
+        "lactante": false
+      },
+      "queixa": "Touro recém-adquirido após horas de caminhão: isola-se, febre, corrimento nasal grosso amarelado, tosse seca ao esforço e respiração abdominal",
+      "fatos": {
+        "transporte_recente": true,
+        "febre": true,
+        "secrecao_nasal": true,
+        "tosse": true,
+        "respiracao_acelerada": true,
+        "apatia": true,
+        "pelo_aspero_sem_brilho": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "pneumonia"
+      }
+    },
+    {
+      "id": "C36",
+      "animal": {
+        "brinco": "36",
+        "nome": "Manqueira",
+        "raca": "Nelore x Gir",
+        "sexo": "M",
+        "idade_meses": 14,
+        "lactante": false
+      },
+      "queixa": "Garrote encontrado morto no pasto; antes mancava e tinha inchaço grande na coxa. À palpação do inchaço há crepitação (gás sob o couro)",
+      "fatos": {
+        "animal_morto": true,
+        "inchaco_crepitante": true,
+        "claudicacao": true,
+        "morte_subita_lote": true,
+        "sangue_nao_coagulado_orificios": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "carbunculo_sintomatico",
+        "bandeiraVermelha": true
+      }
+    },
+    {
+      "id": "C37",
+      "animal": {
+        "brinco": "37",
+        "nome": "Aftosa",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 54,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 20,
+        "del": 120
+      },
+      "queixa": "Vários animais com salivação excessiva, bolhas estouradas no focinho, gengiva e tetos, e manqueira generalizada no lote",
+      "fatos": {
+        "vesiculas_boca_tetos_cascos": true,
+        "salivacao_intensa": true,
+        "claudicacao": true,
+        "febre": true,
+        "apetite_reduzido": true,
+        "sinais_nervosos": false,
+        "dificuldade_deglutir": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "suspeita_aftosa",
+        "bandeiraVermelha": true
+      }
+    },
+    {
+      "id": "C38",
+      "animal": {
+        "brinco": "38",
+        "nome": "Círculos",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 56,
+        "lactante": true,
+        "numero_lactacao": 4,
+        "producao_media_dia": 18,
+        "del": 150
+      },
+      "queixa": "Confinada, perdeu a visão de repente, anda em círculos, pressiona a cabeça contra a cerca e tem tremores faciais",
+      "fatos": {
+        "cegueira_subita": true,
+        "anda_circulos_pressiona_cabeca": true,
+        "sinais_nervosos": true,
+        "dieta_muito_concentrado": true,
+        "febre": false,
+        "salivacao_intensa": false,
+        "dificuldade_deglutir": false,
+        "opistotono_rigidez": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "polioencefalomalacia"
+      }
+    },
+    {
+      "id": "C39",
+      "animal": {
+        "brinco": "39",
+        "nome": "Sol",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 32,
+        "lactante": false
+      },
+      "queixa": "Novilha a pasto com feridas e crostas vivas e doloridas apenas onde o pelo é branco; partes de pelo preto normais. Foge do sol",
+      "fatos": {
+        "pele_clara_ferida_sol": true,
+        "coceira_intensa": false,
+        "placas_descamadas": false,
+        "verrugas_couveflor": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "fotossensibilizacao"
+      }
+    },
+    {
+      "id": "C40",
+      "animal": {
+        "brinco": "40",
+        "nome": "Verruga",
+        "raca": "Girolando 1/2",
+        "sexo": "F",
+        "idade_meses": 10,
+        "lactante": false
+      },
+      "queixa": "Lote de bezerras com formações secas e duras parecendo couve-flor na cabeça, pescoço e barbelas; não coça, não dói e não dá febre",
+      "fatos": {
+        "verrugas_couveflor": true,
+        "coceira_intensa": false,
+        "placas_descamadas": false,
+        "febre": false,
+        "crostas_pele": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "papilomatose"
+      }
+    },
+    {
+      "id": "C41",
+      "animal": {
+        "brinco": "41",
+        "nome": "Samambaia",
+        "raca": "Girolando 1/2",
+        "sexo": "F",
+        "idade_meses": 44,
+        "lactante": false
+      },
+      "queixa": "Pasta há mais de um ano em área invadida por samambaia; urina com sangue vivo constantemente, fraqueza e emagrecimento crônico",
+      "fatos": {
+        "pasto_samambaia": true,
+        "hematuria_persistente": true,
+        "perda_escore_corporal": true,
+        "mucosas_palidas": true,
+        "febre": false,
+        "urina_escura": false,
+        "infestacao_carrapatos": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "hematuria_enzootica"
+      }
+    },
+    {
+      "id": "C42",
+      "animal": {
+        "brinco": "42",
+        "nome": "Antraz",
+        "raca": "Guzerá",
+        "sexo": "F",
+        "idade_meses": 40,
+        "lactante": false
+      },
+      "queixa": "Encontrada morta subitamente no pasto, com sangue escuro não coagulado escorrendo pelas narinas, boca e ânus; cadáver inchando muito rápido",
+      "fatos": {
+        "animal_morto": true,
+        "sangue_nao_coagulado_orificios": true,
+        "morte_subita_lote": true,
+        "inchaco_crepitante": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "carbunculo_hematico",
+        "bandeiraVermelha": true
+      }
+    },
+    {
+      "id": "C43",
+      "animal": {
+        "brinco": "43",
+        "nome": "Tinha",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 60,
+        "lactante": true,
+        "numero_lactacao": 4,
+        "producao_media_dia": 18,
+        "del": 140
+      },
+      "queixa": "Perde pelos em áreas circulares na cabeça e no pescoço; pele cinzenta e descamativa com crostas grossas, mas coça muito pouco",
+      "fatos": {
+        "placas_descamadas": true,
+        "crostas_pele": true,
+        "coceira_intensa": false,
+        "verrugas_couveflor": false,
+        "pele_clara_ferida_sol": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "dermatofitose"
+      }
+    },
+    {
+      "id": "C44",
+      "animal": {
+        "brinco": "44",
+        "nome": "Corióptica",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 52,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 17,
+        "del": 160
+      },
+      "queixa": "Coça intensamente a base da cauda e o períneo nas cercas; a região tem perda de pelos, vermelhidão e espessamento da pele",
+      "fatos": {
+        "coceira_intensa": true,
+        "crostas_pele": true,
+        "placas_descamadas": false,
+        "verrugas_couveflor": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "sarna"
+      }
+    },
+    {
+      "id": "C45",
+      "animal": {
+        "brinco": "45",
+        "nome": "Ovos",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 54,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 21,
+        "del": 100
+      },
+      "queixa": "Anda \"pisando em ovos\", cruzando as pernas e de costas arqueadas; fica muito deitada. Cascos quentes e doloridos na coroa. Histórico de muita ração",
+      "fatos": {
+        "claudicacao": true,
+        "casco_quente_inchado": true,
+        "dorso_arqueado": true,
+        "dieta_muito_concentrado": true,
+        "mau_cheiro_casco": false,
+        "lesao_morango_interdigital": false,
+        "perfuracao_sola_pus": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "laminite"
+      }
+    },
+    {
+      "id": "C46",
+      "animal": {
+        "brinco": "46",
+        "nome": "Morango",
+        "raca": "Girolando 1/2",
+        "sexo": "F",
+        "idade_meses": 50,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 18,
+        "del": 140
+      },
+      "queixa": "Manca severamente de um pé traseiro; ao lavar o casco observa-se lesão parecendo um morango vermelho e granuloso, de cheiro fétido, entre os calcanhares",
+      "fatos": {
+        "claudicacao": true,
+        "lesao_morango_interdigital": true,
+        "mau_cheiro_casco": true,
+        "perfuracao_sola_pus": false,
+        "casco_quente_inchado": false,
+        "dieta_muito_concentrado": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "dermatite_digital"
+      }
+    },
+    {
+      "id": "C47",
+      "animal": {
+        "brinco": "47",
+        "nome": "Mandíbula",
+        "raca": "Nelore x Gir",
+        "sexo": "M",
+        "idade_meses": 48,
+        "lactante": false
+      },
+      "queixa": "Touro com aumento de volume muito duro e indolor diretamente no osso da mandíbula, drenando pus amarelo grosso com grânulos endurecidos",
+      "fatos": {
+        "aumento_osso_mandibula": true,
+        "inchaco_mole_garganta": false,
+        "lingua_pendula": false,
+        "salivacao_intensa": false,
+        "febre": false,
+        "edema_submandibular": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "actinomicose"
+      }
+    },
+    {
+      "id": "C48",
+      "animal": {
+        "brinco": "48",
+        "nome": "Língua",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 58,
+        "lactante": true,
+        "numero_lactacao": 4,
+        "producao_media_dia": 15,
+        "del": 170
+      },
+      "queixa": "Baba bastante, língua pêndula para fora; inchaço de consistência mole na base da língua/garganta, dificultando mastigar capim seco",
+      "fatos": {
+        "inchaco_mole_garganta": true,
+        "lingua_pendula": true,
+        "salivacao_intensa": true,
+        "aumento_osso_mandibula": false,
+        "sinais_nervosos": false,
+        "dificuldade_deglutir": false,
+        "vesiculas_boca_tetos_cascos": false,
+        "engasgo_alimento_inteiro": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "actinobacilose"
+      }
+    },
+    {
+      "id": "C49",
+      "animal": {
+        "brinco": "49",
+        "nome": "Sola",
+        "raca": "Holandesa",
+        "sexo": "F",
+        "idade_meses": 56,
+        "lactante": true,
+        "numero_lactacao": 3,
+        "producao_media_dia": 19,
+        "del": 130
+      },
+      "queixa": "Manqueira intensa de um pé traseiro, não apoia o peso; ao limpar a sola encontra-se perfuração por pedra com saída de pus preto e fétido",
+      "fatos": {
+        "claudicacao": true,
+        "perfuracao_sola_pus": true,
+        "mau_cheiro_casco": true,
+        "lesao_morango_interdigital": false,
+        "casco_quente_inchado": false,
+        "dieta_muito_concentrado": false,
+        "febre": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "ulcera_sola"
+      }
+    },
+    {
+      "id": "C50",
+      "animal": {
+        "brinco": "50",
+        "nome": "Pinkeye",
+        "raca": "Holandesa",
+        "sexo": "M",
+        "idade_meses": 3,
+        "lactante": false,
+        "idade_dias": 92
+      },
+      "queixa": "Bezerro de 3 meses com olhos lacrimejando muito e fotofobia, moscas ao redor; o centro do olho tem mancha branca opaca como uma nuvem",
+      "fatos": {
+        "olho_lacrimejando_fotofobia": true,
+        "mancha_branca_olho": true,
+        "cegueira_subita": false,
+        "febre": false,
+        "tosse": false,
+        "secrecao_nasal": false,
+        "fezes_liquidas": false
+      },
+      "esperado": {
+        "diagnosticoPrincipal": "ceratoconjuntivite"
+      }
+    }
+  ]
+}
