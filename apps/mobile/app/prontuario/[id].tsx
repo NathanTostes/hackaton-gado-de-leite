@@ -1,9 +1,10 @@
+import { CompromissosProntuario } from '../../src/componentes/compromissosProntuario';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Platform, View } from 'react-native';
 import { Sessao, tracoEmTexto, type Fato, type Parecer, type RespostaUsuario } from '@drmoo/engine';
 import { baseCompilada, rotulos } from '@drmoo/knowledge';
-import { obterAnimal, obterAtendimento } from '@drmoo/db';
+import { obterAnimal, obterAtendimento, eventosDoAtendimento } from '@drmoo/db';
 import { formatarBR } from '@drmoo/domain';
 import { htmlProntuario } from '@drmoo/relatorio';
 import {
@@ -36,7 +37,7 @@ export default function Prontuario() {
     if (!id) return null;
     const atendimento = await obterAtendimento(id);
     if (!atendimento) return null;
-    const animal = await obterAnimal(atendimento.animal_id);
+    const [animal, eventos] = await Promise.all([obterAnimal(atendimento.animal_id), eventosDoAtendimento(id)]);
 
     /**
      * Reprodutibilidade (specsDrMoo.md §4.9): em vez de só mostrar o que ficou
@@ -54,7 +55,7 @@ export default function Prontuario() {
       JSON.stringify(gravado.map((h) => h.id)) ===
       JSON.stringify(parecer.hipoteses.map((h) => h.id));
 
-    return { atendimento, animal, parecer, respostas, reproduz };
+    return { atendimento, animal, parecer, respostas, reproduz, eventos };
   }, [id]);
 
   if (carregando) return <Carregando />;
@@ -202,6 +203,7 @@ export default function Prontuario() {
         </View>
       )}
 
+      <CompromissosProntuario eventos={dados.eventos ?? []} />
       <TituloSecao icone="list">Respostas coletadas</TituloSecao>
       <Cartao>
         {respostas.map((r) => (

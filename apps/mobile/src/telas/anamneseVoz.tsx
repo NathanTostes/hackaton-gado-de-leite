@@ -1,3 +1,5 @@
+import { AgendaProntuario } from '../componentes/agendaProntuario';
+import { compromissosDaAgenda, type AjustesAgenda } from '../agendaConsulta';
 /**
  * Modo leitura em voz alta: uma única tela, botões enormes, o app falando.
  *
@@ -32,7 +34,7 @@ import {
   listarRebanho,
   type AnimalComResumo,
 } from '@drmoo/db';
-import { ROTULO_CATEGORIA } from '@drmoo/domain';
+import { ROTULO_CATEGORIA, hoje } from '@drmoo/domain';
 import { Carregando, Txt } from '../componentes/base';
 import {
   BotaoCantoSair,
@@ -137,6 +139,9 @@ function Atendimento({
   const [passo, setPasso] = useState<ProximoPasso | null>(null);
   const [salvo, setSalvo] = useState(false);
   const [salvando, setSalvando] = useState(false);
+  const [dataAtendimento, setDataAtendimento] = useState(hoje());
+  const [ajustesAgenda, setAjustesAgenda] = useState<AjustesAgenda>({});
+  const [erroSalvar, setErroSalvar] = useState('');
 
   useEffect(() => {
     let ativo = true;
@@ -175,11 +180,14 @@ function Atendimento({
     const s = sessaoRef.current;
     if (!s || salvando) return;
     setSalvando(true);
+    setErroSalvar('');
     try {
-      await salvarConsulta(animal.id, s, parecer, []);
+      await salvarConsulta(animal.id, s, parecer, [], { dataAtendimento, compromissos: compromissosDaAgenda(parecer, [], ajustesAgenda) });
 
       setSalvo(true);
       falar('Prontuário salvo.');
+    } catch (e) {
+      setErroSalvar(e instanceof Error ? e.message : 'Não foi possível salvar o prontuário.');
     } finally {
       setSalvando(false);
     }
@@ -226,6 +234,9 @@ function Atendimento({
               • {item}
             </Txt>
           ))}
+          <AgendaProntuario parecer={passo.parecer!} ajustes={ajustesAgenda} aoMudar={setAjustesAgenda}
+            dataAtendimento={dataAtendimento} aoMudarData={setDataAtendimento} bloqueado={salvo || salvando} />
+          {!!erroSalvar && <Txt cor={c.alerta}>{erroSalvar}</Txt>}
         </ScrollView>
         <BotaoEnorme
           titulo={salvo ? 'Salvo' : 'Salvar'}
@@ -280,6 +291,9 @@ function Atendimento({
               ))}
             </>
           )}
+          <AgendaProntuario parecer={passo.parecer!} ajustes={ajustesAgenda} aoMudar={setAjustesAgenda}
+            dataAtendimento={dataAtendimento} aoMudarData={setDataAtendimento} bloqueado={salvo || salvando} />
+          {!!erroSalvar && <Txt cor={c.alerta}>{erroSalvar}</Txt>}
         </ScrollView>
 
         <BotaoEnorme

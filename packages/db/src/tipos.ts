@@ -163,7 +163,7 @@ export type TipoEvento =
 export const ROTULO_EVENTO: Record<TipoEvento, string> = {
   vacinacao: 'Vacinação',
   medicacao: 'Medicação',
-  consulta: 'Consulta de rotina',
+  consulta: 'Consulta veterinária',
   exame_cmt: 'Teste de CMT',
   exame_ccs: 'Coleta para CCS',
   secagem: 'Secagem',

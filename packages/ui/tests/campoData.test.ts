@@ -49,12 +49,20 @@ beforeEach(() => {
 afterEach(() => vi.useRealTimers());
 
 describe('seletor de data', () => {
-  it.each(['2024-02-29', '29/02/2024'])('abre valor %s em input date sem mudar o dia', (valor) => {
+  it.each(['2024-02-29', '29/02/2024'])('exibe valor %s em DD/MM/AAAA mantendo o input date', (valor) => {
     const html = renderToStaticMarkup(createElement(CampoData, { rotulo: 'Nascimento', valor, aoMudar: vi.fn(), obrigatorio: true }));
     expect(html).toContain('type="date"');
     expect(html).toContain('value="2024-02-29"');
-    expect(estado.inputs[0]?.max).toBe('2026-10-22');
-    expect(estado.inputs[0]?.required).toBe(true);
+    expect(html).toContain('value="29/02/2024"');
+    expect(html).toContain('placeholder="DD/MM/AAAA"');
+    expect(estado.inputs.find((input) => input.type === 'date')?.max).toBe('2026-10-22');
+    expect(estado.inputs.find((input) => input.type === 'date')?.required).toBe(true);
+  });
+
+  it('permite datas futuras somente quando solicitado para agendamentos', () => {
+    renderToStaticMarkup(createElement(CampoData, { rotulo: 'Retorno', valor: '2027-01-15', aoMudar: vi.fn(), permitirFuturas: true }));
+    expect(estado.inputs.find((input) => input.type === 'date')?.value).toBe('2027-01-15');
+    expect(estado.inputs.find((input) => input.type === 'date')?.max).toBe('9999-12-31');
   });
 
   it('envia ISO ao selecionar, permite limpar e limpa somente o erro do campo', () => {
@@ -64,7 +72,7 @@ describe('seletor de data', () => {
     const html = renderToStaticMarkup(createElement(ContextoFormulario.Provider, { value: formulario },
       createElement(CampoData, { rotulo: 'Nascimento', valor: '', aoMudar: mudar })));
     expect(html).toContain('Informe a data.');
-    const input = estado.inputs[0]!;
+    const input = estado.inputs.find((input) => input.type === 'date')!;
     expect(input['aria-invalid']).toBe(true);
     expect((input.style as { border: string }).border).toBe('1px solid #d00');
     const alterar = input.onChange as (evento: { target: { value: string } }) => void;

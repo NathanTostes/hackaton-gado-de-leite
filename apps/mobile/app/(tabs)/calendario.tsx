@@ -41,24 +41,27 @@ const MESES = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
 export default function Calendario() {
   const { c, espaco } = useTema();
-  const [janela, setJanela] = useState<7 | 30 | 90>(30);
+  const [janela, setJanela] = useState<7 | 30 | 90 | 365 | 'todos'>(30);
 
-  const { dados, carregando, recarregar } = useDados(
-    () => listarEventos(somarDias(hoje(), -30), somarDias(hoje(), janela)),
+  const [erroAcao, setErroAcao] = useState<string | null>(null);
+  const { dados, carregando, recarregar, erro } = useDados(
+    () => listarEventos(somarDias(hoje(), -30), janela === 'todos' ? '9999-12-31' : somarDias(hoje(), janela)),
     [janela],
   );
 
+  if (erro) return <Tela><Alerta tipo="alerta" titulo="Não foi possível carregar o calendário" texto={erro} /><Botao titulo="Tentar novamente" aoTocar={recarregar} /></Tela>;
   if (carregando || !dados) return <Carregando />;
 
   const hj = hoje();
-  const atrasados = dados.filter((e) => e.data < hj && e.status === 'pendente');
-  const deHoje = dados.filter((e) => e.data === hj && e.status === 'pendente');
-  const futuros = dados.filter((e) => e.data > hj && e.status === 'pendente');
+  const atrasados = dados.filter((e) => e.data < hj && (e.status === 'pendente' || e.status === 'atrasado'));
+  const deHoje = dados.filter((e) => e.data === hj && (e.status === 'pendente' || e.status === 'atrasado'));
+  const futuros = dados.filter((e) => e.data > hj && (e.status === 'pendente' || e.status === 'atrasado'));
   const feitos = dados.filter((e) => e.status === 'feito');
 
   const marcar = async (id: string) => {
-    await concluirEvento(id);
-    recarregar();
+    setErroAcao(null);
+    try { await concluirEvento(id); recarregar(); }
+    catch (e) { setErroAcao(e instanceof Error ? e.message : 'Não foi possível concluir o compromisso.'); }
   };
 
   return (
@@ -67,23 +70,21 @@ export default function Calendario() {
         titulo="Calendário"
         subtitulo="Vacinação, medicação, exames e manejo sanitário"
       />
-      <Linha gap={espaco.sm}>
+      <Linha gap={espaco.sm} style={{ flexWrap: 'wrap' }}>
         <Txt v="caption" cor={c.textoSecundario}>
           Próximos:
         </Txt>
-        {([7, 30, 90] as const).map((d) => (
-          <Chip key={d} texto={`${d} dias`} ativo={janela === d} aoTocar={() => setJanela(d)} />
+        {([7, 30, 90, 365, 'todos'] as const).map((d) => (
+          <Chip key={d} texto={d === 'todos' ? 'Todos' : `${d} dias`} ativo={janela === d} aoTocar={() => setJanela(d)} />
         ))}
       </Linha>
+
+      {!!erroAcao && <Alerta tipo="alerta" titulo="Não foi possível atualizar o compromisso" texto={erroAcao} />}
 
       {atrasados.length > 0 && (
         <>
           <TituloSecao icone="event-busy">Atrasados</TituloSecao>
-          <View style={{ gap: espaco.sm }}>
-            {atrasados.map((e) => (
-              <ItemEvento key={e.id} evento={e} atrasado aoConcluir={() => marcar(e.id)} />
-            ))}
-          </View>
+          <ListaEventos eventos={atrasados} atrasado aoConcluir={marcar} />
         </>
       )}
 
@@ -91,22 +92,14 @@ export default function Calendario() {
       {deHoje.length === 0 ? (
         <Alerta tipo="ok" titulo="Nada marcado para hoje" />
       ) : (
-        <View style={{ gap: espaco.sm }}>
-          {deHoje.map((e) => (
-            <ItemEvento key={e.id} evento={e} aoConcluir={() => marcar(e.id)} />
-          ))}
-        </View>
+        <ListaEventos eventos={deHoje} aoConcluir={marcar} />
       )}
 
       <TituloSecao icone="event">A fazer</TituloSecao>
       {futuros.length === 0 ? (
         <Vazio icone="event-available" titulo="Nenhum evento nesta janela" />
       ) : (
-        <View style={{ gap: espaco.sm }}>
-          {futuros.map((e) => (
-            <ItemEvento key={e.id} evento={e} aoConcluir={() => marcar(e.id)} />
-          ))}
-        </View>
+        <ListaEventos eventos={futuros} aoConcluir={marcar} />
       )}
 
       {/* Calendário sanitário anual, no formato da ficha da Embrapa */}
@@ -129,7 +122,7 @@ export default function Calendario() {
             </Txt>
             {MESES.map((_, i) => (
               <View key={i} style={{ flex: 1, alignItems: 'center' }}>
-                {linha.meses.includes(i) ? (
+                {linha.meses.includes(i + 1) ? (
                   <MaterialIcons name="close" size={16} color={c.primaria} />
                 ) : (
                   <Txt v="caption" cor={c.borda}>
@@ -151,8 +144,9 @@ export default function Calendario() {
         <>
           <TituloSecao icone="check-circle">Concluídos</TituloSecao>
           <Txt v="caption" cor={c.textoSecundario}>
-            {feitos.length} evento(s) concluído(s) nos últimos 30 dias.
+            {feitos.length} evento(s) concluído(s) na janela exibida.
           </Txt>
+          <ListaEventos eventos={feitos} />
         </>
       )}
 
@@ -174,7 +168,7 @@ function ItemEvento({
 }: {
   evento: EventoComAnimal;
   atrasado?: boolean;
-  aoConcluir: () => void;
+  aoConcluir?: () => void;
 }) {
   const { c, espaco } = useTema();
   return (
@@ -199,10 +193,25 @@ function ItemEvento({
             )}
           </View>
         </Linha>
-        <Pressable onPress={aoConcluir} style={{ padding: 4 }}>
+        {aoConcluir && <Pressable accessibilityRole="button" accessibilityLabel={`Concluir ${evento.titulo}`} onPress={aoConcluir} style={{ padding: 4 }}>
           <MaterialIcons name="check-box-outline-blank" size={26} color={c.textoSecundario} />
-        </Pressable>
+        </Pressable>}
       </Linha>
+      {evento.atendimento_id && <Botao titulo="Ver prontuário" variante="texto" aoTocar={() => router.push(`/prontuario/${evento.atendimento_id}`)} />}
     </Cartao>
   );
+}
+
+/** Expande apenas a lista escolhida; os compromissos permanecem no banco. */
+export function ListaEventos({ eventos, atrasado, aoConcluir }: {
+  eventos: EventoComAnimal[]; atrasado?: boolean; aoConcluir?: (id: string) => void;
+}) {
+  const [expandido, setExpandido] = useState(false);
+  const { espaco } = useTema();
+  return <View style={{ gap: espaco.sm }}>
+    {(expandido ? eventos : eventos.slice(0, 5)).map((evento) => <ItemEvento key={evento.id} evento={evento} atrasado={atrasado}
+      aoConcluir={aoConcluir ? () => aoConcluir(evento.id) : undefined} />)}
+    {eventos.length > 5 && <Botao titulo={expandido ? 'Ver menos' : `Ver mais (${eventos.length - 5})`}
+      variante="secundario" aoTocar={() => setExpandido((v) => !v)} />}
+  </View>;
 }

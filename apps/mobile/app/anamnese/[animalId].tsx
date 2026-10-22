@@ -1,3 +1,5 @@
+import { AgendaProntuario } from '../../src/componentes/agendaProntuario';
+import { compromissosDaAgenda, type AjustesAgenda } from '../../src/agendaConsulta';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
@@ -19,7 +21,7 @@ import {
   type AnimalComResumo,
   type FatoPreCarregado,
 } from '@drmoo/db';
-import { ROTULO_CATEGORIA, piorCMT, type ResultadoCMT } from '@drmoo/domain';
+import { ROTULO_CATEGORIA, hoje, piorCMT, type ResultadoCMT } from '@drmoo/domain';
 import { corCMT, corDaConfianca } from '@drmoo/ui';
 import {
   Alerta,
@@ -58,6 +60,8 @@ export default function Anamnese() {
   const [salvando, setSalvando] = useState(false);
   const [erroSalvar, setErroSalvar] = useState<string | null>(null);
   const [salvo, setSalvo] = useState<string | null>(null);
+  const [dataAtendimento, setDataAtendimento] = useState(hoje());
+  const [ajustesAgenda, setAjustesAgenda] = useState<AjustesAgenda>({});
 
   const iniciar = useCallback(
     (fatos: Fato[]) => {
@@ -129,12 +133,12 @@ export default function Anamnese() {
     setSalvando(true);
     setErroSalvar(null);
     try {
-      const id = await salvarConsulta(animalId, s, parecer, [...condutaMarcada]);
+      const id = await salvarConsulta(animalId, s, parecer, [...condutaMarcada], { dataAtendimento, compromissos: compromissosDaAgenda(parecer, [...condutaMarcada], ajustesAgenda) });
 
       // Cada anamnese pode ter mudado os indicadores do mês (um novo caso de
       // mastite, um CMT recém-lançado): reavalia as regras de rebanho e grava
       // no calendário as medidas que passaram a valer para a propriedade toda.
-      await diagnosticarRebanho();
+      await diagnosticarRebanho(dataAtendimento);
 
       setSalvo(id);
     } catch (e) {
@@ -192,6 +196,8 @@ export default function Anamnese() {
         </Cartao>
 
         <Espaco h={espaco.lg} />
+        <AgendaProntuario parecer={passo.parecer!} feitas={[...condutaMarcada]} ajustes={ajustesAgenda}
+          aoMudar={setAjustesAgenda} dataAtendimento={dataAtendimento} aoMudarData={setDataAtendimento} bloqueado={!!salvo || salvando} />
         <ComoChegueiNisso parecer={passo.parecer!} chave={`diagnostico=${bandeira.id}`} />
         <AvisoVeterinario />
 
@@ -205,6 +211,7 @@ export default function Anamnese() {
           aoTocar={() => salvar(passo.parecer!)}
         />
         <Espaco h={espaco.sm} />
+        {salvo && <Botao titulo="Ver calendário" variante="secundario" aoTocar={() => router.push('/calendario')} />}
         <Botao titulo="Voltar ao início" variante="secundario" aoTocar={() => router.replace('/')} />
       </Tela>
     );
@@ -219,6 +226,8 @@ export default function Anamnese() {
         parecer={passo.parecer}
         animal={animal}
         perguntasFeitas={passo.perguntasFeitas}
+        agenda={<AgendaProntuario parecer={passo.parecer} feitas={[...condutaMarcada]} ajustes={ajustesAgenda}
+          aoMudar={setAjustesAgenda} dataAtendimento={dataAtendimento} aoMudarData={setDataAtendimento} bloqueado={!!salvo || salvando} />}
         condutaMarcada={condutaMarcada}
         aoMarcarConduta={(item) =>
           setCondutaMarcada((s) => {
@@ -616,6 +625,7 @@ function ParecerFinal({
   parecer,
   animal,
   perguntasFeitas,
+  agenda,
   condutaMarcada,
   aoMarcarConduta,
   salvo,
@@ -627,6 +637,7 @@ function ParecerFinal({
   parecer: Parecer;
   animal: AnimalComResumo;
   perguntasFeitas: number;
+  agenda: React.ReactNode;
   condutaMarcada: Set<string>;
   aoMarcarConduta: (item: string) => void;
   salvo: string | null;
@@ -682,6 +693,7 @@ function ParecerFinal({
         </>
       )}
 
+      {agenda}
       <AvisoVeterinario />
 
       <Espaco h={espaco.xl} />
@@ -694,6 +706,7 @@ function ParecerFinal({
         aoTocar={aoSalvar}
       />
       <Espaco h={espaco.sm} />
+      {salvo && <Botao titulo="Ver calendário" variante="secundario" aoTocar={() => router.push('/calendario')} />}
       <Linha gap={espaco.sm}>
         <Botao
           titulo="Corrigir última resposta"

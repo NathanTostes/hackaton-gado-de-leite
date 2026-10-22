@@ -1070,9 +1070,10 @@ export async function registrarTratamento(t: {
 
     await atualizarStatus(t.animalId, 'em_carencia');
 
-    await criarEvento({ tipo: 'medicacao', animalId: t.animalId,
+    const inicioEvento = await criarEvento({ tipo: 'medicacao', animalId: t.animalId,
       titulo: `Início do tratamento — ${t.descricao}`, data: t.dataInicio,
       descricao: 'Data de início registrada para o tratamento.', origem: 'automatico', referenciaId: id });
+    if (t.dataInicio <= hoje()) await concluirEvento(inicioEvento);
     if (dataFim !== t.dataInicio) await criarEvento({ tipo: 'medicacao', animalId: t.animalId,
       titulo: `Fim do tratamento — ${t.descricao}`, data: dataFim,
       descricao: 'Data de fim registrada para o tratamento.', origem: 'automatico', referenciaId: id });
@@ -1155,24 +1156,70 @@ export async function eventosDoAtendimento(atendimentoId: string): Promise<Event
   return consultar<EventoComAnimal>(
     `SELECT e.*, a.brinco, a.nome AS animal_nome, at.id AS atendimento_id
      FROM evento_calendario e LEFT JOIN animal a ON a.id=e.animal_id
-     JOIN atendimento at ON at.id=e.referencia_id
-     WHERE e.referencia_id=? AND e.status <> 'cancelado' ORDER BY e.data, e.titulo`, [atendimentoId],
+     LEFT JOIN tratamento t ON t.id=e.referencia_id
+     JOIN atendimento at ON at.id=COALESCE(t.atendimento_id,e.referencia_id)
+     WHERE at.id=? AND e.status <> 'cancelado' ORDER BY e.data, e.titulo`, [atendimentoId],
+  );
+}
+
+/** Materializa a próxima dose informada no registro, sem calcular esquemas vacinais. */
+async function garantirProximasDoses(): Promise<void> {
+  const agora = agoraISO();
+  await executar(
+    `INSERT OR IGNORE INTO evento_calendario
+      (id,tipo,animal_id,titulo,descricao,data,status,origem,referencia_id,created_at,updated_at)
+     SELECT 'dose:' || v.id || ':' || v.proxima_dose, 'vacinacao', v.animal_id,
+       'Próxima dose — ' || vac.nome, 'Data informada no registro de vacinação.', v.proxima_dose,
+       'pendente', 'automatico', v.id, ?, ?
+     FROM vacinacao v JOIN vacina vac ON vac.id=v.vacina_id JOIN animal a ON a.id=v.animal_id
+     WHERE v.proxima_dose IS NOT NULL AND v.proxima_dose <> '' AND a.deleted_at IS NULL
+       AND a.status NOT IN ('morto','vendido','descartado')
+       AND NOT EXISTS (SELECT 1 FROM evento_calendario e
+         WHERE e.referencia_id=v.id AND e.tipo='vacinacao' AND e.data=v.proxima_dose)`, [agora, agora],
   );
 }
 
 export async function listarEventos(de: string, ate: string): Promise<EventoComAnimal[]> {
-  return consultar<EventoComAnimal>(
+  await garantirProximasDoses();
+  const eventos = await consultar<EventoComAnimal>(
     `SELECT e.*, a.brinco, a.nome AS animal_nome, at.id AS atendimento_id
      FROM evento_calendario e LEFT JOIN animal a ON a.id = e.animal_id
-     LEFT JOIN atendimento at ON at.id = e.referencia_id
+     LEFT JOIN tratamento t ON t.id=e.referencia_id
+     LEFT JOIN atendimento at ON at.id = COALESCE(t.atendimento_id,e.referencia_id)
      WHERE ((e.data BETWEEN ? AND ?) OR (e.data < ? AND e.status IN ('pendente','atrasado')))
        AND e.status <> 'cancelado'
      ORDER BY e.data, e.tipo`,
     [de, ate, de],
   );
+  // Aplicações já registradas também aparecem no calendário, sem criar novas
+  // aplicações ou lembretes. Não duplica eventos existentes na mesma data.
+  const vacinas = await consultar<EventoComAnimal>(
+    `SELECT 'vacinacao:' || v.id AS id, 'vacinacao' AS tipo, v.animal_id, NULL AS lote_id,
+       'Vacinação realizada — ' || COALESCE(vac.nome,'Vacina registrada') AS titulo,
+       'Aplicação registrada no histórico de vacinação.' AS descricao, v.data,
+       NULL AS recorrencia, 'feito' AS status, 'automatico' AS origem, v.id AS referencia_id,
+       a.brinco, a.nome AS animal_nome, NULL AS atendimento_id
+     FROM vacinacao v JOIN animal a ON a.id=v.animal_id LEFT JOIN vacina vac ON vac.id=v.vacina_id
+     WHERE a.deleted_at IS NULL AND v.data BETWEEN ? AND ?
+       AND NOT EXISTS (SELECT 1 FROM evento_calendario e WHERE e.referencia_id=v.id
+         AND e.tipo='vacinacao' AND e.data=v.data AND e.status <> 'cancelado')`, [de, ate],
+  );
+  const tratamentos = await consultar<EventoComAnimal>(
+    `SELECT 'tratamento:' || t.id AS id, 'medicacao' AS tipo, t.animal_id, NULL AS lote_id,
+       'Início do tratamento — ' || COALESCE(m.nome,'Tratamento registrado') AS titulo,
+       'Início registrado no histórico de tratamentos.' AS descricao, t.data_inicio AS data,
+       NULL AS recorrencia, 'feito' AS status, 'automatico' AS origem, t.id AS referencia_id,
+       a.brinco, a.nome AS animal_nome, t.atendimento_id
+     FROM tratamento t JOIN animal a ON a.id=t.animal_id LEFT JOIN medicamento m ON m.id=t.medicamento_id
+     WHERE a.deleted_at IS NULL AND t.data_inicio BETWEEN ? AND ?
+       AND NOT EXISTS (SELECT 1 FROM evento_calendario e WHERE e.referencia_id=t.id
+         AND e.data=t.data_inicio AND e.titulo LIKE 'Início do tratamento%' AND e.status <> 'cancelado')`, [de, ate],
+  );
+  return [...eventos, ...vacinas, ...tratamentos].sort((a, b) => a.data.localeCompare(b.data) || a.titulo.localeCompare(b.titulo));
 }
 
 export async function eventosPendentes(limite = 20): Promise<EventoComAnimal[]> {
+  await garantirProximasDoses();
   return consultar<EventoComAnimal>(
     `SELECT e.*, a.brinco, a.nome AS animal_nome
      FROM evento_calendario e LEFT JOIN animal a ON a.id = e.animal_id

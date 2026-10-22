@@ -4,7 +4,7 @@ import { Sessao } from '@drmoo/engine';
 import { baseCompilada } from '@drmoo/knowledge';
 import {
   atualizarStatusAposTriagem, definirBackend, executar, listarRebanho, obterAnimal, painelMastite, registrarCasoMastite,
-  registrarTratamento, salvarAnimal, type BackendSQLite,
+  registrarTratamento, salvarAnimal, obterAtendimento, eventosDoAtendimento, listarEventos, concluirEvento, criarEvento, type BackendSQLite,
 } from '@drmoo/db';
 import { salvarConsulta } from '../../../apps/mobile/src/salvarConsulta';
 
@@ -14,6 +14,7 @@ describe('integridade dos fluxos sanitários', () => {
   let animalId: string;
 
   beforeEach(async () => {
+    vi.useFakeTimers(); vi.setSystemTime(new Date(2026, 9, 22, 12));
     sqlite = new DatabaseSync(':memory:');
     falhar = null;
     const backend: BackendSQLite = {
@@ -162,6 +163,86 @@ describe('integridade dos fluxos sanitários', () => {
     for (const t of ['tratamento', 'despesa']) expect(contar(t)).toBe(1);
     expect(contar('evento_calendario')).toBe(3);
     expect((await obterAnimal(animalId))?.status).toBe('em_carencia');
+  });
+
+  it('salva datas escolhidas e vincula vacina e medicação ao calendário e ao prontuário', async () => {
+    const sessao = sessaoClinica();
+    const id = await salvarConsulta(animalId, sessao, sessao.encerrar(), [], {
+      dataAtendimento: '2026-10-20', compromissos: [
+        { titulo: 'Vacina informada pelo responsável', tipo: 'vacinacao', data: '2026-11-01' },
+        { titulo: 'Medicamento já orientado', tipo: 'medicacao', data: '2026-10-23' },
+      ],
+    });
+    expect((await obterAtendimento(id))?.data_hora.slice(0, 10)).toBe('2026-10-20');
+    expect(sqlite.prepare('SELECT data FROM exame_cmt').get()?.data).toBe('2026-10-20');
+    const eventos = await eventosDoAtendimento(id);
+    expect(eventos.map((e) => [e.tipo, e.data, e.animal_id, e.referencia_id])).toEqual([
+      ['medicacao', '2026-10-23', animalId, id], ['vacinacao', '2026-11-01', animalId, id],
+    ]);
+    expect((await listarEventos('2026-10-01', '2026-12-31')).filter((e) => e.atendimento_id === id)).toHaveLength(2);
+    expect(contar('tratamento')).toBe(0); expect(contar('vacinacao')).toBe(0);
+    await concluirEvento(eventos[0]!.id);
+    expect((await eventosDoAtendimento(id))[0]?.status).toBe('feito');
+  });
+
+  it('agenda ações pendentes uma vez e não agenda as condutas já concluídas', async () => {
+    const sessao = sessaoClinica(); const parecer = sessao.encerrar();
+    const acoes = [...new Set(parecer.hipoteses.flatMap((h) => h.conduta))];
+    expect(acoes.length).toBeGreaterThan(1);
+    const id = await salvarConsulta(animalId, sessao, parecer, [acoes[0]!]);
+    const eventos = await eventosDoAtendimento(id);
+    expect(eventos).toHaveLength(acoes.length - 1);
+    expect(eventos.some((e) => e.titulo === acoes[0])).toBe(false);
+  });
+
+  it('desfaz toda a consulta se o agendamento falhar', async () => {
+    const sessao = sessaoClinica(); falhar = 'INSERT INTO evento_calendario';
+    await expect(salvarConsulta(animalId, sessao, sessao.encerrar(), [])).rejects.toThrow('Falha simulada');
+    for (const t of ['atendimento', 'caso_mastite', 'exame_cmt', 'evento_calendario']) expect(contar(t)).toBe(0);
+    expect((await obterAnimal(animalId))?.status).toBe('saudavel');
+  });
+
+  it('valida datas antes de gravar e respeita a opção de não agendar nada', async () => {
+    const sessao = sessaoClinica(); const parecer = sessao.encerrar();
+    await expect(salvarConsulta(animalId, sessao, parecer, [], { dataAtendimento: '9999-01-01' })).rejects.toThrow('até hoje');
+    await expect(salvarConsulta(animalId, sessao, parecer, [], { compromissos: [{ titulo: 'Teste', tipo: 'vacinacao', data: '2026-02-31' }] })).rejects.toThrow('data');
+    expect(contar('atendimento')).toBe(0);
+    const id = await salvarConsulta(animalId, sessao, parecer, [], { compromissos: [] });
+    expect(await eventosDoAtendimento(id)).toEqual([]);
+  });
+
+  it('não duplica um compromisso repetido e permite a mesma ação em dias distintos', async () => {
+    const sessao = sessaoClinica();
+    const compromisso = { titulo: 'Retorno', tipo: 'reavaliacao' as const, data: '2026-10-24' };
+    const id = await salvarConsulta(animalId, sessao, sessao.encerrar(), [], { compromissos: [compromisso, compromisso, { ...compromisso, data: '2026-10-25' }] });
+    expect(await eventosDoAtendimento(id)).toHaveLength(2);
+  });
+
+  it('mantém atrasados antigos visíveis sem incluir eventos cancelados', async () => {
+    await criarEvento({ tipo: 'vacinacao', animalId, titulo: 'Vacina atrasada', data: '2025-01-01' });
+    const cancelado = await criarEvento({ tipo: 'medicacao', animalId, titulo: 'Cancelado', data: '2025-01-01' });
+    await executar("UPDATE evento_calendario SET status='cancelado' WHERE id=?", [cancelado]);
+    expect((await listarEventos('2026-10-01', '2026-10-31')).map((e) => e.titulo)).toEqual(['Vacina atrasada']);
+  });
+
+  it('tratamento registrado cria compromissos nas datas de início, fim e carência', async () => {
+    await registrarTratamento({ animalId, medicamentoId: null, dataInicio: '2026-10-01', dias: 3,
+      carenciaLeiteDias: 4, carenciaCarneDias: 5, custoTotal: 0, descricao: 'Tratamento registrado' });
+    const eventos = await listarEventos('2026-10-01', '2026-10-31');
+    expect(eventos.map((e) => e.data)).toEqual(['2026-10-01', '2026-10-03', '2026-10-07']);
+  });
+
+  it('mostra vacinação realizada e a próxima dose informada, sem duplicar ou desfazer a conclusão', async () => {
+    await executar(`INSERT INTO vacina (id,nome,created_at,updated_at) VALUES ('vac','Vacina registrada','2026','2026')`);
+    await executar(`INSERT INTO vacinacao (id,animal_id,vacina_id,data,proxima_dose,created_at,updated_at)
+      VALUES ('aplicacao',?,'vac','2026-10-20','2026-11-20','2026','2026')`, [animalId]);
+    const eventos = await listarEventos('2026-10-01', '2026-12-31');
+    expect(eventos.map((e) => [e.tipo, e.data, e.status])).toEqual([
+      ['vacinacao', '2026-10-20', 'feito'], ['vacinacao', '2026-11-20', 'pendente'],
+    ]);
+    await concluirEvento(eventos[1]!.id);
+    const novamente = await listarEventos('2026-10-01', '2026-12-31');
+    expect(novamente).toHaveLength(2); expect(novamente[1]?.status).toBe('feito');
   });
 
   it('distribui os dias de um caso fechado entre os meses afetados', async () => {

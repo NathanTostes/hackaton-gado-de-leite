@@ -1,4 +1,4 @@
-import { createElement, useId, useState, type ChangeEvent } from 'react';
+import { createElement, useId, useState, type ChangeEvent, type MouseEvent } from 'react';
 import { Modal, Platform, Pressable, View } from 'react-native';
 import { formatarBR, hoje } from '@drmoo/domain';
 import { useTema } from '../tema';
@@ -10,12 +10,13 @@ const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julh
 const SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
 /** Datas de calendário em ISO, sem conversão para UTC ou dependência de rede. */
-export function CampoData({ rotulo, valor, aoMudar, obrigatorio = false, permitirFuturas = false }: {
+export function CampoData({ rotulo, valor, aoMudar, obrigatorio = false, permitirFuturas = false, desabilitado = false }: {
   rotulo: string;
   valor: string;
   aoMudar: (valor: string) => void;
   obrigatorio?: boolean;
   permitirFuturas?: boolean;
+  desabilitado?: boolean;
 }) {
   const { c, espaco, raio } = useTema();
   const campo = useCampoFormulario(rotulo);
@@ -23,6 +24,7 @@ export function CampoData({ rotulo, valor, aoMudar, obrigatorio = false, permiti
   const data = dataCadastro(valor);
   const limite = permitirFuturas ? '9999-12-31' : hoje();
   const [aberto, setAberto] = useState(false);
+  const [focado, setFocado] = useState(false);
   const [mes, setMes] = useState(() => (data || hoje()).slice(0, 7));
   const [ano, numeroMes] = mes.split('-').map(Number) as [number, number];
   const primeiroDia = new Date(ano, numeroMes - 1, 1).getDay();
@@ -42,18 +44,37 @@ export function CampoData({ rotulo, valor, aoMudar, obrigatorio = false, permiti
   return (
     <View ref={campo.ref} collapsable={false} style={{ marginBottom: espaco.md }}>
       <Txt v="caption" cor={c.textoSecundario}>{rotulo}</Txt>
-      {Platform.OS === 'web' ? createElement('input', {
-        type: 'date', value: data, max: limite, required: obrigatorio,
+      {Platform.OS === 'web' ? createElement('div', {
+        style: { position: 'relative', width: '100%', minWidth: 0, marginTop: 4,
+          border: `1px solid ${borda}`, borderRadius: raio.input,
+          outline: focado ? `2px solid ${c.primaria}` : undefined, outlineOffset: 2 },
+      },
+      // A apresentação é sempre brasileira. O input date sobreposto continua
+      // responsável pelo calendário, acessibilidade e envio de valores ISO.
+      createElement('input', {
+        type: 'text', value: data ? formatarBR(data) : '', placeholder: 'DD/MM/AAAA',
+        readOnly: true, tabIndex: -1, 'aria-hidden': true, disabled: desabilitado, autoComplete: 'off',
+        style: { display: 'block', boxSizing: 'border-box', width: '100%', minWidth: 0,
+          minHeight: 48, border: 0, borderRadius: raio.input, padding: '10px 42px 10px 12px',
+          backgroundColor: c.superficieAlt, color: c.texto, fontFamily: 'Inter_400Regular, sans-serif', fontSize: 16 },
+      }),
+      createElement('span', { 'aria-hidden': true, style: { position: 'absolute', right: 12, top: '50%',
+        transform: 'translateY(-50%)', pointerEvents: 'none' } }, '📅'),
+      createElement('input', {
+        type: 'date', lang: 'pt-BR', value: data, max: limite, required: obrigatorio, disabled: desabilitado,
         autoComplete: 'off', 'aria-label': rotulo, 'aria-invalid': !!campo.erro,
         'aria-describedby': campo.erro ? erroId : undefined,
+        onFocus: () => setFocado(true), onBlur: () => setFocado(false),
+        onClick: (evento: MouseEvent<HTMLInputElement>) => {
+          // Em navegadores sem showPicker, o comportamento nativo continua disponível.
+          try { evento.currentTarget.showPicker?.(); } catch { /* Usa a interação nativa. */ }
+        },
         onChange: (evento: ChangeEvent<HTMLInputElement>) => selecionar(evento.target.value),
-        style: { display: 'block', boxSizing: 'border-box', width: '100%', minWidth: 0,
-          minHeight: 48, border: `1px solid ${borda}`, borderRadius: raio.input,
-          padding: '10px 12px', marginTop: 4, backgroundColor: c.superficieAlt,
-          color: c.texto, fontFamily: 'Inter_400Regular, sans-serif', fontSize: 16 },
-      }) : (
+        style: { position: 'absolute', inset: 0, boxSizing: 'border-box', width: '100%', height: '100%',
+          opacity: 0, cursor: desabilitado ? 'default' : 'pointer', border: `1px solid ${borda}` },
+      })) : (
         <>
-          <Pressable accessibilityRole="button" accessibilityLabel={rotulo}
+          <Pressable disabled={desabilitado} accessibilityState={{ disabled: desabilitado }} accessibilityRole="button" accessibilityLabel={rotulo}
             accessibilityHint={campo.erro ?? 'Abre o calendário para selecionar a data'}
             onPress={() => { setMes((data || hoje()).slice(0, 7)); setAberto(true); }}
             style={{ minHeight: 48, borderWidth: 1, borderColor: borda, borderRadius: raio.input,

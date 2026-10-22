@@ -20,6 +20,7 @@ export function tipoDaAcao(texto: string): TipoEvento {
 export function itensDaAgenda(parecer: Parecer, feitas: readonly string[], ajustes: AjustesAgenda) {
   const titulos = [...new Set([
     ...parecer.hipoteses.flatMap((h) => h.conduta),
+    ...(parecer.bandeiraVermelha?.conduta ?? []),
     ...Object.keys(ajustes).filter((titulo) => ajustes[titulo]?.extra),
   ])].filter((titulo) => !feitas.includes(titulo));
   return titulos.map((titulo) => ({ titulo, tipo: ajustes[titulo]?.tipo ?? tipoDaAcao(titulo),

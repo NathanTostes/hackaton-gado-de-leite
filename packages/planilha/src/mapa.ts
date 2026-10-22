@@ -329,7 +329,7 @@ export const ABAS: AbaPlanilha[] = [
       { coluna: 'animal_id', titulo: 'Brinco', tipo: 'texto', referencia: 'animal' },
       { coluna: 'lote_id', titulo: 'Lote', tipo: 'texto', referencia: 'lote' },
       { coluna: 'descricao', titulo: 'Descrição', tipo: 'texto' },
-      { coluna: 'status', titulo: 'Situação', tipo: 'texto', valores: ['pendente', 'concluido', 'cancelado'] },
+      { coluna: 'status', titulo: 'Situação', tipo: 'texto', valores: ['pendente', 'feito', 'concluido', 'atrasado', 'cancelado'] },
     ],
   },
 ];
