@@ -65,6 +65,17 @@ describe('configurações', () => {
     expect(() => renderToStaticMarkup(createElement(Configuracoes))).not.toThrow();
   });
 
+  it('oferece os 26 estados e o Distrito Federal em um select e os novos campos de texto', () => {
+    const html = renderToStaticMarkup(createElement(Configuracoes));
+    expect(html).toContain('<select');
+    expect(html.match(/<option/g)).toHaveLength(28); // opção vazia + 27 UFs
+    expect(html).toContain('Minas Gerais (MG)');
+    expect(html).toContain('Distrito Federal (DF)');
+    expect(html).toContain('Cidade');
+    expect(html).toContain('País');
+    expect(html).toContain('Tipo de pasto');
+  });
+
   // O app abre vazio e os dados entram pela planilha: não existe mais nenhum
   // botão que apague tudo e recrie a demonstração.
   it('não oferece nenhuma ação de reset dos dados', () => {

@@ -1,3 +1,5 @@
+import { SeletorEstado } from '../src/componentes/seletorEstado';
+import { ESTADOS_BRASIL } from '../src/estados';
 import { validarCampos } from '../src/componentes/validarCampos';
 import { useFormulario, useCampoFormulario } from '../src/componentes/validacaoFormulario';
 import { useEffect, useState } from 'react';
@@ -37,6 +39,10 @@ export default function Configuracoes() {
 
   const [form, setForm] = useState({
     nome: '',
+    estado: '',
+    cidade: '',
+    pais: '',
+    tipo_pasto: '',
     area_propria_ha: '',
     area_arrendada_ha: '',
     mao_de_obra_pessoas: '',
@@ -59,6 +65,10 @@ export default function Configuracoes() {
     if (!dados) return;
     setForm({
       nome: dados.nome,
+      estado: dados.estado ?? '',
+      cidade: dados.cidade ?? '',
+      pais: dados.pais ?? '',
+      tipo_pasto: dados.tipo_pasto ?? '',
       area_propria_ha: String(dados.area_propria_ha),
       area_arrendada_ha: String(dados.area_arrendada_ha),
       mao_de_obra_pessoas: String(dados.mao_de_obra_pessoas),
@@ -82,6 +92,7 @@ export default function Configuracoes() {
       { rotulo: 'Reposição e investimento por mês (R$)', valor: form.reposicao_investimento_mes, tipo: 'numero' },
       { rotulo: 'Período de gestação (dias)', valor: form.gestacao_dias, tipo: 'numero', positivo: true, inteiro: true },
     ]);
+    if (form.estado && !ESTADOS_BRASIL.some(([uf]) => uf === form.estado)) erros.Estado = 'Selecione um estado válido.';
     if (formulario.mostrarErros(erros)) {
       setSalvo(false);
       setErro('Corrija os campos destacados.');
@@ -94,6 +105,10 @@ export default function Configuracoes() {
       await salvarPropriedade({
         id: dados?.id,
         nome: form.nome,
+        estado: form.estado || null,
+        cidade: form.cidade.trim() || null,
+        pais: form.pais.trim() || null,
+        tipo_pasto: form.tipo_pasto.trim() || null,
         area_propria_ha: Number(form.area_propria_ha.replace(',', '.')) || 0,
         area_arrendada_ha: Number(form.area_arrendada_ha.replace(',', '.')) || 0,
         mao_de_obra_pessoas: Number(form.mao_de_obra_pessoas.replace(',', '.')) || 1,
@@ -201,6 +216,10 @@ export default function Configuracoes() {
       <TituloSecao icone="home-work">Propriedade</TituloSecao>
       <Cartao>
         <Campo rotulo="Nome da propriedade" valor={form.nome} aoMudar={(v) => alterarCampo('nome', v)} numerico={false} />
+        <SeletorEstado valor={form.estado} aoMudar={(v) => alterarCampo('estado', v)} />
+        <Campo rotulo="Cidade" valor={form.cidade} aoMudar={(v) => alterarCampo('cidade', v)} numerico={false} />
+        <Campo rotulo="País" valor={form.pais} aoMudar={(v) => alterarCampo('pais', v)} numerico={false} />
+        <Campo rotulo="Tipo de pasto" valor={form.tipo_pasto} aoMudar={(v) => alterarCampo('tipo_pasto', v)} numerico={false} nota="Ex.: braquiária, mombaça, tifton ou pastagem mista." />
         <Linha gap={espaco.md}>
           <View style={{ flex: 1 }}>
             <Campo rotulo="Área própria (ha)" valor={form.area_propria_ha} aoMudar={(v) => alterarCampo('area_propria_ha', v)} />

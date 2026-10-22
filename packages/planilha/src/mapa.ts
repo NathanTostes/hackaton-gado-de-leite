@@ -77,6 +77,10 @@ export const ABAS: AbaPlanilha[] = [
     descricao: 'Dados da fazenda. Uma linha só.',
     colunas: [
       { coluna: 'nome', titulo: 'Nome da propriedade', tipo: 'texto', obrigatoria: true, exemplo: 'Sítio Boa Esperança' },
+      { coluna: 'estado', titulo: 'Estado (UF)', tipo: 'texto', exemplo: 'MG' },
+      { coluna: 'cidade', titulo: 'Cidade', tipo: 'texto', exemplo: 'Juiz de Fora' },
+      { coluna: 'pais', titulo: 'País', tipo: 'texto', exemplo: 'Brasil' },
+      { coluna: 'tipo_pasto', titulo: 'Tipo de pasto', tipo: 'texto', exemplo: 'Braquiária' },
       numeroDe('area_propria_ha', 'Área própria (ha)', 28),
       numeroDe('area_arrendada_ha', 'Área arrendada (ha)', 20),
       { coluna: 'mao_de_obra_pessoas', titulo: 'Pessoas na mão de obra', tipo: 'inteiro', exemplo: 2 },

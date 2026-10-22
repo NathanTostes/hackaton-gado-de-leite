@@ -22,6 +22,10 @@ export const ROTULO_STATUS: Record<StatusAnimal, string> = {
 export interface Propriedade {
   id: string;
   nome: string;
+  estado: string | null;
+  cidade: string | null;
+  pais: string | null;
+  tipo_pasto: string | null;
   area_propria_ha: number;
   area_arrendada_ha: number;
   mao_de_obra_pessoas: number;

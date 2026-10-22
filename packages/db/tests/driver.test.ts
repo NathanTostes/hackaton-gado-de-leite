@@ -18,6 +18,8 @@ import {
   executar,
   novoId,
   salvarAnimal,
+  salvarPropriedade,
+  obterPropriedade,
   semear,
   type BackendSQLite,
 } from '@drmoo/db';
@@ -85,6 +87,35 @@ describe('driver do banco', () => {
     expect(colunas).toContain('procedencia');
     expect(colunas).toContain('numero_gta');
     expect(colunas).toContain('situacao_reprodutiva');
+  });
+
+  it('migra propriedades antigas sem perder dados e pode reabrir o banco', async () => {
+    const db = new DatabaseSync(':memory:');
+    db.exec(`CREATE TABLE propriedade (
+      id TEXT PRIMARY KEY, nome TEXT NOT NULL,
+      area_propria_ha REAL NOT NULL DEFAULT 0, area_arrendada_ha REAL NOT NULL DEFAULT 0,
+      mao_de_obra_pessoas INTEGER NOT NULL DEFAULT 1, preco_leite_litro REAL NOT NULL DEFAULT 0,
+      mao_de_obra_familiar_mes REAL NOT NULL DEFAULT 0, reposicao_investimento_mes REAL NOT NULL DEFAULT 0,
+      gestacao_dias INTEGER NOT NULL DEFAULT 283, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
+      INSERT INTO propriedade (id, nome, area_propria_ha, created_at, updated_at)
+      VALUES ('antiga', 'Fazenda antiga', 25, '2025', '2025')`);
+    const adaptador = backendNode(db);
+    definirBackend(adaptador);
+    expect(await obterPropriedade()).toMatchObject({ id: 'antiga', nome: 'Fazenda antiga', area_propria_ha: 25,
+      estado: null, cidade: null, pais: null, tipo_pasto: null });
+    await salvarPropriedade({ estado: 'MG', cidade: 'Juiz de Fora', pais: 'Brasil', tipo_pasto: 'Braquiária' });
+    definirBackend(adaptador);
+    expect(await obterPropriedade()).toMatchObject({ id: 'antiga', area_propria_ha: 25,
+      estado: 'MG', cidade: 'Juiz de Fora', pais: 'Brasil', tipo_pasto: 'Braquiária' });
+  });
+
+  it('salva os novos campos, preserva atualizações parciais e permite limpar os dados', async () => {
+    await salvarPropriedade({ nome: 'Sítio', estado: 'SP', cidade: ' Campinas ', pais: ' Brasil ', tipo_pasto: ' Tifton ' });
+    expect(await obterPropriedade()).toMatchObject({ estado: 'SP', cidade: 'Campinas', pais: 'Brasil', tipo_pasto: 'Tifton' });
+    await salvarPropriedade({ nome: 'Sítio atualizado' });
+    expect(await obterPropriedade()).toMatchObject({ nome: 'Sítio atualizado', cidade: 'Campinas', tipo_pasto: 'Tifton' });
+    await salvarPropriedade({ estado: null, cidade: '', pais: null, tipo_pasto: '' });
+    expect(await obterPropriedade()).toMatchObject({ estado: null, cidade: null, pais: null, tipo_pasto: null });
   });
 
   it('a transação desfaz tudo quando algo falha no meio', async () => {

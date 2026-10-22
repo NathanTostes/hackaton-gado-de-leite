@@ -7,7 +7,14 @@
  * Convenções: `id TEXT PRIMARY KEY`, timestamps ISO, `deleted_at` para exclusão
  * lógica (prepara a sincronização em rede local, hoje apenas protótipo).
  */
-export const SCHEMA_VERSAO = 2;
+export const SCHEMA_VERSAO = 3;
+
+export const COLUNAS_PROPRIEDADE = {
+  estado: 'TEXT',
+  cidade: 'TEXT',
+  pais: 'TEXT',
+  tipo_pasto: 'TEXT',
+} as const;
 
 export const COLUNAS_CADASTRO = {
   mae_nome: 'TEXT',
@@ -30,6 +37,10 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS propriedade (
   id TEXT PRIMARY KEY,
   nome TEXT NOT NULL,
+  estado TEXT,
+  cidade TEXT,
+  pais TEXT,
+  tipo_pasto TEXT,
   area_propria_ha REAL NOT NULL DEFAULT 0,
   area_arrendada_ha REAL NOT NULL DEFAULT 0,
   mao_de_obra_pessoas INTEGER NOT NULL DEFAULT 1,

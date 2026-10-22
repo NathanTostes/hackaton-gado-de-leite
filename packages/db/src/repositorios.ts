@@ -56,12 +56,16 @@ export async function salvarPropriedade(p: Partial<Propriedade>): Promise<void> 
   if (!atual) {
     await executar(
       `INSERT INTO propriedade
-       (id, nome, area_propria_ha, area_arrendada_ha, mao_de_obra_pessoas, preco_leite_litro,
+       (id, nome, estado, cidade, pais, tipo_pasto, area_propria_ha, area_arrendada_ha, mao_de_obra_pessoas, preco_leite_litro,
         mao_de_obra_familiar_mes, reposicao_investimento_mes, gestacao_dias, created_at, updated_at)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         p.id ?? novoId('prop'),
         p.nome ?? 'Minha propriedade',
+        p.estado?.trim() || null,
+        p.cidade?.trim() || null,
+        p.pais?.trim() || null,
+        p.tipo_pasto?.trim() || null,
         p.area_propria_ha ?? 0,
         p.area_arrendada_ha ?? 0,
         p.mao_de_obra_pessoas ?? 1,
@@ -77,11 +81,15 @@ export async function salvarPropriedade(p: Partial<Propriedade>): Promise<void> 
   }
   const m = { ...atual, ...p };
   await executar(
-    `UPDATE propriedade SET nome=?, area_propria_ha=?, area_arrendada_ha=?, mao_de_obra_pessoas=?,
+    `UPDATE propriedade SET nome=?, estado=?, cidade=?, pais=?, tipo_pasto=?, area_propria_ha=?, area_arrendada_ha=?, mao_de_obra_pessoas=?,
      preco_leite_litro=?, mao_de_obra_familiar_mes=?, reposicao_investimento_mes=?, gestacao_dias=?,
      updated_at=? WHERE id=?`,
     [
       m.nome,
+      m.estado?.trim() || null,
+      m.cidade?.trim() || null,
+      m.pais?.trim() || null,
+      m.tipo_pasto?.trim() || null,
       m.area_propria_ha,
       m.area_arrendada_ha,
       m.mao_de_obra_pessoas,
