@@ -208,7 +208,7 @@ export default function RedeLocal() {
         <Item
           icone="merge-type"
           titulo="Resolução de conflito por last-write-wins"
-          texto="Cada registro carrega updated_at (e deleted_at, quando há exclusão lógica); na divergência vence a escrita mais recente. A mesclagem é a mesma nos dois lados, então os aparelhos convergem."
+          texto="Cada registro carrega updated_at (e deleted_at, quando há exclusão lógica); na divergência vence a escrita mais recente. O mesmo lançamento feito nos dois aparelhos — a ordenha de um animal num dia, a produção da propriedade numa data — é unificado pela data, e não pelo código interno do registro, para a produção não aparecer somada em dobro. A mesclagem é a mesma nos dois lados, então os aparelhos convergem."
         />
         <Separador />
         <Item
@@ -247,8 +247,9 @@ function Resultado({ estado }: { estado: Estado }) {
     );
   }
   if (estado.tipo === 'sincronizado') {
-    const { aplicadas, conflitos, enviadas } = estado.resultado;
+    const { aplicadas, removidas, conflitos, enviadas } = estado.resultado;
     const recebidas = Object.values(aplicadas).reduce((t, n) => t + n, 0);
+    const duplicatas = Object.values(removidas).reduce((t, n) => t + n, 0);
     const detalhe = Object.entries(aplicadas)
       .map(([t, n]) => `${t}: ${n}`)
       .join(' · ');
@@ -258,7 +259,12 @@ function Resultado({ estado }: { estado: Estado }) {
           tipo="ok"
           icone="cloud-done"
           titulo="Sincronizado"
-          texto={`${enviadas} registros enviados, ${recebidas} gravados neste aparelho.${detalhe ? ` (${detalhe})` : ''}`}
+          texto={
+            `${enviadas} registros enviados, ${recebidas} gravados neste aparelho.${detalhe ? ` (${detalhe})` : ''}` +
+            (duplicatas
+              ? ` ${duplicatas} lançamento(s) repetido(s) do mesmo dia foram unificados: ficou a versão mais recente.`
+              : '')
+          }
         />
         {conflitos.length > 0 && (
           <Alerta

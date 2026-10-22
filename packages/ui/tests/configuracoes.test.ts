@@ -15,7 +15,7 @@ vi.mock('@drmoo/db', () => ({
   obterPropriedade: vi.fn(), salvarPropriedade: vi.fn(),
   // A tela também avisa sobre banco temporário e exporta/importa planilha.
   bancoEmMemoria: () => false,
-  exportarPlanilha: vi.fn(), importarPlanilha: vi.fn(),
+  exportarPlanilha: vi.fn(), importarPlanilha: vi.fn(), apagarTudo: vi.fn(),
 }));
 vi.mock('../../../apps/mobile/src/arquivos', () => ({
   entregarArquivo: vi.fn(), escolherArquivo: vi.fn(),
@@ -76,13 +76,24 @@ describe('configurações', () => {
     expect(html).toContain('Tipo de pasto');
   });
 
-  // O app abre vazio e os dados entram pela planilha: não existe mais nenhum
-  // botão que apague tudo e recrie a demonstração.
-  it('não oferece nenhuma ação de reset dos dados', () => {
+  // O app abre vazio e os dados entram pela planilha: o único reset é o de
+  // apagar — nenhum botão recria a demonstração.
+  it('oferece apagar os dados, e nenhuma ação que recrie a demonstração', () => {
     renderToStaticMarkup(createElement(Configuracoes));
     expect(estado.botoes.map((b) => b.titulo)).toEqual([
-      'Salvar', 'Baixar planilha', 'Importar planilha preenchida',
+      'Salvar', 'Baixar planilha', 'Importar planilha preenchida', 'Apagar todos os dados',
     ]);
+  });
+
+  // Um toque só arma o botão. Quem apaga o rebanho inteiro por engano não tem
+  // de onde recuperar.
+  it('o primeiro toque em apagar não apaga nada', async () => {
+    const { apagarTudo } = await import('@drmoo/db');
+
+    renderToStaticMarkup(createElement(Configuracoes));
+    await estado.botoes.find((b) => b.titulo === 'Apagar todos os dados')!.aoTocar();
+
+    expect(apagarTudo).not.toHaveBeenCalled();
   });
 
   it('exibe erro de leitura e impede salvar um formulário sem os dados carregados', () => {

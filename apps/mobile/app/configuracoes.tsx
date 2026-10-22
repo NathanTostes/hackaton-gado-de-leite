@@ -5,6 +5,7 @@ import { useFormulario, useCampoFormulario } from '../src/componentes/validacaoF
 import { useEffect, useState } from 'react';
 import { Platform, TextInput, View } from 'react-native';
 import {
+  apagarTudo,
   bancoEmMemoria,
   exportarPlanilha,
   importarPlanilha,
@@ -59,6 +60,11 @@ export default function Configuracoes() {
   const [avisoPlanilha, setAvisoPlanilha] = useState<string | null>(null);
   const [relatorio, setRelatorio] = useState<RelatorioImportacao | null>(null);
   const [substituir, setSubstituir] = useState(false);
+  // Apagar tudo é irreversível e não tem Ctrl+Z: o primeiro toque só arma o
+  // botão, o segundo é que apaga.
+  const [apagarArmado, setApagarArmado] = useState(false);
+  const [apagando, setApagando] = useState(false);
+  const [avisoApagar, setAvisoApagar] = useState<string | null>(null);
   const modoVoz = useModoVoz();
 
   useEffect(() => {
@@ -177,6 +183,40 @@ export default function Configuracoes() {
       setAvisoPlanilha(e instanceof Error ? e.message : String(e));
     } finally {
       setPlanilhaOcupada(null);
+    }
+  };
+
+  const apagarDados = async () => {
+    setApagando(true);
+    setAvisoApagar(null);
+    try {
+      await apagarTudo();
+      setApagarArmado(false);
+      // A propriedade também foi apagada: o formulário não pode continuar
+      // mostrando os valores de um cadastro que não existe mais.
+      setForm({
+        nome: '',
+        estado: '',
+        cidade: '',
+        pais: '',
+        tipo_pasto: '',
+        area_propria_ha: '',
+        area_arrendada_ha: '',
+        mao_de_obra_pessoas: '',
+        preco_leite_litro: '',
+        mao_de_obra_familiar_mes: '',
+        reposicao_investimento_mes: '',
+        gestacao_dias: '',
+      });
+      setRelatorio(null);
+      setAvisoPlanilha(null);
+      setSalvo(false);
+      recarregar();
+      setAvisoApagar('Tudo apagado. O app está zerado — importe uma planilha para começar.');
+    } catch (e) {
+      setAvisoApagar(e instanceof Error ? e.message : String(e));
+    } finally {
+      setApagando(false);
     }
   };
 
@@ -380,6 +420,56 @@ export default function Configuracoes() {
             )}
           </>
         )}
+      </Cartao>
+
+      <TituloSecao icone="delete-forever">Apagar todos os dados</TituloSecao>
+      <Cartao>
+        <Txt v="label" cor={c.textoSecundario}>
+          Esvazia o banco deste aparelho: animais, ordenhas, exames, tratamentos, contas e
+          os dados da propriedade. Não dá para desfazer e nada é enviado para a nuvem — se
+          quiser guardar o que já está aqui, exporte a planilha antes.
+        </Txt>
+        <Espaco h={espaco.md} />
+        <Acoes
+          aviso={
+            avisoApagar ? (
+              <Alerta
+                tipo={apagarArmado ? 'alerta' : 'ok'}
+                icone="delete-forever"
+                titulo="Dados"
+                texto={avisoApagar}
+              />
+            ) : apagarArmado ? (
+              <Alerta
+                tipo="alerta"
+                titulo="Toque de novo para confirmar"
+                texto="O próximo toque apaga tudo, sem volta."
+              />
+            ) : null
+          }
+        >
+          <Botao
+            titulo={
+              apagando ? 'Apagando…' : apagarArmado ? 'Confirmar: apagar tudo' : 'Apagar todos os dados'
+            }
+            icone="delete-forever"
+            variante={apagarArmado ? 'perigo' : 'secundario'}
+            desabilitado={apagando}
+            aoTocar={() => {
+              setAvisoApagar(null);
+              if (apagarArmado) void apagarDados();
+              else setApagarArmado(true);
+            }}
+          />
+          {apagarArmado && !apagando && (
+            <Botao
+              titulo="Cancelar"
+              icone="close"
+              variante="texto"
+              aoTocar={() => setApagarArmado(false)}
+            />
+          )}
+        </Acoes>
       </Cartao>
 
     </Tela>
