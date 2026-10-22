@@ -128,65 +128,68 @@ export async function importarPlanilha(
     substituiu: Boolean(opcoes.substituir),
   };
 
-  if (opcoes.substituir) await apagarTudo();
-
-  // Chaves já existentes, para a importação atualizar em vez de duplicar.
-  const existentes = new Map<string, Map<string, string>>();
-  for (const tabela of Object.keys(CHAVE_NATURAL)) {
-    const chaves = CHAVE_NATURAL[tabela] ?? [];
-    const mapa = new Map<string, string>();
-    if (chaves.length) {
-      const linhas = await consultar<LinhaBanco>(`SELECT id, ${chaves.join(', ')} FROM ${tabela}`);
-      for (const l of linhas) mapa.set(chaves.map((c) => String(l[c] ?? '')).join('|'), String(l.id));
-    }
-    existentes.set(tabela, mapa);
-  }
-
-  const nomes = await nomesPorId();
-  const contexto = {
-    animais: inverter(nomes.animais),
-    lotes: inverter(nomes.lotes),
-    medicamentos: inverter(nomes.medicamentos),
-    vacinas: inverter(nomes.vacinas),
-    novoId,
-    agora: agoraISO,
-    idExistente: (tabela: string, linha: LinhaBanco) => {
+  const importar = async () => {
+    // Chaves já existentes, para a importação atualizar em vez de duplicar.
+    const existentes = new Map<string, Map<string, string>>();
+    for (const tabela of Object.keys(CHAVE_NATURAL)) {
       const chaves = CHAVE_NATURAL[tabela] ?? [];
-      if (!chaves.length) return undefined;
-      return existentes.get(tabela)?.get(chaves.map((c) => String(linha[c] ?? '')).join('|'));
-    },
-  };
-
-  // A propriedade é linha única: atualizar a existente, não criar outra.
-  const propriedadeAtual = await consultar<{ id: string }>('SELECT id FROM propriedade LIMIT 1');
-
-  const paraGravar: { tabela: string; aba: string; linhas: LinhaBanco[] }[] = [];
-
-  // Na ordem das abas: lotes e medicamentos antes de quem os referencia; os
-  // ids recém-criados entram no contexto para a aba seguinte enxergá-los.
-  for (const aba of ABAS) {
-    const linhasPlanilha = conteudo[aba.nome];
-    if (!linhasPlanilha?.length) continue;
-
-    const convertido = abaParaBanco(aba, aba.linhaUnica ? linhasPlanilha.slice(0, 1) : linhasPlanilha, contexto);
-    relatorio.erros.push(...convertido.erros);
-
-    if (aba.tabela === 'propriedade' && propriedadeAtual[0]) {
-      for (const linha of convertido.linhas) linha.id = propriedadeAtual[0].id;
+      const mapa = new Map<string, string>();
+      if (chaves.length) {
+        const linhas = await consultar<LinhaBanco>(`SELECT id, ${chaves.join(', ')} FROM ${tabela}`);
+        for (const l of linhas) mapa.set(chaves.map((c) => String(l[c] ?? '')).join('|'), String(l.id));
+      }
+      existentes.set(tabela, mapa);
     }
 
-    for (const linha of convertido.linhas) {
-      const id = String(linha.id);
-      if (aba.tabela === 'animal' && linha.brinco) contexto.animais.set(String(linha.brinco), id);
-      if (aba.tabela === 'lote' && linha.nome) contexto.lotes.set(String(linha.nome), id);
-      if (aba.tabela === 'medicamento' && linha.nome) contexto.medicamentos.set(String(linha.nome), id);
-      if (aba.tabela === 'vacina' && linha.nome) contexto.vacinas.set(String(linha.nome), id);
+    const nomes = await nomesPorId();
+    const contexto = {
+      animais: inverter(nomes.animais),
+      lotes: inverter(nomes.lotes),
+      medicamentos: inverter(nomes.medicamentos),
+      vacinas: inverter(nomes.vacinas),
+      novoId,
+      agora: agoraISO,
+      idExistente: (tabela: string, linha: LinhaBanco) => {
+        const chaves = CHAVE_NATURAL[tabela] ?? [];
+        if (!chaves.length) return undefined;
+        return existentes.get(tabela)?.get(chaves.map((c) => String(linha[c] ?? '')).join('|'));
+      },
+    };
+
+    // A propriedade é linha única: atualizar a existente, não criar outra.
+    const propriedadeAtual = await consultar<{ id: string }>('SELECT id FROM propriedade LIMIT 1');
+
+    const paraGravar: { tabela: string; aba: string; linhas: LinhaBanco[] }[] = [];
+
+    // Na ordem das abas: lotes e medicamentos antes de quem os referencia; os
+    // ids recém-criados entram no contexto para a aba seguinte enxergá-los.
+    for (const aba of ABAS) {
+      const linhasPlanilha = conteudo[aba.nome];
+      if (!linhasPlanilha?.length) continue;
+
+      const convertido = abaParaBanco(aba, aba.linhaUnica ? linhasPlanilha.slice(0, 1) : linhasPlanilha, contexto);
+      relatorio.erros.push(...convertido.erros);
+
+      if (aba.tabela === 'propriedade' && propriedadeAtual[0]) {
+        for (const linha of convertido.linhas) linha.id = propriedadeAtual[0].id;
+      }
+
+      for (const linha of convertido.linhas) {
+        const id = String(linha.id);
+        if (aba.tabela === 'animal' && linha.brinco) contexto.animais.set(String(linha.brinco), id);
+        if (aba.tabela === 'lote' && linha.nome) contexto.lotes.set(String(linha.nome), id);
+        if (aba.tabela === 'medicamento' && linha.nome) contexto.medicamentos.set(String(linha.nome), id);
+        if (aba.tabela === 'vacina' && linha.nome) contexto.vacinas.set(String(linha.nome), id);
+      }
+
+      paraGravar.push({ tabela: aba.tabela, aba: aba.nome, linhas: convertido.linhas });
     }
 
-    paraGravar.push({ tabela: aba.tabela, aba: aba.nome, linhas: convertido.linhas });
-  }
+    if (opcoes.substituir && relatorio.erros.length) {
+      throw new Error('A substituição foi cancelada. Corrija a planilha: ' +
+        relatorio.erros.map((e) => `${e.aba}, linha ${e.linha}: ${e.motivo}`).join('; '));
+    }
 
-  await emTransacao(async () => {
     await executar('PRAGMA defer_foreign_keys = ON', []);
     for (const { tabela, aba, linhas } of paraGravar) {
       for (const linha of linhas) {
@@ -201,7 +204,11 @@ export async function importarPlanilha(
         relatorio.total += 1;
       }
     }
-  });
+  };
+
+  // Na substituição, limpar, validar e gravar pertencem à mesma transação.
+  if (opcoes.substituir) await apagarTudo(importar);
+  else await emTransacao(importar);
 
   return relatorio;
 }

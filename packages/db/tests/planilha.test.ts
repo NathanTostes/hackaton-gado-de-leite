@@ -157,4 +157,39 @@ describe('planilha da propriedade', () => {
     expect(relatorio.substituiu).toBe(true);
     expect((await listarRebanho()).map((a) => a.brinco)).toEqual(['601']);
   });
+  it('preserva a base anterior quando a substituição falha na gravação', async () => {
+    const id = await salvarAnimal({ brinco: 'original', categoria: 'novilha', sexo: 'F' });
+    const arquivo = await arquivoCom({ Animais: [
+      { Brinco: 'repetido', Categoria: 'novilha', 'Sexo (F/M)': 'F' },
+      { Brinco: 'repetido', Categoria: 'novilha', 'Sexo (F/M)': 'F' },
+    ] });
+    await expect(importarPlanilha(arquivo, { substituir: true })).rejects.toThrow(/UNIQUE/);
+    expect((await listarRebanho()).map((a) => a.id)).toEqual([id]);
+    expect((await obterPropriedade())?.nome).toBe('Sítio Boa Esperança');
+  });
+
+  it('cancela a substituição inteira se houver erros de validação', async () => {
+    await salvarAnimal({ brinco: 'original', categoria: 'novilha', sexo: 'F' });
+    const arquivo = await arquivoCom({ Animais: [
+      { Brinco: 'valido', Categoria: 'novilha', 'Sexo (F/M)': 'F' },
+      { Brinco: 'invalido', Categoria: 'desconhecida', 'Sexo (F/M)': 'F' },
+    ] });
+    await expect(importarPlanilha(arquivo, { substituir: true })).rejects.toThrow(/substituição foi cancelada/);
+    expect((await listarRebanho()).map((a) => a.brinco)).toEqual(['original']);
+  });
+
+  it('restaura idade estimada, referência, peso de entrada e origem transferência', async () => {
+    await salvarAnimal({
+      brinco: 'transferido', categoria: 'novilha', sexo: 'F', origem: 'transferencia',
+      idade_estimada_meses: 18, idade_estimada_em: '2025-10-01', peso_entrada: 200,
+    });
+    const arquivo = await exportarPlanilha();
+    const resultado = await importarPlanilha(arquivo, { substituir: true });
+    expect(resultado.erros).toEqual([]);
+    expect(await listarRebanho()).toEqual([expect.objectContaining({
+      brinco: 'transferido', origem: 'transferencia', idade_estimada_meses: 18,
+      idade_estimada_em: '2025-10-01', peso_entrada: 200,
+    })]);
+  });
+
 });

@@ -10,6 +10,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { diferenca, instantaneoVazio, mesclar, type Instantaneo } from '@drmoo/sync';
 import {
   aplicarLinhas,
+  consultar,
   definirBackend,
   instantaneoLocal,
   listarRebanho,
@@ -128,4 +129,36 @@ describe('sincronização entre dois aparelhos da mesma rede', () => {
     // O animal sem conflito entrou mesmo assim.
     expect((await listarRebanho()).map((a) => a.brinco).sort()).toEqual(['010', '011']);
   });
+  it('recebe filiação em ordem inversa na mesma sincronização', async () => {
+    usar(aparelhoA);
+    const filha = await salvarAnimal({ brinco: 'filha', categoria: 'novilha', sexo: 'F' });
+    const mae = await salvarAnimal({ brinco: 'mae', categoria: 'vaca_seca', sexo: 'F' });
+    const avo = await salvarAnimal({ brinco: 'avo', categoria: 'vaca_seca', sexo: 'F' });
+    await salvarAnimal({ id: filha, brinco: 'filha', mae_id: mae });
+    await salvarAnimal({ id: mae, brinco: 'mae', mae_id: avo });
+    const foto = await instantaneoLocal();
+    const linhas = [filha, mae, avo].map((id) => foto.tabelas.animal!.find((a) => a.id === id)!);
+    usar(aparelhoB);
+    const resultado = await aplicarLinhas({ animal: linhas });
+    expect(resultado).toEqual({ aplicadas: { animal: 3 }, conflitos: [] });
+    expect((await obterAnimal(filha))?.mae_id).toBe(mae);
+    expect((await obterAnimal(mae))?.mae_id).toBe(avo);
+    expect(await consultar('PRAGMA foreign_key_check')).toEqual([]);
+  });
+
+  it('relata filiação inexistente sem gravar órfãos ou impedir animais válidos', async () => {
+    usar(aparelhoA);
+    await salvarAnimal({ brinco: 'filha', categoria: 'novilha', sexo: 'F' });
+    await salvarAnimal({ brinco: 'valido', categoria: 'novilha', sexo: 'F' });
+    const foto = await instantaneoLocal();
+    foto.tabelas.animal!.find((a) => a.brinco === 'filha')!.mae_id = 'ausente';
+    usar(aparelhoB);
+    const resultado = await aplicarLinhas(foto.tabelas);
+    expect(resultado.aplicadas.animal).toBe(1);
+    expect(resultado.conflitos).toHaveLength(1);
+    expect(resultado.conflitos[0]?.motivo).toMatch(/FOREIGN KEY/);
+    expect((await listarRebanho()).map((a) => a.brinco)).toEqual(['valido']);
+    expect(await consultar('PRAGMA foreign_key_check')).toEqual([]);
+  });
+
 });
