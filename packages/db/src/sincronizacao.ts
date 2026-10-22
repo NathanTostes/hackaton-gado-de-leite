@@ -99,9 +99,7 @@ export async function aplicarLinhas(
   const aplicadas: Record<string, number> = {};
   const conflitos: ResultadoSincronizacao['conflitos'] = [];
 
-  // Chave estrangeira adiada: o lote de um animal pode chegar depois dele.
-  await executar('PRAGMA defer_foreign_keys = ON', []);
-
+  const operacoes: { tabela: string; id: string; sql: string; params: Parametro[] }[] = [];
   for (const tabela of TABELAS_SINCRONIZADAS) {
     const linhas = porTabela[tabela];
     if (!linhas?.length) continue;
@@ -114,18 +112,34 @@ export async function aplicarLinhas(
       const sql =
         `INSERT INTO ${tabela} (${nomes.join(', ')}) VALUES (${nomes.map(() => '?').join(', ')}) ` +
         (atribuicoes.length ? `ON CONFLICT(id) DO UPDATE SET ${atribuicoes.join(', ')}` : 'ON CONFLICT(id) DO NOTHING');
-      try {
-        await executar(sql, nomes.map((c) => linha[c] as Parametro));
-        aplicadas[tabela] = (aplicadas[tabela] ?? 0) + 1;
-      } catch (e) {
-        conflitos.push({
-          tabela,
-          id: String(linha.id),
-          motivo: e instanceof Error ? e.message : String(e),
-        });
-      }
+      operacoes.push({ tabela, id: String(linha.id), sql, params: nomes.map((c) => linha[c] as Parametro) });
     }
   }
+
+  await emTransacao(async () => {
+    // Mantém as constraints ativas e tenta novamente quem dependia de uma linha
+    // ainda não gravada (por exemplo, filha cadastrada antes da mãe).
+    // Ao parar de avançar, os conflitos reais são relatados sem desfazer os válidos.
+    let pendentes = operacoes;
+    while (pendentes.length) {
+      const recusadas: typeof operacoes = [];
+      const erros: typeof conflitos = [];
+      for (const op of pendentes) {
+        try {
+          await executar(op.sql, op.params);
+          aplicadas[op.tabela] = (aplicadas[op.tabela] ?? 0) + 1;
+        } catch (e) {
+          recusadas.push(op);
+          erros.push({ tabela: op.tabela, id: op.id, motivo: e instanceof Error ? e.message : String(e) });
+        }
+      }
+      if (recusadas.length === pendentes.length) {
+        conflitos.push(...erros);
+        break;
+      }
+      pendentes = recusadas;
+    }
+  });
 
   return { aplicadas, conflitos };
 }

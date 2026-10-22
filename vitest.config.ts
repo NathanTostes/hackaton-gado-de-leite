@@ -21,15 +21,16 @@ export default defineConfig({
   // Os componentes do app vivem em apps/mobile, cujo tsconfig estende
   // "expo/tsconfig.base". Dependendo de onde o npm hospeda o pacote `expo`, o
   // esbuild não acha esse arquivo e a transformação falha antes do primeiro
-  // teste. Fixar aqui as opções que importam torna a suíte independente disso.
+  // teste. A string evita a busca automática de tsconfigs pelo Vite; um objeto
+  // ainda dispara essa busca antes de aplicar as opções abaixo.
   esbuild: {
-    tsconfigRaw: {
+    tsconfigRaw: JSON.stringify({
       compilerOptions: {
         jsx: 'react-jsx',
         target: 'es2022',
         useDefineForClassFields: false,
       },
-    },
+    }),
   },
   resolve: {
     alias: {

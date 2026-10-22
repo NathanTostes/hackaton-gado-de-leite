@@ -14,14 +14,11 @@ import {
 import { baseCompilada } from '@drmoo/knowledge';
 import {
   fatosDoAnimal,
-  lancarCMT,
   obterAnimal,
-  registrarCasoMastite,
-  salvarAtendimento,
   type AnimalComResumo,
   type FatoPreCarregado,
 } from '@drmoo/db';
-import { ROTULO_CATEGORIA, hoje, piorCMT, type ResultadoCMT } from '@drmoo/domain';
+import { ROTULO_CATEGORIA, piorCMT, type ResultadoCMT } from '@drmoo/domain';
 import { corCMT, corDaConfianca } from '@drmoo/ui';
 import {
   Alerta,
@@ -41,6 +38,7 @@ import {
 } from '../../src/componentes/base';
 import { UbereQuatroQuartos } from '../../src/componentes/graficos';
 import { CartaoHipotese, ComoChegueiNisso } from '../../src/componentes/parecer';
+import { salvarConsulta } from '../../src/salvarConsulta';
 import { useTema } from '../../src/tema';
 import { useLayout } from '../../src/responsivo';
 
@@ -57,6 +55,7 @@ export default function Anamnese() {
   const [mostrarSabidos, setMostrarSabidos] = useState(true);
   const [condutaMarcada, setCondutaMarcada] = useState<Set<string>>(new Set());
   const [salvando, setSalvando] = useState(false);
+  const [erroSalvar, setErroSalvar] = useState<string | null>(null);
   const [salvo, setSalvo] = useState<string | null>(null);
 
   const iniciar = useCallback(
@@ -127,46 +126,12 @@ export default function Anamnese() {
     const s = sessaoRef.current;
     if (!s || !animalId || salvando) return;
     setSalvando(true);
+    setErroSalvar(null);
     try {
-      const serializado = s.serializar();
-      const id = await salvarAtendimento({
-        animal_id: animalId,
-        data_hora: new Date().toISOString(),
-        queixa_principal: null,
-        kb_versao: parecer.kbVersao,
-        engine_versao: parecer.engineVersao,
-        fatos_iniciais: JSON.stringify(serializado.fatosIniciais),
-        respostas: JSON.stringify(serializado.respostas),
-        conclusoes: JSON.stringify(parecer.hipoteses),
-        traco: JSON.stringify(parecer.traco),
-        conduta_check: JSON.stringify([...condutaMarcada]),
-        motivo_parada: parecer.motivoParada,
-        status: 'concluido',
-        observacoes: null,
-      });
-
-      // Conclusão de mastite clínica abre caso no controle do rebanho, que é o
-      // que alimenta o % de mastite clínica do mês.
-      const principal = parecer.hipoteses[0];
-      if (principal?.id.startsWith('mastite_clinica')) {
-        await registrarCasoMastite({
-          animalId,
-          quartos: 1,
-          tipo: 'clinica',
-          grau: Number(principal.id.slice(-1)) || null,
-          dataInicio: hoje(),
-          atendimentoId: id,
-        });
-      }
-
-      // Se o CMT foi coletado na consulta, grava o exame no histórico do animal.
-      const cmt = s.memoria.get('cmt_pior_quarto');
-      if (cmt && typeof cmt.valor === 'string' && cmt.origem === 'pergunta') {
-        const v = cmt.valor as ResultadoCMT;
-        await lancarCMT(animalId, hoje(), { ad: v, ae: null, pd: null, pe: null });
-      }
-
+      const id = await salvarConsulta(animalId, s, parecer, [...condutaMarcada]);
       setSalvo(id);
+    } catch (e) {
+      setErroSalvar(e instanceof Error ? e.message : String(e));
     } finally {
       setSalvando(false);
     }
@@ -224,6 +189,7 @@ export default function Anamnese() {
         <AvisoVeterinario />
 
         <Espaco h={espaco.lg} />
+        {!!erroSalvar && <Alerta tipo="alerta" titulo="Não foi possível salvar a consulta" texto={erroSalvar} />}
         <Botao
           grande
           titulo={salvo ? 'Salvo no prontuário' : 'Salvar no prontuário'}
@@ -257,6 +223,7 @@ export default function Anamnese() {
         }
         salvo={salvo}
         salvando={salvando}
+        erroSalvar={erroSalvar}
         aoSalvar={() => salvar(passo.parecer!)}
         aoVoltar={voltar}
       />
@@ -646,6 +613,7 @@ function ParecerFinal({
   aoMarcarConduta,
   salvo,
   salvando,
+  erroSalvar,
   aoSalvar,
   aoVoltar,
 }: {
@@ -656,6 +624,7 @@ function ParecerFinal({
   aoMarcarConduta: (item: string) => void;
   salvo: string | null;
   salvando: boolean;
+  erroSalvar: string | null;
   aoSalvar: () => void;
   aoVoltar: () => void;
 }) {
@@ -709,6 +678,7 @@ function ParecerFinal({
       <AvisoVeterinario />
 
       <Espaco h={espaco.xl} />
+      {!!erroSalvar && <Alerta tipo="alerta" titulo="Não foi possível salvar a consulta" texto={erroSalvar} />}
       <Botao
         grande
         titulo={salvo ? 'Salvo no prontuário' : 'Salvar no prontuário'}

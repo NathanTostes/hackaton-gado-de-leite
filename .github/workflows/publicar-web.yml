@@ -72,6 +72,7 @@ jobs:
           mkdir -p publicar/app
           cp -r dist-web/. publicar/app/
           cp site/index.html publicar/index.html
+          cp site/Logo.jpeg publicar/Logo.jpeg
           # Duas cópias do index do app: o Pages procura o 404.html da raiz,
           # mas também o da pasta — e as rotas internas vivem sob /app/.
           cp dist-web/index.html publicar/404.html

@@ -32,7 +32,7 @@ export default function Prontuario() {
   const [exportando, setExportando] = useState(false);
   const [avisoExport, setAvisoExport] = useState<string | null>(null);
 
-  const { dados, carregando } = useDados(async () => {
+  const { dados, carregando, erro, recarregar } = useDados(async () => {
     if (!id) return null;
     const atendimento = await obterAtendimento(id);
     if (!atendimento) return null;
@@ -57,8 +57,14 @@ export default function Prontuario() {
     return { atendimento, animal, parecer, respostas, reproduz };
   }, [id]);
 
-  if (carregando || !dados) return <Carregando />;
-  if (!dados.atendimento) return <Vazio icone="error-outline" titulo="Prontuário não encontrado" />;
+  if (carregando) return <Carregando />;
+  if (erro) return (
+    <Tela>
+      <Alerta tipo="alerta" titulo="Não foi possível carregar o prontuário" texto={erro} />
+      <Botao titulo="Tentar novamente" aoTocar={recarregar} />
+    </Tela>
+  );
+  if (!dados) return <Vazio icone="error-outline" titulo="Prontuário não encontrado" />;
 
   const { atendimento, animal, parecer, respostas, reproduz } = dados;
   const versaoMudou = atendimento.kb_versao !== parecer.kbVersao;

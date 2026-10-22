@@ -681,13 +681,19 @@ export interface PainelMastite {
 
 export async function painelMastite(ano: number, mes: number): Promise<PainelMastite> {
   const prefixo = `${ano}-${String(mes).padStart(2, '0')}`;
+  const inicioMes = `${prefixo}-01`;
+  const fimMes = somarDias(inicioMes, diasNoMes(ano, mes) - 1);
+  const referencia = hoje();
 
   const casos = await consultar<{ quartos: number; dias: number }>(
     `SELECT quartos,
-            CAST(julianday(COALESCE(data_fim, date('now'))) - julianday(data_inicio) AS INTEGER) + 1 AS dias
+            CAST(julianday(MIN(COALESCE(data_fim, ?), ?))
+               - julianday(MAX(data_inicio, ?)) AS INTEGER) + 1 AS dias
      FROM caso_mastite
-     WHERE tipo = 'clinica' AND substr(data_inicio,1,7) = ?`,
-    [prefixo],
+     WHERE tipo = 'clinica' AND data_inicio <= ?
+       AND COALESCE(data_fim, ?) >= ?
+       AND COALESCE(data_fim, ?) >= data_inicio`,
+    [referencia, fimMes, inicioMes, fimMes, referencia, inicioMes, referencia],
   );
 
   const vacas = await consultarUm<{ n: number }>(
@@ -1009,47 +1015,49 @@ export async function registrarTratamento(t: {
   const carenciaLeiteAte = somarDias(dataFim, t.carenciaLeiteDias);
   const carenciaCarneAte = somarDias(dataFim, t.carenciaCarneDias);
 
-  await executar(
-    `INSERT INTO tratamento
-     (id, animal_id, medicamento_id, atendimento_id, dose, via, data_inicio, data_fim,
-      carencia_leite_ate, carencia_carne_ate, responsavel, custo_total, created_at, updated_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-    [
-      id,
-      t.animalId,
-      t.medicamentoId,
-      t.atendimentoId ?? null,
-      t.dose ?? null,
-      t.via ?? null,
-      t.dataInicio,
-      dataFim,
-      carenciaLeiteAte,
-      carenciaCarneAte,
-      t.responsavel ?? null,
-      t.custoTotal,
-      agora,
-      agora,
-    ],
-  );
+  await emTransacao(async () => {
+    await executar(
+      `INSERT INTO tratamento
+       (id, animal_id, medicamento_id, atendimento_id, dose, via, data_inicio, data_fim,
+        carencia_leite_ate, carencia_carne_ate, responsavel, custo_total, created_at, updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      [
+        id,
+        t.animalId,
+        t.medicamentoId,
+        t.atendimentoId ?? null,
+        t.dose ?? null,
+        t.via ?? null,
+        t.dataInicio,
+        dataFim,
+        carenciaLeiteAte,
+        carenciaCarneAte,
+        t.responsavel ?? null,
+        t.custoTotal,
+        agora,
+        agora,
+      ],
+    );
 
-  await atualizarStatus(t.animalId, 'em_carencia');
+    await atualizarStatus(t.animalId, 'em_carencia');
 
-  await criarEvento({
-    tipo: 'medicacao',
-    animalId: t.animalId,
-    titulo: `Fim da carência — ${t.descricao}`,
-    descricao: `O leite volta a poder ir para o tanque a partir de ${carenciaLeiteAte}.`,
-    data: carenciaLeiteAte,
-    origem: 'automatico',
-    referenciaId: id,
-  });
+    await criarEvento({
+      tipo: 'medicacao',
+      animalId: t.animalId,
+      titulo: `Fim da carência — ${t.descricao}`,
+      descricao: `O leite volta a poder ir para o tanque a partir de ${carenciaLeiteAte}.`,
+      data: carenciaLeiteAte,
+      origem: 'automatico',
+      referenciaId: id,
+    });
 
-  await lancarDespesa({
-    data: t.dataInicio,
-    categoria: 'sanidade_medicamentos',
-    descricao: t.descricao,
-    valor: t.custoTotal,
-    animalId: t.animalId,
+    await lancarDespesa({
+      data: t.dataInicio,
+      categoria: 'sanidade_medicamentos',
+      descricao: t.descricao,
+      valor: t.custoTotal,
+      animalId: t.animalId,
+    });
   });
 
   return id;
