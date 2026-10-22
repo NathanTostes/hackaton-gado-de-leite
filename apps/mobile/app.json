@@ -7,13 +7,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
     "backgroundColor": "#FFFFFF",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#015B66"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "br.ufjf.drmoo"
@@ -35,7 +29,17 @@
     "plugins": [
       "expo-router",
       "expo-sqlite",
-      "expo-font"
+      "expo-font",
+      "expo-sharing",
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#015B66"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": false
