@@ -31,6 +31,7 @@ export const ABAS: ItemNavegacao[] = [
 /** No celular estas telas moram em "Mais"; no computador cabem na lateral. */
 export const SECUNDARIAS: ItemNavegacao[] = [
   { rota: '/financeiro', rotulo: 'Financeiro', icone: 'payments' },
+  { rota: '/estatisticas', rotulo: 'Estatísticas', icone: 'insights' },
   { rota: '/conhecimento', rotulo: 'Base de conhecimento', icone: 'account-tree' },
   { rota: '/triagem', rotulo: 'Triagem', icone: 'fact-check' },
   { rota: '/rede-local', rotulo: 'Rede local', icone: 'wifi-tethering' },
