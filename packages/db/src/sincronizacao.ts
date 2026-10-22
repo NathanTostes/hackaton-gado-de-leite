@@ -25,7 +25,7 @@ import {
   type ResultadoSincronizacao,
   type Saude,
 } from '@drmoo/sync';
-import { abrirBanco, agoraISO, consultar, executar, gravarMeta, lerMeta, novoId, type Parametro } from './driver';
+import { abrirBanco, agoraISO, consultar, emTransacao, executar, gravarMeta, lerMeta, novoId, type Parametro } from './driver';
 
 const CHAVE_ENDERECO = 'sync_endereco';
 const CHAVE_CODIGO = 'sync_codigo';
