@@ -6,6 +6,7 @@
  * tudo offline.
  */
 import * as XLSX from 'xlsx';
+import { conteudoExemplo } from './exemplo';
 import { ABAS, ABA_INSTRUCOES, type AbaPlanilha } from './mapa';
 import type { LinhaPlanilha } from './conversao';
 
@@ -74,6 +75,16 @@ export function gerarArquivoBase64(conteudo: ConteudoPlanilha): string {
     XLSX.utils.book_append_sheet(livro, abaDeDados(definicao, conteudo[definicao.nome] ?? []), definicao.nome);
   }
   return XLSX.write(livro, { type: 'base64', bookType: 'xlsx' }) as string;
+}
+
+/** Planilha de exemplo pronta: mesmo formato do template, com dados dentro. */
+export function gerarArquivoExemplo(hoje?: Date): Uint8Array {
+  return gerarArquivo(conteudoExemplo(hoje));
+}
+
+/** Idem, em base64 — é o formato que o sistema de arquivos do aparelho aceita. */
+export function gerarArquivoExemploBase64(hoje?: Date): string {
+  return gerarArquivoBase64(conteudoExemplo(hoje));
 }
 
 export interface ArquivoLido {
