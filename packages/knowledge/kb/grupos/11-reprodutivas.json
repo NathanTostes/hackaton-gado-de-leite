@@ -1,0 +1,86 @@
+[
+  {
+    "id": "REP-ANESTRO",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Anestro pós-parto prolongado",
+    "prioridade": 65,
+    "se": { "var": "dias_desde_parto_sem_cio", "op": ">", "val": 60 },
+    "entao": [{ "var": "diagnostico", "val": "anestro_pos_parto", "cf": 0.7 }],
+    "porque": "O intervalo esperado entre o parto e o retorno à ciclicidade é de até 60 dias. Passado isso sem nenhum cio observado, a vaca está em anestro pós-parto, o que atrasa a próxima concepção.",
+    "conduta": [
+      "Converse com o veterinário sobre exame ginecológico (palpação retal ou ultrassom) para avaliar os ovários.",
+      "Revise o escore de condição corporal: vacas muito magras no pós-parto demoram mais a voltar ao cio.",
+      "Verifique a observação de cio: cios discretos passam despercebidos sem acompanhamento atento 2 a 3 vezes ao dia."
+    ],
+    "fonte": "Consenso veterinário/zootécnico geral sobre reprodução bovina — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-CISTO-IRREGULAR",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Cios irregulares sugerem cisto ovariano",
+    "prioridade": 60,
+    "se": { "var": "cio_irregular_frequente", "op": "=", "val": true },
+    "entao": [{ "var": "diagnostico", "val": "cisto_ovariano", "cf": 0.55 }],
+    "porque": "Cios frequentes e irregulares (intervalo menor que 18 dias) é o sinal mais comum de cisto folicular, que produz hormônio de forma desordenada.",
+    "conduta": [
+      "Peça ao veterinário exame de palpação retal ou ultrassom para confirmar o cisto e o tipo (folicular ou luteínico).",
+      "O tratamento costuma envolver hormônio (GnRH ou prostaglandina, conforme o tipo) — a escolha e a aplicação são do veterinário.",
+      "Não administre hormônio por conta própria: o produto errado para o tipo de cisto piora o quadro."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-CISTO-ANESTRO-LONGO",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Anestro muito prolongado reforça cisto ovariano",
+    "prioridade": 50,
+    "se": { "var": "dias_desde_parto_sem_cio", "op": ">", "val": 120 },
+    "entao": [{ "var": "diagnostico", "val": "cisto_ovariano", "cf": 0.4 }],
+    "porque": "Ausência de cio por mais de 120 dias, bem além do esperado, também é compatível com cisto ovariano do tipo que suprime o ciclo (cisto luteínico), não só com anestro simples.",
+    "conduta": ["Priorize a avaliação veterinária desta vaca: o atraso já é grande."],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-REPETICAO-CIO",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Repetição de cio (falha de concepção)",
+    "prioridade": 65,
+    "se": { "var": "inseminacoes_sem_prenhez", "op": ">=", "val": 3 },
+    "entao": [{ "var": "diagnostico", "val": "repeticao_cio", "cf": 0.75 }],
+    "porque": "Vaca que volta a manifestar cio depois de três ou mais inseminações ou coberturas sem emprenhar é classificada como repetidora — o problema pode estar no momento da inseminação, na qualidade do sêmen, no manejo nutricional ou em infecção uterina.",
+    "conduta": [
+      "Avalie junto ao veterinário o momento da inseminação em relação ao cio e a técnica usada.",
+      "Investigue metrite subclínica ou outra infecção uterina como causa — o tratamento costuma ser antibiótico intrauterino.",
+      "Vacinação contra leptospirose no rebanho reduz uma causa infecciosa comum de repetição de cio e aborto.",
+      "Revise o escore de condição corporal e a dieta no período de cobertura.",
+      "Considere trocar o touro ou o lote de sêmen se o problema persistir no rebanho."
+    ],
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-REPETICAO-METRITE",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Metrite pregressa reforça repetição de cio",
+    "prioridade": 45,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "repeticao_cio" },
+        { "var": "diagnostico", "op": "=", "val": "metrite" }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "repeticao_cio", "cf": 0.5 }],
+    "porque": "Vaca que teve metrite e continua repetindo cio provavelmente carrega uma infecção uterina de baixo grau que atrapalha a implantação do embrião.",
+    "conduta": ["Peça ao veterinário para reavaliar o útero antes da próxima inseminação."],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  }
+]

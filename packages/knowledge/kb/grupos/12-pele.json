@@ -1,0 +1,101 @@
+[
+  {
+    "id": "PELE-SARNA",
+    "versao": "1.0.0",
+    "grupo": "pele",
+    "titulo": "Sarna (ácaros)",
+    "prioridade": 60,
+    "se": {
+      "todas": [
+        { "var": "coceira_intensa", "op": "=", "val": true },
+        { "var": "crostas_pele", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "sarna", "cf": 0.75 }],
+    "porque": "Coceira intensa com perda de pelo e crostas, especialmente na cabeça, pescoço e base da cauda, é o quadro clássico de sarna por ácaros, que se espalha rápido pelo contato entre animais.",
+    "conduta": [
+      "Procure o médico-veterinário: o tratamento costuma ser com endectocida injetável (ivermectina) ou antissárnico tópico, repetido conforme o produto.",
+      "Isole o(s) animal(is) afetado(s) do restante do lote enquanto durar o tratamento.",
+      "Desinfete cochos, cercas e locais de contenção que tenham tido contato com o animal.",
+      "Observe os demais animais do lote: a sarna é contagiosa."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "PELE-DERMATOFITOSE",
+    "versao": "1.0.0",
+    "grupo": "pele",
+    "titulo": "Dermatofitose (\"craveiro\")",
+    "prioridade": 55,
+    "se": {
+      "todas": [
+        { "var": "placas_descamadas", "op": "=", "val": true },
+        { "nao": { "var": "coceira_intensa", "op": "=", "val": true } }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "dermatofitose", "cf": 0.65 }],
+    "porque": "Placas arredondadas e esbranquiçadas de pele descamada, sem a coceira intensa típica da sarna, é o quadro clássico de dermatofitose (micose de pele), conhecida popularmente como craveiro.",
+    "conduta": [
+      "Isole o animal afetado: a dermatofitose é contagiosa para outros animais e também para pessoas (zoonose leve).",
+      "Use luvas ao manipular o animal.",
+      "Procure o médico-veterinário: o tratamento tópico costuma usar solução de enxofre ou iodo nas placas.",
+      "Desinfete cercas e equipamentos de contenção usados no animal."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "PELE-DERMATOFITOSE-JOVEM",
+    "versao": "1.0.0",
+    "grupo": "pele",
+    "titulo": "Animal jovem reforça dermatofitose",
+    "prioridade": 35,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "dermatofitose" },
+        { "var": "idade_jovem", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "dermatofitose", "cf": 0.5 }],
+    "porque": "A dermatofitose é bem mais comum em novilhas e bezerras desmamadas do que em vacas adultas, cujo sistema imune já teve mais contato com o fungo.",
+    "conduta": ["Verifique outros animais jovens do lote quanto a sinais semelhantes."],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "PELE-FOTOSSENSIBILIZACAO",
+    "versao": "1.0.0",
+    "grupo": "pele",
+    "titulo": "Fotossensibilização",
+    "prioridade": 70,
+    "se": { "var": "pele_clara_ferida_sol", "op": "=", "val": true },
+    "entao": [{ "var": "diagnostico", "val": "fotossensibilizacao", "cf": 0.65 }],
+    "porque": "Vermelhidão, inchaço e feridas em pele clara (focinho, úbere) após exposição ao sol indicam fotossensibilização — reação a substâncias na pele que a deixam sensível à luz, geralmente ligada a certas plantas tóxicas ou a problema de fígado.",
+    "conduta": [
+      "Retire o animal do sol: mantenha à sombra durante o dia até a melhora.",
+      "Procure o médico-veterinário: pode ser necessário investigar a causa (planta no pasto ou problema hepático).",
+      "Observe se outros animais do mesmo lote têm sinais parecidos — ajuda a apontar a planta causadora.",
+      "Trate as feridas conforme orientação veterinária para evitar infecção secundária."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "ABSC-MAMARIO",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Abscesso mamário",
+    "prioridade": 58,
+    "se": { "var": "caroco_localizado_mama", "op": "=", "val": true },
+    "entao": [{ "var": "diagnostico", "val": "abscesso_mamario", "cf": 0.6 }],
+    "porque": "Uma bolsa ou caroço localizado e amolecido na mama — diferente do endurecimento difuso da mastite em atividade — sugere abscesso, geralmente sequela de uma mastite anterior mal resolvida.",
+    "conduta": [
+      "Não tente perfurar ou espremer o abscesso: procure o médico-veterinário.",
+      "Separe o animal e continue ordenhando por último até avaliação.",
+      "Anote o histórico de mastite anterior naquele quarto para o veterinário."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  }
+]

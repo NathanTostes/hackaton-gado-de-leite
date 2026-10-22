@@ -27,12 +27,18 @@
   { "nome": "decubito", "rotulo": "vaca caída, sem conseguir levantar", "tipo": "boolean" },
   { "nome": "extremidades_frias", "rotulo": "orelhas e patas frias", "tipo": "boolean" },
   { "nome": "tremores_musculares", "rotulo": "tremores musculares", "tipo": "boolean" },
+  { "nome": "agitacao_convulsao", "rotulo": "agitação, espasmos ou convulsão", "tipo": "boolean" },
+  { "nome": "pasto_novo_adubado", "rotulo": "lote em pasto novo ou recém-adubado", "tipo": "boolean" },
   { "nome": "halito_adocicado", "rotulo": "hálito adocicado (cheiro de acetona)", "tipo": "boolean" },
   { "nome": "queda_producao_subita", "rotulo": "queda súbita na produção de leite", "tipo": "boolean" },
   { "nome": "perda_escore_corporal", "rotulo": "emagrecimento visível", "tipo": "boolean" },
 
   { "nome": "placenta_retida_12h", "rotulo": "placenta retida por mais de 12 horas após o parto", "tipo": "boolean" },
   { "nome": "corrimento_vulvar_fetido", "rotulo": "corrimento vulvar fétido ou achocolatado", "tipo": "boolean" },
+
+  { "nome": "dias_desde_parto_sem_cio", "rotulo": "dias desde o parto sem nenhum cio observado", "tipo": "numero" },
+  { "nome": "cio_irregular_frequente", "rotulo": "cios frequentes e irregulares", "tipo": "boolean" },
+  { "nome": "inseminacoes_sem_prenhez", "rotulo": "inseminações ou coberturas sem prenhez confirmada nesta vaca", "tipo": "numero" },
 
   { "nome": "fezes_escassas", "rotulo": "fezes escassas ou pastosas", "tipo": "boolean" },
   { "nome": "fezes_liquidas_bolhosas", "rotulo": "fezes líquidas e com bolhas", "tipo": "boolean" },
@@ -44,6 +50,14 @@
   { "nome": "claudicacao", "rotulo": "manqueira (claudicação)", "tipo": "boolean" },
   { "nome": "casco_quente_inchado", "rotulo": "casco quente ou inchado", "tipo": "boolean" },
   { "nome": "mau_cheiro_casco", "rotulo": "mau cheiro ou ferida entre os dedos", "tipo": "boolean" },
+
+  { "nome": "coceira_intensa", "rotulo": "coceira intensa com perda de pelo", "tipo": "boolean" },
+  { "nome": "crostas_pele", "rotulo": "crostas na pele (cabeça, pescoço ou base da cauda)", "tipo": "boolean" },
+  { "nome": "placas_descamadas", "rotulo": "placas arredondadas de pele descamada", "tipo": "boolean" },
+  { "nome": "pele_clara_ferida_sol", "rotulo": "pele clara avermelhada ou ferida após sol (focinho, úbere)", "tipo": "boolean" },
+  { "nome": "idade_jovem", "rotulo": "animal jovem (novilha ou bezerra desmamada)", "tipo": "boolean" },
+
+  { "nome": "caroco_localizado_mama", "rotulo": "bolsa ou caroço localizado e amolecido na mama", "tipo": "boolean" },
 
   { "nome": "mucosas_palidas", "rotulo": "mucosas pálidas (gengiva e olhos esbranquiçados)", "tipo": "boolean" },
   { "nome": "mucosas_amareladas", "rotulo": "mucosas amareladas", "tipo": "boolean" },
@@ -61,6 +75,13 @@
   { "nome": "fezes_liquidas", "rotulo": "fezes líquidas (diarreia)", "tipo": "boolean" },
   { "nome": "umbigo_inchado_quente", "rotulo": "umbigo inchado, quente ou dolorido", "tipo": "boolean" },
   { "nome": "colostro_primeiras_6h", "rotulo": "recebeu colostro nas primeiras 6 horas de vida", "tipo": "boolean" },
+
+  { "nome": "lambe_roi_objetos", "rotulo": "lambe ou rói terra, ossos ou objetos (pica)", "tipo": "boolean" },
+  { "nome": "pelo_aspero_sem_brilho", "rotulo": "pelo áspero e sem brilho", "tipo": "boolean" },
+  { "nome": "suplementacao_mineral_regular", "rotulo": "recebe suplementação mineral regularmente", "tipo": "boolean" },
+
+  { "nome": "acesso_pasto_area_nova", "rotulo": "teve acesso recente a pasto ou área nova/desconhecida", "tipo": "boolean" },
+  { "nome": "morte_subita_lote", "rotulo": "morte súbita de outro animal do mesmo lote", "tipo": "boolean" },
 
   { "nome": "perc_mastite_clinica_mes", "rotulo": "% de mastite clínica no mês", "tipo": "numero" },
   { "nome": "perc_mastite_subclinica", "rotulo": "% de mastite subclínica", "tipo": "numero" },

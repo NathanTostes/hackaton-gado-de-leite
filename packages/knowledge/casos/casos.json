@@ -357,7 +357,7 @@
   },
   {
     "id": "CASO-NEG-002",
-    "descricao": "Vaca clinicamente normal, mas com CMT ++ — a subclínica só aparece no teste",
+    "descricao": "Vaca clinicamente normal, mas com CMT ++ — a subclínica (achada no teste) prevalece sobre a triagem negativa",
     "fatos": {
       "caneca_grumos": false,
       "caneca_cor_alterada": false,
@@ -374,7 +374,7 @@
     "esperado": {
       "diagnosticoPrincipal": "mastite_subclinica",
       "cfMinimo": 0.9,
-      "deveConcluir": ["sem_alteracao"],
+      "naoDeveConcluir": ["sem_alteracao"],
       "regrasDisparadas": ["MAST-SUB-CMT-2", "TRI-SEM-ALTERACAO"]
     }
   },
@@ -393,6 +393,118 @@
       "cfMinimo": 0.75,
       "deveConcluir": ["cetose"],
       "regrasDisparadas": ["MET-CETOSE", "DIG-DESLOC-ABOMASO", "DIG-DA-COM-CETOSE"]
+    }
+  },
+
+  {
+    "id": "CASO-HIPOMAG-001",
+    "descricao": "Vaca agitada e convulsionando em pasto novo adubado — tetania de pasto, não hipocalcemia",
+    "fatos": {
+      "agitacao_convulsao": true,
+      "decubito": false,
+      "pasto_novo_adubado": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "hipomagnesemia",
+      "cfMinimo": 0.7,
+      "bandeiraVermelha": true,
+      "naoDeveConcluir": ["hipocalcemia"],
+      "regrasDisparadas": ["MET-HIPOMAGNESEMIA", "MET-HIPOMAGNESEMIA-PASTO"]
+    }
+  },
+  {
+    "id": "CASO-REPRO-001",
+    "descricao": "Vaca sem cio 90 dias após o parto — anestro pós-parto",
+    "fatos": {
+      "dias_desde_parto_sem_cio": 90
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "anestro_pos_parto",
+      "cfMinimo": 0.6,
+      "regrasDisparadas": ["REP-ANESTRO"]
+    }
+  },
+  {
+    "id": "CASO-REPRO-002",
+    "descricao": "Vaca com 4 inseminações sem prenhez — repetição de cio",
+    "fatos": {
+      "inseminacoes_sem_prenhez": 4
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "repeticao_cio",
+      "cfMinimo": 0.7,
+      "regrasDisparadas": ["REP-REPETICAO-CIO"]
+    }
+  },
+  {
+    "id": "CASO-PELE-001",
+    "descricao": "Coceira intensa com crostas na cabeça e pescoço — sarna",
+    "fatos": {
+      "coceira_intensa": true,
+      "crostas_pele": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "sarna",
+      "cfMinimo": 0.7,
+      "regrasDisparadas": ["PELE-SARNA"]
+    }
+  },
+  {
+    "id": "CASO-PELE-002",
+    "descricao": "Placas descamadas sem coceira em novilha — dermatofitose",
+    "fatos": {
+      "placas_descamadas": true,
+      "coceira_intensa": false,
+      "idade_jovem": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "dermatofitose",
+      "cfMinimo": 0.6,
+      "naoDeveConcluir": ["sarna"],
+      "regrasDisparadas": ["PELE-DERMATOFITOSE", "PELE-DERMATOFITOSE-JOVEM"]
+    }
+  },
+  {
+    "id": "CASO-TOX-001",
+    "descricao": "Sinais nervosos após acesso a pasto novo e morte de outro animal do lote — suspeita de intoxicação",
+    "fatos": {
+      "acesso_pasto_area_nova": true,
+      "sinais_nervosos": true,
+      "morte_subita_lote": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "intoxicacao_planta_toxica",
+      "cfMinimo": 0.7,
+      "bandeiraVermelha": true,
+      "regrasDisparadas": ["TOX-PLANTA-NERVOSO", "TOX-MORTE-LOTE"]
+    }
+  },
+  {
+    "id": "CASO-NUT-001",
+    "descricao": "Vaca que rói objetos, sem suplementação mineral — deficiência de fósforo",
+    "fatos": {
+      "lambe_roi_objetos": true,
+      "suplementacao_mineral_regular": false
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "deficiencia_fosforo",
+      "cfMinimo": 0.5,
+      "regrasDisparadas": ["NUT-FOSFORO-PICA", "NUT-FOSFORO-SEM-MINERAL"]
+    }
+  },
+  {
+    "id": "CASO-MULTI-SISTEMA-001",
+    "descricao": "Mastite clínica grau 1 e manqueira por pododermatite ao mesmo tempo — dois sistemas, não uma escolha",
+    "fatos": {
+      "caneca_grumos": true,
+      "claudicacao": true,
+      "mau_cheiro_casco": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "mastite_clinica_g1",
+      "cfMinimo": 0.9,
+      "deveConcluir": ["pododermatite"],
+      "regrasDisparadas": ["MAST-CLIN-G1", "LOC-PODODERMATITE"]
     }
   }
 ]
