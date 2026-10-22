@@ -7,12 +7,12 @@ const { renderToStaticMarkup } = createRequire(import.meta.url)('react-dom/serve
   renderToStaticMarkup(element: ReactElement): string;
 };
 const estado = vi.hoisted(() => ({
-  recriar: vi.fn(), recarregar: vi.fn(), erroCarga: null as string | null,
+  recarregar: vi.fn(), erroCarga: null as string | null,
   botoes: [] as { titulo: string; aoTocar: () => Promise<void>; desabilitado: boolean }[],
 }));
 
 vi.mock('@drmoo/db', () => ({
-  obterPropriedade: vi.fn(), salvarPropriedade: vi.fn(), recriarDemonstracao: estado.recriar,
+  obterPropriedade: vi.fn(), salvarPropriedade: vi.fn(),
   // A tela também avisa sobre banco temporário e exporta/importa planilha.
   bancoEmMemoria: () => false,
   exportarPlanilha: vi.fn(), importarPlanilha: vi.fn(),
@@ -25,6 +25,9 @@ vi.mock('../../../apps/mobile/src/hooks', () => ({
 }));
 vi.mock('../../../apps/mobile/src/tema', () => ({
   useTema: () => ({ c: {}, espaco: {}, raio: {} }),
+}));
+vi.mock('../../../apps/mobile/src/modoVoz', () => ({
+  useModoVoz: () => ({ ativo: false, carregado: true, definir: vi.fn() }),
 }));
 vi.mock('react-native', () => ({
   View: ({ children }: PropsWithChildren) => {
@@ -51,7 +54,7 @@ vi.mock('../../../apps/mobile/src/componentes/base', async () => {
   };
 });
 
-describe('configurações e botão de demonstração', () => {
+describe('configurações', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     estado.botoes = [];
@@ -62,18 +65,13 @@ describe('configurações e botão de demonstração', () => {
     expect(() => renderToStaticMarkup(createElement(Configuracoes))).not.toThrow();
   });
 
-  it('aciona a recriação atômica e atualiza a propriedade', async () => {
+  // O app abre vazio e os dados entram pela planilha: não existe mais nenhum
+  // botão que apague tudo e recrie a demonstração.
+  it('não oferece nenhuma ação de reset dos dados', () => {
     renderToStaticMarkup(createElement(Configuracoes));
-    await estado.botoes.find((b) => b.titulo === 'Recriar dados de demonstração')!.aoTocar();
-    expect(estado.recriar).toHaveBeenCalledOnce();
-    expect(estado.recarregar).toHaveBeenCalledOnce();
-  });
-
-  it('trata a rejeição do banco sem propagar erro não capturado', async () => {
-    estado.recriar.mockRejectedValueOnce(new Error('Falha ao gravar'));
-    renderToStaticMarkup(createElement(Configuracoes));
-    await expect(estado.botoes.find((b) => b.titulo === 'Recriar dados de demonstração')!.aoTocar()).resolves.toBeUndefined();
-    expect(estado.recarregar).not.toHaveBeenCalled();
+    expect(estado.botoes.map((b) => b.titulo)).toEqual([
+      'Salvar', 'Baixar planilha', 'Importar planilha preenchida',
+    ]);
   });
 
   it('exibe erro de leitura e impede salvar um formulário sem os dados carregados', () => {
