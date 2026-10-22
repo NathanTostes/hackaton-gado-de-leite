@@ -75,7 +75,10 @@ o código de pareamento e toque em **Sincronizar agora**.
 Cada sincronização é uma única ida e volta: o aparelho envia o instantâneo do seu banco, o
 servidor mescla com o que já tinha e devolve o resultado, que o aparelho grava. O conflito é
 resolvido por *last-write-wins* sobre `updated_at` (com `deleted_at` para exclusão lógica) e a
-mesclagem é comutativa e idempotente — os aparelhos convergem independentemente da ordem.
+mesclagem é comutativa e idempotente — os aparelhos convergem independentemente da ordem. O mesmo
+lançamento criado nos dois aparelhos (a ordenha de um animal num dia, a produção da propriedade
+numa data) é unificado pela chave natural, e não pelo `id` sorteado em cada aparelho: sem isso a
+produção viria somada em dobro e a tabela com `UNIQUE` recusaria a gravação em toda sincronização.
 Registro recusado pelo banco local (brinco repetido criado nos dois aparelhos) não derruba a
 sincronização: aparece como conflito na tela, para decisão humana.
 
