@@ -4,8 +4,8 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
     "paths": {
+      "expo-sqlite": ["./node_modules/expo-sqlite"],
       "@/*": [
         "./src/*"
       ],

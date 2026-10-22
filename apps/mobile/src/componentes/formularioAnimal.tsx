@@ -4,7 +4,7 @@
  */
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, TextInput, View } from 'react-native';
+import { Platform, Pressable, TextInput, View } from 'react-native';
 import {
   registrarEntradaAnimal,
   ROTULO_ORIGEM,
@@ -158,7 +158,7 @@ export function FormularioAnimal({ modo, aoVoltar, animal }: {
     <Tela>
       <Txt v="h2">{animal ? 'Editar cadastro do animal' : ehNascimento ? 'Nova bezerra(o)' : 'Animal novo no rebanho'}</Txt>
 
-      {erro && <Alerta tipo="alerta" titulo="Confira os dados" texto={erro} />}
+      {erro.length > 0 && <Alerta tipo="alerta" titulo="Confira os dados" texto={erro} />}
       {salvo && (
         <>
           <Espaco h={espaco.md} />
@@ -200,7 +200,7 @@ export function FormularioAnimal({ modo, aoVoltar, animal }: {
         <Campo rotulo="Pelagem e sinais particulares" valor={pelagem} aoMudar={setPelagem} />
         {campoCadastro('nascimento', ehNascimento ? 'Data de nascimento *' : 'Data de nascimento', false, 'DD/MM/AAAA')}
         {!ehNascimento && !cadastro.nascimento.trim() && campoCadastro('idade', 'Idade estimada (meses)', true)}
-        {cadastro.idade && !cadastro.nascimento && <Txt v="caption">Estimativa em {animal?.idade_estimada_em && String(animal.idade_estimada_meses) === cadastro.idade ? formatarBR(animal.idade_estimada_em) : formatarBR(hoje())}. Não será tratada como idade exata na anamnese.</Txt>}
+        {cadastro.idade.trim().length > 0 && !cadastro.nascimento && <Txt v="caption">Estimativa em {animal?.idade_estimada_em && String(animal.idade_estimada_meses) === cadastro.idade ? formatarBR(animal.idade_estimada_em) : formatarBR(hoje())}. Não será tratada como idade exata na anamnese.</Txt>}
         {campoCadastro('mae', 'Nome ou número da mãe')}
         <Campo rotulo="Nome ou número do pai" valor={pai} aoMudar={setPai} />
         <Campo rotulo="Peso ao nascer (kg), se conhecido" valor={peso} aoMudar={setPeso} teclado="numeric" />
@@ -330,6 +330,10 @@ function Campo({
   placeholder?: string;
 }) {
   const { c, espaco, raio } = useTema();
+  const variasLinhas = rotulo.startsWith('Observações') || rotulo.startsWith('Histórico');
+  // Chrome pode ignorar autocomplete="off" em inputs classificados como cartão.
+  // Na web, uma textarea de uma linha evita essa classificação dos dados do animal.
+  const usarTextArea = Platform.OS === 'web' || variasLinhas;
 
   return (
     <View style={{ marginBottom: espaco.md }}>
@@ -337,10 +341,19 @@ function Campo({
         {rotulo}
       </Txt>
       <TextInput
+        autoComplete="off"
+        importantForAutofill="no"
+        textContentType="none"
         accessibilityLabel={rotulo}
-        multiline={rotulo.startsWith('Observações') || rotulo.startsWith('Histórico')}
+        multiline={usarTextArea}
+        numberOfLines={variasLinhas ? 3 : 1}
         value={valor}
-        onChangeText={aoMudar}
+        onChangeText={(texto) => aoMudar(variasLinhas ? texto : texto.replace(/[\r\n]+/g, ' '))}
+        onKeyPress={(evento) => {
+          if (Platform.OS === 'web' && !variasLinhas && evento.nativeEvent.key === 'Enter') {
+            evento.preventDefault();
+          }
+        }}
         keyboardType={teclado}
         placeholder={placeholder}
         placeholderTextColor={c.textoSecundario}
@@ -350,10 +363,12 @@ function Campo({
           borderColor: c.borda,
           borderRadius: raio.input,
           paddingHorizontal: espaco.md,
+          paddingVertical: 12,
           backgroundColor: c.superficieAlt,
           color: c.texto,
           fontFamily: 'Inter_400Regular',
           fontSize: 16,
+          lineHeight: 22,
           marginTop: 4,
         }}
       />
