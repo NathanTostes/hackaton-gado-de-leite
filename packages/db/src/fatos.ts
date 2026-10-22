@@ -20,6 +20,25 @@ export interface FatoPreCarregado extends Fato {
   descricao: string;
 }
 
+/**
+ * Raça de origem europeia (Bos taurus), sem indício de cruzamento zebuíno no
+ * texto informado.
+ *
+ * Fato zootécnico bem estabelecido: taurinos puros são mais suscetíveis a
+ * carrapato e a estresse térmico em pasto tropical do que zebuínos e seus
+ * cruzamentos (que têm pele mais pigmentada e maior resistência ao
+ * ectoparasita) — por isso entra como reforço de uma hipótese já levantada
+ * por sinais clínicos, nunca como diagnóstico isolado. Como o cadastro guarda
+ * raça em texto livre, a detecção é por palavra-chave: na dúvida (cruzamento
+ * citado, ou raça não reconhecida), o fato não é adicionado.
+ */
+function racaTaurinaEuropeia(raca: string): boolean {
+  const texto = raca.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const indicaCruzamentoZebuino = /zebu|nelore|gir|guzera|indubrasil|girolando|x\s|cruza/.test(texto);
+  if (indicaCruzamentoZebuino) return false;
+  return /holande|jersey|pardo su[ic]|suico|simental|normando|gado europ/.test(texto);
+}
+
 export async function fatosDoAnimal(
   animalId: string,
   referencia: string = hoje(),
@@ -33,6 +52,18 @@ export async function fatosDoAnimal(
   const add = (variavel: string, valor: Fato['valor'], descricao: string) => {
     fatos.push({ variavel, valor, cf: 1, origem: 'banco', timestamp: agora, descricao });
   };
+
+  // Sexo decide, de cara, se vale a pena perguntar sobre úbere e reprodução —
+  // só a fêmea lactante tem mama em produção e ciclo reprodutivo a investigar.
+  add('sexo', animal.sexo, animal.sexo === 'F' ? 'fêmea' : 'macho');
+
+  if (animal.raca) {
+    add(
+      'raca_taurina_europeia',
+      racaTaurinaEuropeia(animal.raca),
+      `raça/cruzamento informado: ${animal.raca}`,
+    );
+  }
 
   if (animal.data_nascimento) {
     const idade = diferencaEmDias(animal.data_nascimento, referencia);
