@@ -10,7 +10,14 @@ import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { abrirBanco, bancoEmMemoria, obterPropriedade, reabrirBanco } from '@drmoo/db';
+import {
+  abrirBanco,
+  bancoEmMemoria,
+  bancoLiberadoPorOutraAba,
+  continuarEmMemoria,
+  obterPropriedade,
+  reabrirBanco,
+} from '@drmoo/db';
 import { cores } from '@drmoo/ui';
 import { AvisoDuasAbas } from '../src/componentes/avisoDuasAbas';
 import { Carregando, Txt } from '../src/componentes/base';
@@ -58,6 +65,17 @@ export default function LayoutRaiz() {
     };
   }, [prepararBanco]);
 
+  // A conexão real é sempre da aba mais nova: se outra aba abrir depois desta
+  // e tomar o arquivo, esta aba precisa descobrir isso e avisar — não dá para
+  // ficar perguntando uma vez só no início.
+  useEffect(() => {
+    if (!bancoPronto) return;
+    const id = setInterval(() => {
+      if (bancoLiberadoPorOutraAba() && !duasAbas) setDuasAbas(true);
+    }, 500);
+    return () => clearInterval(id);
+  }, [bancoPronto, duasAbas]);
+
   /** Chamado pela tela de aviso depois que o usuário fecha a outra aba. */
   const tentarDeNovo = useCallback(async () => {
     try {
@@ -83,7 +101,10 @@ export default function LayoutRaiz() {
             pronto={fontesCarregadas && bancoPronto}
             duasAbas={duasAbas}
             aoTentarNovamente={tentarDeNovo}
-            aoContinuarSemSalvar={() => setDuasAbas(false)}
+            aoContinuarSemSalvar={() => {
+              void continuarEmMemoria();
+              setDuasAbas(false);
+            }}
           />
         </ProvedorDeModoVoz>
       </ProvedorDeTema>
