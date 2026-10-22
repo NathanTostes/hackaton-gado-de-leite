@@ -1,12 +1,16 @@
 import { useLocalSearchParams } from 'expo-router';
-import { View } from 'react-native';
+import { useState } from 'react';
+import { Platform, View } from 'react-native';
 import { Sessao, tracoEmTexto, type Fato, type Parecer, type RespostaUsuario } from '@drmoo/engine';
-import { baseCompilada } from '@drmoo/knowledge';
+import { baseCompilada, rotulos } from '@drmoo/knowledge';
 import { obterAnimal, obterAtendimento } from '@drmoo/db';
 import { formatarBR } from '@drmoo/domain';
+import { htmlProntuario } from '@drmoo/relatorio';
 import {
+  Acoes,
   Alerta,
   AvisoVeterinario,
+  Botao,
   Cartao,
   Carregando,
   Espaco,
@@ -18,12 +22,15 @@ import {
   Vazio,
 } from '../../src/componentes/base';
 import { CartaoHipotese, ComoChegueiNisso } from '../../src/componentes/parecer';
+import { entregarPdf } from '../../src/arquivos';
 import { useDados } from '../../src/hooks';
 import { useTema } from '../../src/tema';
 
 export default function Prontuario() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { c, espaco } = useTema();
+  const [exportando, setExportando] = useState(false);
+  const [avisoExport, setAvisoExport] = useState<string | null>(null);
 
   const { dados, carregando } = useDados(async () => {
     if (!id) return null;
@@ -55,6 +62,81 @@ export default function Prontuario() {
 
   const { atendimento, animal, parecer, respostas, reproduz } = dados;
   const versaoMudou = atendimento.kb_versao !== parecer.kbVersao;
+
+  const exportar = async () => {
+    setExportando(true);
+    setAvisoExport(null);
+    try {
+      const html = htmlProntuario({
+        propriedade: null,
+        animal: {
+          brinco: animal?.brinco ?? '—',
+          nome: animal?.nome ?? null,
+          categoria: animal?.categoria ?? '',
+          raca: animal?.raca ?? null,
+          idadeMeses: animal?.idade_meses ?? null,
+          del: animal?.del ?? null,
+          producaoMediaDia: animal?.producao_media_dia ?? null,
+          lote: animal?.lote_nome ?? null,
+        },
+        atendimento: {
+          id: atendimento.id,
+          dataHora: atendimento.data_hora,
+          queixaPrincipal: atendimento.queixa_principal,
+          kbVersao: atendimento.kb_versao,
+          engineVersao: atendimento.engine_versao,
+          motivoParada: atendimento.motivo_parada,
+        },
+        hipoteses: parecer.hipoteses.map((h) => ({
+          id: h.id,
+          rotulo: h.rotulo,
+          descricao: h.descricao,
+          confianca: h.confianca,
+          cf: h.cf,
+          bandeiraVermelha: h.bandeiraVermelha,
+          conduta: h.conduta,
+          fontes: h.fontes,
+          status: h.status,
+        })),
+        bandeiraVermelha: parecer.bandeiraVermelha
+          ? {
+              id: parecer.bandeiraVermelha.id,
+              rotulo: parecer.bandeiraVermelha.rotulo,
+              descricao: parecer.bandeiraVermelha.descricao,
+              confianca: parecer.bandeiraVermelha.confianca,
+              cf: parecer.bandeiraVermelha.cf,
+              bandeiraVermelha: true,
+              conduta: parecer.bandeiraVermelha.conduta,
+              fontes: parecer.bandeiraVermelha.fontes,
+              status: parecer.bandeiraVermelha.status,
+            }
+          : null,
+        respostas: respostas.map((r) => ({
+          variavel: r.variavel,
+          rotulo: rotulos.get(r.variavel) ?? r.variavel,
+          valor: typeof r.valor === 'boolean' ? (r.valor ? 'sim' : 'não') : String(r.valor),
+          cf: r.cf,
+        })),
+        traco: tracoEmTexto(parecer.traco),
+        reproduz,
+        geradoEm: new Date().toISOString(),
+      });
+
+      const nome = `prontuario-${animal?.brinco ?? 'animal'}-${atendimento.data_hora.slice(0, 10)}.pdf`;
+      const destino = await entregarPdf({ html, nome, titulo: 'Prontuário Dr. Moo' });
+      setAvisoExport(
+        destino === 'impressao'
+          ? 'Abrimos a janela de impressão: escolha "Salvar como PDF" para guardar o arquivo.'
+          : destino === 'compartilhado'
+            ? 'PDF gerado. Escolha o WhatsApp (ou outro aplicativo) para enviar.'
+            : 'PDF gerado e salvo neste aparelho.',
+      );
+    } catch (e) {
+      setAvisoExport(e instanceof Error ? e.message : String(e));
+    } finally {
+      setExportando(false);
+    }
+  };
 
   return (
     <Tela>
@@ -136,6 +218,30 @@ export default function Prontuario() {
         </Txt>
       </Cartao>
 
+      <TituloSecao icone="picture-as-pdf">Levar este prontuário</TituloSecao>
+      <Acoes>
+        <Botao
+          titulo={
+            exportando
+              ? 'Gerando PDF…'
+              : Platform.OS === 'web'
+                ? 'Baixar prontuário em PDF'
+                : 'Enviar prontuário em PDF'
+          }
+          icone={Platform.OS === 'web' ? 'download' : 'share'}
+          grande
+          desabilitado={exportando}
+          aoTocar={() => void exportar()}
+        />
+      </Acoes>
+      {avisoExport && (
+        <>
+          <Espaco h={espaco.sm} />
+          <Alerta tipo="info" icone="info" titulo="Exportação" texto={avisoExport} />
+        </>
+      )}
+
+      <Espaco h={espaco.lg} />
       <AvisoVeterinario />
       <Espaco h={espaco.md} />
       <Linha gap={6} centro={false}>
