@@ -90,6 +90,13 @@ function avaliarSimples(
   if (cond.op === 'desconhecido') {
     return { cf: fato === undefined ? 1 : -1, valorObtido: fato?.valor ?? null };
   }
+  if (cond.op === 'nao_confirmado') {
+    // Desconhecido conta como "não confirmado": é o que distingue este operador
+    // de `nao` e o que permite concluir exclusão sem painel completo.
+    if (fato === undefined) return { cf: 1, valorObtido: null };
+    const confirma = cond.val !== undefined && iguais(fato.valor, cond.val);
+    return { cf: confirma ? -fato.cf : fato.cf, valorObtido: fato.valor };
+  }
   if (fato === undefined) return { cf: null, valorObtido: null };
 
   const atual = fato.valor;
