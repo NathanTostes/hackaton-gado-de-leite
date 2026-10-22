@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { regraEmLinguagemNatural } from '@drmoo/engine';
 import {
+  ROTULO_GRUPO,
   baseCompilada,
   baseDeConhecimento,
   casos,
@@ -20,20 +21,6 @@ import {
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DOCS = join(RAIZ, 'docs');
 mkdirSync(DOCS, { recursive: true });
-
-const ROTULO_GRUPO: Record<string, string> = {
-  triagem: 'Triagem geral',
-  mastite: 'Mastite',
-  metabolicas: 'Metabólicas',
-  pos_parto: 'Pós-parto e reprodutivas',
-  digestivas: 'Digestivas',
-  locomotor: 'Locomotor',
-  parasitarias: 'Parasitárias e infecciosas',
-  notificacao_obrigatoria: 'Notificação obrigatória',
-  emergencia: 'Emergências',
-  bezerras: 'Bezerras',
-  rebanho: 'Indicadores de rebanho',
-};
 
 // ---------------------------------------------------------------------------
 // 02 — Base de conhecimento
