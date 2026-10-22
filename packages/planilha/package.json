@@ -1,0 +1,12 @@
+{
+  "name": "@drmoo/planilha",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Importação e exportação dos dados da propriedade em planilha Excel",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}
