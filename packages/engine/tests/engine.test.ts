@@ -202,8 +202,24 @@ describe('parada e bandeira vermelha', () => {
     expect(passo.parecer?.bandeiraVermelha?.id).toBe('urgente');
   });
 
-  it('encerra por confiança suficiente', () => {
+  it('não encerra por confiança enquanto outro sistema tem pergunta pendente', () => {
     const s = new Sessao(kbMinima, [fato('sinal_a', true), fato('sinal_b', true)], { agora });
+    // beta (triagem) já está bem confiante, mas R-GAMA (locomotor) ainda
+    // depende de sinal_outro_sistema — o questionário precisa continuar.
+    expect(s.proximo().tipo).toBe('pergunta');
+  });
+
+  it('encerra por confiança suficiente quando não há mais pergunta de outro sistema', () => {
+    const s = new Sessao(
+      kbMinima,
+      [
+        fato('sinal_a', true),
+        fato('sinal_b', true),
+        fato('sinal_outro_sistema', false),
+        fato('sinal_caro', false),
+      ],
+      { agora },
+    );
     expect(s.proximo().parecer?.motivoParada).toBe('confianca_suficiente');
   });
 

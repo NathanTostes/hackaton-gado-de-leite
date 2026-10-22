@@ -48,7 +48,14 @@ const PADRAO = {
    */
   maxPerguntas: 24,
   limiarConclusao: 0.85,
-  distanciaMinima: 0.25,
+  /**
+   * Margem mínima entre a líder e a segunda colocada para encerrar por
+   * confiança. Subiu de 0.25 para 0.3: com quinze grupos de doença, uma vaca
+   * tem motivo de sobra para carregar mais de uma condição ao mesmo tempo, e
+   * uma margem curta fechava o parecer cedo demais diante da segunda hipótese
+   * que também merecia ser investigada.
+   */
+  distanciaMinima: 0.3,
   /** CF a partir do qual uma bandeira vermelha interrompe o questionário (§4.4). */
   limiarBandeiraVermelha: 0.5,
   /** CF a partir do qual uma hipótese conta como diagnóstico, não como dúvida. */
@@ -158,7 +165,8 @@ export class Sessao {
   /** Próximo passo: uma pergunta ou o parecer final. */
   proximo(): ProximoPasso {
     const hipoteses = this.hipoteses();
-    const parada = this.verificarParada(hipoteses);
+    const candidatas = this.candidatasAPergunta(hipoteses);
+    const parada = this.verificarParada(hipoteses, candidatas);
 
     if (parada) {
       return {
@@ -169,7 +177,7 @@ export class Sessao {
       };
     }
 
-    const escolha = this.escolherPergunta(hipoteses);
+    const escolha = this.escolherPergunta(hipoteses, candidatas);
     if (!escolha) {
       return {
         tipo: 'parecer',
@@ -446,8 +454,8 @@ export class Sessao {
 
   private escolherPergunta(
     hipoteses: Hipotese[],
+    candidatas: Map<string, CandidataPergunta>,
   ): { pergunta: Pergunta; justificativa: JustificativaPergunta } | null {
-    const candidatas = this.candidatasAPergunta(hipoteses);
     if (candidatas.size === 0) return null;
 
     const foco = this.focoPorGrupo(hipoteses);
@@ -642,7 +650,17 @@ export class Sessao {
     return finais;
   }
 
-  private verificarParada(hipoteses: Hipotese[]): MotivoParada | null {
+  /**
+   * Encerrar por confiança não basta a líder estar forte: é preciso também
+   * que nenhum OUTRO sistema ainda tenha pergunta pendente — a vaca pode
+   * carregar duas doenças de grupos diferentes ao mesmo tempo, e uma delas
+   * não aparece se o questionário fecha assim que a primeira fica clara.
+   * Só a bandeira vermelha interrompe sem esperar essa verificação.
+   */
+  private verificarParada(
+    hipoteses: Hipotese[],
+    candidatas: Map<string, CandidataPergunta>,
+  ): MotivoParada | null {
     const bandeira = hipoteses.find(
       (h) => h.bandeiraVermelha && h.cf >= PADRAO.limiarBandeiraVermelha,
     );
@@ -654,7 +672,10 @@ export class Sessao {
       primeira.cf >= this.opcoes.limiarConclusao &&
       primeira.cf - (segunda?.cf ?? 0) >= this.opcoes.distanciaMinima
     ) {
-      return 'confianca_suficiente';
+      const outroSistemaPendente = [...candidatas.values()].some((c) =>
+        [...c.grupos].some((g) => g !== primeira.grupo),
+      );
+      if (!outroSistemaPendente) return 'confianca_suficiente';
     }
 
     if (this.respostas.length >= this.opcoes.maxPerguntas) return 'limite_de_perguntas';
