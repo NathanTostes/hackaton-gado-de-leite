@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TextInput, View } from 'react-native';
-import { apagarTudo, obterPropriedade, salvarPropriedade, semear } from '@drmoo/db';
+import { obterPropriedade, salvarPropriedade, recriarDemonstracao } from '@drmoo/db';
 import { METAS } from '@drmoo/domain';
 import {
   Alerta,
@@ -18,8 +18,8 @@ import { useDados } from '../src/hooks';
 import { useTema } from '../src/tema';
 
 export default function Configuracoes() {
-  const { c, espaco, raio } = useTema();
-  const { dados, carregando, recarregar } = useDados(() => obterPropriedade(), []);
+  const { c, espaco } = useTema();
+  const { dados, carregando, recarregar, erro: erroCarga } = useDados(() => obterPropriedade(), []);
 
   const [form, setForm] = useState({
     nome: '',
@@ -33,6 +33,9 @@ export default function Configuracoes() {
   });
   const [salvo, setSalvo] = useState(false);
   const [resetando, setResetando] = useState(false);
+  const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState('');
+  const [demoRecriada, setDemoRecriada] = useState(false);
 
   useEffect(() => {
     if (!dados) return;
@@ -51,96 +54,73 @@ export default function Configuracoes() {
   if (carregando && !dados) return <Carregando />;
 
   const salvar = async () => {
-    await salvarPropriedade({
-      id: dados?.id,
-      nome: form.nome,
-      area_propria_ha: Number(form.area_propria_ha) || 0,
-      area_arrendada_ha: Number(form.area_arrendada_ha) || 0,
-      mao_de_obra_pessoas: Number(form.mao_de_obra_pessoas) || 1,
-      preco_leite_litro: Number(form.preco_leite_litro) || 0,
-      mao_de_obra_familiar_mes: Number(form.mao_de_obra_familiar_mes) || 0,
-      reposicao_investimento_mes: Number(form.reposicao_investimento_mes) || 0,
-      gestacao_dias: Number(form.gestacao_dias) || 283,
-    });
-    setSalvo(true);
-    recarregar();
+    setSalvando(true);
+    setErro('');
+    setSalvo(false);
+    try {
+      await salvarPropriedade({
+        id: dados?.id,
+        nome: form.nome,
+        area_propria_ha: Number(form.area_propria_ha) || 0,
+        area_arrendada_ha: Number(form.area_arrendada_ha) || 0,
+        mao_de_obra_pessoas: Number(form.mao_de_obra_pessoas) || 1,
+        preco_leite_litro: Number(form.preco_leite_litro) || 0,
+        mao_de_obra_familiar_mes: Number(form.mao_de_obra_familiar_mes) || 0,
+        reposicao_investimento_mes: Number(form.reposicao_investimento_mes) || 0,
+        gestacao_dias: Number(form.gestacao_dias) || 283,
+      });
+      setSalvo(true);
+      recarregar();
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSalvando(false);
+    }
   };
 
   const recriarDemo = async () => {
     setResetando(true);
+    setErro('');
+    setSalvo(false);
+    setDemoRecriada(false);
     try {
-      await apagarTudo();
-      await semear();
+      await recriarDemonstracao();
+      setDemoRecriada(true);
       recarregar();
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : String(e));
     } finally {
       setResetando(false);
     }
   };
 
-  const Campo = ({
-    rotulo,
-    chave,
-    nota,
-    numerico = true,
-  }: {
-    rotulo: string;
-    chave: keyof typeof form;
-    nota?: string;
-    numerico?: boolean;
-  }) => (
-    <View style={{ marginBottom: espaco.md }}>
-      <Txt v="caption" cor={c.textoSecundario}>
-        {rotulo}
-      </Txt>
-      <TextInput
-        value={form[chave]}
-        onChangeText={(v) => {
-          setForm((f) => ({ ...f, [chave]: v }));
-          setSalvo(false);
-        }}
-        keyboardType={numerico ? 'numeric' : 'default'}
-        style={{
-          minHeight: 48,
-          borderWidth: 1,
-          borderColor: c.borda,
-          borderRadius: raio.input,
-          paddingHorizontal: espaco.md,
-          backgroundColor: c.superficieAlt,
-          color: c.texto,
-          fontFamily: 'Inter_400Regular',
-          fontSize: 16,
-          marginTop: 4,
-        }}
-      />
-      {nota && (
-        <Txt v="caption" cor={c.textoSecundario} style={{ marginTop: 2 }}>
-          {nota}
-        </Txt>
-      )}
-    </View>
-  );
+  const alterarCampo = (chave: keyof typeof form, valor: string) => {
+    setForm((f) => ({ ...f, [chave]: valor }));
+    setSalvo(false);
+  };
 
   return (
     <Tela>
+      {!!(erro || erroCarga) && <Alerta tipo="alerta" titulo="Não foi possível concluir" texto={erro || erroCarga || ''} />}
       <TituloSecao icone="home-work">Propriedade</TituloSecao>
       <Cartao>
-        <Campo rotulo="Nome da propriedade" chave="nome" numerico={false} />
+        <Campo rotulo="Nome da propriedade" valor={form.nome} aoMudar={(v) => alterarCampo('nome', v)} numerico={false} />
         <Linha gap={espaco.md}>
           <View style={{ flex: 1 }}>
-            <Campo rotulo="Área própria (ha)" chave="area_propria_ha" />
+            <Campo rotulo="Área própria (ha)" valor={form.area_propria_ha} aoMudar={(v) => alterarCampo('area_propria_ha', v)} />
           </View>
           <View style={{ flex: 1 }}>
-            <Campo rotulo="Área arrendada (ha)" chave="area_arrendada_ha" />
+            <Campo rotulo="Área arrendada (ha)" valor={form.area_arrendada_ha} aoMudar={(v) => alterarCampo('area_arrendada_ha', v)} />
           </View>
         </Linha>
         <Campo
           rotulo="Pessoas na atividade leiteira"
-          chave="mao_de_obra_pessoas"
+          valor={form.mao_de_obra_pessoas} aoMudar={(v) => alterarCampo('mao_de_obra_pessoas', v)}
           nota="Usado no indicador leite por mão de obra por dia."
         />
         <Campo
           rotulo="Preço recebido pelo litro (R$)"
-          chave="preco_leite_litro"
+          valor={form.preco_leite_litro} aoMudar={(v) => alterarCampo('preco_leite_litro', v)}
           nota="Base do custo por litro e da margem por vaca."
         />
       </Cartao>
@@ -154,12 +134,12 @@ export default function Configuracoes() {
         <Espaco h={espaco.md} />
         <Campo
           rotulo="Mão de obra familiar por mês (R$)"
-          chave="mao_de_obra_familiar_mes"
+          valor={form.mao_de_obra_familiar_mes} aoMudar={(v) => alterarCampo('mao_de_obra_familiar_mes', v)}
           nota="Quanto a família deveria receber se trabalhasse em outra atividade."
         />
         <Campo
           rotulo="Reposição e investimento por mês (R$)"
-          chave="reposicao_investimento_mes"
+          valor={form.reposicao_investimento_mes} aoMudar={(v) => alterarCampo('reposicao_investimento_mes', v)}
           nota="Reserva para trocar equipamentos e reformar instalações."
         />
       </Cartao>
@@ -168,7 +148,7 @@ export default function Configuracoes() {
       <Cartao>
         <Campo
           rotulo="Período de gestação (dias)"
-          chave="gestacao_dias"
+          valor={form.gestacao_dias} aoMudar={(v) => alterarCampo('gestacao_dias', v)}
           nota="Usado para calcular a data provável do parto. Padrão zootécnico: 283 dias."
         />
       </Cartao>
@@ -190,8 +170,9 @@ export default function Configuracoes() {
       <Espaco h={espaco.lg} />
       {salvo && <Alerta tipo="ok" titulo="Configurações salvas" />}
       <Espaco h={espaco.sm} />
-      <Botao grande titulo="Salvar" icone="save" aoTocar={salvar} />
+      <Botao grande titulo={salvando ? "Salvando…" : "Salvar"} icone="save" desabilitado={resetando || salvando || carregando || !!erroCarga} aoTocar={salvar} />
 
+      {demoRecriada && <Alerta tipo="ok" titulo="Dados de demonstração recriados" />}
       <TituloSecao icone="science">Demonstração</TituloSecao>
       <Cartao>
         <Txt v="label" cor={c.textoSecundario}>
@@ -203,7 +184,7 @@ export default function Configuracoes() {
           titulo={resetando ? 'Recriando…' : 'Recriar dados de demonstração'}
           icone="refresh"
           variante="perigo"
-          desabilitado={resetando}
+          desabilitado={resetando || salvando || carregando}
           aoTocar={recriarDemo}
         />
       </Cartao>
@@ -217,5 +198,54 @@ function LinhaMeta({ rotulo, valor }: { rotulo: string; valor: string }) {
       <Txt v="label">{rotulo}</Txt>
       <Txt v="corpoForte">{valor}</Txt>
     </Linha>
+  );
+}
+
+function Campo({
+  rotulo,
+  valor,
+  aoMudar,
+  nota,
+  numerico = true,
+}: {
+  rotulo: string;
+  valor: string;
+  aoMudar: (valor: string) => void;
+  nota?: string;
+  numerico?: boolean;
+}) {
+  const { c, espaco, raio } = useTema();
+  return (
+    <View style={{ marginBottom: espaco.md }}>
+      <Txt v="caption" cor={c.textoSecundario}>
+        {rotulo}
+      </Txt>
+      <TextInput
+        value={valor}
+        onChangeText={aoMudar}
+        autoComplete="off"
+        importantForAutofill="no"
+        textContentType="none"
+        accessibilityLabel={rotulo}
+        keyboardType={numerico ? 'numeric' : 'default'}
+        style={{
+          minHeight: 48,
+          borderWidth: 1,
+          borderColor: c.borda,
+          borderRadius: raio.input,
+          paddingHorizontal: espaco.md,
+          backgroundColor: c.superficieAlt,
+          color: c.texto,
+          fontFamily: 'Inter_400Regular',
+          fontSize: 16,
+          marginTop: 4,
+        }}
+      />
+      {!!nota && (
+        <Txt v="caption" cor={c.textoSecundario} style={{ marginTop: 2 }}>
+          {nota}
+        </Txt>
+      )}
+    </View>
   );
 }

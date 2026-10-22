@@ -99,11 +99,11 @@ export async function emTransacao(fn: () => Promise<void>): Promise<void> {
 
 const TABELAS_EM_ORDEM_DE_EXCLUSAO = [
   'fato_registrado',
-  'atendimento',
   'exame_cmt',
   'exame_ccs',
   'caso_mastite',
   'tratamento',
+  'atendimento',
   'vacinacao',
   'evento_calendario',
   'controle_leiteiro',
@@ -120,10 +120,12 @@ const TABELAS_EM_ORDEM_DE_EXCLUSAO = [
   'propriedade',
 ];
 
-export async function apagarTudo(): Promise<void> {
+/** Limpa os dados e, opcionalmente, os repõe na mesma transação. */
+export async function apagarTudo(repopular?: () => Promise<void>): Promise<void> {
   const db = await abrirBanco();
   await db.withTransactionAsync(async () => {
     for (const t of TABELAS_EM_ORDEM_DE_EXCLUSAO) await db.runAsync(`DELETE FROM ${t}`, []);
+    await repopular?.();
   });
 }
 
