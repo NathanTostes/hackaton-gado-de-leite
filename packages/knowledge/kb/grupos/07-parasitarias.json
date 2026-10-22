@@ -47,6 +47,27 @@
     "status": "revisar"
   },
   {
+    "id": "PAR-TRISTEZA-RACA-SUSCETIVEL",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Raça taurina europeia reforça o risco de tristeza parasitária",
+    "prioridade": 60,
+    "se": {
+      "todas": [
+        { "var": "diagnostico", "op": "=", "val": "tristeza_parasitaria" },
+        { "var": "raca_taurina_europeia", "op": "=", "val": true }
+      ]
+    },
+    "entao": [{ "var": "diagnostico", "val": "tristeza_parasitaria", "cf": 0.6 }],
+    "porque": "Raças europeias (Bos taurus) sem cruzamento zebuíno têm pele menos pigmentada e nenhuma resistência natural ao carrapato, o que torna a tristeza parasitária mais provável e mais grave do que em zebuínos e seus cruzamentos — por isso só reforça um diagnóstico que os sinais clínicos já indicaram, nunca abre o caso por si só.",
+    "conduta": [
+      "Em raças europeias ou com pouco sangue zebuíno, intensifique o controle de carrapatos: elas adoecem mais e mais grave do que o rebanho cruzado.",
+      "Considere cruzamento industrial com zebuínos para os próximos bezerros, se a tristeza parasitária for recorrente no rebanho."
+    ],
+    "fonte": "Zootecnia geral — resistência diferencial Bos taurus × Bos indicus ao carrapato — PENDENTE de validação com fonte específica da cartilha.",
+    "status": "revisar"
+  },
+  {
     "id": "PAR-VERMINOSE",
     "versao": "1.0.0",
     "grupo": "parasitarias",

@@ -4,6 +4,8 @@
   { "nome": "producao_media_dia", "rotulo": "produção média por dia (L)", "tipo": "numero" },
   { "nome": "idade_dias", "rotulo": "idade em dias", "tipo": "numero" },
   { "nome": "cmt_positivo_meses", "rotulo": "meses seguidos com CMT positivo nesta lactação", "tipo": "numero" },
+  { "nome": "sexo", "rotulo": "sexo do animal", "tipo": "enum", "opcoes": ["F", "M"] },
+  { "nome": "raca_taurina_europeia", "rotulo": "raça de origem europeia (taurina), sem cruzamento zebuíno", "tipo": "boolean" },
 
   { "nome": "caneca_grumos", "rotulo": "grumos ou pus nos primeiros jatos", "tipo": "boolean" },
   { "nome": "caneca_cor_alterada", "rotulo": "leite com coloração alterada (amarelada ou avermelhada)", "tipo": "boolean" },

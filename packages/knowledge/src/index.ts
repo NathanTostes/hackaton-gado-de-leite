@@ -110,6 +110,8 @@ function validar(kb: BaseDeConhecimento): void {
     'perc_mastite_subclinica',
     'perc_vacas_lactacao',
     'dias_desde_ultimo_cmt',
+    'sexo',
+    'raca_taurina_europeia',
   ]);
   for (const v of nomesVariavel) {
     if (!varsPergunta.has(v) && !produzidas.has(v) && !contexto.has(v)) {

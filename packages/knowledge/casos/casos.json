@@ -506,5 +506,20 @@
       "deveConcluir": ["pododermatite"],
       "regrasDisparadas": ["MAST-CLIN-G1", "LOC-PODODERMATITE"]
     }
+  },
+  {
+    "id": "CASO-RACA-001",
+    "descricao": "Febre com mucosas pálidas em raça holandesa pura — raça europeia reforça a tristeza parasitária",
+    "fatos": {
+      "febre": true,
+      "mucosas_palidas": true,
+      "raca_taurina_europeia": true
+    },
+    "esperado": {
+      "diagnosticoPrincipal": "tristeza_parasitaria",
+      "cfMinimo": 0.8,
+      "bandeiraVermelha": false,
+      "regrasDisparadas": ["PAR-TRISTEZA", "PAR-TRISTEZA-RACA-SUSCETIVEL"]
+    }
   }
 ]
