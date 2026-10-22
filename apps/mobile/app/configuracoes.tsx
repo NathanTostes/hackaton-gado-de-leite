@@ -1,3 +1,5 @@
+import { validarCampos } from '../src/componentes/validarCampos';
+import { useFormulario, useCampoFormulario } from '../src/componentes/validacaoFormulario';
 import { useEffect, useState } from 'react';
 import { Platform, TextInput, View } from 'react-native';
 import {
@@ -46,6 +48,7 @@ export default function Configuracoes() {
   const [salvo, setSalvo] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState('');
+  const formulario = useFormulario();
   const [planilhaOcupada, setPlanilhaOcupada] = useState<'exportando' | 'importando' | null>(null);
   const [avisoPlanilha, setAvisoPlanilha] = useState<string | null>(null);
   const [relatorio, setRelatorio] = useState<RelatorioImportacao | null>(null);
@@ -69,6 +72,21 @@ export default function Configuracoes() {
   if (carregando && !dados) return <Carregando />;
 
   const salvar = async () => {
+    const erros = validarCampos([
+      { rotulo: 'Nome da propriedade', valor: form.nome, obrigatorio: true },
+      { rotulo: 'Área própria (ha)', valor: form.area_propria_ha, tipo: 'numero' },
+      { rotulo: 'Área arrendada (ha)', valor: form.area_arrendada_ha, tipo: 'numero' },
+      { rotulo: 'Pessoas na atividade leiteira', valor: form.mao_de_obra_pessoas, tipo: 'numero', positivo: true, inteiro: true },
+      { rotulo: 'Preço recebido pelo litro (R$)', valor: form.preco_leite_litro, tipo: 'numero' },
+      { rotulo: 'Mão de obra familiar por mês (R$)', valor: form.mao_de_obra_familiar_mes, tipo: 'numero' },
+      { rotulo: 'Reposição e investimento por mês (R$)', valor: form.reposicao_investimento_mes, tipo: 'numero' },
+      { rotulo: 'Período de gestação (dias)', valor: form.gestacao_dias, tipo: 'numero', positivo: true, inteiro: true },
+    ]);
+    if (formulario.mostrarErros(erros)) {
+      setSalvo(false);
+      setErro('Corrija os campos destacados.');
+      return;
+    }
     setSalvando(true);
     setErro('');
     setSalvo(false);
@@ -76,18 +94,19 @@ export default function Configuracoes() {
       await salvarPropriedade({
         id: dados?.id,
         nome: form.nome,
-        area_propria_ha: Number(form.area_propria_ha) || 0,
-        area_arrendada_ha: Number(form.area_arrendada_ha) || 0,
-        mao_de_obra_pessoas: Number(form.mao_de_obra_pessoas) || 1,
-        preco_leite_litro: Number(form.preco_leite_litro) || 0,
-        mao_de_obra_familiar_mes: Number(form.mao_de_obra_familiar_mes) || 0,
-        reposicao_investimento_mes: Number(form.reposicao_investimento_mes) || 0,
-        gestacao_dias: Number(form.gestacao_dias) || 283,
+        area_propria_ha: Number(form.area_propria_ha.replace(',', '.')) || 0,
+        area_arrendada_ha: Number(form.area_arrendada_ha.replace(',', '.')) || 0,
+        mao_de_obra_pessoas: Number(form.mao_de_obra_pessoas.replace(',', '.')) || 1,
+        preco_leite_litro: Number(form.preco_leite_litro.replace(',', '.')) || 0,
+        mao_de_obra_familiar_mes: Number(form.mao_de_obra_familiar_mes.replace(',', '.')) || 0,
+        reposicao_investimento_mes: Number(form.reposicao_investimento_mes.replace(',', '.')) || 0,
+        gestacao_dias: Number(form.gestacao_dias.replace(',', '.')) || 283,
       });
       setSalvo(true);
       recarregar();
     } catch (e) {
       setErro(e instanceof Error ? e.message : String(e));
+      formulario.scroll.current?.scrollTo({ y: 0, animated: true });
     } finally {
       setSalvando(false);
     }
@@ -147,7 +166,7 @@ export default function Configuracoes() {
   };
 
   return (
-    <Tela>
+    <Tela formulario={formulario}>
       <CabecalhoPagina
         titulo="Configurações"
         subtitulo="Dados da propriedade, metas e planilha"
@@ -371,23 +390,26 @@ function Campo({
   numerico?: boolean;
 }) {
   const { c, espaco, raio } = useTema();
+  const campo = useCampoFormulario(rotulo);
   return (
-    <View style={{ marginBottom: espaco.md }}>
+    <View ref={campo.ref} collapsable={false} style={{ marginBottom: espaco.md }}>
       <Txt v="caption" cor={c.textoSecundario}>
         {rotulo}
       </Txt>
       <TextInput
         value={valor}
-        onChangeText={aoMudar}
+        onChangeText={(texto) => { campo.limpar(); aoMudar(texto); }}
         autoComplete="off"
         importantForAutofill="no"
         textContentType="none"
         accessibilityLabel={rotulo}
+        accessibilityHint={campo.erro}
+        aria-invalid={!!campo.erro}
         keyboardType={numerico ? 'numeric' : 'default'}
         style={{
           minHeight: 48,
           borderWidth: 1,
-          borderColor: c.borda,
+          borderColor: campo.erro ? c.alerta : c.borda,
           borderRadius: raio.input,
           paddingHorizontal: espaco.md,
           backgroundColor: c.superficieAlt,
@@ -397,6 +419,7 @@ function Campo({
           marginTop: 4,
         }}
       />
+      {!!campo.erro && <Txt v="caption" cor={c.alerta}>{campo.erro}</Txt>}
       {!!nota && (
         <Txt v="caption" cor={c.textoSecundario} style={{ marginTop: 2 }}>
           {nota}

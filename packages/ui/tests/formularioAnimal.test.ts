@@ -2,6 +2,7 @@ import { createRequire } from 'node:module';
 import { Children, createElement, type PropsWithChildren, type ReactElement } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { AnimalComResumo } from '@drmoo/db';
+import { ContextoFormulario, type useFormulario } from '../../../apps/mobile/src/componentes/validacaoFormulario';
 import { FormularioAnimal } from '../../../apps/mobile/src/componentes/formularioAnimal';
 
 const { renderToStaticMarkup } = createRequire(import.meta.url)('react-dom/server') as {
@@ -12,7 +13,7 @@ const { inputs } = vi.hoisted(() => ({ inputs: [] as Record<string, unknown>[] }
 
 vi.mock('expo-router', () => ({ router: { replace: vi.fn() } }));
 vi.mock('../../../apps/mobile/src/tema', () => ({
-  useTema: () => ({ c: {}, espaco: {}, raio: {} }),
+  useTema: () => ({ c: { alerta: '#d00', borda: '#aaa' }, espaco: {}, raio: {} }),
 }));
 
 vi.mock('react-native', () => {
@@ -107,3 +108,22 @@ describe('renderização do cadastro de animais', () => {
     expect(impedirEnter).not.toHaveBeenCalled();
   });
 });
+
+it('destaca somente o campo inválido e limpa seu erro ao editar', () => {
+    inputs.length = 0;
+    const limparErro = vi.fn();
+    const formulario = {
+      erros: { 'Número ou brinco *': 'Já existe um animal com este brinco.' },
+      campos: { current: new Map() }, limparErro,
+    } as unknown as ReturnType<typeof useFormulario>;
+    const html = renderToStaticMarkup(createElement(ContextoFormulario.Provider, { value: formulario },
+      createElement(FormularioAnimal, { modo: 'novo', aoVoltar: () => {} })));
+    const brinco = inputs.find((input) => input.accessibilityLabel === 'Número ou brinco *')!;
+    const nome = inputs.find((input) => input.accessibilityLabel === 'Nome')!;
+    expect((brinco.style as { borderColor: string }).borderColor).toBe('#d00');
+    expect(brinco['aria-invalid']).toBe(true);
+    expect((nome.style as { borderColor: string }).borderColor).toBe('#aaa');
+    expect(html).toContain('Já existe um animal com este brinco.');
+    (brinco.onChangeText as (texto: string) => void)('239');
+    expect(limparErro).toHaveBeenCalledWith('Número ou brinco *');
+  });

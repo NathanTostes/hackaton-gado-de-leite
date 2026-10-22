@@ -1,3 +1,5 @@
+import { validarCampos } from '../../../src/componentes/validarCampos';
+import { useFormulario, useCampoFormulario } from '../../../src/componentes/validacaoFormulario';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { TextInput, View } from 'react-native';
@@ -36,6 +38,7 @@ export default function LancarLeite() {
   const [observacoes, setObservacoes] = useState('');
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState('');
+  const formulario = useFormulario();
   const [salvo, setSalvo] = useState(false);
 
   if (carregando || !dados) return <Carregando />;
@@ -48,8 +51,13 @@ export default function LancarLeite() {
   const salvar = async () => {
     setErro('');
     setSalvo(false);
-    if (!data) {
-      setErro('Informe a data da ordenha.');
+    const erros = validarCampos([
+      { rotulo: 'Data da ordenha (AAAA-MM-DD)', valor: data, tipo: 'data', obrigatorio: true },
+      { rotulo: 'Litros — manhã', valor: manha, tipo: 'numero' },
+      { rotulo: 'Litros — tarde', valor: tarde, tipo: 'numero' },
+    ]);
+    if (formulario.mostrarErros(erros)) {
+      setErro('Corrija os campos destacados.');
       return;
     }
     setSalvando(true);
@@ -60,13 +68,14 @@ export default function LancarLeite() {
       await recarregar();
     } catch (e) {
       setErro(e instanceof Error ? e.message : String(e));
+      formulario.scroll.current?.scrollTo({ y: 0, animated: true });
     } finally {
       setSalvando(false);
     }
   };
 
   return (
-    <Tela>
+    <Tela formulario={formulario}>
       <CabecalhoPagina
         titulo={`Produção de leite — ${dados.animal.nome ?? `Brinco ${dados.animal.brinco}`}`}
         subtitulo="Lançamento diário, manhã e tarde, como na ficha de controle leiteiro"
@@ -145,23 +154,26 @@ function Campo({
   numerico?: boolean;
 }) {
   const { c, espaco, raio } = useTema();
+  const campo = useCampoFormulario(rotulo);
   return (
-    <View style={{ marginBottom: espaco.md }}>
+    <View ref={campo.ref} collapsable={false} style={{ marginBottom: espaco.md }}>
       <Txt v="caption" cor={c.textoSecundario}>
         {rotulo}
       </Txt>
       <TextInput
         value={valor}
-        onChangeText={aoMudar}
+        onChangeText={(texto) => { campo.limpar(); aoMudar(texto); }}
         autoComplete="off"
         importantForAutofill="no"
         textContentType="none"
         accessibilityLabel={rotulo}
+        accessibilityHint={campo.erro}
+        aria-invalid={!!campo.erro}
         keyboardType={numerico ? 'numeric' : 'default'}
         style={{
           minHeight: 48,
           borderWidth: 1,
-          borderColor: c.borda,
+          borderColor: campo.erro ? c.alerta : c.borda,
           borderRadius: raio.input,
           paddingHorizontal: espaco.md,
           backgroundColor: c.superficieAlt,
@@ -171,6 +183,7 @@ function Campo({
           marginTop: 4,
         }}
       />
+      {!!campo.erro && <Txt v="caption" cor={c.alerta}>{campo.erro}</Txt>}
     </View>
   );
 }

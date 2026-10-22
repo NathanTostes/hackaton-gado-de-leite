@@ -2,6 +2,8 @@
  * Triagem de entrada: animal novo no rebanho e bezerra recém-nascida.
  * Os campos da ficha de nascimentos seguem exatamente a ficha da Embrapa (p. 22).
  */
+import { validarCampos, dataCadastro } from './validarCampos';
+import { useFormulario, useCampoFormulario } from './validacaoFormulario';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Platform, Pressable, TextInput, View } from 'react-native';
@@ -72,6 +74,7 @@ export function FormularioAnimal({ modo, aoVoltar, animal }: {
     animal?.origem ?? (ehNascimento ? 'nascimento' : 'compra'),
   );
   const [erro, setErro] = useState('');
+  const formulario = useFormulario();
   const [cadastro, setCadastro] = useState({
     raca: animal?.raca ?? '',
     nascimento: animal?.data_nascimento ? formatarBR(animal.data_nascimento) : (ehNascimento && !animal ? formatarBR(hoje()) : ''),
@@ -109,7 +112,34 @@ export function FormularioAnimal({ modo, aoVoltar, animal }: {
   );
 
   const salvar = async () => {
-    if (!brinco.trim() || salvando) return;
+    if (salvando) return;
+    const erros = validarCampos([
+      { rotulo: 'Número ou brinco *', valor: brinco, obrigatorio: true },
+      { rotulo: ehNascimento ? 'Data de nascimento *' : 'Data de nascimento', valor: cadastro.nascimento, tipo: 'data', obrigatorio: ehNascimento },
+      ...(!ehNascimento && !cadastro.nascimento.trim() ? [{ rotulo: 'Idade estimada (meses)', valor: cadastro.idade, tipo: 'numero' as const, inteiro: true }] : []),
+      { rotulo: 'Peso ao nascer (kg), se conhecido', valor: peso, tipo: 'numero', positivo: true },
+      { rotulo: 'Data de entrada *', valor: cadastro.entrada, tipo: 'data', obrigatorio: true },
+      ...(!ehNascimento ? [
+        { rotulo: 'Peso na entrada (kg)', valor: cadastro.pesoEntrada, tipo: 'numero' as const, positivo: true },
+        { rotulo: 'Valor de aquisição (R$)', valor: cadastro.valor, tipo: 'numero' as const },
+      ] : []),
+      ...(!ehNascimento && reproduz ? [
+        { rotulo: 'Data do último parto', valor: cadastro.parto, tipo: 'data' as const },
+        { rotulo: 'Número de lactações', valor: cadastro.lactacoes, tipo: 'numero' as const, inteiro: true },
+      ] : []),
+    ]);
+    const nascimentoISO = dataCadastro(cadastro.nascimento);
+    if (nascimentoISO && !erros[ehNascimento ? 'Data de nascimento *' : 'Data de nascimento'] && cadastro.entrada && nascimentoISO > dataCadastro(cadastro.entrada) && !erros['Data de entrada *']) {
+      erros['Data de entrada *'] = 'A entrada não pode ser anterior ao nascimento.';
+    }
+    if (!ehNascimento && reproduz && cadastro.parto && nascimentoISO && !erros['Data de nascimento'] && dataCadastro(cadastro.parto) <= nascimentoISO && !erros['Data do último parto']) {
+      erros['Data do último parto'] = 'O último parto deve ser posterior ao nascimento.';
+    }
+    setSalvo(false);
+    if (formulario.mostrarErros(erros)) {
+      setErro('Corrija os campos destacados.');
+      return;
+    }
     setErro('');
     setSalvando(true);
     try {
@@ -148,14 +178,17 @@ export function FormularioAnimal({ modo, aoVoltar, animal }: {
       }, modo);
       setSalvo(true);
     } catch (e) {
-      setErro(e instanceof Error ? e.message : 'Não foi possível salvar o animal.');
+      const mensagem = e instanceof Error ? e.message : 'Não foi possível salvar o animal.';
+      setErro(mensagem);
+      if (mensagem.includes('brinco')) formulario.mostrarErros({ 'Número ou brinco *': mensagem });
+      else formulario.scroll.current?.scrollTo({ y: 0, animated: true });
     } finally {
       setSalvando(false);
     }
   };
 
   return (
-    <Tela>
+    <Tela formulario={formulario}>
       <Txt v="h2">{animal ? 'Editar cadastro do animal' : ehNascimento ? 'Nova bezerra(o)' : 'Animal novo no rebanho'}</Txt>
 
       {erro.length > 0 && <Alerta tipo="alerta" titulo="Confira os dados" texto={erro} />}
@@ -298,7 +331,7 @@ export function FormularioAnimal({ modo, aoVoltar, animal }: {
         grande
         titulo={salvo ? 'Salvo' : animal ? 'Salvar alterações' : 'Registrar animal'}
         icone={salvo ? 'check' : 'save'}
-        desabilitado={!brinco.trim() || salvo || salvando}
+        desabilitado={salvo || salvando}
         aoTocar={salvar}
       />
       <Espaco h={espaco.sm} />
@@ -335,8 +368,9 @@ function Campo({
   // Na web, uma textarea de uma linha evita essa classificação dos dados do animal.
   const usarTextArea = Platform.OS === 'web' || variasLinhas;
 
+  const campo = useCampoFormulario(rotulo);
   return (
-    <View style={{ marginBottom: espaco.md }}>
+    <View ref={campo.ref} collapsable={false} style={{ marginBottom: espaco.md }}>
       <Txt v="caption" cor={c.textoSecundario}>
         {rotulo}
       </Txt>
@@ -345,10 +379,12 @@ function Campo({
         importantForAutofill="no"
         textContentType="none"
         accessibilityLabel={rotulo}
+        accessibilityHint={campo.erro}
+        aria-invalid={!!campo.erro}
         multiline={usarTextArea}
         numberOfLines={variasLinhas ? 3 : 1}
         value={valor}
-        onChangeText={(texto) => aoMudar(variasLinhas ? texto : texto.replace(/[\r\n]+/g, ' '))}
+        onChangeText={(texto) => { campo.limpar(); aoMudar(variasLinhas ? texto : texto.replace(/[\r\n]+/g, ' ')); }}
         onKeyPress={(evento) => {
           if (Platform.OS === 'web' && !variasLinhas && evento.nativeEvent.key === 'Enter') {
             evento.preventDefault();
@@ -360,7 +396,7 @@ function Campo({
         style={{
           minHeight: 48,
           borderWidth: 1,
-          borderColor: c.borda,
+          borderColor: campo.erro ? c.alerta : c.borda,
           borderRadius: raio.input,
           paddingHorizontal: espaco.md,
           paddingVertical: 12,
@@ -372,6 +408,7 @@ function Campo({
           marginTop: 4,
         }}
       />
+      {!!campo.erro && <Txt v="caption" cor={c.alerta}>{campo.erro}</Txt>}
     </View>
   );
 }

@@ -19,6 +19,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { useTema } from '../tema';
+import { ContextoFormulario, type useFormulario } from './validacaoFormulario';
 import { LARGURA_MAXIMA_CONTEUDO, larguraDaColuna, useLayout } from '../responsivo';
 
 export type NomeIcone = keyof typeof MaterialIcons.glyphMap;
@@ -64,9 +65,11 @@ export function Tela({
   scroll = true,
   style,
   largura = 'legivel',
+  formulario,
 }: {
   children: ReactNode;
   scroll?: boolean;
+  formulario?: ReturnType<typeof useFormulario>;
   style?: StyleProp<ViewStyle>;
   /**
    * `legivel` centraliza e limita a largura — numa tela de computador, uma linha
@@ -94,17 +97,20 @@ export function Tela({
   }
 
   return (
-    <ScrollView
-      style={base}
-      contentContainerStyle={{
-        padding: preenchimento,
-        paddingBottom: espaco.xxl * 2,
-        alignItems: 'center',
-      }}
-      keyboardShouldPersistTaps="handled"
-    >
-      <View style={[limite, style]}>{children}</View>
-    </ScrollView>
+    <ContextoFormulario.Provider value={formulario ?? null}>
+      <ScrollView
+        ref={formulario?.scroll}
+        style={base}
+        contentContainerStyle={{
+          padding: preenchimento,
+          paddingBottom: espaco.xxl * 2,
+          alignItems: 'center',
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View ref={formulario?.conteudo} collapsable={false} style={[limite, style]}>{children}</View>
+      </ScrollView>
+    </ContextoFormulario.Provider>
   );
 }
 
