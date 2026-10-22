@@ -68,9 +68,8 @@ lerna-debug.log*
 logs/
 *.log
 
-# === Material de referência ===
-# Cartilhas da Embrapa, PDFs do Hackathon e a logo original: material de origem,
-# não código. A logo usada pelo app vive em apps/mobile/assets/.
+# === Materiais ===
+docs/
 reference/
 
 # === Ambiente ===
@@ -95,3 +94,23 @@ desktop.ini
 .tmp/
 .eslintcache
 .turbo/
+
+# === Sincronização em rede local (base mesclada do servidor) ===
+.drmoo-sync/
+
+# === Build web exportado ===
+dist-web/
+
+# === Relatório de cobertura ===
+coverage/
+
+# === Build desktop ===
+dist-desktop/
+desktop/dist-web/
+
+# === Montagem do site (CI e testes locais) ===
+publicar/
+
+# === Caches de script Python ===
+__pycache__/
+*.pyc

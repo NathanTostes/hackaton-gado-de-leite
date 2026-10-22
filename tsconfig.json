@@ -26,6 +26,10 @@
       "@drmoo/domain/*": ["./packages/domain/src/*"],
       "@drmoo/db": ["./packages/db/src/index.ts"],
       "@drmoo/db/*": ["./packages/db/src/*"],
+      "@drmoo/planilha": ["./packages/planilha/src/index.ts"],
+      "@drmoo/relatorio": ["./packages/relatorio/src/index.ts"],
+      "@drmoo/sync": ["./packages/sync/src/index.ts"],
+      "@drmoo/sync/*": ["./packages/sync/src/*"],
       "@drmoo/ui": ["./packages/ui/src/index.ts"],
       "@drmoo/ui/*": ["./packages/ui/src/*"]
     }

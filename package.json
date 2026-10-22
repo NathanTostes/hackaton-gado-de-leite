@@ -14,17 +14,32 @@
     "start": "npm run start -w mobile",
     "android": "npm run android -w mobile",
     "ios": "npm run ios -w mobile",
+    "build:web": "npm run build:web -w mobile && node scripts/normalizar-tsconfig.mjs",
+    "build:android": "npm run prebuild:android -w mobile && node scripts/normalizar-tsconfig.mjs && cd apps/mobile/android && ./gradlew assembleRelease",
+    "desktop": "npm run build:web && npx --yes electron@33 desktop",
+    "build:linux": "npm run build:web && rm -rf desktop/dist-web && cp -r dist-web desktop/dist-web && npx --yes @electron/packager@18 desktop \"Dr. Moo\" --platform=linux --arch=x64 --electron-version=33.4.11 --out=dist-desktop --overwrite",
+    "build:apk": "npx --yes eas-cli build --platform android --profile preview",
+    "build:aab": "npx --yes eas-cli build --platform android --profile producao",
+    "enviar:play": "npx --yes eas-cli submit --platform android --profile producao",
+    "servir:web": "npx --yes serve dist-web -l 8080",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:cobertura": "vitest run --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p apps/mobile/tsconfig.json --noEmit",
     "verify": "npm run typecheck && npm run test",
+    "sync": "vite-node scripts/servidor-sync.ts",
     "docs": "vite-node scripts/gerar-docs.ts",
+    "diagrama": "python3 scripts/gerar_diagrama_classes.py",
     "docx": "python3 scripts/gerar_docx.py",
     "pptx": "python3 scripts/gerar_pptx.py",
-    "entrega": "npm run docs && npm run docx && npm run pptx"
+    "entrega": "npm run docs && npm run diagrama && npm run docx && npm run pptx"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^3.2.7",
     "typescript": "~6.0.3",
     "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
   }
 }

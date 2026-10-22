@@ -8,6 +8,28 @@ export default defineConfig({
     include: ['packages/**/tests/**/*.test.ts'],
     environment: 'node',
     reporters: ['default'],
+    coverage: {
+      provider: 'v8',
+      // Só o código que roda no app e nos pacotes: teste, configuração e
+      // script de geração de documento não entram na conta.
+      include: ['packages/*/src/**', 'apps/mobile/src/**'],
+      exclude: ['**/*.d.ts', '**/index.ts'],
+      reporter: ['text', 'html'],
+      reportsDirectory: './coverage',
+    },
+  },
+  // Os componentes do app vivem em apps/mobile, cujo tsconfig estende
+  // "expo/tsconfig.base". Dependendo de onde o npm hospeda o pacote `expo`, o
+  // esbuild não acha esse arquivo e a transformação falha antes do primeiro
+  // teste. Fixar aqui as opções que importam torna a suíte independente disso.
+  esbuild: {
+    tsconfigRaw: {
+      compilerOptions: {
+        jsx: 'react-jsx',
+        target: 'es2022',
+        useDefineForClassFields: false,
+      },
+    },
   },
   resolve: {
     alias: {
@@ -19,6 +41,10 @@ export default defineConfig({
       '@drmoo/knowledge': r('./packages/knowledge/src/index.ts'),
       '@drmoo/domain': r('./packages/domain/src/index.ts'),
       '@drmoo/db': r('./packages/db/src/index.ts'),
+      '@drmoo/sync': r('./packages/sync/src/index.ts'),
+      '@drmoo/planilha': r('./packages/planilha/src/index.ts'),
+      '@drmoo/relatorio': r('./packages/relatorio/src/index.ts'),
+      '@drmoo/ui': r('./packages/ui/src/index.ts'),
     },
   },
 });
