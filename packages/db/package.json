@@ -8,6 +8,8 @@
   "types": "src/index.ts",
   "dependencies": {
     "@drmoo/domain": "1.0.0",
+    "@drmoo/engine": "1.0.0",
+    "@drmoo/knowledge": "1.0.0",
     "@drmoo/planilha": "1.0.0",
     "@drmoo/sync": "1.0.0"
   }

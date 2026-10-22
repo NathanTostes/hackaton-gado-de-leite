@@ -18,6 +18,7 @@ import {
   obterPropriedade,
   painelMastite,
   panoramaPorVaca,
+  registrarEntradaAnimal,
   registrarTratamento,
   resumoMensal,
   salvarAtendimento,
@@ -185,6 +186,49 @@ describe('ponte entre banco e motor de inferência', () => {
       expect(variaveis).not.toContain(passo.pergunta.var);
       sessao.responder({ variavel: passo.pergunta.var, valor: false, cf: 1 });
     }
+  });
+
+  it('carrega sexo e raça, e o motor não pergunta sobre úbere/reprodução de um macho', async () => {
+    const vacas = await listarRebanho({ categorias: ['vaca_lactacao'] });
+    const vaca = vacas[0]!;
+    const fatosFemea = await fatosDoAnimal(vaca.id);
+    expect(fatosFemea.find((f) => f.variavel === 'sexo')?.valor).toBe('F');
+
+    const tourinhoId = await registrarEntradaAnimal(
+      { brinco: 'TOURO-TESTE', sexo: 'M', categoria: 'touro', origem: 'nascimento', data_nascimento: '2024-01-01' },
+      'novo',
+    );
+    const fatosMacho = await fatosDoAnimal(tourinhoId);
+    expect(fatosMacho.find((f) => f.variavel === 'sexo')?.valor).toBe('M');
+
+    const sessao = new Sessao(baseCompilada, fatosMacho);
+    for (let i = 0; i < 24; i++) {
+      const passo = sessao.proximo();
+      if (passo.tipo !== 'pergunta' || !passo.pergunta) break;
+      expect(['caneca_grumos', 'palpacao_dor', 'cmt_pior_quarto', 'dias_desde_parto_sem_cio']).not.toContain(
+        passo.pergunta.var,
+      );
+      sessao.responder({ variavel: passo.pergunta.var, valor: false, cf: 1 });
+    }
+  });
+
+  it('reconhece raça taurina europeia por palavra-chave, mas não arrisca em cruzamento', async () => {
+    const holandesaId = await registrarEntradaAnimal(
+      { brinco: 'HOL-TESTE', sexo: 'F', categoria: 'vaca_lactacao', origem: 'nascimento', data_nascimento: '2020-01-01', raca: 'Holandesa' },
+      'novo',
+    );
+    const girolandoId = await registrarEntradaAnimal(
+      { brinco: 'GIRO-TESTE', sexo: 'F', categoria: 'vaca_lactacao', origem: 'nascimento', data_nascimento: '2020-01-01', raca: 'Girolando (3/4 Holandês)' },
+      'novo',
+    );
+    const semRacaId = await registrarEntradaAnimal(
+      { brinco: 'SRD-TESTE', sexo: 'F', categoria: 'vaca_lactacao', origem: 'nascimento', data_nascimento: '2020-01-01' },
+      'novo',
+    );
+
+    expect((await fatosDoAnimal(holandesaId)).find((f) => f.variavel === 'raca_taurina_europeia')?.valor).toBe(true);
+    expect((await fatosDoAnimal(girolandoId)).find((f) => f.variavel === 'raca_taurina_europeia')?.valor).toBe(false);
+    expect((await fatosDoAnimal(semRacaId)).some((f) => f.variavel === 'raca_taurina_europeia')).toBe(false);
   });
 
   it('CMT recente vira fato; CMT antigo não', async () => {

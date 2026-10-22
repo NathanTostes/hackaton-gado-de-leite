@@ -6,7 +6,8 @@
     "ajuda": "Use o teste da caneca de fundo escuro (ou caneca telada): contenha a vaca, lave bem as mãos, retire os três primeiros jatos de cada teto e observe o leite na caneca. Pequenos grumos já são considerados sinal de mastite clínica. Todo o leite da caneca deve ser jogado fora.",
     "ilustracao": "caneca-fundo-escuro",
     "custo": 1,
-    "fonte": "EMBRAPA. Como identificar a vaca com mastite em sua propriedade, 2015, p. 12 e 15-19."
+    "fonte": "EMBRAPA. Como identificar a vaca com mastite em sua propriedade, 2015, p. 12 e 15-19.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "caneca_cor_alterada",
@@ -15,7 +16,8 @@
     "ajuda": "A vaca está com mastite clínica se, ao realizar o teste da caneca, o leite apresentar coloração amarelada, presença de grumos ou pus.",
     "ilustracao": "caneca-fundo-escuro",
     "custo": 1,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 19."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 19.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "caneca_consistencia_alterada",
@@ -23,7 +25,8 @@
     "tipo": "boolean",
     "ilustracao": "caneca-fundo-escuro",
     "custo": 1,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 12-13."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 12-13.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "palpacao_dor",
@@ -32,7 +35,8 @@
     "ajuda": "Antes da ordenha, examine a mama com as mãos. Verifique se a vaca sente dor ao toque e se existe área endurecida ou mais quente.",
     "ilustracao": "palpacao-ubere",
     "custo": 1,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 13 e 21."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 13 e 21.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "palpacao_inchaco",
@@ -40,7 +44,8 @@
     "tipo": "boolean",
     "ilustracao": "palpacao-ubere",
     "custo": 1,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 13 e 21."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 13 e 21.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "palpacao_endurecido",
@@ -48,7 +53,8 @@
     "tipo": "boolean",
     "ilustracao": "palpacao-ubere",
     "custo": 1,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 13 e 21."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 13 e 21.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "palpacao_vermelhidao",
@@ -56,7 +62,8 @@
     "tipo": "boolean",
     "ilustracao": "palpacao-ubere",
     "custo": 1,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 13."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 13.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "ubere_aumento_tamanho",
@@ -64,14 +71,16 @@
     "tipo": "boolean",
     "ajuda": "Antes da ordenha, faça o exame visual da mama e verifique se existe algo diferente: local avermelhado, inchaço, aumento de tamanho.",
     "custo": 1,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 21."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 21.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "nao_deixa_ordenhar",
     "pergunta": "A vaca não se deixa ordenhar?",
     "tipo": "boolean",
     "custo": 1,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 21."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 21.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "caroco_apos_ordenha",
@@ -80,7 +89,8 @@
     "ajuda": "Após a ordenha, examine com as mãos a parte interna de cada quarto mamário e verifique se estão macios.",
     "ilustracao": "palpacao-ubere",
     "custo": 1,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 21."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 21.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "quarto_sem_leite",
@@ -88,7 +98,8 @@
     "tipo": "boolean",
     "ajuda": "Na prática isso é chamado de \"peito perdido\" e deve ser anotado com a sigla PP.",
     "custo": 1,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 37."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 37.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "cmt_pior_quarto",
@@ -105,7 +116,8 @@
       { "valor": "3", "rotulo": "+++ — gel muito grosso, cola no fundo", "cor": "alerta" },
       { "valor": "PP", "rotulo": "PP — peito perdido", "cor": "cinza" }
     ],
-    "fonte": "EMBRAPA, Mastite, 2015, p. 23-33."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 23-33.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "ccs_individual",
@@ -116,7 +128,8 @@
     "max": 10000000,
     "ajuda": "A amostra deve ser enviada a um laboratório de qualidade do leite credenciado pelo Mapa. Vacas com CCS acima de 200.000 células por mL são consideradas com mastite subclínica.",
     "custo": 5,
-    "fonte": "EMBRAPA, Mastite, 2015, p. 34."
+    "fonte": "EMBRAPA, Mastite, 2015, p. 34.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
 
   {
@@ -207,14 +220,18 @@
     "pergunta": "A placenta ficou retida por mais de 12 horas após o parto?",
     "tipo": "boolean",
     "custo": 1,
-    "preRequisito": { "var": "del", "op": "<=", "val": 30 }
+    "preRequisito": {
+      "todas": [{ "var": "sexo", "op": "=", "val": "F" }, { "var": "del", "op": "<=", "val": 30 }]
+    }
   },
   {
     "var": "corrimento_vulvar_fetido",
     "pergunta": "Há corrimento pela vulva com cheiro ruim ou cor achocolatada?",
     "tipo": "boolean",
     "custo": 1,
-    "preRequisito": { "var": "del", "op": "<=", "val": 45 }
+    "preRequisito": {
+      "todas": [{ "var": "sexo", "op": "=", "val": "F" }, { "var": "del", "op": "<=", "val": 45 }]
+    }
   },
 
   {
@@ -226,14 +243,16 @@
     "max": 400,
     "ajuda": "Considere o último parto e a data de hoje, perguntando ao produtor se já notou algum cio (vaca montando as outras, inquieta, aceitando monta) desde então.",
     "custo": 1,
-    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação."
+    "fonte": "Consenso veterinário/zootécnico geral — PENDENTE de validação.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "cio_irregular_frequente",
     "pergunta": "Esta vaca tem apresentado cios frequentes e irregulares (menos de 18 dias de intervalo)?",
     "tipo": "boolean",
     "custo": 1,
-    "fonte": "Consenso veterinário geral — PENDENTE de validação."
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
   {
     "var": "inseminacoes_sem_prenhez",
@@ -242,7 +261,8 @@
     "min": 0,
     "max": 10,
     "custo": 1,
-    "fonte": "Consenso veterinário geral — PENDENTE de validação."
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "preRequisito": { "var": "sexo", "op": "=", "val": "F" }
   },
 
   {

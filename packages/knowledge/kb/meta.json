@@ -1,5 +1,5 @@
 {
-  "versao": "1.1.0",
+  "versao": "1.2.0",
   "variavelObjetivo": "diagnostico",
   "changelog": [
     {
@@ -11,6 +11,11 @@
       "versao": "1.1.0",
       "data": "2026-10-22",
       "notas": "Base deixa de ser centrada em mastite: 11 hipóteses novas em 5 grupos (reprodutivas, pele e mais duas emergências/toxicológicas), todas marcadas 'revisar' até conferência com fonte primária. Motor de inferência ganhou: hipótese de exclusão ('sem alteração' só sobrevive se nada mais concluir), relação explícita entre hipóteses (principal/diferencial/concomitante por grupo), bônus de foco clínico e de discriminação na escolha de perguntas, distinção entre pré-requisito bloqueado e incerto, e correção da especificidade de disjunções na resolução de conflito."
+    },
+    {
+      "versao": "1.2.0",
+      "data": "2026-10-22",
+      "notas": "Sexo e raça entram na anamnese: perguntas de úbere e de reprodução agora exigem sexo=F como pré-requisito (não fazem sentido em macho), carregadas automaticamente do cadastro — o produtor nunca é perguntado. Raça europeia (Bos taurus) sem cruzamento zebuíno, inferida por palavra-chave no texto livre da raça, reforça (não abre) a suspeita de tristeza parasitária e muda a conduta recomendada de controle de carrapatos. Regra marcada 'revisar' até validação com fonte primária específica."
     }
   ]
 }
