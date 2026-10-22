@@ -58,9 +58,36 @@ export type TabelaSincronizada = (typeof TABELAS_SINCRONIZADAS)[number];
  */
 export const TABELAS_IMUTAVEIS = new Set<string>(['fato_registrado']);
 
+/**
+ * Chave natural das tabelas que o app trata como "uma linha por chave".
+ *
+ * O `id` é sorteado em cada aparelho, então o mesmo lançamento feito offline nos
+ * dois celulares (a ordenha do dia 20 da Mimosa, a produção do dia 20 da
+ * propriedade) nasce com dois ids diferentes. Mesclar só por `id` guardaria as
+ * duas linhas: a produção do animal apareceria somada em dobro, e onde o banco
+ * tem UNIQUE (`producao_propriedade.data`) a gravação seria recusada em toda
+ * sincronização, para sempre — os aparelhos nunca convergiriam.
+ *
+ * Por isso a mesclagem também colapsa por chave natural, com a mesma regra de
+ * linha (vence o `updated_at` mais novo) — equivalente ao que o próprio app faz
+ * ao relançar a ordenha do dia por cima da anterior.
+ *
+ * Só entram aqui tabelas-folha, que ninguém referencia: a linha perdedora é
+ * apagada do aparelho e isso não pode deixar filho órfão. `animal` fica de fora
+ * de propósito — brinco repetido tem dono, histórico e filiação, e continua
+ * sendo conflito para decisão humana.
+ */
+export const CHAVES_NATURAIS: Record<string, readonly string[]> = {
+  producao_propriedade: ['data'],
+  controle_leiteiro: ['animal_id', 'data'],
+  exame_cmt: ['animal_id', 'data'],
+};
+
 export interface ResultadoSincronizacao {
   /** Linhas gravadas localmente, por tabela. */
   aplicadas: Record<string, number>;
+  /** Linhas apagadas localmente por terem perdido a chave natural, por tabela. */
+  removidas: Record<string, number>;
   /** Linhas recusadas pelo banco local (ex.: brinco repetido criado nos dois aparelhos). */
   conflitos: { tabela: string; id: string; motivo: string }[];
   /** Total de linhas enviadas ao servidor. */

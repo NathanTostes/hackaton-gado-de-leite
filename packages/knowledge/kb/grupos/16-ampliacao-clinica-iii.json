@@ -1,0 +1,863 @@
+[
+  {
+    "id": "PAR-BABESIOSE",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Babesiose bovina",
+    "prioridade": 92,
+    "se": {
+      "todas": [
+        {
+          "var": "infestacao_carrapatos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "urina_escura",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "mucosas_amareladas",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "babesiose",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Febre alta, carrapatos e urina escura (hemoglobinúria), SEM icterícia marcada, é o quadro clássico de babesiose: o protozoário rompe as hemácias dentro dos vasos sanguíneos e a hemoglobina é filtrada pelo rim, escurecendo a urina.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA: a babesiose mata em poucas horas sem tratamento específico.",
+      "Faça controle estratégico de carrapatos em todo o rebanho.",
+      "Evite manejo e transporte do animal doente — o esforço pode matar.",
+      "Observe os demais animais do lote nos próximos dias."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-ANAPLASMOSE-SEM-URINA-ESCURA",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Anaplasmose bovina (sem agressividade registrada)",
+    "prioridade": 91,
+    "se": {
+      "todas": [
+        {
+          "var": "infestacao_carrapatos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "mucosas_amareladas",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "urina_escura",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "anaplasmose",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Febre, carrapatos e icterícia marcada, mas SEM urina escura, é típico de anaplasmose: a destruição das hemácias ocorre fora dos vasos (no baço e fígado), por isso a hemoglobina não aparece na urina — e a hipóxia cerebral pode deixar o animal agressivo.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Faça controle estratégico de carrapatos em todo o rebanho.",
+      "Evite manejo e transporte do animal doente.",
+      "Atenção com animais agressivos pela hipóxia: trabalhe com cautela."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-HIPOCALCEMIA-SUBCLINICA",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Hipocalcemia subclínica (atraso na involução)",
+    "prioridade": 58,
+    "se": {
+      "todas": [
+        {
+          "var": "placenta_retida_12h",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "dificuldade_levantar_sem_decubito",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "decubito",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipocalcemia_subclinica",
+        "cf": 0.92
+      }
+    ],
+    "porque": "Dificuldade leve para levantar (sem chegar a cair) somada a útero que não involui no ritmo esperado, sem febre, sugere queda discreta de cálcio: não é o quadro agudo da vaca caída, mas já compromete a musculatura uterina.",
+    "conduta": [
+      "Converse com o veterinário sobre suplementação de cálcio oral no pós-parto.",
+      "Revise a dieta pré-parto (relação cálcio/fósforo e cátion-ânion).",
+      "Acompanhe a involução uterina nos próximos dias."
+    ],
+    "fonte": "Consenso veterinário geral sobre puerpério bovino — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-CETOSE-NERVOSA",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Cetose nervosa",
+    "prioridade": 87,
+    "se": {
+      "todas": [
+        {
+          "var": "lambe_roi_objetos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "anda_circulos_pressiona_cabeca",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "perda_escore_corporal",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "cetose_nervosa",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Lamber e roer objetos, andar em círculos e salivar, junto de emagrecimento rápido no início da lactação, é a forma nervosa da cetose: os corpos cetônicos em excesso afetam diretamente o sistema nervoso central.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO: o tratamento costuma incluir glicose/propilenoglicol e corticoide.",
+      "Afaste objetos que o animal possa lamber ou se ferir.",
+      "Revise o balanço energético da dieta de transição."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "PP-ENDOMETRITE",
+    "versao": "1.0.0",
+    "grupo": "pos_parto",
+    "titulo": "Endometrite clínica",
+    "prioridade": 68,
+    "se": {
+      "todas": [
+        {
+          "var": "pus_vulvar_sem_febre",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "corrimento_vulvar_fetido",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "endometrite",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Pus pela vulva, principalmente ao deitar, em vaca que come bem e não tem febre, é endometrite: infecção uterina mais branda que a metrite, sem comprometer o restante do corpo.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO para avaliar tratamento intrauterino ou hormonal.",
+      "Acompanhe o retorno ao cio: a endometrite atrasa a próxima prenhez.",
+      "Anote na ficha reprodutiva."
+    ],
+    "fonte": "Consenso veterinário geral sobre puerpério bovino — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-LINHA-BRANCA",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Doença da linha branca",
+    "prioridade": 85,
+    "se": {
+      "var": "fenda_linha_branca",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "doenca_linha_branca",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Fenda na junção entre a parede lateral e a sola do casco, com barro e pus, indica rompimento da linha branca: a região mais frágil do casco abriu caminho para a infecção.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO OU O CASQUEADOR para drenar e curetar o trajeto do abscesso.",
+      "Mantenha o casco limpo e seco até a cicatrização.",
+      "Revise o piso e o manejo nutricional: acidose e piso abrasivo fragilizam a linha branca."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-ABSCESSO-SUBSOLAR",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Abscesso subsolar",
+    "prioridade": 83,
+    "se": {
+      "var": "sola_cede_dor_sem_ferida",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "abscesso_subsolar",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Dor intensa à pressão da sola e manqueira grave SEM ferida visível por fora indicam pus acumulado por baixo da sola, ainda sem ter encontrado caminho para sair.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO OU O CASQUEADOR para localizar e abrir o abscesso.",
+      "Mantenha o animal em local seco até o diagnóstico.",
+      "Não force a caminhada em piso duro."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-DERMATITE-INTERDIGITAL",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Dermatite interdigital",
+    "prioridade": 62,
+    "se": {
+      "todas": [
+        {
+          "var": "vermelhidao_leve_entre_unhas",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "lesao_morango_interdigital",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "inchaco_acima_casco_rachaduras",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "dermatite_interdigital",
+        "cf": 0.75
+      }
+    ],
+    "porque": "Vermelhidão leve entre as unhas, sem o inchaço quente e o cheiro fétido da frieira, é inflamação superficial inicial — estágio mais branco que a frieira e que o morango interdigital.",
+    "conduta": [
+      "Melhore a drenagem do curral e do caminho até a ordenha: barro e umidade pioram o quadro.",
+      "Use pedilúvio preventivo conforme orientação do veterinário.",
+      "Acompanhe para que não evolua para frieira."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-FRATURA-FALANGE",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Fratura de terceira falange",
+    "prioridade": 95,
+    "se": {
+      "var": "crepitacao_dentro_casco",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "fratura_falange",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Manqueira súbita e grave após trauma (briga, piso duro), com crepitação óssea dentro do próprio casco, indica fratura do osso que fica dentro dele — a terceira falange.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Imobilize o animal e evite que ele force o membro.",
+      "Não force caminhada até a avaliação."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "NEU-BOTULISMO",
+    "versao": "1.0.0",
+    "grupo": "neurologico",
+    "titulo": "Botulismo",
+    "prioridade": 97,
+    "se": {
+      "todas": [
+        {
+          "var": "acesso_ossos_carcaca",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "paralisia_flacida_lingua",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "botulismo",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Acesso a ossos velhos ou carcaça (ricos em toxina botulínica quando contaminados) somado a paralisia mole, inclusive da língua, é botulismo: a toxina bloqueia a transmissão nervosa para os músculos.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA: não há tratamento específico eficaz, o suporte é o que salva.",
+      "Retire ossos, carcaças e restos de silagem mal fermentada do alcance do rebanho.",
+      "Garanta suplementação mineral regular: a pica por falta de fósforo é o que leva o animal a roer ossos."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-TUBERCULOSE",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Tuberculose bovina",
+    "prioridade": 90,
+    "se": {
+      "todas": [
+        {
+          "var": "ganglios_aumentados_simetricos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "tosse",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "nao_responde_tratamento",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "tuberculose",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Gânglios aumentados somados a tosse crônica persistente por meses, sem resposta a nenhum medicamento comum, é o quadro clínico de tuberculose — diferente da leucose, que não costuma causar tosse.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO: tuberculose é zoonose e de notificação obrigatória.",
+      "Isole o animal suspeito e solicite o teste de tuberculinização.",
+      "Não consuma leite crú deste animal."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-FEBRE-TRANSPORTE",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Doença respiratória bovina (febre do transporte)",
+    "prioridade": 82,
+    "se": {
+      "todas": [
+        {
+          "var": "transporte_recente",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "idade_jovem",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "tosse",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "respiracao_acelerada",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "secrecao_nasal",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "febre_transporte",
+        "cf": 0.82
+      }
+    ],
+    "porque": "Tosse, febre, catarro e respiração acelerada em animais recém-chegados de leilão ou transporte longo é a 'febre do transporte': o estresse da viagem e a mistura de lotes derrubam a imunidade e abrem caminho para a pneumonia.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO para tratamento antibiótico e anti-inflamatório precoce.",
+      "Separe os animais recém-chegados (quarentena) antes de misturar com o rebanho.",
+      "Reduza o estresse: água, sombra e descanso nos primeiros dias."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-BVD-MUCOSAS",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Diarreia viral bovina (Doença das Mucosas)",
+    "prioridade": 97,
+    "se": {
+      "todas": [
+        {
+          "var": "diarreia_sangue_coagulos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "erosoes_gengiva_labios",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "bvd_mucosas",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Diarreia com sangue e febre, somadas a feridas erosivas na gengiva e nos lábios, é a Doença das Mucosas: a forma letal do BVD, que ataca ao mesmo tempo o intestino e todo o epitélio digestivo.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA — a letalidade é alta e não há tratamento específico.",
+      "Isole o animal: a transmissão para o lote é fácil.",
+      "Converse com o veterinário sobre vacinação do rebanho contra BVD."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-FASCIOLOSE",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Fasciolose bovina",
+    "prioridade": 90,
+    "se": {
+      "todas": [
+        {
+          "var": "pasto_brejo_caracol",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "edema_submandibular",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "mucosas_palidas",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "fasciolose",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Papeira e mucosas pálidas em animal que pasta em área de brejo com caramujos é fasciolose: o verme achatado (Fasciola) usa o caramujo como hospedeiro intermediário e destrói o fígado lentamente.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO para vermifugação específica contra Fasciola.",
+      "Drene ou cerque as áreas alagadas com caramujos, se possível.",
+      "Repita o controle periodicamente: a reinfecção é comum em área de brejo."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-INDIGESTAO-VAGAL-MACA-PERA",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Indigestão vagal com abdômen em maçã-pera",
+    "prioridade": 87,
+    "se": {
+      "todas": [
+        {
+          "var": "abdomen_maca_pera",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "timpanismo_cronico",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "indigestao_vagal",
+        "cf": 0.82
+      }
+    ],
+    "porque": "O abdômen com o lado esquerdo em forma de maçã (rúmen) e o direito em pêra (abomaso/intestino cheios) é a deformidade clássica da indigestão vagal: o nervo vago lesionado trava o esvaziamento do rúmen.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO: o diagnóstico definitivo e a conduta (clínica ou cirúrgica) dependem de exame especializado.",
+      "Não force alimentação concentrada.",
+      "Investigue corpo estranho ou aderências como causa de base."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "NUT-COBRE-PELO-AVERMELHADO",
+    "versao": "1.0.0",
+    "grupo": "nutricionais",
+    "titulo": "Deficiência de cobre com pelo avermelhado",
+    "prioridade": 80,
+    "se": {
+      "todas": [
+        {
+          "var": "pelo_descorado_avermelhado",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "diarreia_cronica_refrataria",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "deficiencia_cobre",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Pelo que deveria ser preto nascendo avermelhado, junto de diarreia crônica, é acromotriquia por falta de cobre: o cobre é essencial para a pigmentação do pelo e para a mucosa intestinal.",
+    "conduta": [
+      "Inclua sal mineral com cobre quelatado na dieta, conforme orientação técnica.",
+      "Avalie o solo e a forragem: pastos com excesso de molibdênio ou enxofre bloqueiam a absorção de cobre.",
+      "Converse com o veterinário sobre suplementação injetável nos casos mais graves."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-NITRATO-SANGUE-CHOCOLATE",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Intoxicação por nitrato/nitrito com sangue cor de chocolate",
+    "prioridade": 95,
+    "se": {
+      "todas": [
+        {
+          "var": "sangue_cor_chocolate",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "respiracao_acelerada",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "intoxicacao_nitrato",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Sangue com cor de chocolate (escurecido) ao ser colhido, com respiração difícil e morte súbita no pasto adubado durante a seca, é o sinal mais característico da intoxicação por nitrato/nitrito: a metahemoglobina formada não transporta oxigênio.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA: existe antídoto específico (azul de metileno) que precisa ser aplicado rápido.",
+      "Retire o rebanho do pasto adubado recentemente ou estressado pela seca.",
+      "Analise o teor de nitrato da forragem antes de voltar a usar a área."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MAST-HIPERQUERATOSE-CALO",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Hiperqueratose de esfíncter — ponta do teto calosa",
+    "prioridade": 72,
+    "se": {
+      "var": "ponta_teto_caloso_aspero",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hiperqueratose_esfincter",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Ponta do teto áspera, dura e arrebitada (parecendo um calo ou flor aberta) é hiperqueratose do esfíncter, lesão mecânica causada por vácuo ou pulsação desregulada da ordenhadeira.",
+    "conduta": [
+      "Chame o técnico da ordenhadeira: regule vácuo, pulsação e troque as teteiras vencidas.",
+      "Reforce o pós-dipping com emoliente.",
+      "Acompanhe com CMT: o risco de mastite subiu com a lesão do esfíncter."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 40 — calo/hiperqueratose do óstio do teto e risco de mastite.",
+    "status": "validada"
+  },
+  {
+    "id": "DIG-INDIGESTAO-VAGAL-CRONICA",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Indigestão vagal crônica (Síndrome de Hoflund)",
+    "prioridade": 80,
+    "se": {
+      "todas": [
+        {
+          "var": "timpanismo_cronico",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "ruminacao_reduzida",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "perda_escore_corporal",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "indigestao_vagal",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Emagrecimento lento com rúmen cronicamente distendido e ruminação reduzida, sem melhora, é a Síndrome de Hoflund: alguma lesão (aderência, corpo estranho antigo) trava o esvaziamento do rúmen, mesmo sem corpo estranho recente identificado.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO para exame especializado e decisão entre manejo clínico ou cirúrgico.",
+      "Não force dieta concentrada.",
+      "Monitore o escore corporal: a tendência é de emagrecimento progressivo sem tratamento."
+    ],
+    "fonte": "Consenso veterinário geral — PENDENTE de validação.",
+    "status": "revisar"
+  },
+  {
+    "id": "PELE-PAPILOMATOSE-TETOS",
+    "versao": "1.0.0",
+    "grupo": "pele",
+    "titulo": "Papilomatose de tetos",
+    "prioridade": 64,
+    "se": {
+      "var": "verrugas_tetos",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "papilomatose",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Verrugas finas e alongadas nos tetos, sem dor, são papilomatose: a mesma doença viral da papilomatose cutânea, localizada na mama, onde atrapalha a fixação da teteira.",
+    "conduta": [
+      "Isole os animais mais afetados: a transmissão é por contato e por material de manejo.",
+      "Desinfete as teteiras entre os animais.",
+      "Converse com o veterinário sobre autovacina nos casos extensos."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-DOENCA-VENEREA-REPETICAO",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Doença venérea com repetição de cio (morte embrionária)",
+    "prioridade": 82,
+    "se": {
+      "todas": [
+        {
+          "var": "cio_irregular_frequente",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "monta_natural_touro_novo",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "doenca_venerea",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Vacas que repetem o cio a cada 35–40 dias (mais que o ciclo normal de 21 dias) depois de cobertas por touro novo e sem exame prévio sugerem morte embrionária precoce por tricomoníase ou vibriose — infecção venérea que mata o embrião antes do reconhecimento da prenhez.",
+    "conduta": [
+      "AFASTE o touro das vacas até o diagnóstico: ele é a fonte.",
+      "CHAME O MÉDICO-VETERINÁRIO para raspado prepucial do touro.",
+      "Considere passar para inseminação artificial.",
+      "Faça exame andrológico e quarentena em toda compra de reprodutor."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-ANAPLASMOSE-NEURO",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Anaplasmose com predomínio neurológico",
+    "prioridade": 78,
+    "se": {
+      "todas": [
+        {
+          "var": "infestacao_carrapatos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "agressividade_subita",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "sinais_nervosos",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "anaplasmose",
+        "cf": 0.75
+      }
+    ],
+    "porque": "Febre alta com carrapatos, agressividade súbita e sinais nervosos (tremores, cambaleio) é compatível com anaplasmose mesmo antes de a anemia ou a icterícia ficarem evidentes: a hipóxia cerebral pela destruição de hemácias já afeta o comportamento nas fases iniciais.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Faça controle estratégico de carrapatos no rebanho.",
+      "Trabalhe com cautela: o animal pode reagir de forma agressiva e imprevisível."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  }
+]

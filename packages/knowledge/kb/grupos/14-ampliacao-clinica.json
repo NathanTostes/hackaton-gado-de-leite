@@ -1,0 +1,1600 @@
+[
+  {
+    "id": "MET-ESTEATOSE",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Fígado gorduroso em vaca gorda que não responde ao cálcio",
+    "prioridade": 91,
+    "se": {
+      "todas": [
+        {
+          "var": "del",
+          "op": "<=",
+          "val": 30
+        },
+        {
+          "var": "escore_corporal_alto",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "nao_responde_calcio",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "esteatose_hepatica",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Vaca que chegou gorda ao parto e entra em apatia profunda sem responder ao cálcio tem o fígado tomado por gordura mobilizada em excesso. É o diagnóstico que explica por que o tratamento da febre do leite não funcionou.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Peça avaliação de função hepática e suporte com glicose e protetores hepáticos.",
+      "Reveja o escore corporal das vacas na secagem: vaca gorda no parto é a origem do problema."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-HIPOCALCEMIA-REFUTADA",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Falta de resposta ao cálcio pesa CONTRA hipocalcemia",
+    "prioridade": 56,
+    "se": {
+      "var": "nao_responde_calcio",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipocalcemia",
+        "cf": -0.6
+      }
+    ],
+    "porque": "A hipocalcemia responde ao cálcio em minutos — é quase um teste diagnóstico. Não melhorar após a aplicação é evidência CONTRA a hipótese, e obriga a procurar outra causa para o decúbito.",
+    "conduta": [
+      "Não repita a aplicação de cálcio por conta própria: procure outra causa com o veterinário."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-HEMOGLOBINURIA",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Hemoglobinúria puerperal por deficiência de fósforo",
+    "prioridade": 87,
+    "se": {
+      "todas": [
+        {
+          "var": "del",
+          "op": "<=",
+          "val": 30
+        },
+        {
+          "var": "urina_escura",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "mucosas_palidas",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "infestacao_carrapatos",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hemoglobinuria_puerperal",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Urina vermelha escura com mucosas pálidas no primeiro mês após o parto, SEM febre e SEM carrapatos, separa a hemoglobinúria puerperal da tristeza parasitária: aqui a hemácia arrebenta por falta de fósforo, não por parasita.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "O tratamento é fosfato por via injetável, com prescrição.",
+      "Revise a suplementação de fósforo das vacas em lactação com o técnico."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-CETONURIA",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Fita de urina positiva confirma cetose",
+    "prioridade": 88,
+    "se": {
+      "var": "cetonuria_positiva",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "cetose",
+        "cf": 0.9
+      }
+    ],
+    "porque": "A fita de urina positiva forte para corpos cetônicos é a confirmação de campo da cetose.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO.",
+      "Inicie energético oral à base de propilenoglicol conforme orientação."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-HIPOMAGNESEMIA-HIPERESTESIA",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Hiperestesia reforça tetania de pasto",
+    "prioridade": 57,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "hipomagnesemia"
+        },
+        {
+          "var": "hiperestesia_som",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipomagnesemia",
+        "cf": 0.5
+      }
+    ],
+    "porque": "Reagir de forma exagerada a barulho e toque é característico da tetania hipomagnesêmica: o animal está com o sistema nervoso hiperexcitável.",
+    "conduta": [
+      "Evite barulho e manipulação até o veterinário chegar."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-PING-ESQUERDO",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "\"Ping\" no flanco esquerdo é deslocamento de abomaso à esquerda",
+    "prioridade": 94,
+    "se": {
+      "var": "ping_flanco_esquerdo",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "deslocamento_abomaso",
+        "cf": 0.88
+      }
+    ],
+    "porque": "O som metálico agudo à percussão das últimas costelas do lado esquerdo é o achado característico do deslocamento de abomaso à esquerda: é gás preso no órgão deslocado, encostado na parede do flanco.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. A correção costuma ser cirúrgica.",
+      "Trate a cetose associada, mas sem resolver o deslocamento o quadro volta."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-PING-DIREITO",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "\"Ping\" no flanco direito é deslocamento/torção à direita",
+    "prioridade": 97,
+    "se": {
+      "var": "ping_flanco_direito",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "deslocamento_abomaso_direito",
+        "cf": 0.88
+      }
+    ],
+    "porque": "O \"ping\" do lado direito indica o abomaso deslocado ou torcido à direita — quadro muito mais grave que o esquerdo, com risco de torção, choque e morte em horas.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. A torção de abomaso é cirurgia de emergência.",
+      "Não ofereça água nem alimento até a avaliação."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-DAD-CHOQUE",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Fezes em piche e choque agravam o deslocamento à direita",
+    "prioridade": 96,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "deslocamento_abomaso_direito"
+        },
+        {
+          "alguma": [
+            {
+              "var": "fezes_piche",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "taquicardia_choque",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "deslocamento_abomaso_direito",
+        "cf": 0.7
+      }
+    ],
+    "porque": "Fezes escuras como piche (sangue digerido) e coração acelerado com sinais de choque indicam que o órgão já torceu e perdeu circulação. Cada hora conta.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. Transporte imediato para cirurgia, se houver condição."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-OBSTRUCAO-ESOFAGO",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Engasgo com alimento inteiro obstruindo o esôfago",
+    "prioridade": 95,
+    "se": {
+      "todas": [
+        {
+          "var": "engasgo_alimento_inteiro",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "salivacao_intensa",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "obstrucao_esofagica",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Engasgo após tentar engolir fruta ou tubérculo inteiro, com salivação abundante e limpa, é obstrução do esôfago. O animal não consegue arrotar, o rúmen enche de gás e o risco imediato é asfixia — e não timpanismo primário.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Mantenha o animal em pé e calmo; não tente empurrar o objeto com mangueira ou pau.",
+      "Não dê nada pela boca: o risco de aspiração é alto."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-RETICULOPERITONITE",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Reticuloperitonite traumática (doença do arame)",
+    "prioridade": 92,
+    "se": {
+      "todas": [
+        {
+          "var": "dor_cernelha",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "dorso_arqueado",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "reticuloperitonite",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Dor à prova da cernelha com andar travado e costas arqueadas é o quadro da perfuração do retículo por objeto pontudo engolido. A queda de produção e a febre leve acompanham.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO.",
+      "Mantenha o animal em repouso, em piso macio e com declive para frente.",
+      "Peças de arame e fio no pasto e no trato são a origem: revise o manejo e considere ímã reticular."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-RETICULO-ARAME",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Hábito de engolir objetos reforça a doença do arame",
+    "prioridade": 72,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "reticuloperitonite"
+        },
+        {
+          "var": "ingestao_corpo_estranho",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "reticuloperitonite",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Animal com hábito de mastigar corda, plástico ou arame tem risco muito maior de perfuração do retículo.",
+    "conduta": [
+      "Recolha restos de arame, cordas e lixo do pasto e do entorno do cocho."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-PARATUBERCULOSE",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Paratuberculose (doença de Johne)",
+    "prioridade": 84,
+    "se": {
+      "todas": [
+        {
+          "var": "diarreia_cronica_refrataria",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "apetite_preservado",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "perda_escore_corporal",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "paratuberculose",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Emagrecimento severo e progressivo COM apetite preservado, mais diarreia crônica que não responde a nenhum tratamento, é o retrato da paratuberculose. O apetite preservado é o que a separa da subnutrição e da verminose.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. A confirmação é laboratorial e não há cura.",
+      "Isole o animal do rebanho e principalmente das bezerras: a transmissão é fecal-oral.",
+      "Avalie descarte: animal positivo contamina o ambiente por anos."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-INDIGESTAO-VAGAL",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Indigestão vagal",
+    "prioridade": 86,
+    "se": {
+      "todas": [
+        {
+          "var": "timpanismo_cronico",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "ingestao_corpo_estranho",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "indigestao_vagal",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Estufamento que volta sempre, com dificuldade de arrotar, em animal com histórico de engolir objetos, aponta para lesão do nervo vago — e não para timpanismo primário, que é agudo e de causa alimentar.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO.",
+      "Avalie com o técnico se há indicação de ímã reticular ou de descarte."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-SARA-GRAOS",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Grãos inteiros nas fezes reforçam acidose",
+    "prioridade": 66,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "acidose_ruminal"
+        },
+        {
+          "var": "graos_inteiros_fezes",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "acidose_ruminal",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Grão inteiro na fezes significa que o alimento passou sem ser digerido: o rúmen está ácido e o trânsito acelerado.",
+    "conduta": [
+      "Reduza o concentrado rapidamente fermentável e aumente a fibra longa efetiva."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-SARA-SEM-FIBRA",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Dieta de muito concentrado com apatia e rúmen parado é acidose",
+    "prioridade": 78,
+    "se": {
+      "todas": [
+        {
+          "var": "dieta_muito_concentrado",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "ruminacao_reduzida",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "apatia",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "acidose_ruminal",
+        "cf": 0.7
+      }
+    ],
+    "porque": "Excesso de concentrado com rúmen parado, cabeça baixa e temperatura normal é acidose ruminal: a acidez derruba a flora do rúmen e o animal entra em apatia sem febre.",
+    "conduta": [
+      "Retire o concentrado e ofereça apenas volumoso de boa qualidade até a avaliação.",
+      "CHAME O MÉDICO-VETERINÁRIO."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PP-EDEMA-UBERE",
+    "versao": "1.0.0",
+    "grupo": "pos_parto",
+    "titulo": "Edema de úbere fisiológico",
+    "prioridade": 82,
+    "se": {
+      "todas": [
+        {
+          "var": "ubere_edema_cacifo",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "palpacao_dor",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "edema_ubere",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Inchaço frio, indolor e que guarda a marca do dedo, sem dor e sem febre, é acúmulo de líquido — não infecção. É comum no fim da gestação e nos primeiros dias de lactação, sobretudo em novilhas.",
+    "conduta": [
+      "Estimule a caminhada e ordenhe com frequência para drenar o líquido.",
+      "Reduza sal e potássio na dieta pré-parto com o técnico.",
+      "Procure o veterinário se aparecer dor, calor ou alteração do leite — aí a suspeita passa a ser mastite."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PP-PROLAPSO-UTERINO",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Prolapso uterino após parto distócico",
+    "prioridade": 99,
+    "se": {
+      "todas": [
+        {
+          "var": "massa_protrai_vulva",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "massa_com_caruncula",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "prolapso_uterino",
+        "cf": 0.95
+      }
+    ],
+    "porque": "Massa carnosa grande com carúnculas (os botões onde a placenta se prendia) pendurada fora da vulva após o parto é o útero invertido. É emergência absoluta: hemorragia e choque matam em poucas horas.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Mantenha a vaca deitada e o órgão apoiado em pano limpo e úmido, acima do nível da vulva.",
+      "Não tente reduzir o prolapso sozinho e não deixe o órgão encostar no chão."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-PROLAPSO-VAGINAL",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Prolapso vaginal no fim da gestação",
+    "prioridade": 83,
+    "se": {
+      "todas": [
+        {
+          "var": "massa_protrai_vulva",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "massa_com_caruncula",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "prolapso_vaginal",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Massa rosada saindo pela vulva SEM carúnculas, geralmente antes do parto, é a vagina invertida — e não o útero. Tende a repetir a cada gestação.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. Pode ser necessária sutura de retenção.",
+      "Mantenha o local limpo e evite que o animal deite em declive.",
+      "Anote: vaca com prolapso repetido deve ser avaliada para descarte."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-BRUCELOSE",
+    "versao": "1.0.0",
+    "grupo": "notificacao_obrigatoria",
+    "titulo": "Suspeita de brucelose — aborto no terço final",
+    "prioridade": 100,
+    "se": {
+      "todas": [
+        {
+          "var": "aborto",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "feto_formado",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "vacinada_reproducao",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "brucelose",
+        "cf": 0.75
+      }
+    ],
+    "porque": "Aborto de feto já formado no terço final da gestação, em vaca sem cobertura vacinal, é a apresentação clássica da brucelose — zoonose de notificação obrigatória. A retenção de placenta que costuma acompanhar reforça a suspeita.",
+    "conduta": [
+      "NOTIFIQUE o serviço veterinário oficial: a suspeita de brucelose é de notificação obrigatória.",
+      "NÃO manipule feto, placenta ou secreções sem luvas: a brucelose passa para pessoas.",
+      "Isole a vaca e desinfete o local do aborto.",
+      "Encaminhe material para diagnóstico laboratorial oficial."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-BRUCELOSE-PLACENTA",
+    "versao": "1.0.0",
+    "grupo": "notificacao_obrigatoria",
+    "titulo": "Retenção de placenta após aborto reforça brucelose",
+    "prioridade": 94,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "brucelose"
+        },
+        {
+          "var": "placenta_retida_12h",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "brucelose",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Aborto seguido de retenção de placenta é a combinação mais sugestiva de brucelose no campo.",
+    "conduta": [
+      "Reforce a notificação oficial e o uso de luvas na manipulação."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-NEOSPOROSE",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Neosporose — aborto com cães no cocho",
+    "prioridade": 80,
+    "se": {
+      "todas": [
+        {
+          "var": "aborto",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "caes_acesso_cocho",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "neosporose",
+        "cf": 0.8
+      }
+    ],
+    "porque": "O cão é o hospedeiro definitivo do Neospora: as fezes dele no cocho contaminam o alimento e a vaca aborta no meio da gestação, inclusive quando está vacinada contra as outras causas reprodutivas.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. A confirmação é sorológica.",
+      "Impeça o acesso de cães ao cocho, ao silo e à área de trato.",
+      "Não deixe restos de aborto ou placenta no pasto: é assim que o ciclo se fecha."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-ANESTRO-OVARIO-LISO",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Ovários pequenos e lisos confirmam anestro por hipofunção",
+    "prioridade": 86,
+    "se": {
+      "var": "ovarios_pequenos_lisos",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "anestro_pos_parto",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Ovários pequenos e lisos, sem folículo nem corpo lúteo, mostram ovário parado — hipofunção ovariana. Em vaca com histórico de subnutrição, a causa é o balanço energético negativo.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. / técnico em reprodução para protocolo hormonal, se indicado.",
+      "Corrija primeiro a nutrição: sem energia e mineral, nenhum protocolo pega."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-CISTO-MASCULINIZADO",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Comportamento masculinizado reforça cisto ovariano",
+    "prioridade": 62,
+    "se": {
+      "var": "comportamento_masculinizado",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "cisto_ovariano",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Berrar constantemente, montar nas outras e ganhar aparência masculinizada (\"machorra\") é o quadro de ninfomania do cisto folicular, que produz estrógeno sem parar.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para exame de ovários e tratamento hormonal."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-POLIARTRITE",
+    "versao": "1.0.0",
+    "grupo": "bezerras",
+    "titulo": "Poliartrite infecciosa (mal de junta)",
+    "prioridade": 90,
+    "se": {
+      "todas": [
+        {
+          "var": "idade_dias",
+          "op": "<=",
+          "val": 120
+        },
+        {
+          "var": "juntas_inchadas_quentes",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "poliartrite_infecciosa",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Juntas inchadas, quentes e doloridas em bezerro é infecção que caiu no sangue e se instalou nas articulações — quase sempre a partir do umbigo. O bezerro para de levantar.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. O tratamento exige antibiótico sistêmico prolongado, com prescrição.",
+      "Trate também a porta de entrada (umbigo).",
+      "Revise higiene da maternidade e a cura do umbigo com iodo ao nascer."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-POLIARTRITE-ONFALITE",
+    "versao": "1.0.0",
+    "grupo": "bezerras",
+    "titulo": "Umbigo infectado explica a poliartrite",
+    "prioridade": 89,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "poliartrite_infecciosa"
+        },
+        {
+          "var": "umbigo_inchado_quente",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "poliartrite_infecciosa",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Onfalite não tratada é a origem mais comum do mal de junta: a bactéria sobe pelos vasos umbilicais e se espalha.",
+    "conduta": [
+      "Trate o umbigo junto das juntas: sem fechar a porta de entrada, a infecção volta."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-TETANO",
+    "versao": "1.0.0",
+    "grupo": "neurologico",
+    "titulo": "Tétano",
+    "prioridade": 93,
+    "se": {
+      "var": "opistotono_rigidez",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "tetano",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Rigidez dos membros com a cabeça repuxada para trás (opistótono) é o quadro do tétano: a toxina da bactéria trava a musculatura. A porta de entrada é sempre uma ferida contaminada — umbigo, castração ou descorna em ambiente sujo.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Mantenha o animal em local escuro, silencioso e sem estímulos: barulho desencadeia espasmo.",
+      "Revise a cura do umbigo e a higiene de castração e descorna no rebanho.",
+      "Avalie vacinação polivalente com o veterinário."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-TETANO-FERIDA",
+    "versao": "1.0.0",
+    "grupo": "neurologico",
+    "titulo": "Ferida contaminada recente reforça tétano",
+    "prioridade": 91,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "tetano"
+        },
+        {
+          "var": "ferida_contaminada_recente",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "tetano",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Ferida, castração, descorna ou corte de umbigo recente em ambiente sujo é a porta de entrada clássica da bactéria do tétano.",
+    "conduta": [
+      "Identifique e limpe a ferida de entrada junto do tratamento."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-VERMINOSE-PULMONAR",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Verminose pulmonar (dictiocaulose)",
+    "prioridade": 82,
+    "se": {
+      "todas": [
+        {
+          "var": "tosse",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "var": "pelo_aspero_sem_brilho",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "verminose_pulmonar",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Tosse seca crônica, que piora no esforço, SEM febre, em animal jovem a pasto com pelo arrepiado, é verme de pulmão — e não pneumonia bacteriana, que vem com febre e secreção purulenta.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para vermifugação com produto de ação pulmonar.",
+      "Trate o lote todo e faça rotação de pasto.",
+      "Evite pastos baixos e úmidos, onde a larva sobrevive."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-VERMINOSE-PULMONAR-BARRIGA",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Abdômen distendido e atraso reforçam verminose pulmonar",
+    "prioridade": 68,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "verminose_pulmonar"
+        },
+        {
+          "var": "abdomen_distendido",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "verminose_pulmonar",
+        "cf": 0.5
+      }
+    ],
+    "porque": "Aspecto \"barrigudo\" com atraso de desenvolvimento acompanha a infestação parasitária pesada em animais jovens.",
+    "conduta": [
+      "Pese o lote e acompanhe o ganho após a vermifugação."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-VERMINOSE-PAPEIRA",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Papeira com mucosas pálidas é verminose aguda",
+    "prioridade": 88,
+    "se": {
+      "todas": [
+        {
+          "var": "mucosas_palidas",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "edema_submandibular",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "verminose",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Inchaço mole embaixo do queixo (\"papeira\") com mucosas muito pálidas é o quadro da haemoncose: o verme sugador causa anemia e perda de proteína.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. Casos graves precisam de vermifugação e suporte imediatos.",
+      "Trate o lote e faça rotação de pasto.",
+      "Em animais muito anêmicos, manipule o mínimo possível: o esforço pode matar."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-PNEUMONIA-TRANSPORTE",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Transporte recente reforça pneumonia (febre do transporte)",
+    "prioridade": 76,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "pneumonia"
+        },
+        {
+          "var": "transporte_recente",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "pneumonia",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Transporte e entrada recente no rebanho somam estresse, aglomeração e troca de agentes: é a \"febre do transporte\", a forma mais comum de doença respiratória em animal recém-chegado.",
+    "conduta": [
+      "Isole o animal recém-chegado e trate com antibiótico prescrito.",
+      "Faça quarentena de toda entrada nova no rebanho."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-CARBUNCULO-SINTOMATICO",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Carbúnculo sintomático (manqueira)",
+    "prioridade": 98,
+    "se": {
+      "var": "inchaco_crepitante",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "carbunculo_sintomatico",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Inchaço com som de estalo (gás sob a pele) em animal jovem a pasto, com manqueira e morte rápida, é clostridiose de músculo — o carbúnculo sintomático. Diferente do antraz, não há sangramento pelos orifícios.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "NÃO abra o animal morto no pasto: isso espalha o esporo no solo por décadas.",
+      "Isole a carcaça e siga a orientação oficial de destino (incineração ou enterro profundo com cal).",
+      "Vacine todo o rebanho jovem com polivalente clostridial."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-ACTINOMICOSE",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Actinomicose — aumento no osso da mandíbula",
+    "prioridade": 79,
+    "se": {
+      "var": "aumento_osso_mandibula",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "actinomicose",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Aumento duro e indolor diretamente no OSSO da mandíbula, que depois drena pus com grânulos, é actinomicose. Osso duro é o que a separa da actinobacilose, que é de tecido mole.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. O tratamento é prolongado, com iodo e antibiótico prescritos.",
+      "Retire alimentos pontudos e fibrosos que machucam a boca.",
+      "Lesão óssea extensa pode não regredir: avalie descarte."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-ACTINOBACILOSE",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Actinobacilose — \"língua de pau\"",
+    "prioridade": 79,
+    "se": {
+      "todas": [
+        {
+          "var": "inchaco_mole_garganta",
+          "op": "=",
+          "val": true
+        },
+        {
+          "alguma": [
+            {
+              "var": "lingua_pendula",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "salivacao_intensa",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "actinobacilose",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Inchaço MOLE na base da língua ou na garganta, com salivação e língua pendurada, é actinobacilose — infecção de tecido mole. A consistência mole é o que a separa da actinomicose, que é no osso.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. O tratamento com iodo e antibiótico prescrito costuma responder bem.",
+      "Ofereça alimento macio e água à vontade enquanto o animal não mastiga bem.",
+      "Retire alimentos pontudos que machucam a boca."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "NOT-CARBUNCULO-HEMATICO",
+    "versao": "1.0.0",
+    "grupo": "notificacao_obrigatoria",
+    "titulo": "Suspeita de carbúnculo hemático (antraz)",
+    "prioridade": 100,
+    "se": {
+      "var": "sangue_nao_coagulado_orificios",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "carbunculo_hematico",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Morte súbita com sangue escuro que não coagula saindo pelo nariz, boca e ânus é a apresentação do antraz. É zoonose gravíssima, de notificação obrigatória, e abrir a carcaça espalha esporos que ficam décadas no solo.",
+    "conduta": [
+      "NÃO ABRA E NÃO MOVA A CARCAÇA. Afaste pessoas e animais do local.",
+      "NOTIFIQUE IMEDIATAMENTE o serviço veterinário oficial — notificação obrigatória.",
+      "Não manipule sangue ou tecidos sem orientação: a doença passa para pessoas."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "NEU-POLIOENCEFALOMALACIA",
+    "versao": "1.0.0",
+    "grupo": "neurologico",
+    "titulo": "Polioencefalomalácia",
+    "prioridade": 90,
+    "se": {
+      "todas": [
+        {
+          "var": "cegueira_subita",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "anda_circulos_pressiona_cabeca",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "polioencefalomalacia",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Cegueira súbita com andar em círculos e pressão da cabeça contra obstáculos, em animal confinado com muito concentrado, é polioencefalomalácia — falta de vitamina B1 por desarranjo do rúmen. Diferente da raiva, não há salivação nem dificuldade de engolir.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. O tratamento com tiamina (vitamina B1) injetável responde em horas quando precoce.",
+      "Reduza o concentrado e aumente a fibra longa do lote.",
+      "Se houver salivação ou dificuldade de engolir, trate como SUSPEITA DE RAIVA e notifique."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "NEU-POLIO-DIETA",
+    "versao": "1.0.0",
+    "grupo": "neurologico",
+    "titulo": "Dieta de muito concentrado reforça polioencefalomalácia",
+    "prioridade": 70,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "polioencefalomalacia"
+        },
+        {
+          "var": "dieta_muito_concentrado",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "polioencefalomalacia",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Dieta rica em concentrado destrói a tiamina produzida no rúmen — é o fator de risco central da polioencefalomalácia.",
+    "conduta": [
+      "Revise urgentemente a relação volumoso:concentrado do lote com o técnico."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PELE-PAPILOMATOSE",
+    "versao": "1.0.0",
+    "grupo": "pele",
+    "titulo": "Papilomatose bovina (verruga)",
+    "prioridade": 64,
+    "se": {
+      "var": "verrugas_couveflor",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "papilomatose",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Formações secas e duras parecendo couve-flor, que não coçam, não doem e não dão febre, são verrugas de origem viral — papilomatose. Comum em lotes de animais jovens.",
+    "conduta": [
+      "Isole os animais mais afetados: a transmissão é por contato e por material de manejo.",
+      "Desinfete material de descorna, brincagem e tatuagem entre animais.",
+      "Converse com o veterinário sobre autovacina nos casos extensos."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PELE-SARNA-COCEIRA",
+    "versao": "1.0.0",
+    "grupo": "pele",
+    "titulo": "Coceira intensa com perda de pelo é sarna",
+    "prioridade": 58,
+    "se": {
+      "todas": [
+        {
+          "var": "coceira_intensa",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "placas_descamadas",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "sarna",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Coceira intensa que leva o animal a se esfregar nas cercas, com perda de pelo e pele espessada — principalmente na base da cauda e no períneo — é infestação por ácaro ou piolho.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para carrapaticida/sarnicida adequado.",
+      "Trate todos os animais do lote no mesmo dia.",
+      "Desinfete cercas, troncos e material de contato."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-UREIA",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Intoxicação por ureia",
+    "prioridade": 96,
+    "se": {
+      "todas": [
+        {
+          "var": "suplemento_proteinado_molhado",
+          "op": "=",
+          "val": true
+        },
+        {
+          "alguma": [
+            {
+              "var": "morte_subita_lote",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "tremores_musculares",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "salivacao_intensa",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "intoxicacao_ureia",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Suplemento proteinado com ureia molhado por chuva é consumido em excesso e vira amônia no rúmen em minutos. Tremores violentos, espuma na boca, dor abdominal e morte súbita de vários animais do mesmo lote é o quadro clássico — e a chuva sobre o cocho é a pista.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "RETIRE IMEDIATAMENTE o lote do cocho e recolha o suplemento molhado.",
+      "Ofereça água à vontade aos animais que ainda estão bem.",
+      "Reveja a proteção do cocho contra chuva e o fornecimento de ureia com o técnico."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-SAMAMBAIA",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Hematúria enzoótica por samambaia",
+    "prioridade": 85,
+    "se": {
+      "todas": [
+        {
+          "var": "pasto_samambaia",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "hematuria_persistente",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hematuria_enzootica",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Sangue vivo constante na urina, em animal que pasta há mais de um ano em área invadida por samambaia, é hematúria enzoótica: a planta causa tumores na bexiga. É intoxicação crônica e sem cura.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para confirmação e avaliação de descarte.",
+      "Retire os animais da área de samambaia e planeje o controle da planta com o técnico.",
+      "Atenção de saúde pública: o leite de animais intoxicados por samambaia não deve ser consumido."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-DERMATITE-DIGITAL",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Dermatite digital — lesão em morango",
+    "prioridade": 85,
+    "se": {
+      "var": "lesao_morango_interdigital",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "dermatite_digital",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Lesão vermelha, granulosa e dolorida como um morango, entre os dedos ou nos calcanhares, com cheiro forte, é dermatite digital. O aspecto é característico e a causa é ambiente úmido e sujo.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para tratamento tópico e, se necessário, antibiótico prescrito.",
+      "Implante pedilúvio e melhore a drenagem e a limpeza do curral e do corredor de ordenha.",
+      "Trate o lote: a lesão é contagiosa por contato com a lama contaminada."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-ULCERA-SOLA",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Úlcera de sola / abscesso subsolar",
+    "prioridade": 84,
+    "se": {
+      "var": "perfuracao_sola_pus",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "ulcera_sola",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Perfuração ou buraco na sola com saída de pus escuro e fétido, em animal que não apoia o peso no pé, é úlcera de sola ou abscesso subsolar — lesão localizada de um casco, diferente da laminite, que pega vários cascos ao mesmo tempo.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. ou casqueador: é preciso abrir, drenar e proteger a lesão.",
+      "Mantenha o animal em piso seco e macio durante a recuperação.",
+      "Revise piso, pedras soltas e casqueamento preventivo do rebanho."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-LAMINITE-DIFUSA",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Manqueira em vários cascos com dieta de concentrado é laminite",
+    "prioridade": 74,
+    "se": {
+      "todas": [
+        {
+          "var": "claudicacao",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "dorso_arqueado",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "dieta_muito_concentrado",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "lesao_morango_interdigital",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "perfuracao_sola_pus",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "laminite",
+        "cf": 0.7
+      }
+    ],
+    "porque": "Andar \"pisando em ovos\", com as costas arqueadas e cruzando as pernas, em vaca com dieta de muita ração, é laminite: a inflamação é difusa e pega vários cascos — não é uma lesão de um pé só.",
+    "conduta": [
+      "Reduza o concentrado e aumente a fibra longa efetiva com o técnico.",
+      "Ofereça piso macio e sombra; reduza a distância de caminhada até a ordenha.",
+      "CHAME O MÉDICO-VETERINÁRIO. para analgesia e casqueamento corretivo."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "OFT-CERATOCONJUNTIVITE",
+    "versao": "1.0.0",
+    "grupo": "oftalmico",
+    "titulo": "Ceratoconjuntivite infecciosa bovina (pinkeye)",
+    "prioridade": 80,
+    "se": {
+      "todas": [
+        {
+          "var": "olho_lacrimejando_fotofobia",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "mancha_branca_olho",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "ceratoconjuntivite",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Olho lacrimejando com medo de luz e mancha branca opaca no centro da córnea, com moscas em volta, é a ceratoconjuntivite infecciosa — o \"pinkeye\". As moscas levam a bactéria de um animal para outro e a lesão pode evoluir para cegueira.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para antibiótico tópico ou injetável prescrito.",
+      "Proteja o olho do sol e das moscas; considere tapa-olho ou sombra.",
+      "Faça controle de moscas no lote: é o transmissor.",
+      "Isole os animais afetados."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  }
+]

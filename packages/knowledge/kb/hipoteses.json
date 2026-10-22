@@ -6,7 +6,6 @@
     "descricao": "Os sinais pesquisados não apontaram alteração. Mantenha a rotina de testes: caneca de fundo escuro todos os dias e CMT uma vez por mês.",
     "apenasSeNadaMais": true
   },
-
   {
     "id": "mastite_clinica_g1",
     "rotulo": "Mastite clínica — grau 1",
@@ -18,7 +17,9 @@
     "rotulo": "Mastite clínica — grau 2",
     "grupo": "mastite",
     "descricao": "Além da alteração no leite, a mama apresenta dor, inchaço, endurecimento ou vermelhidão.",
-    "substitui": ["mastite_clinica_g1"]
+    "substitui": [
+      "mastite_clinica_g1"
+    ]
   },
   {
     "id": "mastite_clinica_g3",
@@ -26,7 +27,10 @@
     "grupo": "emergencia",
     "descricao": "Há comprometimento do organismo da vaca: febre, perda de apetite, desidratação. A vaca corre risco de perder a mama ou até de morrer.",
     "bandeiraVermelha": true,
-    "substitui": ["mastite_clinica_g1", "mastite_clinica_g2"]
+    "substitui": [
+      "mastite_clinica_g1",
+      "mastite_clinica_g2"
+    ]
   },
   {
     "id": "mastite_subclinica",
@@ -39,7 +43,11 @@
     "rotulo": "Mastite crônica (persistente)",
     "grupo": "mastite",
     "descricao": "CMT positivo por três meses ou mais durante a mesma lactação.",
-    "substitui": ["mastite_subclinica"]
+    "substitui": [
+      "mastite_subclinica",
+      "mastite_clinica_g1",
+      "mastite_clinica_g2"
+    ]
   },
   {
     "id": "peito_perdido",
@@ -47,7 +55,6 @@
     "grupo": "mastite",
     "descricao": "Quarto mamário que não produz mais leite. Registre como PP e não o inclua nos testes."
   },
-
   {
     "id": "hipocalcemia",
     "rotulo": "Hipocalcemia (febre do leite)",
@@ -67,7 +74,6 @@
     "grupo": "metabolicas",
     "descricao": "Falta de energia no início da lactação. A vaca come menos, emagrece, cai a produção e o hálito fica adocicado."
   },
-
   {
     "id": "retencao_placenta",
     "rotulo": "Retenção de placenta",
@@ -80,7 +86,6 @@
     "grupo": "pos_parto",
     "descricao": "Infecção do útero no pós-parto, com corrimento fétido e, nos casos graves, febre e apatia."
   },
-
   {
     "id": "anestro_pos_parto",
     "rotulo": "Anestro pós-parto prolongado",
@@ -99,7 +104,6 @@
     "grupo": "reprodutivas",
     "descricao": "A vaca volta a manifestar cio depois de inseminada ou coberta, três vezes ou mais, sem emprenhar."
   },
-
   {
     "id": "deslocamento_abomaso",
     "rotulo": "Deslocamento de abomaso",
@@ -118,7 +122,6 @@
     "grupo": "digestivas",
     "descricao": "Acúmulo de gases no rúmen, com o flanco esquerdo estufado. Pode evoluir rápido."
   },
-
   {
     "id": "laminite",
     "rotulo": "Laminite",
@@ -131,7 +134,6 @@
     "grupo": "locomotor",
     "descricao": "Infecção entre os dedos ou na sola, com mau cheiro, inchaço e manqueira."
   },
-
   {
     "id": "sarna",
     "rotulo": "Sarna (ácaros)",
@@ -156,7 +158,6 @@
     "grupo": "mastite",
     "descricao": "Bolsa localizada de pus na mama, geralmente sequela de uma mastite anterior mal resolvida."
   },
-
   {
     "id": "tristeza_parasitaria",
     "rotulo": "Tristeza parasitária bovina",
@@ -175,7 +176,6 @@
     "grupo": "parasitarias",
     "descricao": "Tosse, secreção nasal, respiração acelerada e febre."
   },
-
   {
     "id": "deficiencia_fosforo",
     "rotulo": "Deficiência de fósforo",
@@ -188,7 +188,6 @@
     "grupo": "nutricionais",
     "descricao": "Pelo áspero e sem brilho, queda de produção e de fertilidade sem outra causa aparente — sinal de suplementação mineral insuficiente."
   },
-
   {
     "id": "intoxicacao_planta_toxica",
     "rotulo": "Suspeita de intoxicação por planta tóxica",
@@ -196,7 +195,6 @@
     "descricao": "Sinais agudos (nervosos, digestivos ou morte súbita) após acesso a pasto ou área nova, compatíveis com ingestão de planta tóxica.",
     "bandeiraVermelha": true
   },
-
   {
     "id": "diarreia_neonatal",
     "rotulo": "Diarreia neonatal",
@@ -215,7 +213,6 @@
     "grupo": "bezerras",
     "descricao": "Bezerra que não mamou colostro suficiente nas primeiras horas fica sem defesa e adoece com facilidade."
   },
-
   {
     "id": "suspeita_aftosa",
     "rotulo": "Suspeita de febre aftosa — NOTIFICAÇÃO OBRIGATÓRIA",
@@ -230,7 +227,6 @@
     "descricao": "Risco de zoonose. Não manipule o animal sem equipamento de proteção e comunique o serviço veterinário oficial.",
     "bandeiraVermelha": true
   },
-
   {
     "id": "rebanho_mastite_clinica_alta",
     "rotulo": "Mastite clínica acima da meta no rebanho",
@@ -254,5 +250,761 @@
     "rotulo": "Percentual de vacas em lactação abaixo do ideal",
     "grupo": "rebanho",
     "descricao": "A média anual ideal é ter cerca de 83% das vacas em lactação. Fique atento à alimentação e à reprodução."
+  },
+  {
+    "id": "esteatose_hepatica",
+    "rotulo": "Síndrome do fígado gorduroso (esteatose hepática)",
+    "grupo": "metabolicas",
+    "descricao": "Vaca que chegou gorda ao parto mobiliza gordura demais e o fígado entope. Fica profundamente apática, para de comer e não responde ao tratamento de cálcio nem de cetose."
+  },
+  {
+    "id": "hemoglobinuria_puerperal",
+    "rotulo": "Hemoglobinúria puerperal (deficiência de fósforo)",
+    "grupo": "metabolicas",
+    "descricao": "No primeiro mês após o parto, a falta de fósforo arrebenta os glóbulos vermelhos: a urina fica vermelha escura e as mucosas pálidas, SEM febre e sem carrapatos."
+  },
+  {
+    "id": "obstrucao_esofagica",
+    "rotulo": "Obstrução do esôfago (engasgo)",
+    "grupo": "emergencia",
+    "descricao": "Alimento inteiro entalado no esôfago impede o animal de arrotar: o rúmen enche de gás rápido e pode matar por asfixia.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "reticuloperitonite",
+    "rotulo": "Reticuloperitonite traumática (doença do arame)",
+    "grupo": "digestivas",
+    "descricao": "Arame ou objeto pontudo engolido perfura o retículo. A vaca anda travada, geme de dor e a produção despenca."
+  },
+  {
+    "id": "paratuberculose",
+    "rotulo": "Paratuberculose (doença de Johne)",
+    "grupo": "digestivas",
+    "descricao": "Doença crônica e sem cura: o animal emagrece até o osso continuando a comer bem, com diarreia em jato que não responde a tratamento nenhum."
+  },
+  {
+    "id": "deslocamento_abomaso_direito",
+    "rotulo": "Deslocamento/torção de abomaso à direita",
+    "grupo": "emergencia",
+    "descricao": "Mais grave que o deslocamento à esquerda: o abomaso torce do lado direito, o animal entra em choque e morre em horas sem cirurgia.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "indigestao_vagal",
+    "rotulo": "Indigestão vagal",
+    "grupo": "digestivas",
+    "descricao": "Lesão do nervo que comanda o rúmen: o animal estufa sempre de novo, não consegue arrotar e vai emagrecendo."
+  },
+  {
+    "id": "intoxicacao_ureia",
+    "rotulo": "Intoxicação por ureia (amônia)",
+    "grupo": "toxicologicas",
+    "descricao": "Ureia molhada ou consumida em excesso vira amônia no rúmen e mata em minutos a horas. Costuma pegar vários animais do lote de uma vez.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "edema_ubere",
+    "rotulo": "Edema de úbere fisiológico",
+    "grupo": "pos_parto",
+    "descricao": "Inchaço frio e indolor do úbere e do ventre no fim da gestação e logo após o parto. Não é infecção: é acúmulo de líquido."
+  },
+  {
+    "id": "brucelose",
+    "rotulo": "Suspeita de brucelose — ZOONOSE, NOTIFICAÇÃO OBRIGATÓRIA",
+    "grupo": "notificacao_obrigatoria",
+    "descricao": "Aborto no terço final da gestação com retenção de placenta. É zoonose grave e de notificação obrigatória: não manipule restos de aborto sem luvas.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "prolapso_vaginal",
+    "rotulo": "Prolapso vaginal",
+    "grupo": "reprodutivas",
+    "descricao": "A vagina se inverte e aparece como massa rosada fora da vulva, geralmente antes do parto."
+  },
+  {
+    "id": "prolapso_uterino",
+    "rotulo": "Prolapso uterino",
+    "grupo": "emergencia",
+    "descricao": "O útero inteiro vira para fora depois do parto. Emergência absoluta: risco de hemorragia e choque.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "neosporose",
+    "rotulo": "Neosporose bovina",
+    "grupo": "reprodutivas",
+    "descricao": "Protozoário transmitido por fezes de cão no alimento. Causa aborto no meio da gestação mesmo em vacas vacinadas."
+  },
+  {
+    "id": "poliartrite_infecciosa",
+    "rotulo": "Poliartrite infecciosa (mal de junta)",
+    "grupo": "bezerras",
+    "descricao": "A infecção do umbigo cai na corrente sanguínea e se instala nas juntas. O bezerro para de levantar."
+  },
+  {
+    "id": "verminose_pulmonar",
+    "rotulo": "Verminose pulmonar (dictiocaulose)",
+    "grupo": "parasitarias",
+    "descricao": "Verme que se aloja no pulmão: tosse seca crônica ao esforço, em animal jovem a pasto, sem febre."
+  },
+  {
+    "id": "tetano",
+    "rotulo": "Tétano",
+    "grupo": "neurologico",
+    "descricao": "Bactéria de ferida contaminada que trava a musculatura: membros rígidos e cabeça repuxada para trás. Mortalidade altíssima.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "carbunculo_sintomatico",
+    "rotulo": "Carbúnculo sintomático (manqueira)",
+    "grupo": "emergencia",
+    "descricao": "Clostridiose de músculo em animais jovens a pasto: inchaço com gás sob a pele e morte rápida. Previne-se com vacina polivalente.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "polioencefalomalacia",
+    "rotulo": "Polioencefalomalácia",
+    "grupo": "neurologico",
+    "descricao": "Falta de vitamina B1 em dieta de muito concentrado: cegueira súbita, andar em círculos e pressão da cabeça contra obstáculos."
+  },
+  {
+    "id": "papilomatose",
+    "rotulo": "Papilomatose bovina (verruga)",
+    "grupo": "pele",
+    "descricao": "Vírus que causa verrugas secas em couve-flor, principalmente em animais jovens. Não dói, não coça e não dá febre."
+  },
+  {
+    "id": "hematuria_enzootica",
+    "rotulo": "Hematúria enzoótica (intoxicação crônica por samambaia)",
+    "grupo": "toxicologicas",
+    "descricao": "Consumo prolongado de samambaia causa tumores na bexiga: sangue vivo na urina, anemia e emagrecimento progressivo."
+  },
+  {
+    "id": "carbunculo_hematico",
+    "rotulo": "Suspeita de carbúnculo hemático (antraz) — ZOONOSE, NOTIFICAÇÃO OBRIGATÓRIA",
+    "grupo": "notificacao_obrigatoria",
+    "descricao": "Morte súbita com sangue escuro que não coagula saindo pelos orifícios. NÃO ABRA O ANIMAL: é zoonose gravíssima e de notificação obrigatória.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "dermatite_digital",
+    "rotulo": "Dermatite digital",
+    "grupo": "locomotor",
+    "descricao": "Lesão vermelha e granulosa como morango entre os dedos ou nos calcanhares, de cheiro forte. Ligada a curral úmido e sujo."
+  },
+  {
+    "id": "actinomicose",
+    "rotulo": "Actinomicose (\"mandíbula inchada\")",
+    "grupo": "parasitarias",
+    "descricao": "Infecção bacteriana do OSSO da mandíbula: aumento duro, indolor, que drena pus com grânulos."
+  },
+  {
+    "id": "actinobacilose",
+    "rotulo": "Actinobacilose (\"língua de pau\")",
+    "grupo": "parasitarias",
+    "descricao": "Infecção bacteriana dos TECIDOS MOLES da língua e da garganta: inchaço mole, salivação e dificuldade de mastigar."
+  },
+  {
+    "id": "ulcera_sola",
+    "rotulo": "Úlcera de sola / abscesso subsolar",
+    "grupo": "locomotor",
+    "descricao": "Perfuração ou ponto de pressão na sola do casco que abscedou: o animal não apoia o peso no pé."
+  },
+  {
+    "id": "ceratoconjuntivite",
+    "rotulo": "Ceratoconjuntivite infecciosa bovina (pinkeye)",
+    "grupo": "oftalmico",
+    "descricao": "Infecção de olho transmitida por moscas: lacrimejamento, medo de luz e mancha branca na córnea. Pode cegar."
+  },
+  {
+    "id": "fenda_palatina",
+    "rotulo": "Fenda palatina (defeito congênito)",
+    "grupo": "congenito",
+    "descricao": "Falha de fechamento do céu da boca: o leite passa para o nariz e o bezerro broncoaspira. Defeito de nascença, sem tratamento viável a campo.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "atresia_anal",
+    "rotulo": "Atresia anal (ânus imperfurado)",
+    "grupo": "congenito",
+    "descricao": "O bezerro nasce sem orifício anal: a barriga incha progressivamente e ele morre sem correção cirúrgica imediata.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "coccidiose",
+    "rotulo": "Coccidiose (eimeriose)",
+    "grupo": "bezerras",
+    "descricao": "Protozoário de ambiente lotado e úmido: diarreia escura com sangue vivo e muita força para defecar, em bezerros de 3 semanas a 6 meses."
+  },
+  {
+    "id": "criptosporidiose",
+    "rotulo": "Criptosporidiose — ZOONOSE",
+    "grupo": "bezerras",
+    "descricao": "Protozoário de bezerro novo que também infecta pessoas. Diarreia amarela e aquosa intensa; quem trata o lote pode adoecer junto.",
+    "bandeiraVermelha": true,
+    "substitui": ["diarreia_neonatal"]
+  },
+  {
+    "id": "intoxicacao_chumbo",
+    "rotulo": "Intoxicação por chumbo",
+    "grupo": "toxicologicas",
+    "descricao": "Bateria velha, tinta ou sucata no pasto: cegueira, ranger de dentes, salivação, cabeçadas em obstáculos e convulsão. Também contamina o leite.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "doenca_musculo_branco",
+    "rotulo": "Doença do músculo branco (deficiência de selênio e vitamina E)",
+    "grupo": "nutricionais",
+    "descricao": "Falta de selênio e vitamina E degenera o músculo do bezerro: ele tenta levantar, os músculos tremem e não sustentam o peso."
+  },
+  {
+    "id": "falha_goteira_esofagica",
+    "rotulo": "Falha da goteira esofágica",
+    "grupo": "digestivas",
+    "descricao": "Em bezerro criado no balde, o leite cai no rúmen em vez de ir ao estômago: fermenta, estufa e o animal não se desenvolve."
+  },
+  {
+    "id": "deficiencia_cobre",
+    "rotulo": "Deficiência de cobre",
+    "grupo": "nutricionais",
+    "descricao": "Falta de cobre desbota o pelo ao redor dos olhos (\"óculos\"), causa diarreia crônica e atrasa o crescimento."
+  },
+  {
+    "id": "hipoplasia_cerebelar",
+    "rotulo": "Hipoplasia cerebelar (infecção uterina, em geral BVDV)",
+    "grupo": "congenito",
+    "descricao": "O cerebelo não se formou por infecção na gestação: o bezerro já nasce com tremores de cabeça e sem equilíbrio.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "meningite_bacteriana",
+    "rotulo": "Meningite bacteriana",
+    "grupo": "bezerras",
+    "descricao": "Infecção que chegou ao sistema nervoso, quase sempre a partir do umbigo: febre alta, dor ao toque na cabeça e cabeça repuxada para trás.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "aborto_estresse_termico",
+    "rotulo": "Aborto por estresse térmico",
+    "grupo": "reprodutivas",
+    "descricao": "Transporte longo, sol forte e calor extremo podem interromper a gestação sem que haja nenhuma infecção envolvida."
+  },
+  {
+    "id": "distocia_desvio_membros",
+    "rotulo": "Distocia por desvio de membros",
+    "grupo": "emergencia",
+    "descricao": "O bezerro está encaixado errado — membros dobrados para trás. Sem correção da posição, morrem os dois.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "doenca_venerea",
+    "rotulo": "Doença venérea (tricomoníase ou campilobacteriose)",
+    "grupo": "reprodutivas",
+    "descricao": "Transmitida por monta natural com touro contaminado: aborto precoce, repetição de cio e infertilidade no rebanho."
+  },
+  {
+    "id": "toxemia_gestacao",
+    "rotulo": "Toxemia da gestação (cetose pré-parto)",
+    "grupo": "metabolicas",
+    "descricao": "No fim da gestação, sobretudo com gêmeos, a vaca não come o que precisa: mobiliza gordura, entra em cetose e deita.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "ruptura_uterina",
+    "rotulo": "Ruptura uterina / laceração vaginal severa",
+    "grupo": "emergencia",
+    "descricao": "Rasgo profundo após parto tracionado, comunicando vagina e abdômen. Choque e peritonite matam em horas.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "mumificacao_fetal",
+    "rotulo": "Mumificação fetal",
+    "grupo": "reprodutivas",
+    "descricao": "O feto morreu e foi reabsorvido sem infecção: fica duro e seco no útero, e a vaca passa da data de parto sem contração."
+  },
+  {
+    "id": "pseudovariola",
+    "rotulo": "Pseudovaríola bovina (nódulos dos ordenhadores)",
+    "grupo": "pele",
+    "descricao": "Vírus de pele do teto que faz feridas em anel, doloridas, pioradas por ordenhadeira mal regulada. Passa para a mão de quem ordenha."
+  },
+  {
+    "id": "trauma_teto",
+    "rotulo": "Ferimento traumático de teto com sangue no leite",
+    "grupo": "mastite",
+    "descricao": "Corte ou pisoteio do teto rompe vaso e o sangue sai no leite — sem grumos, sem inchaço e sem infecção.",
+    "substitui": ["mastite_clinica_g1"]
+  },
+  {
+    "id": "mastite_vaca_seca",
+    "rotulo": "Mastite de vaca seca (mastite de verão)",
+    "grupo": "mastite",
+    "descricao": "Infecção do quarto durante o período seco, com pus verde e cheiro de carne podre. Costuma perder o quarto.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "incontinencia_lactea",
+    "rotulo": "Incontinência láctea (trauma de esfíncter do teto)",
+    "grupo": "mastite",
+    "descricao": "A ponta do teto se perdeu e o esfíncter não fecha mais: o leite pinga o dia todo e a porta fica aberta para a mastite."
+  },
+  {
+    "id": "variola_bovina",
+    "rotulo": "Varíola bovina (cowpox) — ZOONOSE",
+    "grupo": "pele",
+    "descricao": "Vírus que faz pústulas e crostas nos tetos e passa para as mãos dos ordenhadores, causando feridas purulentas."
+  },
+  {
+    "id": "dermatite_intermamaria",
+    "rotulo": "Dermatite intermamária (frieira de úbere)",
+    "grupo": "pele",
+    "descricao": "Atrito e umidade na fenda entre os quartos traseiros ferem a pele, acumulam líquido malcheiroso e necrosam."
+  },
+  {
+    "id": "urolitiase",
+    "rotulo": "Urolitíase (cálculo urinário)",
+    "grupo": "digestivas",
+    "descricao": "Pedra na via urinária, típica de macho em dieta desbalanceada: dor para urinar, sangue no fim do jato e risco de ruptura da bexiga.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "intoxicacao_micotoxinas",
+    "rotulo": "Intoxicação por micotoxinas (silagem ou ração mofada)",
+    "grupo": "toxicologicas",
+    "descricao": "Bolor na silagem e na ração produz toxinas que causam salivação, recusa de alimento, queda de produção e aborto."
+  },
+  {
+    "id": "intoxicacao_gossipol",
+    "rotulo": "Intoxicação por gossipol (caroço de algodão)",
+    "grupo": "toxicologicas",
+    "descricao": "Excesso de caroço de algodão não processado intoxica o coração e o fígado: dor, gemido e morte em casos graves."
+  },
+  {
+    "id": "ulcera_abomaso_bezerro",
+    "rotulo": "Úlcera e timpanismo de abomaso do bezerro",
+    "grupo": "bezerras",
+    "descricao": "Mudança brusca para ração ulcera o abomaso do bezerro: lado direito distendido, dor e fezes escuras de sangue digerido.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "artrite_septica",
+    "rotulo": "Artrite séptica (mal de junta do adulto)",
+    "grupo": "locomotor",
+    "descricao": "Infecção dentro da articulação, com fístula drenando líquido sinovial e pus. O prognóstico é ruim quando já abriu."
+  },
+  {
+    "id": "cascos_compridos",
+    "rotulo": "Crescimento excessivo de cascos (falta de casqueamento)",
+    "grupo": "locomotor",
+    "descricao": "Casco em tesoura muda o apoio para os calcanhares, causa dor e abre caminho para todas as outras doenças de casco."
+  },
+  {
+    "id": "foot_rot",
+    "rotulo": "Frieira / pododermatite necrótica (foot rot)",
+    "grupo": "locomotor",
+    "descricao": "Infecção da pele acima do casco em ambiente alagado: inchaço quente e doloroso, com rachaduras profundas que molham."
+  },
+  {
+    "id": "hernia_umbilical",
+    "rotulo": "Hérnia umbilical",
+    "grupo": "congenito",
+    "descricao": "Abertura na parede da barriga por onde o intestino passa: massa macia, móvel e indolor no umbigo, sem calor nem pus."
+  },
+  {
+    "id": "fratura_femur",
+    "rotulo": "Fratura de fêmur",
+    "grupo": "locomotor",
+    "descricao": "Osso quebrado: o membro fica pendendo mole, com som de crepitação. Em adulto, o prognóstico é quase sempre de descarte.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "contratura_tendoes",
+    "rotulo": "Contratura congênita de tendões flexores",
+    "grupo": "congenito",
+    "descricao": "O bezerro nasce com os tendões encurtados e anda sobre os joelhos. Casos leves respondem a tala e fisioterapia."
+  },
+  {
+    "id": "higroma",
+    "rotulo": "Higroma de carpo ou tarso (trauma de piso)",
+    "grupo": "locomotor",
+    "descricao": "Bolsa de líquido e calo formados pelo atrito repetido das juntas com piso duro. É problema de instalação, não de infecção."
+  },
+  {
+    "id": "erosao_talao",
+    "rotulo": "Erosão de talão severa",
+    "grupo": "locomotor",
+    "descricao": "O talão do casco apodrece e se abre em V, expondo a carne viva. Ligada a piso úmido e sujo e a falta de casqueamento."
+  },
+  {
+    "id": "vaca_espacate",
+    "rotulo": "Síndrome da vaca \"espacate\"",
+    "grupo": "locomotor",
+    "descricao": "As pernas traseiras abriram em piso escorregadio e romperam músculos e ligamentos da pelve. A vaca não consegue mais juntar as pernas.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "fotossensibilizacao_hepatogena",
+    "rotulo": "Fotossensibilização hepatógena (toxina de fungo de pastagem)",
+    "grupo": "toxicologicas",
+    "descricao": "Fungo da pastagem (Pithomyces) lesa o fígado; sem fígado para limpar o sangue, o sol queima a pele clara e o animal fica ictérico.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "choque_eletrico",
+    "rotulo": "Choque elétrico (queda de raio)",
+    "grupo": "emergencia",
+    "descricao": "Morte instantânea sob árvore isolada depois de tempestade, sem sinais de luta no chão. Não é doença infecciosa."
+  },
+  {
+    "id": "pneumonia_intersticial",
+    "rotulo": "Pneumonia intersticial atípica (enfisema de pastagem)",
+    "grupo": "cardiorrespiratorio",
+    "descricao": "Tosse seca persistente e respiração rápida em lote inteiro, ligada a pasto alto, poeira e seca — e não a infecção bacteriana."
+  },
+  {
+    "id": "intoxicacao_cianobacterias",
+    "rotulo": "Intoxicação por cianobactérias (algas azuis)",
+    "grupo": "toxicologicas",
+    "descricao": "Floração de algas na lagoa produz toxina que mata em minutos, por parada respiratória, vários animais que beberam a mesma água.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "enterotoxemia",
+    "rotulo": "Enterotoxemia / salmonelose aguda",
+    "grupo": "emergencia",
+    "descricao": "Infecção hiperaguda do intestino: diarreia com sangue vivo e coágulos, dor extrema e febre. Mata rápido.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "intoxicacao_planta_cardiotoxica",
+    "rotulo": "Intoxicação por planta cardiotóxica (morte súbita)",
+    "grupo": "toxicologicas",
+    "descricao": "Erva-de-rato e plantas semelhantes param o coração: o animal cai ao ser movimentado e morre em minutos.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "listeriose",
+    "rotulo": "Listeriose (encefalite por Listeria)",
+    "grupo": "neurologico",
+    "descricao": "Bactéria de silagem malconservada que atinge o tronco cerebral: andar em círculos e paralisia de um só lado do rosto.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "anaplasmose",
+    "rotulo": "Anaplasmose bovina aguda",
+    "grupo": "parasitarias",
+    "descricao": "Hemoparasita de carrapato que destrói hemácias: febre altíssima, icterícia e sinais nervosos por falta de oxigênio no cérebro.",
+    "bandeiraVermelha": true,
+    "substitui": ["tristeza_parasitaria"]
+  },
+  {
+    "id": "glaucoma_estafiloma",
+    "rotulo": "Glaucoma secundário / estafiloma",
+    "grupo": "oftalmico",
+    "descricao": "Úlcera de córnea não tratada rompeu: o olho fica branco, aumentado e cego. É sequela, não infecção ativa."
+  },
+  {
+    "id": "abscesso_retrofaringeo",
+    "rotulo": "Abscesso de garganta rompido para dentro",
+    "grupo": "emergencia",
+    "descricao": "O abscesso estourou para dentro da via respiratória: o animal aspira pus e asfixia. Emergência imediata.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "comportamento_materno",
+    "rotulo": "Comportamento materno protetor (fisiológico)",
+    "grupo": "fisiologico",
+    "descricao": "Vaca recém-parida que ataca quem se aproxima do bezerro escondido está defendendo a cria — é instinto normal, não doença."
+  },
+  {
+    "id": "insuficiencia_cardiaca",
+    "rotulo": "Insuficiência cardíaca",
+    "grupo": "cardiorrespiratorio",
+    "descricao": "O coração não dá conta: inchaço nas pernas, fraqueza e batimentos irregulares. Em confinamento longo sem verde, a carência de tiamina é causa comum.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "estresse_calorico",
+    "rotulo": "Estresse calórico agudo (insolação)",
+    "grupo": "emergencia",
+    "descricao": "Sob sol forte e sem sombra, o animal não consegue perder calor: sudorese, boca aberta e temperatura acima de 41 °C. Mata em horas.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "carcinoma_ocular",
+    "rotulo": "Carcinoma de células escamosas (câncer de olho)",
+    "grupo": "oftalmico",
+    "descricao": "Tumor de olho em animal de cara branca: ferida crônica em couve-flor que invade o globo e atrai moscas."
+  },
+  {
+    "id": "hemorragia_vulvar",
+    "rotulo": "Hemorragia vulvar ou vaginal",
+    "grupo": "reprodutivas",
+    "descricao": "O sangue vem da vulva, não do rim: a urina sai avermelhada nas primeiras gotas e depois fica limpa."
+  },
+  {
+    "id": "cio_normal",
+    "rotulo": "Cio natural (estro) — fisiológico",
+    "grupo": "fisiologico",
+    "descricao": "Berrar, inquietação, urinar com frequência, montar e aceitar monta com muco cristalino é cio normal: é hora de inseminar, não de tratar."
+  },
+  {
+    "id": "ejecao_leite_prematura",
+    "rotulo": "Reflexo de ejeção prematura do leite — fisiológico",
+    "grupo": "fisiologico",
+    "descricao": "Vaca condicionada à rotina da ordenha \"solta\" o leite no curral de espera. É aprendizado, não doença de teto."
+  },
+  {
+    "id": "fezes_normais",
+    "rotulo": "Fezes normais em pasto de qualidade — fisiológico",
+    "grupo": "fisiologico",
+    "descricao": "Fezes verdes em panqueca com depressão no centro são o escore ideal: o rúmen está funcionando bem."
+  },
+  {
+    "id": "hipertermia_pos_exercicio",
+    "rotulo": "Hipertermia fisiológica pós-exercício",
+    "grupo": "fisiologico",
+    "descricao": "Temperatura levemente alta logo após corrida ou manejo, sem nenhum outro sinal, é normal: meça de novo em repouso."
+  },
+  {
+    "id": "pigmentacao_alimentar",
+    "rotulo": "Pigmentação alimentar da urina e das fezes — fisiológico",
+    "grupo": "fisiologico",
+    "descricao": "Beterraba, cenoura e outros alimentos tingem a urina e as fezes sem que haja sangue nem doença."
+  },
+  {
+    "id": "placentofagia",
+    "rotulo": "Placentofagia e enterite alimentar leve — fisiológico",
+    "grupo": "fisiologico",
+    "descricao": "Comer a placenta é comportamento comum e pode dar diarreia leve por um dia. A placenta saiu no prazo: não há retenção."
+  },
+  {
+    "id": "colostro_pre_parto",
+    "rotulo": "Produção de colostro antes do parto — fisiológico",
+    "grupo": "fisiologico",
+    "descricao": "Acúmulo de colostro no úbere no fim da gestação é preparação normal para o parto, não mastite."
+  },
+  {
+    "id": "pigmentacao_palatina",
+    "rotulo": "Pigmentação melânica do palato — fisiológico",
+    "grupo": "fisiologico",
+    "descricao": "Mancha preta de nascença no céu da boca é pigmento de pele, não necrose nem estomatite."
+  },
+  {
+    "id": "parametros_neonatais_normais",
+    "rotulo": "Parâmetros vitais normais de neonato",
+    "grupo": "fisiologico",
+    "descricao": "Bezerro recém-nascido tem coração e respiração mais rápidos que o adulto. Os valores encontrados são os normais da categoria."
+  },
+  {
+    "id": "tremor_frio",
+    "rotulo": "Tremor fisiológico por frio",
+    "grupo": "fisiologico",
+    "descricao": "Tremor nas paletas na manhã fria, que passa com o dia e sem nenhum outro sinal, é termorregulação normal."
+  },
+  {
+    "id": "reticulopericardite",
+    "rotulo": "Retículo-pericardite traumática (insuficiência cardíaca direita)",
+    "grupo": "cardiorrespiratorio",
+    "descricao": "O objeto pontudo engolido atravessou até o coração: papeira enorme, jugular estufada e insuficiência cardíaca direita.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "tromboflebite_jugular",
+    "rotulo": "Tromboflebite jugular (iatrogênica)",
+    "grupo": "cardiorrespiratorio",
+    "descricao": "Injeções repetidas na jugular inflamaram e trombosaram a veia: cordão duro, quente e dolorido no pescoço."
+  },
+  {
+    "id": "cardiopatia_congenita",
+    "rotulo": "Cardiopatia congênita (comunicação interventricular)",
+    "grupo": "congenito",
+    "descricao": "Defeito de nascença no coração: sopro audível de longe e cansaço ao mamar. Não há correção a campo.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "trombose_veia_cava",
+    "rotulo": "Trombose da veia cava caudal",
+    "grupo": "cardiorrespiratorio",
+    "descricao": "Trombo que embolizou para o pulmão e rompeu vaso: hemorragia nasal massiva e morte. Em geral tem origem em abscesso hepático.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "intoxicacao_dicumarinico",
+    "rotulo": "Intoxicação por dicumarínico (veneno de rato)",
+    "grupo": "toxicologicas",
+    "descricao": "O veneno bloqueia a vitamina K e o sangue não coagula: sangramento que não para no local de injeção ou de qualquer ferida.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "edema_pelvico_gestacional",
+    "rotulo": "Edema pélvico compressivo da gestação",
+    "grupo": "reprodutivas",
+    "descricao": "O peso do feto comprime as veias da pelve e incha as duas patas traseiras, sem febre. Resolve com o parto."
+  },
+  {
+    "id": "obesidade_sobrecarga",
+    "rotulo": "Obesidade com sobrecarga cardíaca",
+    "grupo": "cardiorrespiratorio",
+    "descricao": "Gordura excessiva, inclusive em volta do coração, impede dissipar calor e sobrecarrega a circulação."
+  },
+  {
+    "id": "hiperqueratose_esfincter",
+    "rotulo": "Hiperqueratose de esfíncter (lesão de ordenhadeira)",
+    "grupo": "mastite",
+    "descricao": "Vácuo alto e máquina desregulada machucam a ponta do teto: pústulas e feridas no esfíncter, que abrem porta para a mastite."
+  },
+  {
+    "id": "fibrose_canal_teto",
+    "rotulo": "Fibrose ou papiloma do canal do teto (\"ervilha\")",
+    "grupo": "mastite",
+    "descricao": "Nódulo duro dentro do canal do teto, que impede a saída do leite e obriga a usar sonda."
+  },
+  {
+    "id": "leucose_bovina",
+    "rotulo": "Leucose bovina enzoótica (forma tumoral)",
+    "grupo": "parasitarias",
+    "descricao": "Vírus que causa linfoma: gânglios aumentados simetricamente e emagrecimento lento em vaca de idade. Não há tratamento.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "ibr",
+    "rotulo": "Rinotraqueíte infecciosa bovina (IBR)",
+    "grupo": "parasitarias",
+    "descricao": "Herpesvírus respiratório: conjuntivite, catarro, febre e placas com feridas esbranquiçadas dentro do focinho."
+  },
+  {
+    "id": "maceracao_fetal",
+    "rotulo": "Maceração fetal com sepse",
+    "grupo": "emergencia",
+    "descricao": "O bezerro morto se decompõe dentro do útero e a infecção cai no sangue: febre altíssima, prostração e choque com extremidades geladas.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "sindrome_animal_peludo",
+    "rotulo": "Síndrome do animal peludo (sequela de febre aftosa)",
+    "grupo": "parasitarias",
+    "descricao": "Sequela endócrina da aftosa: o animal não troca o pelo, não tolera calor, vive ofegante e produz pouco."
+  },
+  {
+    "id": "intoxicacao_nitrato",
+    "rotulo": "Intoxicação por nitrato/nitrito",
+    "grupo": "toxicologicas",
+    "descricao": "Capim de várzea adubada acumula nitrato: o sangue perde a capacidade de levar oxigênio, as mucosas escurecem e o animal morre por hipóxia.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "trauma_raquimedular",
+    "rotulo": "Traumatismo raquimedular (fratura ou compressão da medula)",
+    "grupo": "locomotor",
+    "descricao": "Queda durante a monta fraturou ou comprimiu a medula lombar: o animal arrasta os quartos traseiros.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "otite_micoplasma",
+    "rotulo": "Otite média com pneumonia (Mycoplasma bovis)",
+    "grupo": "parasitarias",
+    "descricao": "Complexo respiratório de bezerro que chega ao ouvido: orelha caída com pus no canal, somada a tosse, febre e catarro."
+  },
+  {
+    "id": "acidose_latica",
+    "rotulo": "Acidose lática severa (sobrecarga de carboidratos)",
+    "grupo": "emergencia",
+    "descricao": "Grande quantidade de fruta ou grão de uma vez acidifica o rúmen de forma brutal: estupor, cegueira e coma, sem convulsão.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "timpanismo_postural",
+    "rotulo": "Timpanismo postural (asfixia mecânica)",
+    "grupo": "emergencia",
+    "descricao": "O animal caiu de lado em buraco ou barranco e não consegue arrotar: o rúmen estufa e comprime o pulmão. Reposicionar é o tratamento.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "babesiose",
+    "rotulo": "Babesiose bovina",
+    "grupo": "parasitarias",
+    "descricao": "Forma de tristeza parasitária causada por protozoário transmitido pelo carrapato, com destruição de hemácias: febre, mucosas pálidas e urina escura.",
+    "bandeiraVermelha": true,
+    "substitui": ["tristeza_parasitaria"]
+  },
+  {
+    "id": "hipocalcemia_subclinica",
+    "rotulo": "Hipocalcemia subclínica (atraso na involução uterina)",
+    "grupo": "metabolicas",
+    "descricao": "Queda discreta de cálcio no pós-parto, sem a vaca cair: ela levanta com dificuldade e o útero involui mais devagar que o normal."
+  },
+  {
+    "id": "cetose_nervosa",
+    "rotulo": "Cetose nervosa",
+    "grupo": "metabolicas",
+    "descricao": "Forma de cetose em que os corpos cetônicos afetam o sistema nervoso: a vaca lambe e rói objetos, anda em círculos e saliva, além de emagrecer."
+  },
+  {
+    "id": "endometrite",
+    "rotulo": "Endometrite clínica",
+    "grupo": "pos_parto",
+    "descricao": "Infecção uterina mais branda que a metrite: a vaca come e produz normalmente, mas elimina pus pela vulva, principalmente ao deitar."
+  },
+  {
+    "id": "doenca_linha_branca",
+    "rotulo": "Doença da linha branca",
+    "grupo": "locomotor",
+    "descricao": "A linha branca (junção entre sola e parede do casco) se rompe e deixa entrar barro e bactérias, formando abscesso que sobe pela parede."
+  },
+  {
+    "id": "abscesso_subsolar",
+    "rotulo": "Abscesso subsolar",
+    "grupo": "locomotor",
+    "descricao": "Coleção de pus formada sob a sola do casco, sem comunicação externa: a sola cede e dói muito ao apertar, mesmo sem ferida visível."
+  },
+  {
+    "id": "dermatite_interdigital",
+    "rotulo": "Dermatite interdigital",
+    "grupo": "locomotor",
+    "descricao": "Inflamação leve e superficial da pele entre as unhas, sem o inchaço e o cheiro fétido da frieira — estágio inicial, manqueira discreta."
+  },
+  {
+    "id": "fratura_falange",
+    "rotulo": "Fratura de terceira falange (trauma de casco)",
+    "grupo": "locomotor",
+    "descricao": "Trauma súbito (briga, piso duro) fratura o osso dentro do casco: manqueira grave com crepitação, sem ferida externa.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "botulismo",
+    "rotulo": "Botulismo",
+    "grupo": "neurologico",
+    "descricao": "Toxina ingerida em ossos, carcaças ou ração contaminada paralisa a musculatura de forma mole (flácida): o animal cai, não sustenta o pescoço nem a língua.",
+    "bandeiraVermelha": true
+  },
+  {
+    "id": "tuberculose",
+    "rotulo": "Tuberculose bovina",
+    "grupo": "parasitarias",
+    "descricao": "Infecção bacteriana crônica: emagrecimento lento e tosse persistente ao longo de meses, com gânglios aumentados que não respondem a tratamento comum.",
+    "bandeiraVermelha": true,
+    "substitui": ["leucose_bovina"]
+  },
+  {
+    "id": "febre_transporte",
+    "rotulo": "Doença Respiratória Bovina (febre do transporte)",
+    "grupo": "parasitarias",
+    "descricao": "Pneumonia desencadeada pelo estresse do transporte e da mistura de lotes recém-chegados (leilão, feira), muito comum em bezerros comprados.",
+    "substitui": ["pneumonia"]
+  },
+  {
+    "id": "bvd_mucosas",
+    "rotulo": "Diarreia Viral Bovina — Doença das Mucosas (BVD)",
+    "grupo": "parasitarias",
+    "descricao": "Infecção viral que soma diarreia com sangue a feridas erosivas na boca; costuma ser altamente fatal e atinge vários animais do lote.",
+    "bandeiraVermelha": true,
+    "substitui": ["enterotoxemia"]
+  },
+  {
+    "id": "fasciolose",
+    "rotulo": "Fasciolose bovina (baratinha do fígado)",
+    "grupo": "parasitarias",
+    "descricao": "Verme achatado transmitido por caramujos de área alagada, que destrói o fígado lentamente: emagrecimento, papeira e mucosas pálidas.",
+    "substitui": ["verminose"]
   }
 ]

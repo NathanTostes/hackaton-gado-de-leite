@@ -11,7 +11,7 @@
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { FlatList, Pressable, ScrollView, TextInput, View } from 'react-native';
+import { FlatList, Pressable, TextInput, View } from 'react-native';
 import {
   ROTULO_STATUS,
   listarLotes,
@@ -58,9 +58,9 @@ const CATEGORIAS: CategoriaAnimal[] = [
   'boi_carro',
 ];
 
-// 'morto' e 'descartado' saem da lista por outro caminho (exclusão lógica e
-// registro de morte); filtrar por eles aqui só confundiria.
-const STATUS: StatusAnimal[] = ['saudavel', 'em_tratamento', 'em_carencia', 'mastite_cronica', 'quarentena'];
+// Falecidos, vendidos e descartados ficam fora da lista ativa.
+// Os botões de histórico mantêm suas fichas e prontuários acessíveis.
+const STATUS: StatusAnimal[] = ['saudavel', 'suspeito', 'em_tratamento', 'em_carencia', 'mastite_cronica', 'quarentena'];
 
 const ORDENS: { chave: NonNullable<FiltrosRebanho['ordenarPor']>; rotulo: string }[] = [
   { chave: 'brinco', rotulo: 'Brinco' },
@@ -128,10 +128,13 @@ export default function Rebanho() {
 
   const resumo = useMemo(() => resumirLista(dados ?? []), [dados]);
 
-  return (
-    <Tela scroll={false}>
-      <View style={{ padding: espaco.lg, paddingBottom: espaco.sm, gap: espaco.md }}>
+  const cabecalho = (
+      <View style={{ paddingTop: espaco.lg, paddingBottom: espaco.sm, gap: espaco.md }}>
         <CabecalhoPagina titulo="Rebanho" subtitulo="Busque e filtre os animais da propriedade" />
+        <Linha style={{ flexWrap: 'wrap', marginBottom: espaco.md }}>
+          <Botao titulo="Gado falecido" icone="history" variante="secundario" aoTocar={() => router.push('/falecidos')} />
+          <Botao titulo="Gado vendido" icone="sell" variante="secundario" aoTocar={() => router.push('/vendidos')} />
+        </Linha>
 
         <Linha
           style={{
@@ -153,6 +156,7 @@ export default function Rebanho() {
             placeholderTextColor={c.textoSecundario}
             style={{
               flex: 1,
+              minWidth: 0,
               minHeight: 48,
               color: c.texto,
               fontFamily: 'Inter_400Regular',
@@ -169,22 +173,15 @@ export default function Rebanho() {
           )}
         </Linha>
 
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={CATEGORIAS}
-          keyExtractor={(x) => x}
-          contentContainerStyle={{ gap: espaco.sm }}
-          renderItem={({ item }) => (
-            <Chip
-              texto={ROTULO_CATEGORIA[item]}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: espaco.sm }}>
+          {CATEGORIAS.map((item) => (
+            <Chip key={item} texto={ROTULO_CATEGORIA[item]}
               ativo={f.categorias.includes(item)}
-              aoTocar={() => alternar('categorias', alternarNaLista(f.categorias, item))}
-            />
-          )}
-        />
+              aoTocar={() => alternar('categorias', alternarNaLista(f.categorias, item))} />
+          ))}
+        </View>
 
-        <Linha gap={espaco.sm}>
+        <Linha gap={espaco.sm} style={{ flexWrap: 'wrap' }}>
           <Chip
             texto="Em carência"
             icone="block"
@@ -211,15 +208,15 @@ export default function Rebanho() {
         </Linha>
 
         {painelAberto && (
-          <ScrollView
+          <View
             style={{
-              maxHeight: amplo ? 420 : 300,
               borderWidth: 1,
               borderColor: c.borda,
               borderRadius: 10,
               backgroundColor: c.superficie,
+              padding: espaco.md,
+              gap: espaco.md,
             }}
-            contentContainerStyle={{ padding: espaco.md, gap: espaco.md }}
           >
             <Grupo titulo="Situação">
               {STATUS.map((s) => (
@@ -324,50 +321,44 @@ export default function Rebanho() {
             </Grupo>
 
             <Botao titulo="Limpar filtros" icone="backspace" variante="secundario" aoTocar={limpar} />
-          </ScrollView>
+          </View>
         )}
       </View>
 
-      {carregando && !dados ? (
-        <Carregando />
-      ) : !dados || dados.length === 0 ? (
-        <Vazio
-          icone="search-off"
-          titulo="Nenhum animal encontrado"
-          texto={
-            ativos || busca
-              ? 'Nenhum animal atende a todos os critérios. Tire um filtro ou simplifique a busca.'
-              : 'Cadastre o primeiro animal da propriedade.'
-          }
-        />
-      ) : (
-        <FlatList
-          // numColumns não pode mudar sem remontar a lista.
-          key={`colunas-${colunas}`}
-          data={dados}
-          keyExtractor={(a) => a.id}
-          numColumns={colunas}
-          columnWrapperStyle={colunas > 1 ? { gap: espaco.sm } : undefined}
-          contentContainerStyle={{ padding: espaco.lg, paddingTop: 0, gap: espaco.sm }}
-          initialNumToRender={12}
-          maxToRenderPerBatch={12}
-          windowSize={7}
-          removeClippedSubviews
-          keyboardShouldPersistTaps="handled"
-          ListHeaderComponent={
-            <Txt v="caption" cor={c.textoSecundario} style={{ marginBottom: espaco.sm }}>
-              {`${dados.length} animal(is)`}
-              {resumo?.litros ? ` · ${numero(resumo.litros)} L/dia no recorte` : ''}
-              {resumo?.comAlerta ? ` · ${resumo.comAlerta} com alerta` : ''}
-            </Txt>
-          }
-          renderItem={({ item }) => (
-            <View style={colunas > 1 ? { flex: 1 / colunas } : undefined}>
-              <ItemRebanho animal={item} />
-            </View>
-          )}
-        />
-      )}
+  );
+
+  return (
+    <Tela scroll={false}>
+      <FlatList
+        // Uma única rolagem mantém o fim dos filtros acessível em qualquer altura.
+        key={`colunas-${colunas}`}
+        style={{ flex: 1 }}
+        data={dados ?? []}
+        keyExtractor={(animal) => animal.id}
+        numColumns={colunas}
+        columnWrapperStyle={colunas > 1 ? { gap: espaco.sm } : undefined}
+        contentContainerStyle={{ paddingHorizontal: espaco.lg, paddingBottom: espaco.xxl, gap: espaco.sm }}
+        initialNumToRender={12}
+        maxToRenderPerBatch={12}
+        windowSize={7}
+        keyboardShouldPersistTaps="handled"
+        ListHeaderComponent={<>
+          {cabecalho}
+          {!!dados?.length && <Txt v="caption" cor={c.textoSecundario} style={{ marginBottom: espaco.sm }}>
+            {`${dados.length} animal(is)`}
+            {resumo?.litros ? ` · ${numero(resumo.litros)} L/dia no recorte` : ''}
+            {resumo?.comAlerta ? ` · ${resumo.comAlerta} com alerta` : ''}
+          </Txt>}
+        </>}
+        ListEmptyComponent={carregando ? <Carregando /> : <Vazio
+          icone="search-off" titulo="Nenhum animal encontrado"
+          texto={ativos || busca
+            ? 'Nenhum animal atende a todos os critérios. Tire um filtro ou simplifique a busca.'
+            : 'Cadastre o primeiro animal da propriedade.'} />}
+        renderItem={({ item }) => <View style={{ ...(colunas > 1 ? { flex: 1 / colunas } : {}), minWidth: 0 }}>
+          <ItemRebanho animal={item} />
+        </View>}
+      />
     </Tela>
   );
 }
@@ -399,16 +390,14 @@ function Faixa({
 }) {
   const { c, espaco } = useTema();
   return (
-    <Linha gap={espaco.sm} style={{ flex: 1, minWidth: 260 }}>
-      <Txt v="caption" style={{ width: 110 }}>
-        {rotulo}
-      </Txt>
-      <CampoNumero valor={de} aoMudar={aoMudarDe} rotulo={`${rotulo} — mínimo`} placeholder="de" />
-      <Txt v="caption" cor={c.textoSecundario}>
-        até
-      </Txt>
-      <CampoNumero valor={ate} aoMudar={aoMudarAte} rotulo={`${rotulo} — máximo`} placeholder="até" />
-    </Linha>
+    <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: 260, minWidth: 0, maxWidth: '100%', gap: espaco.sm }}>
+      <Txt v="caption">{rotulo}</Txt>
+      <Linha gap={espaco.sm}>
+        <CampoNumero valor={de} aoMudar={aoMudarDe} rotulo={`${rotulo} — mínimo`} placeholder="de" />
+        <Txt v="caption" cor={c.textoSecundario}>até</Txt>
+        <CampoNumero valor={ate} aoMudar={aoMudarAte} rotulo={`${rotulo} — máximo`} placeholder="até" />
+      </Linha>
+    </View>
   );
 }
 
@@ -433,7 +422,8 @@ function CampoNumero({
       placeholder={placeholder}
       placeholderTextColor={c.textoSecundario}
       style={{
-        width: 72,
+        flex: 1,
+        minWidth: 0,
         minHeight: 40,
         borderWidth: 1,
         borderColor: c.borda,
@@ -452,15 +442,17 @@ function ItemRebanho({ animal }: { animal: AnimalComResumo }) {
   const { c, espaco, raio } = useTema();
   const cmt = animal.ultimo_cmt;
   const alerta =
-    animal.status === 'em_carencia'
-      ? { cor: c.alerta, icone: 'block' as const }
-      : animal.status === 'em_tratamento'
-        ? { cor: c.atencao, icone: 'medication' as const }
-        : animal.status === 'mastite_cronica'
-          ? { cor: c.alerta, icone: 'coronavirus' as const }
-          : animal.status === 'quarentena'
-            ? { cor: c.atencao, icone: 'shield' as const }
-            : null;
+    animal.status === 'suspeito'
+      ? { cor: c.alerta, icone: 'warning' as const }
+      : animal.status === 'em_carencia'
+        ? { cor: c.alerta, icone: 'block' as const }
+        : animal.status === 'em_tratamento'
+          ? { cor: c.atencao, icone: 'medication' as const }
+          : animal.status === 'mastite_cronica'
+            ? { cor: c.alerta, icone: 'coronavirus' as const }
+            : animal.status === 'quarentena'
+              ? { cor: c.atencao, icone: 'shield' as const }
+              : null;
 
   const idade = idadeLegivel(animal.idade_meses);
   const detalhes = [

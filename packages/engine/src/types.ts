@@ -46,7 +46,19 @@ export type Operador =
   | 'entre'
   | 'em'
   | 'contem'
-  | 'desconhecido';
+  | 'desconhecido'
+  /**
+   * "Não foi confirmado que a variável vale `val`" — verdadeiro tanto quando o
+   * fato é desconhecido quanto quando é conhecido e diferente.
+   *
+   * Existe para uma única forma de afirmação clínica: a conclusão de exclusão
+   * ("nada alterado foi encontrado"). Com `nao`, a premissa só se satisfaz se
+   * TODOS os sinais tiverem sido explicitamente respondidos como negativos — e
+   * basta o produtor não ter respondido um item do painel para a triagem de um
+   * animal saudável ficar sem conclusão nenhuma. Não serve para afirmar
+   * diagnóstico: aí desconhecido ≠ falso continua valendo (§4.5).
+   */
+  | 'nao_confirmado';
 
 export interface CondicaoSimples {
   var: string;
@@ -90,6 +102,11 @@ export type GrupoRegra =
   | 'notificacao_obrigatoria'
   | 'emergencia'
   | 'bezerras'
+  | 'neurologico'
+  | 'oftalmico'
+  | 'cardiorrespiratorio'
+  | 'congenito'
+  | 'fisiologico'
   | 'rebanho';
 
 /**

@@ -33,6 +33,9 @@ import g10 from '../kb/grupos/10-rebanho.json';
 import g11 from '../kb/grupos/11-reprodutivas.json';
 import g12 from '../kb/grupos/12-pele.json';
 import g13 from '../kb/grupos/13-nutricionais-toxicologicas.json';
+import g14 from '../kb/grupos/14-ampliacao-clinica.json';
+import g15 from '../kb/grupos/15-clinica-ampliada-ii.json';
+import g16 from '../kb/grupos/16-ampliacao-clinica-iii.json';
 
 export { default as metaKb } from '../kb/meta.json';
 
@@ -50,6 +53,9 @@ const GRUPOS: { arquivo: string; regras: unknown[] }[] = [
   { arquivo: '11-reprodutivas', regras: g11 },
   { arquivo: '12-pele', regras: g12 },
   { arquivo: '13-nutricionais-toxicologicas', regras: g13 },
+  { arquivo: '14-ampliacao-clinica', regras: g14 },
+  { arquivo: '15-clinica-ampliada-ii', regras: g15 },
+  { arquivo: '16-ampliacao-clinica-iii', regras: g16 },
 ];
 
 export class ErroDeBase extends Error {}
@@ -179,6 +185,11 @@ export const ROTULO_GRUPO: Record<string, string> = {
   notificacao_obrigatoria: 'Notificação obrigatória',
   emergencia: 'Emergências',
   bezerras: 'Bezerras',
+  neurologico: 'Neurológicas',
+  oftalmico: 'Oftálmicas',
+  cardiorrespiratorio: 'Cardiorrespiratórias',
+  congenito: 'Congênitas',
+  fisiologico: 'Fisiológico / falso alarme',
   rebanho: 'Indicadores de rebanho',
 };
 
@@ -211,3 +222,20 @@ export {
   type CasoDeTeste,
   type ResultadoCaso,
 } from './casos';
+
+export {
+  assertividade,
+  baterias,
+  casosRebanhoSintetico,
+  executarBateria,
+  todosOsProntuarios,
+  type Bateria,
+  contextoDoAnimal,
+  executarProntuario,
+  executarRebanhoSintetico,
+  prontuarioComoCaso,
+  rebanhoSintetico,
+  versaoRebanhoSintetico,
+  type AnimalSintetico,
+  type Prontuario,
+} from './rebanho';

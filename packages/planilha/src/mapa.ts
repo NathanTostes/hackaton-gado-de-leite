@@ -55,12 +55,14 @@ const CATEGORIAS = [
 
 const STATUS = [
   'saudavel',
+  'suspeito',
   'em_tratamento',
   'em_carencia',
   'mastite_cronica',
   'quarentena',
   'descartado',
   'morto',
+  'vendido',
 ] as const;
 
 const RESULTADOS_CMT = ['N', 'T', '1', '2', '3', 'PP'] as const;
@@ -77,6 +79,10 @@ export const ABAS: AbaPlanilha[] = [
     descricao: 'Dados da fazenda. Uma linha só.',
     colunas: [
       { coluna: 'nome', titulo: 'Nome da propriedade', tipo: 'texto', obrigatoria: true, exemplo: 'Sítio Boa Esperança' },
+      { coluna: 'estado', titulo: 'Estado (UF)', tipo: 'texto', exemplo: 'MG' },
+      { coluna: 'cidade', titulo: 'Cidade', tipo: 'texto', exemplo: 'Juiz de Fora' },
+      { coluna: 'pais', titulo: 'País', tipo: 'texto', exemplo: 'Brasil' },
+      { coluna: 'tipo_pasto', titulo: 'Tipo de pasto', tipo: 'texto', exemplo: 'Braquiária' },
       numeroDe('area_propria_ha', 'Área própria (ha)', 28),
       numeroDe('area_arrendada_ha', 'Área arrendada (ha)', 20),
       { coluna: 'mao_de_obra_pessoas', titulo: 'Pessoas na mão de obra', tipo: 'inteiro', exemplo: 2 },
@@ -118,6 +124,8 @@ export const ABAS: AbaPlanilha[] = [
       { coluna: 'status', titulo: 'Situação', tipo: 'texto', valores: STATUS, exemplo: 'saudavel' },
       { coluna: 'origem', titulo: 'Origem', tipo: 'texto', valores: ['nascimento', 'compra', 'transferencia', 'doacao'], exemplo: 'nascimento' },
       { coluna: 'data_entrada', titulo: 'Entrada no rebanho', tipo: 'data' },
+      { coluna: 'data_saida', titulo: 'Data de saída', tipo: 'data' },
+      { coluna: 'motivo_saida', titulo: 'Motivo de saída', tipo: 'texto' },
       { coluna: 'procedencia', titulo: 'Procedência', tipo: 'texto' },
       numeroDe('valor_aquisicao', 'Valor de aquisição (R$)'),
       { coluna: 'numero_gta', titulo: 'Número da GTA', tipo: 'texto' },
@@ -279,6 +287,7 @@ export const ABAS: AbaPlanilha[] = [
     colunas: [
       { coluna: 'animal_id', titulo: 'Brinco', tipo: 'texto', obrigatoria: true, referencia: 'animal' },
       { coluna: 'data', titulo: 'Data', tipo: 'data', obrigatoria: true },
+      { coluna: 'hora', titulo: 'Hora (HH:mm)', tipo: 'texto' },
       { coluna: 'categoria_na_morte', titulo: 'Categoria na morte', tipo: 'texto' },
       { coluna: 'causa', titulo: 'Causa', tipo: 'texto', obrigatoria: true },
       { coluna: 'orientacoes', titulo: 'Orientações', tipo: 'texto' },
@@ -303,6 +312,7 @@ export const ABAS: AbaPlanilha[] = [
     colunas: [
       { coluna: 'data', titulo: 'Data', tipo: 'data', obrigatoria: true },
       { coluna: 'categoria', titulo: 'Categoria', tipo: 'texto', obrigatoria: true, exemplo: 'leite' },
+      { coluna: 'destinatario', titulo: 'Destinatário', tipo: 'texto' },
       { coluna: 'descricao', titulo: 'Descrição', tipo: 'texto' },
       { coluna: 'valor', titulo: 'Valor (R$)', tipo: 'numero', obrigatoria: true },
       { coluna: 'animal_id', titulo: 'Brinco (se for de um animal)', tipo: 'texto', referencia: 'animal' },
@@ -319,7 +329,7 @@ export const ABAS: AbaPlanilha[] = [
       { coluna: 'animal_id', titulo: 'Brinco', tipo: 'texto', referencia: 'animal' },
       { coluna: 'lote_id', titulo: 'Lote', tipo: 'texto', referencia: 'lote' },
       { coluna: 'descricao', titulo: 'Descrição', tipo: 'texto' },
-      { coluna: 'status', titulo: 'Situação', tipo: 'texto', valores: ['pendente', 'concluido', 'cancelado'] },
+      { coluna: 'status', titulo: 'Situação', tipo: 'texto', valores: ['pendente', 'feito', 'concluido', 'atrasado', 'cancelado'] },
     ],
   },
 ];

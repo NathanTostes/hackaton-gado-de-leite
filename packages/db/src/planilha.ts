@@ -39,7 +39,7 @@ const CHAVE_NATURAL: Record<string, string[]> = {
   cobertura: ['animal_id', 'data'],
   morte: ['animal_id', 'data'],
   despesa: ['data', 'categoria', 'valor'],
-  receita: ['data', 'categoria', 'valor'],
+  receita: ['data', 'categoria', 'valor', 'animal_id'],
   evento_calendario: ['tipo', 'data', 'titulo'],
 };
 

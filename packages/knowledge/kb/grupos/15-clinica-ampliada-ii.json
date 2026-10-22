@@ -1,0 +1,2950 @@
+[
+  {
+    "id": "CON-FENDA-PALATINA",
+    "versao": "1.0.0",
+    "grupo": "congenito",
+    "titulo": "Fenda palatina",
+    "prioridade": 95,
+    "se": {
+      "var": "leite_pelas_narinas",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "fenda_palatina",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Leite escorrendo pelas narinas ao mamar, com tosse de engasgo, indica comunicação entre a boca e o nariz: o céu da boca não fechou. Cada mamada leva leite para o pulmão.",
+    "conduta": [
+      "PARE de oferecer leite no bico ou no balde: cada mamada agrava a broncoaspiração.",
+      "CHAME O MÉDICO-VETERINÁRIO. Abra a boca e examine o céu da boca.",
+      "Na maioria dos casos a correção não é viável a campo — discuta eutanásia humanitária com o veterinário."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CON-ATRESIA-ANAL",
+    "versao": "1.0.0",
+    "grupo": "congenito",
+    "titulo": "Atresia anal (ânus imperfurado)",
+    "prioridade": 96,
+    "se": {
+      "var": "ausencia_orificio_anal",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "atresia_anal",
+        "cf": 0.95
+      }
+    ],
+    "porque": "Ausência do orifício anal com abdômen cada vez mais distendido em recém-nascido é defeito congênito de fechamento. Sem saída para as fezes, o animal morre em poucos dias.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. A única chance é correção cirúrgica imediata.",
+      "Não ofereça mais leite até a avaliação.",
+      "Anote a ocorrência: defeitos congênitos repetidos pedem revisão do acasalamento."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-COCCIDIOSE",
+    "versao": "1.0.0",
+    "grupo": "bezerras",
+    "titulo": "Coccidiose",
+    "prioridade": 88,
+    "se": {
+      "todas": [
+        {
+          "var": "idade_dias",
+          "op": "<=",
+          "val": 180
+        },
+        {
+          "var": "fezes_sangue_vivo_tenesmo",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "coccidiose",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Fezes escuras com estrias de sangue vivo e muita força para defecar (tenesmo), em bezerro de ambiente lotado, é coccidiose: o protozoário destrói a mucosa do intestino grosso.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. O tratamento é com coccidiostático prescrito.",
+      "Trate todo o lote e reduza a lotação do bezerreiro.",
+      "Limpe e seque as baias: o oocisto sobrevive na umidade e na matéria orgânica.",
+      "Ofereça soro oral à vontade enquanto houver diarreia."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-CRIPTOSPORIDIOSE",
+    "versao": "1.0.0",
+    "grupo": "bezerras",
+    "titulo": "Criptosporidiose — zoonose",
+    "prioridade": 90,
+    "se": {
+      "todas": [
+        {
+          "var": "idade_dias",
+          "op": "<=",
+          "val": 45
+        },
+        {
+          "var": "fezes_liquidas",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "tratador_com_diarreia",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "criptosporidiose",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Diarreia aquosa intensa em bezerro novo, com a pessoa que cuida do lote também adoecendo, aponta para criptosporidiose — protozoário que infecta bezerro e gente pela mesma via fecal-oral.",
+    "conduta": [
+      "USE LUVAS e lave as mãos: esta diarreia passa para pessoas.",
+      "Procure atendimento de saúde para quem adoeceu e informe o contato com bezerros.",
+      "Hidrate o bezerro com soro oral; não há medicamento específico de eficácia comprovada.",
+      "Isole os bezerros doentes e desinfete baldes, bicos e baias."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-CHUMBO",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Intoxicação por chumbo",
+    "prioridade": 94,
+    "se": {
+      "todas": [
+        {
+          "var": "baterias_sucata_pasto",
+          "op": "=",
+          "val": true
+        },
+        {
+          "alguma": [
+            {
+              "var": "cegueira_subita",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "ranger_dentes",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "agitacao_convulsao",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "intoxicacao_chumbo",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Bateria velha, tinta ou sucata no pasto é a fonte clássica de chumbo. Cegueira, ranger de dentes, salivação, cabeçadas em obstáculos e convulsão, em vários animais do mesmo lote, fecham o quadro.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "RETIRE IMEDIATAMENTE o lote da área e recolha toda a sucata e bateria.",
+      "NÃO consuma o leite destes animais: o chumbo passa para o leite e para a carne.",
+      "Informe o serviço oficial: há risco para a saúde pública."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "NUT-MUSCULO-BRANCO",
+    "versao": "1.0.0",
+    "grupo": "nutricionais",
+    "titulo": "Doença do músculo branco",
+    "prioridade": 86,
+    "se": {
+      "todas": [
+        {
+          "var": "idade_dias",
+          "op": "<=",
+          "val": 180
+        },
+        {
+          "var": "musculos_tremem_nao_sustentam",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "dieta_pobre_selenio",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "doenca_musculo_branco",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Bezerro que tenta levantar e cujos músculos tremem sem sustentar o peso, filho de mãe com dieta pobre em selênio e vitamina E, tem degeneração muscular nutricional.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. A aplicação de selênio e vitamina E injetáveis responde bem quando precoce.",
+      "Corrija a suplementação mineral das vacas no pré-parto.",
+      "Mantenha o bezerro em piso macio e ajude-o a mamar."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-GOTEIRA-ESOFAGICA",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Falha da goteira esofágica",
+    "prioridade": 78,
+    "se": {
+      "todas": [
+        {
+          "var": "idade_dias",
+          "op": "<=",
+          "val": 180
+        },
+        {
+          "var": "estufa_apos_mamada_balde",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "falha_goteira_esofagica",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Estufamento do flanco esquerdo logo após a mamada no balde mostra que o leite caiu no rúmen em vez de seguir pela goteira esofágica até o estômago. Lá ele fermenta, estufa e não alimenta.",
+    "conduta": [
+      "Ofereça o leite em bico/mamadeira na altura da cabeça levantada, nunca em balde no chão.",
+      "Mantenha horário, temperatura (37 °C) e volume constantes.",
+      "CHAME O MÉDICO-VETERINÁRIO. se o estufamento persistir após o ajuste do manejo."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "NUT-COBRE",
+    "versao": "1.0.0",
+    "grupo": "nutricionais",
+    "titulo": "Deficiência de cobre",
+    "prioridade": 77,
+    "se": {
+      "todas": [
+        {
+          "var": "pelos_desbotados_oculos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "alguma": [
+            {
+              "var": "fezes_liquidas",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "diarreia_cronica_refrataria",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "perda_escore_corporal",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "deficiencia_cobre",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Pelos desbotados ao redor dos olhos, formando \"óculos\", com diarreia crônica e atraso de crescimento, é o quadro da deficiência de cobre — mineral que o pelo precisa para pigmentar.",
+    "conduta": [
+      "Revise a mistura mineral com o técnico: cobre e seus antagonistas (molibdênio, enxofre, ferro).",
+      "Analise água e solo da propriedade.",
+      "CHAME O MÉDICO-VETERINÁRIO. para suplementação de cobre, que exige dose correta — excesso de cobre também intoxica."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CON-HIPOPLASIA-CEREBELAR",
+    "versao": "1.0.0",
+    "grupo": "congenito",
+    "titulo": "Hipoplasia cerebelar",
+    "prioridade": 93,
+    "se": {
+      "var": "tremores_congenitos",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipoplasia_cerebelar",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Tremores severos de cabeça e incapacidade de ficar em pé JÁ AO NASCER apontam para falha de formação do cerebelo durante a gestação, em geral por infecção uterina pelo vírus da BVD.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. O defeito é de formação e não regride.",
+      "Investigue BVD no rebanho: em geral há mais casos e perdas reprodutivas associadas.",
+      "Revise o protocolo de vacinação reprodutiva das matrizes."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-MENINGITE",
+    "versao": "1.0.0",
+    "grupo": "bezerras",
+    "titulo": "Meningite bacteriana",
+    "prioridade": 94,
+    "se": {
+      "todas": [
+        {
+          "var": "idade_dias",
+          "op": "<=",
+          "val": 90
+        },
+        {
+          "var": "dor_cabeca_pescoco",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "meningite_bacteriana",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Febre alta com dor ao toque na cabeça e no pescoço e cabeça repuxada para trás, em bezerro novo, é infecção que chegou às meninges — quase sempre a partir do umbigo. Diferente do tétano, há febre e dor.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. Antibiótico sistêmico precoce é a única chance.",
+      "Mantenha o bezerro em ambiente escuro e silencioso.",
+      "Trate também a porta de entrada (umbigo) e revise a higiene da maternidade."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-ABORTO-TERMICO",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Aborto por estresse térmico",
+    "prioridade": 72,
+    "se": {
+      "todas": [
+        {
+          "var": "aborto",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "estresse_termico_recente",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "caes_acesso_cocho",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "aborto_precoce_fetido",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "aborto_estresse_termico",
+        "cf": 0.75
+      }
+    ],
+    "porque": "Aborto após transporte longo, sol intenso e estresse térmico severo, sem nenhum sinal de infecção na vaca nem no feto, aponta para causa não infecciosa: o estresse interrompeu a gestação.",
+    "conduta": [
+      "Evite transportar vacas prenhes em horário de calor; ofereça sombra e água no trajeto.",
+      "Mesmo assim, encaminhe feto e placenta para exame: aborto sempre merece diagnóstico diferencial.",
+      "CHAME O MÉDICO-VETERINÁRIO. para acompanhar o puerpério."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PP-DISTOCIA-MEMBROS",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Distocia por desvio de membros",
+    "prioridade": 98,
+    "se": {
+      "var": "parto_travado_membros_dobrados",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "distocia_desvio_membros",
+        "cf": 0.92
+      }
+    ],
+    "porque": "Parto travado com o bezerro parcialmente para fora e os membros dobrados para trás é distocia de posição. Não se resolve com força: é preciso empurrar o feto de volta e corrigir a posição.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "NÃO TRACIONE com corda, trator ou mais gente: só vai piorar e pode romper o útero.",
+      "Mantenha a vaca de pé e calma até a chegada do profissional.",
+      "Lubrifique e mantenha a área limpa; não deixe o bezerro secar."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-DOENCA-VENEREA",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Doença venérea (tricomoníase ou campilobacteriose)",
+    "prioridade": 79,
+    "se": {
+      "todas": [
+        {
+          "var": "aborto_precoce_fetido",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "monta_natural_touro_novo",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "doenca_venerea",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Aborto no início da gestação, com feto e placenta expulsos juntos e cheiro de podre, em rebanho de monta natural com touro recém-comprado e sem exame, é a apresentação típica das doenças venéreas.",
+    "conduta": [
+      "AFASTE o touro das vacas até o diagnóstico: ele é a fonte.",
+      "CHAME O MÉDICO-VETERINÁRIO. para raspado/lavado prepucial do touro e exame das vacas.",
+      "Considere passar para inseminação artificial: é a forma mais eficaz de cortar o ciclo.",
+      "Faça exame andrológico e quarentena em toda compra de reprodutor."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-TOXEMIA-GESTACAO",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Toxemia da gestação (cetose pré-parto)",
+    "prioridade": 92,
+    "se": {
+      "todas": [
+        {
+          "var": "pre_parto",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "decubito",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "halito_adocicado",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "toxemia_gestacao",
+        "cf": 0.88
+      }
+    ],
+    "porque": "No fim da gestação, sobretudo com gêmeos, o feto consome mais energia do que a vaca consegue comer. Ela mobiliza gordura, entra em cetose e deita — é a toxemia da gestação, não a cetose de lactação.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. O tratamento inclui glicose/propilenoglicol e, às vezes, indução do parto.",
+      "Ofereça alimento de alta densidade energética e de fácil consumo.",
+      "Reveja o manejo nutricional das vacas de fim de gestação, sobretudo as de gêmeos."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MET-TOXEMIA-GEMEOS",
+    "versao": "1.0.0",
+    "grupo": "metabolicas",
+    "titulo": "Gestação gemelar agrava a toxemia",
+    "prioridade": 91,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "toxemia_gestacao"
+        },
+        {
+          "var": "gestacao_gemelar",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "toxemia_gestacao",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Dois fetos dobram a demanda de energia e reduzem o espaço do rúmen: é a situação de maior risco para toxemia da gestação.",
+    "conduta": [
+      "Separe as vacas de gestação gemelar em lote de manejo nutricional reforçado."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PP-RUPTURA-UTERINA",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Ruptura uterina / laceração vaginal severa",
+    "prioridade": 99,
+    "se": {
+      "var": "rasgo_vagina_abdomen",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "ruptura_uterina",
+        "cf": 0.95
+      }
+    ],
+    "porque": "Rasgo profundo comunicando a vagina com o abdômen, após parto tracionado, é ruptura uterina. O conteúdo contamina o abdômen e o choque se instala em horas.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. É emergência cirúrgica.",
+      "NÃO lave nem introduza nada pela vagina.",
+      "Mantenha a vaca em repouso absoluto até a chegada do profissional."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-MUMIFICACAO",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Mumificação fetal",
+    "prioridade": 81,
+    "se": {
+      "alguma": [
+        {
+          "var": "feto_mumificado",
+          "op": "=",
+          "val": true
+        },
+        {
+          "todas": [
+            {
+              "var": "gestacao_prolongada",
+              "op": "=",
+              "val": true
+            },
+            {
+              "nao": {
+                "var": "parto_travado_membros_dobrados",
+                "op": "=",
+                "val": true
+              }
+            },
+            {
+              "nao": {
+                "var": "aborto",
+                "op": "=",
+                "val": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "mumificacao_fetal",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Vaca que passa da data prevista de parto sem contrações, com o feto duro e seco ao toque, teve morte fetal sem infecção: o feto foi reabsorvido e mumificado dentro do útero.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. A retirada exige indução hormonal ou intervenção obstétrica.",
+      "NÃO espere o parto espontâneo: ele não vem.",
+      "Acompanhe o puerpério e a volta à atividade ovariana depois da retirada."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PELE-PSEUDOVARIOLA",
+    "versao": "1.0.0",
+    "grupo": "pele",
+    "titulo": "Pseudovaríola bovina",
+    "prioridade": 73,
+    "se": {
+      "todas": [
+        {
+          "var": "lesoes_anel_tetos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "vesiculas_boca_tetos_cascos",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "pseudovariola",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Feridas escuras em forma de ANEL na pele dos tetos, doloridas à ordenha, são pseudovaríola — vírus de pele agravado por ordenhadeira mal regulada. O formato em anel é o que a separa da aftosa, que faz bolhas também na boca e nos cascos.",
+    "conduta": [
+      "USE LUVAS na ordenha: a lesão passa para a mão de quem ordenha.",
+      "Ordenhe os animais afetados por último e desinfete as teteiras.",
+      "Regule o vácuo e a pulsação da ordenhadeira com o técnico.",
+      "Aplique emoliente/cicatrizante nos tetos conforme orientação."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MAST-TRAUMA-TETO",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Sangue no leite por ferimento de teto",
+    "prioridade": 77,
+    "se": {
+      "todas": [
+        {
+          "var": "leite_com_sangue",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "caneca_grumos",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "palpacao_inchaco",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "trauma_teto",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Sangue no leite desde os primeiros jatos, SEM grumos e SEM inchaço na mama, com corte visível no teto, é hemorragia de vaso rompido por trauma — não é mastite.",
+    "conduta": [
+      "Ordenhe o quarto com cuidado e sem massagear: massagem reabre o sangramento.",
+      "Mantenha o animal em piso limpo e afaste o arame ou a fonte do corte.",
+      "CHAME O MÉDICO-VETERINÁRIO. se o sangramento persistir por mais de 2–3 dias ou se aparecerem grumos e inchaço.",
+      "Descarte o leite com sangue."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 40 — diferenciação de sangue no leite por trauma de teto vs. mastite.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-VACA-SECA",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Mastite de vaca seca (mastite de verão)",
+    "prioridade": 92,
+    "se": {
+      "todas": [
+        {
+          "var": "periodo_seco",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "pus_verde_fetido",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "mastite_vaca_seca",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Quarto inchado e duro purgando pus verde, grosso e de cheiro insuportável durante o período seco é a mastite de vaca seca. O quarto quase sempre é perdido e a vaca corre risco sistêmico.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Não ordenhe para \"aliviar\" sem orientação: a manipulação dissemina a infecção.",
+      "Revise o protocolo de terapia de vaca seca e o controle de moscas no lote seco.",
+      "Programe reavaliação do quarto ao parto: provável peito perdido."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 40 — mastite de vaca seca (mastite de verão).",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-INCONTINENCIA",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Incontinência láctea por trauma de esfíncter",
+    "prioridade": 70,
+    "se": {
+      "var": "perda_ponta_teto",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "incontinencia_lactea",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Perda da ponta do teto deixa o esfíncter aberto: o leite pinga o dia todo e, pela mesma abertura, a bactéria entra. O risco principal passa a ser mastite de repetição.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para avaliar reconstrução ou selamento.",
+      "Mantenha o animal em piso limpo e seco e redobre a higiene de pré e pós-dipping.",
+      "Acompanhe este quarto com CMT frequente: o risco de mastite é alto.",
+      "Avalie secagem antecipada do quarto com o veterinário."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 40 — alterações de teto associadas a mastite crônica.",
+    "status": "validada"
+  },
+  {
+    "id": "PELE-VARIOLA-BOVINA",
+    "versao": "1.0.0",
+    "grupo": "pele",
+    "titulo": "Varíola bovina (cowpox) — zoonose",
+    "prioridade": 74,
+    "se": {
+      "todas": [
+        {
+          "var": "pustulas_crostas_tetos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "feridas_maos_ordenhador",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "variola_bovina",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Pústulas e crostas na pele dos tetos que se transmitem rapidamente para as mãos dos ordenhadores, causando feridas purulentas, caracterizam a varíola bovina — zoonose de contato direto.",
+    "conduta": [
+      "USE LUVAS: a doença passa para as mãos de quem ordenha.",
+      "Encaminhe os ordenhadores com feridas ao serviço de saúde.",
+      "Ordenhe os afetados por último e desinfete teteiras e panos entre animais.",
+      "Não compartilhe panos de limpeza entre vacas."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PELE-DERMATITE-INTERMAMARIA",
+    "versao": "1.0.0",
+    "grupo": "pele",
+    "titulo": "Dermatite intermamária (frieira de úbere)",
+    "prioridade": 71,
+    "se": {
+      "var": "bolsa_liquido_fenda_ubere",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "dermatite_intermamaria",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Bolsa de líquido malcheiroso na fenda entre os quartos traseiros, com pele ferida e necrosada, é dermatite de atrito e umidade — não mastite: a glândula e o leite estão normais.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para limpeza, antisséptico e, se preciso, antibiótico tópico.",
+      "Mantenha a região limpa e seca; faça tosa da fenda do úbere.",
+      "Melhore a cama e a drenagem para reduzir umidade e atrito."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-ACIDOSE-AGUDA",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Acidose ruminal aguda com rúmen líquido",
+    "prioridade": 91,
+    "se": {
+      "todas": [
+        {
+          "var": "chapinhar_liquido_rumen",
+          "op": "=",
+          "val": true
+        },
+        {
+          "alguma": [
+            {
+              "var": "dieta_muito_concentrado",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "comeu_muitas_frutas",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "acidose_ruminal",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Som de chapinhar de líquido ao balançar o flanco, após ingestão de grande quantidade de concentrado, mostra o rúmen cheio de líquido ácido: é acidose AGUDA, muito mais grave que a subaguda.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. Pode ser necessária lavagem ruminal ou ruminotomia.",
+      "RETIRE todo o concentrado e ofereça apenas volumoso e água.",
+      "Não administre bicarbonato pela boca sem orientação."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-UROLITIASE",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Urolitíase (cálculo urinário)",
+    "prioridade": 89,
+    "se": {
+      "todas": [
+        {
+          "var": "dor_final_miccao",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "sexo",
+          "op": "=",
+          "val": "M"
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "urolitiase",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Dor e dificuldade para urinar, com sangue no fim do jato e cauda batendo, em macho, é obstrução por cálculo urinário: a uretra do macho é estreita e longa. Sem desobstruir, a bexiga rompe.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. Pode exigir cirurgia (uretrostomia).",
+      "RETIRE a dieta rica em concentrado/polpa cítrica e ofereça água à vontade.",
+      "Revise a relação cálcio:fósforo da dieta e considere cloreto de amônio com orientação técnica."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "DIG-UROLITIASE-DIETA",
+    "versao": "1.0.0",
+    "grupo": "digestivas",
+    "titulo": "Dieta desbalanceada reforça urolitíase",
+    "prioridade": 70,
+    "se": {
+      "todas": [
+        {
+          "var": "diagnostico",
+          "op": "=",
+          "val": "urolitiase"
+        },
+        {
+          "var": "polpa_citrica_excesso",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "urolitiase",
+        "cf": 0.6
+      }
+    ],
+    "porque": "Excesso de polpa cítrica e de concentrado desbalanceado em cálcio e fósforo é a causa nutricional mais comum de cálculo urinário em bovinos.",
+    "conduta": [
+      "Reformule a dieta com o técnico e garanta água limpa e abundante o dia inteiro."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-MICOTOXINAS",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Intoxicação por micotoxinas (silagem mofada)",
+    "prioridade": 83,
+    "se": {
+      "todas": [
+        {
+          "var": "silagem_com_bolor",
+          "op": "=",
+          "val": true
+        },
+        {
+          "alguma": [
+            {
+              "var": "salivacao_intensa",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "apetite_reduzido",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "queda_producao_subita",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "intoxicacao_micotoxinas",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Placas de bolor e cheiro de álcool na silagem produzem micotoxinas: os animais babam, recusam o alimento e a produção cai no lote todo. É problema de conservação do silo.",
+    "conduta": [
+      "RETIRE imediatamente a silagem mofada do trato e descarte a porção deteriorada.",
+      "Reveja compactação, vedação e velocidade de retirada do painel do silo.",
+      "Considere adsorvente de micotoxinas com orientação técnica.",
+      "CHAME O MÉDICO-VETERINÁRIO. para avaliar os animais mais afetados e perdas reprodutivas."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-GOSSIPOL",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Intoxicação por gossipol",
+    "prioridade": 82,
+    "se": {
+      "todas": [
+        {
+          "var": "caroco_algodao_excesso",
+          "op": "=",
+          "val": true
+        },
+        {
+          "alguma": [
+            {
+              "var": "decubito",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "apatia",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "respiracao_acelerada",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "intoxicacao_gossipol",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Caroço de algodão não processado em excesso acumula gossipol, que intoxica coração e fígado. O quadro é de fraqueza, gemido e morte súbita em casos graves.",
+    "conduta": [
+      "RETIRE o caroço de algodão da dieta imediatamente.",
+      "Reveja o limite de inclusão com o técnico — adultos toleram pouco, e bezerros, quase nada.",
+      "CHAME O MÉDICO-VETERINÁRIO. para suporte dos animais afetados."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "BEZ-ULCERA-ABOMASO",
+    "versao": "1.0.0",
+    "grupo": "bezerras",
+    "titulo": "Úlcera e timpanismo de abomaso do bezerro",
+    "prioridade": 92,
+    "se": {
+      "todas": [
+        {
+          "var": "idade_dias",
+          "op": "<=",
+          "val": 240
+        },
+        {
+          "var": "abomaso_distendido_timpanico",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "fezes_piche",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "ulcera_abomaso_bezerro",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Lado direito do abdômen distendido e timpânico, com dor e fezes escuras de sangue digerido, em bezerro recém-desmamado após mudança brusca para ração, é úlcera de abomaso com timpanismo.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "SUSPENDA a ração e ofereça apenas volumoso de boa qualidade e água.",
+      "Faça a transição alimentar de forma gradual, ao longo de 2–3 semanas.",
+      "CHAME O MÉDICO-VETERINÁRIO. para protetor de mucosa e suporte."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-ARTRITE-SEPTICA",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Artrite séptica com fístula",
+    "prioridade": 87,
+    "se": {
+      "var": "junta_fistula_sinovia",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "artrite_septica",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Junta enorme, quente e dura, com orifício vazando líquido sinovial misturado com pus, é infecção DENTRO da articulação. Com a cápsula já aberta, o prognóstico é reservado.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. O tratamento exige lavagem articular e antibiótico prolongado.",
+      "Mantenha o animal em piso macio e limpo, com o mínimo de deslocamento.",
+      "Converse com o veterinário sobre prognóstico e descarte: muitos casos não recuperam."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-CASCOS-COMPRIDOS",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Crescimento excessivo de cascos",
+    "prioridade": 60,
+    "se": {
+      "var": "cascos_compridos",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "cascos_compridos",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Casco em tesoura muda o ponto de apoio para os calcanhares, dói e desalinha o membro. É falta de casqueamento — e a porta de entrada para laminite, úlcera de sola e dermatite digital.",
+    "conduta": [
+      "Faça casqueamento corretivo com casqueador habilitado.",
+      "Implante casqueamento preventivo no rebanho, pelo menos duas vezes por ano.",
+      "Revise pedilúvio, piso e tempo de permanência em piso duro."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-FOOT-ROT",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Frieira / pododermatite necrótica (foot rot)",
+    "prioridade": 86,
+    "se": {
+      "var": "inchaco_acima_casco_rachaduras",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "foot_rot",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Inchaço quente, avermelhado e doloroso na PELE logo acima do casco, com rachaduras profundas e exudativas, em animal de pasto alagado, é frieira — infecção necrótica do espaço interdigital.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. O tratamento exige antibiótico sistêmico, não só tópico.",
+      "Retire o lote da área alagada e implante pedilúvio.",
+      "Drene o curral e os corredores: a umidade é a causa."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CON-HERNIA-UMBILICAL",
+    "versao": "1.0.0",
+    "grupo": "congenito",
+    "titulo": "Hérnia umbilical redutível",
+    "prioridade": 68,
+    "se": {
+      "todas": [
+        {
+          "var": "massa_movel_umbigo",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "umbigo_inchado_quente",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hernia_umbilical",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Massa arredondada, móvel, indolor e SEM calor nem pus no umbigo é hérnia: a parede da barriga não fechou e o conteúdo abdominal passa pelo anel. Diferente da onfalite, não há infecção.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para avaliar tamanho do anel e indicação cirúrgica.",
+      "ATENÇÃO: se a massa endurecer, doer ou o animal parar de comer, pode ter encarcerado — é emergência.",
+      "Anote na ficha: é defeito com componente hereditário, evite reproduzir."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-FRATURA-FEMUR",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Fratura de membro",
+    "prioridade": 95,
+    "se": {
+      "var": "crepitacao_ossea_membro",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "fratura_femur",
+        "cf": 0.92
+      }
+    ],
+    "porque": "Membro pendendo mole, sem apoio, com som de crepitação óssea ao movimentar, é fratura. Em bovino adulto de grande peso, a consolidação é muito difícil.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "NÃO force o animal a andar nem a levantar.",
+      "Imobilize o mínimo necessário e aguarde o profissional.",
+      "Discuta prognóstico com o veterinário: em adulto, muitas vezes a decisão é abate de emergência ou eutanásia humanitária."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CON-CONTRATURA-TENDOES",
+    "versao": "1.0.0",
+    "grupo": "congenito",
+    "titulo": "Contratura congênita de tendões flexores",
+    "prioridade": 75,
+    "se": {
+      "var": "membros_frente_tortos",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "contratura_tendoes",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Bezerro que nasce com os membros da frente tortos, andando sobre os carpos, tem os tendões flexores encurtados. É defeito de posicionamento intrauterino ou congênito.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. Casos leves respondem a tala, fisioterapia e, às vezes, tenotomia.",
+      "Mantenha o bezerro em piso macio e garanta que consiga mamar.",
+      "Comece o tratamento nos primeiros dias: depois a correção fica muito mais difícil."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-HIGROMA",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Higroma de carpo ou tarso",
+    "prioridade": 62,
+    "se": {
+      "var": "calos_sem_pelo_juntas",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "higroma",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Calos grossos, sem pelo e com feridas nos joelhos e jarretes são resultado do atrito repetido com piso duro. É problema de instalação: a junta responde ao trauma formando bolsa e calo.",
+    "conduta": [
+      "Reforme a cama: borracha, areia ou cama profunda nas áreas de descanso.",
+      "Reduza o tempo em piso de concreto.",
+      "CHAME O MÉDICO-VETERINÁRIO. se houver fístula, pus ou claudicação — pode ter infectado."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-EROSAO-TALAO",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Erosão de talão severa",
+    "prioridade": 85,
+    "se": {
+      "var": "ferida_v_talao",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "erosao_talao",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Ferida em forma de V no talão, apodrecida e com carne viva exposta, de cheiro forte, é erosão de talão avançada — o tecido do talão se desfaz em ambiente úmido e sujo.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. ou casqueador para remover o tecido necrosado e proteger a lesão.",
+      "Implante pedilúvio e melhore a drenagem e a limpeza do curral.",
+      "Faça casqueamento corretivo do rebanho."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-VACA-ESPACATE",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Síndrome da vaca \"espacate\"",
+    "prioridade": 93,
+    "se": {
+      "todas": [
+        {
+          "var": "pernas_abertas_espacate",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "piso_escorregadio",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "vaca_espacate",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Pernas traseiras que escorregaram para os lados em piso molhado rompem músculos e ligamentos da pelve. A vaca não consegue mais juntar as pernas para levantar — e quanto mais tempo caída, pior.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "AMARRE as duas patas traseiras frouxamente, uma à outra, para impedir nova abertura (sob orientação).",
+      "Mova a vaca para piso seco e com atrito, em cama macia, e vire-a de lado a cada 3 horas.",
+      "Trate o piso: areia, ranhuras ou borracha no curral e no corredor de ordenha."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-FOTOSSENSIBILIZACAO-HEPATICA",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Fotossensibilização hepatógena",
+    "prioridade": 84,
+    "se": {
+      "todas": [
+        {
+          "var": "pele_clara_ferida_sol",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "mucosas_amareladas",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "fotossensibilizacao_hepatogena",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Lesão de sol na pele clara JUNTO de icterícia muda o diagnóstico: o fígado foi lesado por toxina de fungo de pastagem e deixou de limpar o sangue. É a forma hepatógena, bem mais grave que a primária.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "RETIRE o lote da pastagem suspeita e ofereça sombra integral.",
+      "Peça avaliação de função hepática: o dano hepático define o prognóstico.",
+      "Reveja o manejo da pastagem com o técnico — o fungo proliferou no resto seco do pasto."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "EME-CHOQUE-ELETRICO",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Choque elétrico (queda de raio)",
+    "prioridade": 88,
+    "se": {
+      "todas": [
+        {
+          "var": "animal_morto",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "morte_sob_arvore_tempestade",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "sangue_nao_coagulado_orificios",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "choque_eletrico",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Morte instantânea sob árvore isolada depois de tempestade, sem sinais de luta no chão, é fulminação por raio. É importante separar de carbúnculo hemático, que sangra pelos orifícios e é zoonose.",
+    "conduta": [
+      "Confirme com o veterinário antes de concluir: carbúnculo hemático pede conduta totalmente diferente.",
+      "Registre com fotos e informe o seguro, se houver.",
+      "Evite que o rebanho se abrigue sob árvores isoladas: ofereça sombra ampla e distribuída."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CAR-PNEUMONIA-INTERSTICIAL",
+    "versao": "1.0.0",
+    "grupo": "cardiorrespiratorio",
+    "titulo": "Pneumonia intersticial atípica (enfisema de pastagem)",
+    "prioridade": 76,
+    "se": {
+      "todas": [
+        {
+          "var": "tosse",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "poeira_pasto_alto_seca",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "pneumonia_intersticial",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Tosse seca persistente e respiração rápida no lote inteiro, SEM febre, em pasto alto e com poeira na seca, é irritação das vias aéreas — não infecção bacteriana. Antibiótico não resolve.",
+    "conduta": [
+      "Mude o lote para área menos empoeirada e com pasto mais baixo.",
+      "Evite manejar o lote no horário mais seco e quente do dia.",
+      "CHAME O MÉDICO-VETERINÁRIO. se aparecer febre ou secreção purulenta: aí há infecção associada."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-CIANOBACTERIAS",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Intoxicação por cianobactérias (algas azuis)",
+    "prioridade": 95,
+    "se": {
+      "todas": [
+        {
+          "var": "agua_lagoa_com_algas",
+          "op": "=",
+          "val": true
+        },
+        {
+          "alguma": [
+            {
+              "var": "morte_subita_lote",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "tremores_musculares",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "respiracao_acelerada",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "intoxicacao_cianobacterias",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Floração verde grossa na superfície da lagoa produz toxina que mata em minutos, por parada respiratória. Pega vários animais que beberam na mesma água, de uma vez.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "BLOQUEIE IMEDIATAMENTE o acesso à lagoa e ofereça outra fonte de água.",
+      "Não deixe pessoas nem outros animais usarem essa água.",
+      "Avise o órgão ambiental: a floração costuma ter causa de eutrofização."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "EME-ENTEROTOXEMIA",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Enterotoxemia / salmonelose aguda",
+    "prioridade": 94,
+    "se": {
+      "todas": [
+        {
+          "var": "diarreia_sangue_coagulos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "enterotoxemia",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Diarreia com sangue vermelho vivo e coágulos inteiros, dor abdominal extrema e febre é infecção hiperaguda do intestino. A evolução é de horas.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. Exige fluidoterapia e antibiótico sistêmico.",
+      "Isole o animal: salmonelose é contagiosa e também é zoonose — use luvas.",
+      "Revise água, trato e lotação do lote.",
+      "Avalie vacinação clostridial com o veterinário."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-PLANTA-CARDIOTOXICA",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Intoxicação por planta cardiotóxica (morte súbita)",
+    "prioridade": 96,
+    "se": {
+      "todas": [
+        {
+          "var": "queda_subita_apos_esforco",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "pasto_erva_de_rato",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "intoxicacao_planta_cardiotoxica",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Animal que cai de repente ao ser tangido, se debate e morre em minutos, em pasto com erva-de-rato, teve parada cardíaca por planta cardiotóxica. O gatilho é justamente o esforço.",
+    "conduta": [
+      "NÃO MOVIMENTE o lote: tanger é o que desencadeia a morte.",
+      "Retire o rebanho da área com o mínimo de esforço possível, no fresco do dia.",
+      "Identifique e controle a planta com o técnico antes de devolver o lote."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "NEU-LISTERIOSE",
+    "versao": "1.0.0",
+    "grupo": "neurologico",
+    "titulo": "Listeriose (encefalite por Listeria)",
+    "prioridade": 91,
+    "se": {
+      "var": "paralisia_facial_unilateral",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "listeriose",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Paralisia de um só lado do rosto — pálpebra e orelha caídas, dificuldade de mastigar daquele lado — com andar em círculos, é lesão de tronco cerebral por Listeria. A unilateralidade é a assinatura.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. Antibiótico em dose alta e precoce é a única chance.",
+      "Verifique a silagem: Listeria cresce em silagem malconservada e de pH alto.",
+      "Listeria também é zoonose: use luvas e não consuma o leite cru."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-ANAPLASMOSE",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Anaplasmose bovina aguda",
+    "prioridade": 89,
+    "se": {
+      "todas": [
+        {
+          "var": "infestacao_carrapatos",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "mucosas_amareladas",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "agressividade_subita",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "anaplasmose",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Febre altíssima com icterícia e sinais nervosos — agressividade e andar cambaleante por falta de oxigênio no cérebro — em animal com carrapatos, é anaplasmose. Diferente da babesiose, a urina não fica cor de vinho.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. O tratamento é com tetraciclina ou imidocarb prescritos.",
+      "Manipule o mínimo possível: o esforço mata o animal anêmico.",
+      "Faça controle estratégico de carrapato no rebanho."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "OFT-GLAUCOMA",
+    "versao": "1.0.0",
+    "grupo": "oftalmico",
+    "titulo": "Glaucoma secundário / estafiloma",
+    "prioridade": 72,
+    "se": {
+      "var": "globo_ocular_branco_aumentado",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "glaucoma_estafiloma",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Globo ocular todo branco e aumentado de tamanho, com cegueira, após úlcera de córnea não tratada, é sequela: a córnea rompeu e o olho perdeu a estrutura. Não há mais visão a recuperar nesse olho.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para avaliar enucleação, que resolve a dor.",
+      "Trate úlcera de córnea cedo nos outros animais: é o que evita esta sequela.",
+      "Faça controle de moscas no lote."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "EME-ABSCESSO-ROMPIDO",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Abscesso de garganta rompido para dentro",
+    "prioridade": 97,
+    "se": {
+      "var": "abscesso_garganta_rompido",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "abscesso_retrofaringeo",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Abscesso grande sob a mandíbula que estoura para DENTRO despeja pus na via respiratória: o animal aspira, tosse pus e asfixia. É emergência imediata.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Mantenha a cabeça BAIXA, para a drenagem sair pela boca e pelo nariz.",
+      "Não force o animal a deitar nem a andar.",
+      "Drene abscessos de garganta cedo, sempre com o veterinário — nunca espere romper."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-COMPORTAMENTO-MATERNO",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Comportamento materno protetor",
+    "prioridade": 55,
+    "se": {
+      "var": "protege_bezerro_agressiva",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "comportamento_materno",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Vaca recém-parida que ataca quem se aproxima apenas quando está perto do bezerro escondido está defendendo a cria. É instinto normal, e não sinal nervoso de raiva ou de doença — fora desse contexto ela se comporta normalmente.",
+    "conduta": [
+      "Não entre sozinho no piquete de vacas recém-paridas.",
+      "Manejo a cavalo ou com veículo e sempre com rota de saída.",
+      "ATENÇÃO: se a agressividade aparecer FORA do contexto do bezerro, ou vier com salivação e dificuldade de engolir, trate como SUSPEITA DE RAIVA e notifique."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CAR-INSUF-CARDIACA",
+    "versao": "1.0.0",
+    "grupo": "cardiorrespiratorio",
+    "titulo": "Insuficiência cardíaca",
+    "prioridade": 87,
+    "se": {
+      "todas": [
+        {
+          "var": "edema_membros_confinamento",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "batimentos_irregulares",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "insuficiencia_cardiaca",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Inchaço nas pernas com batimentos irregulares e fraqueza severa, em animal confinado há muito tempo sem acesso a verde, aponta para falência cardíaca — com carência de tiamina e desequilíbrio nutricional como causas frequentes.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Peça avaliação cardíaca e suplementação de complexo B/tiamina.",
+      "Reveja a dieta do confinamento com o técnico: fibra, minerais e vitaminas.",
+      "Reduza qualquer esforço físico do animal."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "EME-ESTRESSE-CALORICO",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Estresse calórico agudo (insolação)",
+    "prioridade": 94,
+    "se": {
+      "todas": [
+        {
+          "var": "sudorese_boca_aberta_sol",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "estresse_calorico",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Sudorese intensa, respiração de boca aberta e temperatura acima de 41 °C sob sol a pino e sem sombra é hipertermia por calor, não febre de infecção. A diferença muda tudo no tratamento.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "MOLHE o animal com água fria (pernas e corpo) e leve-o para a sombra imediatamente.",
+      "Ofereça água fresca à vontade e ventilação.",
+      "Providencie sombra e água no pasto; evite manejo entre 10h e 16h."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "OFT-CARCINOMA",
+    "versao": "1.0.0",
+    "grupo": "oftalmico",
+    "titulo": "Carcinoma de células escamosas (câncer de olho)",
+    "prioridade": 78,
+    "se": {
+      "var": "ferida_couveflor_olho",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "carcinoma_ocular",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Ferida crônica em couve-flor, sangrenta, invadindo o globo ocular e atraindo moscas, em animal de cara branca, é carcinoma de células escamosas — o \"olho canceroso\". A exposição solar na pele sem pigmento é o fator de risco.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para avaliar excisão ou enucleação conforme o estágio.",
+      "Avalie descarte precoce: lesão avançada perde valor comercial e causa sofrimento.",
+      "Ofereça sombra e prefira animais pigmentados ao redor dos olhos na seleção."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-HEMORRAGIA-VULVAR",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Hemorragia vulvar ou vaginal",
+    "prioridade": 69,
+    "se": {
+      "var": "urina_limpa_apos_primeiras_gotas",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hemorragia_vulvar",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Urina avermelhada SÓ nas primeiras gotas, ficando limpa em seguida, localiza o sangramento na vulva ou na vagina — não no rim nem na bexiga, que tingiriam o jato inteiro.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para localizar e tratar a lesão.",
+      "Observe higiene e evite manipulação vaginal até a avaliação.",
+      "Procure a causa: trauma de monta, parto recente ou corpo estranho."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-CIO",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Cio natural (estro)",
+    "prioridade": 50,
+    "se": {
+      "var": "cio_muco_cristalino",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "cio_normal",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Berrar, inquietação, urinar com frequência, montar e aceitar monta com muco cristalino pendurado na vulva é o conjunto de sinais do cio. É o momento reprodutivo esperado, não doença.",
+    "conduta": [
+      "Registre a data: o próximo cio deve vir em 18–24 dias.",
+      "Inseminar 12 horas após o início da aceitação de monta é a janela recomendada.",
+      "Confirme se a novilha atingiu peso e idade mínimos antes da primeira cobertura."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-EJECAO-LEITE",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Reflexo de ejeção prematura do leite",
+    "prioridade": 52,
+    "se": {
+      "todas": [
+        {
+          "var": "pinga_leite_antes_ordenha",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "perda_ponta_teto",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "ejecao_leite_prematura",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Vaca de alta produção que pinga leite no curral de espera, com o úbere muito cheio e SEM febre nem dor, está respondendo à rotina da ordenha: a ocitocina é liberada pelo condicionamento. Não é lesão de esfíncter.",
+    "conduta": [
+      "Reduza o tempo de espera no curral e mantenha a rotina previsível.",
+      "Considere avaliar frequência de ordenha para vacas de pico de produção.",
+      "Reforce o pós-dipping: o canal aberto favorece mastite ambiental."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-FEZES-NORMAIS",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Fezes normais em pasto de qualidade",
+    "prioridade": 48,
+    "se": {
+      "var": "fezes_consistencia_ideal",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "fezes_normais",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Fezes verdes em panqueca, com leve depressão no centro, são o escore ideal: a dieta e o funcionamento do rúmen estão adequados. Não há nada a corrigir.",
+    "conduta": [
+      "Mantenha o manejo de pastagem como está.",
+      "Use o escore de fezes do lote como monitoramento de rotina da dieta."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-HIPERTERMIA-EXERCICIO",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Hipertermia fisiológica pós-exercício",
+    "prioridade": 54,
+    "se": {
+      "todas": [
+        {
+          "var": "temperatura_apos_exercicio",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hipertermia_pos_exercicio",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Temperatura levemente elevada logo após corrida ou manejo de curral, sem nenhum outro sinal, é resposta normal ao esforço e ao calor. Febre é diagnóstico de repouso.",
+    "conduta": [
+      "Meça a temperatura novamente após 30 minutos de repouso e sombra.",
+      "Manejo de curral no fresco do dia e sem correria.",
+      "Investigue de verdade se a temperatura persistir alta em repouso."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-PIGMENTACAO-ALIMENTAR",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Pigmentação alimentar da urina e das fezes",
+    "prioridade": 51,
+    "se": {
+      "todas": [
+        {
+          "var": "alimento_pigmentante",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "mucosas_palidas",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "hematuria_persistente",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "pigmentacao_alimentar",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Beterraba, cenoura e silagens pigmentadas tingem a urina e as fezes de avermelhado ou alaranjado sem que haja sangue. Com mucosas normais e animal saudável, não há hemólise nem hematúria.",
+    "conduta": [
+      "Confirme com fita de urina: pigmento alimentar não dá reação de sangue.",
+      "Não suspenda o alimento se ele for adequado — a cor é inofensiva.",
+      "Reavalie se aparecer palidez, febre ou queda de produção."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-PLACENTOFAGIA",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Placentofagia e enterite alimentar leve",
+    "prioridade": 49,
+    "se": {
+      "todas": [
+        {
+          "var": "comeu_placenta",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "placenta_retida_12h",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "placentofagia",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Placenta eliminada em até 12 horas após parto normal descarta retenção. Comer a placenta é comportamento comum em bovinos e pode causar diarreia leve por um dia, sem repercussão.",
+    "conduta": [
+      "Recolha a placenta dos piquetes de maternidade quando possível.",
+      "Acompanhe temperatura e corrimento vulvar por alguns dias, por rotina.",
+      "Procure o veterinário se aparecer febre ou corrimento fétido."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-COLOSTRO-PRE-PARTO",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Produção de colostro antes do parto",
+    "prioridade": 53,
+    "se": {
+      "todas": [
+        {
+          "var": "colostro_antes_do_parto",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "palpacao_dor",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "colostro_pre_parto",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Acúmulo de líquido espesso e amarelado no úbere no fim da gestação é colostro: a glândula está se preparando para o parto. Sem dor, calor nem febre, não é mastite.",
+    "conduta": [
+      "Não ordenhe antes do parto: o colostro é do bezerro.",
+      "Se houver vazamento abundante, colha e congele colostro de qualidade para o banco.",
+      "Garanta que o bezerro mame colostro nas primeiras 6 horas de vida."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-PIGMENTACAO-PALATINA",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Pigmentação melânica do palato",
+    "prioridade": 47,
+    "se": {
+      "todas": [
+        {
+          "var": "mancha_preta_palato",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "vesiculas_boca_tetos_cascos",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "salivacao_intensa",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "pigmentacao_palatina",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Mancha escura no céu da boca que sempre existiu, em animal que come normalmente e sem bolhas nem salivação, é pigmento de pele — não necrose nem estomatite.",
+    "conduta": [
+      "Nada a fazer: registre na ficha do animal para não gerar alarme futuro.",
+      "Reavalie imediatamente se aparecerem bolhas, salivação ou dificuldade de comer."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-PARAMETROS-NEONATO",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Parâmetros vitais normais de neonato",
+    "prioridade": 46,
+    "se": {
+      "todas": [
+        {
+          "var": "idade_dias",
+          "op": "<=",
+          "val": 30
+        },
+        {
+          "var": "parametros_vitais_normais",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "parametros_neonatais_normais",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Bezerro recém-nascido tem coração entre 100 e 140 bpm e respiração entre 30 e 50 mpm. Os valores encontrados são os normais da categoria — comparar com o padrão do adulto é o que gera o falso alarme.",
+    "conduta": [
+      "Nada a fazer: siga o acompanhamento de rotina do neonato.",
+      "Garanta colostro nas primeiras 6 horas e umbigo curado com iodo."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "FIS-TREMOR-FRIO",
+    "versao": "1.0.0",
+    "grupo": "fisiologico",
+    "titulo": "Tremor fisiológico por frio",
+    "prioridade": 45,
+    "se": {
+      "todas": [
+        {
+          "var": "tremor_manha_fria",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "agitacao_convulsao",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "decubito",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "tremor_frio",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Tremor nas paletas apenas na manhã fria, que passa com o dia, em animal de comportamento e parâmetros normais, é termorregulação. Diferente da tetania de pasto, não há hiperexcitabilidade nem convulsão.",
+    "conduta": [
+      "Ofereça quebra-vento e abrigo nas noites frias.",
+      "Reavalie imediatamente se houver convulsão, rigidez ou o animal cair."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CAR-RETICULOPERICARDITE",
+    "versao": "1.0.0",
+    "grupo": "cardiorrespiratorio",
+    "titulo": "Retículo-pericardite traumática",
+    "prioridade": 93,
+    "se": {
+      "todas": [
+        {
+          "var": "edema_submandibular",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "jugular_ingurgitada",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "reticulopericardite",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Papeira enorme somada a jugular inchada e estufada é sinal de insuficiência cardíaca DIREITA: o sangue não volta ao coração. Com histórico de objeto pontudo engolido, a causa é o arame que atravessou o retículo e chegou ao pericárdio.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "Prognóstico muito reservado: discuta eutanásia humanitária ou abate de emergência com o veterinário.",
+      "Nos demais animais, recolha arame e fio do pasto e considere ímã reticular."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CAR-TROMBOFLEBITE",
+    "versao": "1.0.0",
+    "grupo": "cardiorrespiratorio",
+    "titulo": "Tromboflebite jugular",
+    "prioridade": 75,
+    "se": {
+      "var": "cordao_duro_jugular",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "tromboflebite_jugular",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Cordão duro, inchado, quente e dolorido na veia do pescoço, onde foram feitas injeções repetidas, é inflamação e trombose da jugular — complicação da própria aplicação.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para anti-inflamatório e, se houver abscesso, drenagem.",
+      "NÃO aplique mais nada nessa veia; use o outro lado ou outra via.",
+      "Use agulha nova e estéril em cada animal e técnica correta de aplicação."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CON-CARDIOPATIA",
+    "versao": "1.0.0",
+    "grupo": "congenito",
+    "titulo": "Cardiopatia congênita",
+    "prioridade": 90,
+    "se": {
+      "todas": [
+        {
+          "var": "idade_dias",
+          "op": "<=",
+          "val": 120
+        },
+        {
+          "var": "sopro_cardiaco",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "respiracao_acelerada",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "cardiopatia_congenita",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Sopro cardíaco audível de longe, com dificuldade respiratória e cansaço só de mamar em recém-nascido, indica defeito congênito do coração — tipicamente comunicação entre os ventrículos.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para confirmação e avaliação de prognóstico.",
+      "Não há correção viável a campo: discuta eutanásia humanitária nos casos graves.",
+      "Anote o acasalamento: defeitos congênitos repetidos pedem revisão genética."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CAR-TROMBOSE-CAVA",
+    "versao": "1.0.0",
+    "grupo": "cardiorrespiratorio",
+    "titulo": "Trombose da veia cava caudal",
+    "prioridade": 92,
+    "se": {
+      "var": "epistaxe_massiva",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "trombose_veia_cava",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Hemorragia nasal massiva e contínua em vaca adulta, muitas vezes com histórico de tosse e emagrecimento, aponta para trombo que embolizou para o pulmão e rompeu vaso — a origem costuma ser abscesso no fígado por acidose crônica.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. mas saiba que o prognóstico é péssimo: a hemorragia é geralmente fatal.",
+      "Não manipule nem movimente o animal.",
+      "Nos demais, revise a dieta: acidose ruminal crônica é a origem dos abscessos hepáticos."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-DICUMARINICO",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Intoxicação por dicumarínico (veneno de rato)",
+    "prioridade": 93,
+    "se": {
+      "todas": [
+        {
+          "var": "sangramento_local_injecao",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "veneno_rato_area",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "intoxicacao_dicumarinico",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Sangramento que não para no local da injeção, com sangue que não coagula, em animal com acesso a veneno de rato cumarínico, é bloqueio da vitamina K. Diferente do antraz, não há morte súbita com sangue pelos orifícios.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. O antídoto é vitamina K1, aplicada por profissional.",
+      "RETIRE imediatamente o veneno e qualquer isca da área.",
+      "Evite injeções e qualquer procedimento que sangre até a coagulação normalizar."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "REP-EDEMA-PELVICO",
+    "versao": "1.0.0",
+    "grupo": "reprodutivas",
+    "titulo": "Edema pélvico compressivo da gestação",
+    "prioridade": 66,
+    "se": {
+      "todas": [
+        {
+          "var": "pre_parto",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "inchaco_duro_duas_patas",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "edema_pelvico_gestacional",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Inchaço duro nas DUAS patas traseiras ao mesmo tempo, sem febre, em vaca no fim da gestação, é compressão das veias pélvicas pelo peso do feto. A simetria e a ausência de febre afastam infecção.",
+    "conduta": [
+      "Ofereça piso macio e estimule caminhada leve para favorecer o retorno venoso.",
+      "Acompanhe: tende a resolver depois do parto.",
+      "CHAME O MÉDICO-VETERINÁRIO. se o inchaço for em uma pata só, doer ou vier com febre — aí a hipótese muda."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "CAR-OBESIDADE",
+    "versao": "1.0.0",
+    "grupo": "cardiorrespiratorio",
+    "titulo": "Obesidade com sobrecarga cardíaca",
+    "prioridade": 63,
+    "se": {
+      "var": "obeso_ofegante",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "obesidade_sobrecarga",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Animal muito gordo, ofegante ao mínimo esforço e com dificuldade de transpirar, tem gordura demais — inclusive em volta do coração — sobrecarregando circulação e termorregulação.",
+    "conduta": [
+      "Reduza a dieta energética de forma gradual, com acompanhamento técnico.",
+      "Ofereça sombra, água e evite esforço e transporte no calor.",
+      "CHAME O MÉDICO-VETERINÁRIO. para avaliação cardíaca antes de exposição ou de uso reprodutivo."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "MAST-HIPERQUERATOSE",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Hiperqueratose de esfíncter por ordenhadeira",
+    "prioridade": 76,
+    "se": {
+      "todas": [
+        {
+          "var": "pustulas_esfincter_ordenha",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "vacuo_alto_ordenhadeira",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "hiperqueratose_esfincter",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Pústulas e feridas na ponta do teto em rebanho com vácuo alto e máquina desregulada são lesão mecânica da ordenha, não doença infecciosa primária. A lesão do esfíncter abre a porta para a mastite.",
+    "conduta": [
+      "Chame o técnico da ordenhadeira: regule vácuo, pulsação e troque as teteiras vencidas.",
+      "Reduza a sobreordenha e confira o alinhamento do conjunto.",
+      "Reforce o pós-dipping com emoliente.",
+      "Acompanhe estes animais com CMT: o risco de mastite subiu."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 40 — hiperqueratose do óstio do teto e risco de mastite.",
+    "status": "validada"
+  },
+  {
+    "id": "MAST-FIBROSE-CANAL",
+    "versao": "1.0.0",
+    "grupo": "mastite",
+    "titulo": "Fibrose ou papiloma do canal do teto (\"ervilha\")",
+    "prioridade": 67,
+    "se": {
+      "var": "nodulo_canal_teto",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "fibrose_canal_teto",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Nódulo duro dentro do canal do teto, que impede a saída do leite e obriga a usar sonda, é fibrose ou papiloma intracanalicular — sequela de trauma ou de ordenha manual inadequada.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para avaliar remoção cirúrgica do nódulo.",
+      "EVITE sonda mamária de rotina: cada passagem leva bactéria para dentro da glândula.",
+      "Revise a técnica de ordenha manual e a regulagem da máquina."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 40 — fibrose do canal do teto por mastite recorrente.",
+    "status": "validada"
+  },
+  {
+    "id": "PAR-LEUCOSE",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Leucose bovina enzoótica (forma tumoral)",
+    "prioridade": 85,
+    "se": {
+      "var": "ganglios_aumentados_simetricos",
+      "op": "=",
+      "val": true
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "leucose_bovina",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Gânglios superficiais aumentados dos dois lados de forma simétrica, com emagrecimento lento em vaca de idade, é a forma tumoral da leucose bovina enzoótica — linfoma de origem viral. Não há tratamento.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para confirmação sorológica e avaliação de descarte.",
+      "Use agulha e material de palpação individuais: a transmissão é por sangue.",
+      "Separe animais positivos e não use colostro deles para as bezerras."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-IBR",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Rinotraqueíte infecciosa bovina (IBR)",
+    "prioridade": 84,
+    "se": {
+      "todas": [
+        {
+          "var": "conjuntivite_placas_focinho",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "ibr",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Conjuntivite nos dois olhos, catarro, febre e placas vermelhas com feridas esbranquiçadas DENTRO do focinho é o quadro do herpesvírus bovino (IBR). As lesões do focinho são o que separa de uma pneumonia bacteriana comum.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. O tratamento é de suporte, com antibiótico só para infecção secundária.",
+      "Isole os animais afetados: a transmissão é respiratória e rápida.",
+      "Revise a vacinação do rebanho contra IBR/BVD com o veterinário."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "EME-MACERACAO-FETAL",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Maceração fetal com sepse",
+    "prioridade": 97,
+    "se": {
+      "todas": [
+        {
+          "var": "feto_morto_retido",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "febre",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "extremidades_frias",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "maceracao_fetal",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Bezerro morto retido no útero há dias, com febre altíssima, prostração e extremidades geladas, é sepse: a decomposição do feto caiu na corrente sanguínea. Extremidade fria com febre é sinal de choque.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. Exige remoção do feto, antibiótico sistêmico e fluidoterapia intensiva.",
+      "Prognóstico reservado: discuta com o veterinário a viabilidade e o abate de emergência.",
+      "USE LUVAS na manipulação de restos fetais."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-ANIMAL-PELUDO",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Síndrome do animal peludo (sequela de aftosa)",
+    "prioridade": 64,
+    "se": {
+      "todas": [
+        {
+          "var": "pelo_longo_nao_troca",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "historico_aftosa",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "sindrome_animal_peludo",
+        "cf": 0.8
+      }
+    ],
+    "porque": "Animal que não troca o pelo, fica peludo no verão, não tolera calor e produz pouco, com histórico de febre aftosa, tem a sequela endócrina da doença: a hipófise foi lesada.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. para confirmar e avaliar prognóstico produtivo.",
+      "Ofereça sombra, ventilação e tosa; o animal não regula temperatura.",
+      "Avalie descarte: a sequela é permanente e a produção não recupera."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "TOX-NITRATO",
+    "versao": "1.0.0",
+    "grupo": "toxicologicas",
+    "titulo": "Intoxicação por nitrato/nitrito",
+    "prioridade": 94,
+    "se": {
+      "todas": [
+        {
+          "var": "pasto_tangola_alagado",
+          "op": "=",
+          "val": true
+        },
+        {
+          "alguma": [
+            {
+              "var": "mucosas_palidas",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "urina_escura",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "respiracao_acelerada",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "intoxicacao_nitrato",
+        "cf": 0.85
+      }
+    ],
+    "porque": "Capim de várzea alagada e adubada acumula nitrato, que no rúmen vira nitrito e bloqueia o transporte de oxigênio no sangue. As mucosas escurecem, o animal fica ofegante e morre por hipóxia.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. O antídoto é azul de metileno, aplicado por profissional.",
+      "RETIRE IMEDIATAMENTE o lote do pasto suspeito.",
+      "Não force o animal a andar: qualquer esforço aumenta a demanda de oxigênio.",
+      "Analise a forragem antes de devolver o lote."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "LOC-TRAUMA-RAQUIMEDULAR",
+    "versao": "1.0.0",
+    "grupo": "locomotor",
+    "titulo": "Traumatismo raquimedular",
+    "prioridade": 94,
+    "se": {
+      "todas": [
+        {
+          "var": "queda_apos_monta",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "crepitacao_ossea_membro",
+            "op": "=",
+            "val": true
+          }
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "trauma_raquimedular",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Queda durante a monta com dor lombar aguda, seguida de arrastar os quartos traseiros, indica fratura ou compressão da medula lombar. Os membros não estão quebrados: a lesão é na coluna.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "NÃO force o animal a levantar e não o arraste.",
+      "Mantenha-o em cama macia e vire-o de lado a cada 3 horas.",
+      "Prognóstico reservado: discuta com o veterinário.",
+      "Revise a estrutura de monta: piso, altura e condição do touro."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "PAR-OTITE-MICOPLASMA",
+    "versao": "1.0.0",
+    "grupo": "parasitarias",
+    "titulo": "Otite média com pneumonia (Mycoplasma)",
+    "prioridade": 86,
+    "se": {
+      "todas": [
+        {
+          "var": "orelha_caida_secrecao",
+          "op": "=",
+          "val": true
+        },
+        {
+          "alguma": [
+            {
+              "var": "tosse",
+              "op": "=",
+              "val": true
+            },
+            {
+              "var": "secrecao_nasal",
+              "op": "=",
+              "val": true
+            }
+          ]
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "otite_micoplasma",
+        "cf": 0.88
+      }
+    ],
+    "porque": "Orelha caída com secreção purulenta no canal auditivo, junto de tosse, febre e catarro, é o complexo respiratório que chegou ao ouvido médio — quadro típico de Mycoplasma bovis em bezerreiro.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO. O tratamento exige antibiótico específico e prolongado; Mycoplasma não responde a betalactâmicos.",
+      "Isole os afetados: a transmissão é por contato e aerossol, inclusive pelo leite.",
+      "Não alimente bezerras com leite de descarte de vacas com mastite por Mycoplasma.",
+      "Revise ventilação e lotação do bezerreiro."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "EME-ACIDOSE-LATICA",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Acidose lática severa com depressão do SNC",
+    "prioridade": 96,
+    "se": {
+      "todas": [
+        {
+          "var": "comeu_muitas_frutas",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "estupor_coma_sem_convulsao",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "acidose_latica",
+        "cf": 0.9
+      }
+    ],
+    "porque": "Grande quantidade de fruta ou grão de uma vez acidifica brutalmente o rúmen: o ácido lático cai no sangue e deprime o sistema nervoso. O animal fica em estupor, cego e entra em coma — SEM convulsão, o que separa de intoxicação nervosa e de raiva.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA. Pode exigir lavagem ruminal ou ruminotomia e fluidoterapia alcalinizante.",
+      "RETIRE o acesso ao pomar ou ao grão imediatamente.",
+      "Não dê nada pela boca sem orientação: o animal em estupor aspira."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  },
+  {
+    "id": "EME-TIMPANISMO-POSTURAL",
+    "versao": "1.0.0",
+    "grupo": "emergencia",
+    "titulo": "Timpanismo postural (asfixia mecânica)",
+    "prioridade": 98,
+    "se": {
+      "todas": [
+        {
+          "var": "decubito_lateral_barranco",
+          "op": "=",
+          "val": true
+        },
+        {
+          "var": "flanco_esquerdo_distendido",
+          "op": "=",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "timpanismo_postural",
+        "cf": 0.92
+      }
+    ],
+    "porque": "Animal caído de lado em buraco ou barranco não consegue arrotar: o gás acumula, o rúmen estufa e comprime o pulmão. A causa é mecânica — e o tratamento, antes de qualquer medicamento, é reposicionar.",
+    "conduta": [
+      "CHAME O MÉDICO-VETERINÁRIO COM URGÊNCIA.",
+      "REPOSICIONE IMEDIATAMENTE: tire o animal do buraco e coloque-o em decúbito esternal (sobre o peito), com o tórax mais alto que o abdômen.",
+      "Mantenha-o sentado sobre o peito, nunca de lado.",
+      "Não aplique nada pela boca antes de reposicionar."
+    ],
+    "fonte": "Semiologia e clínica médica de bovinos — PENDENTE de validação com fonte primária.",
+    "status": "revisar"
+  }
+]

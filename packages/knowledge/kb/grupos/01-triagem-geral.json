@@ -7,19 +7,85 @@
     "prioridade": 10,
     "se": {
       "todas": [
-        { "nao": { "var": "caneca_grumos", "op": "=", "val": true } },
-        { "nao": { "var": "caneca_cor_alterada", "op": "=", "val": true } },
-        { "nao": { "var": "caneca_consistencia_alterada", "op": "=", "val": true } },
-        { "nao": { "var": "palpacao_dor", "op": "=", "val": true } },
-        { "nao": { "var": "palpacao_inchaco", "op": "=", "val": true } },
-        { "nao": { "var": "febre", "op": "=", "val": true } },
-        { "nao": { "var": "apetite_reduzido", "op": "=", "val": true } },
-        { "nao": { "var": "apatia", "op": "=", "val": true } },
-        { "nao": { "var": "claudicacao", "op": "=", "val": true } },
-        { "nao": { "var": "queda_producao_subita", "op": "=", "val": true } }
+        {
+          "nao": {
+            "var": "caneca_grumos",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "caneca_cor_alterada",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "caneca_consistencia_alterada",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "palpacao_dor",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "palpacao_inchaco",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "apetite_reduzido",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "apatia",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "claudicacao",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "queda_producao_subita",
+            "op": "=",
+            "val": true
+          }
+        }
       ]
     },
-    "entao": [{ "var": "diagnostico", "val": "sem_alteracao", "cf": 0.85 }],
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "sem_alteracao",
+        "cf": 0.85
+      }
+    ],
     "porque": "Nenhum dos sinais pesquisados na triagem foi encontrado: o leite está normal no teste da caneca, a mama não apresenta alteração à palpação, o estado geral do animal está bom e a produção não caiu.",
     "conduta": [
       "Mantenha o teste da caneca de fundo escuro todos os dias, em todos os quartos, antes de cada ordenha.",
@@ -37,12 +103,34 @@
     "prioridade": 20,
     "se": {
       "todas": [
-        { "var": "queda_producao_subita", "op": "=", "val": true },
-        { "nao": { "var": "caneca_grumos", "op": "=", "val": true } },
-        { "nao": { "var": "febre", "op": "=", "val": true } }
+        {
+          "var": "queda_producao_subita",
+          "op": "=",
+          "val": true
+        },
+        {
+          "nao": {
+            "var": "caneca_grumos",
+            "op": "=",
+            "val": true
+          }
+        },
+        {
+          "nao": {
+            "var": "febre",
+            "op": "=",
+            "val": true
+          }
+        }
       ]
     },
-    "entao": [{ "var": "diagnostico", "val": "mastite_subclinica", "cf": 0.35 }],
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "mastite_subclinica",
+        "cf": 0.35
+      }
+    ],
     "porque": "Vacas com mastite reduzem a produção de leite mesmo sem sinais visíveis. Queda de produção sem outra causa aparente justifica investigar mastite subclínica por CMT ou CCS.",
     "conduta": [
       "Faça o teste de CMT nos quatro quartos desta vaca.",
@@ -50,6 +138,287 @@
       "Revise alimentação e disponibilidade de água do lote."
     ],
     "fonte": "EMBRAPA, Mastite, 2015, p. 5 e p. 22.",
+    "status": "revisar"
+  },
+  {
+    "id": "TRI-SEM-ALTERACAO-GERAL",
+    "versao": "1.0.0",
+    "grupo": "triagem",
+    "titulo": "Nenhum sinal alterado confirmado em nenhum sistema",
+    "prioridade": 8,
+    "se": {
+      "todas": [
+        {
+          "var": "febre",
+          "op": "=",
+          "val": false
+        },
+        {
+          "var": "caneca_grumos",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "caneca_cor_alterada",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "caneca_consistencia_alterada",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "palpacao_dor",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "palpacao_inchaco",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "palpacao_endurecido",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "caroco_localizado_mama",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "quarto_sem_leite",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "caroco_apos_ordenha",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "cmt_pior_quarto",
+          "op": "nao_confirmado",
+          "val": "1"
+        },
+        {
+          "var": "cmt_pior_quarto",
+          "op": "nao_confirmado",
+          "val": "2"
+        },
+        {
+          "var": "cmt_pior_quarto",
+          "op": "nao_confirmado",
+          "val": "3"
+        },
+        {
+          "var": "apetite_reduzido",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "apatia",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "decubito",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "tremores_musculares",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "agitacao_convulsao",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "halito_adocicado",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "queda_producao_subita",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "perda_escore_corporal",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "placenta_retida_12h",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "corrimento_vulvar_fetido",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "cio_irregular_frequente",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "fezes_escassas",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "fezes_liquidas",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "fezes_liquidas_bolhosas",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "flanco_esquerdo_distendido",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "ruminacao_reduzida",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "claudicacao",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "coceira_intensa",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "placas_descamadas",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "crostas_pele",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "pele_clara_ferida_sol",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "mucosas_palidas",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "mucosas_amareladas",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "urina_escura",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "tosse",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "secrecao_nasal",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "respiracao_acelerada",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "vesiculas_boca_tetos_cascos",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "salivacao_intensa",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "sinais_nervosos",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "dificuldade_deglutir",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "umbigo_inchado_quente",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "colostro_primeiras_6h",
+          "op": "nao_confirmado",
+          "val": false
+        },
+        {
+          "var": "lambe_roi_objetos",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "pelo_aspero_sem_brilho",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "morte_subita_lote",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "desidratacao",
+          "op": "nao_confirmado",
+          "val": true
+        },
+        {
+          "var": "extremidades_frias",
+          "op": "nao_confirmado",
+          "val": true
+        }
+      ]
+    },
+    "entao": [
+      {
+        "var": "diagnostico",
+        "val": "sem_alteracao",
+        "cf": 0.8
+      }
+    ],
+    "porque": "O estado geral do animal foi verificado (sem febre) e nenhum sinal alterado foi confirmado em nenhum dos sistemas que a triagem pesquisa — úbere, estado geral, reprodução, digestivo, locomotor, pele, sangue, respiratório, nervoso e manejo de bezerras. É uma conclusão de exclusão: basta um sinal positivo aparecer para ela sair do parecer.",
+    "conduta": [
+      "Siga o calendário sanitário e de manejo do animal.",
+      "Nas vacas em lactação, mantenha o teste da caneca de fundo escuro antes de cada ordenha e o CMT mensal.",
+      "Reavalie se qualquer sinal novo aparecer."
+    ],
+    "fonte": "EMBRAPA, Mastite, 2015, p. 40 — estendido para os demais sistemas da base como conclusão de exclusão.",
     "status": "revisar"
   }
 ]

@@ -2,26 +2,34 @@ import type { CategoriaAnimal, CategoriaDespesa, CategoriaReceita, ResultadoCMT 
 
 export type StatusAnimal =
   | 'saudavel'
+  | 'suspeito'
   | 'em_tratamento'
   | 'em_carencia'
   | 'mastite_cronica'
   | 'quarentena'
   | 'descartado'
-  | 'morto';
+  | 'morto'
+  | 'vendido';
 
 export const ROTULO_STATUS: Record<StatusAnimal, string> = {
   saudavel: 'Saudável',
+  suspeito: 'Suspeita clínica',
   em_tratamento: 'Em tratamento',
   em_carencia: 'Em carência',
   mastite_cronica: 'Mastite crônica',
   quarentena: 'Quarentena',
   descartado: 'Descartado',
   morto: 'Morto',
+  vendido: 'Vendido',
 };
 
 export interface Propriedade {
   id: string;
   nome: string;
+  estado: string | null;
+  cidade: string | null;
+  pais: string | null;
+  tipo_pasto: string | null;
   area_propria_ha: number;
   area_arrendada_ha: number;
   mao_de_obra_pessoas: number;
@@ -155,7 +163,7 @@ export type TipoEvento =
 export const ROTULO_EVENTO: Record<TipoEvento, string> = {
   vacinacao: 'Vacinação',
   medicacao: 'Medicação',
-  consulta: 'Consulta de rotina',
+  consulta: 'Consulta veterinária',
   exame_cmt: 'Teste de CMT',
   exame_ccs: 'Coleta para CCS',
   secagem: 'Secagem',
@@ -195,6 +203,7 @@ export interface EventoCalendario {
 }
 
 export interface EventoComAnimal extends EventoCalendario {
+  atendimento_id?: string | null;
   brinco: string | null;
   animal_nome: string | null;
 }

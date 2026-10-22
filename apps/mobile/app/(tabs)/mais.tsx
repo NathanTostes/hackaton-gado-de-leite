@@ -16,6 +16,8 @@ import {
 import { useTema } from '../../src/tema';
 
 const ITENS: { rota: string; icone: NomeIcone; titulo: string; texto: string }[] = [
+  { rota: '/falecidos', icone: 'history', titulo: 'Gado falecido', texto: 'Data, hora e causa dos falecimentos, com acesso às fichas.' },
+  { rota: '/vendidos', icone: 'sell', titulo: 'Gado vendido', texto: 'Histórico de vendas, valores e destinatários.' },
   {
     rota: '/financeiro',
     icone: 'payments',

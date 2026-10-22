@@ -13,8 +13,11 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { criarServidor } from '../../sync/src/servidor';
 import {
   configuracaoSync,
+  consultar,
   definirBackend,
+  executar,
   listarRebanho,
+  registrarControleLeiteiro,
   salvarAnimal,
   salvarConfiguracaoSync,
   sincronizar,
@@ -155,6 +158,59 @@ describe('sincronização pela rede, ponta a ponta', () => {
     await sincronizar({ endereco, codigo: CODIGO, dispositivo: 'A' });
 
     expect((await listarRebanho())[0]?.nome).toBe('Estrela da Serra');
+  });
+
+  it('a ordenha do mesmo dia lançada nos dois aparelhos não duplica a produção', async () => {
+    definirBackend(aparelhoA);
+    const id = await salvarAnimal({ brinco: '501', categoria: 'vaca_lactacao', sexo: 'F' });
+    await sincronizar({ endereco, codigo: CODIGO, dispositivo: 'A' });
+    definirBackend(aparelhoB);
+    await sincronizar({ endereco, codigo: CODIGO, dispositivo: 'B' });
+
+    // O retireiro lança a tarde no celular dele; o dono lança a manhã no dele,
+    // offline. São dois ids diferentes para a mesma ordenha do dia 20.
+    await registrarControleLeiteiro(id, '2026-10-20', 0, 9);
+    await sincronizar({ endereco, codigo: CODIGO, dispositivo: 'B' });
+    definirBackend(aparelhoA);
+    await registrarControleLeiteiro(id, '2026-10-20', 11, 0);
+    const resultado = await sincronizar({ endereco, codigo: CODIGO, dispositivo: 'A' });
+
+    const emA = await consultar<{ litros_total: number }>('SELECT litros_total FROM controle_leiteiro', []);
+    expect(emA).toEqual([{ litros_total: 11 }]);
+    expect(resultado.conflitos).toEqual([]);
+
+    // E o outro aparelho chega à mesma linha na sincronização seguinte.
+    definirBackend(aparelhoB);
+    const volta = await sincronizar({ endereco, codigo: CODIGO, dispositivo: 'B' });
+    expect(volta.removidas).toEqual({ controle_leiteiro: 1 });
+    expect(await consultar('SELECT litros_total FROM controle_leiteiro', [])).toEqual([{ litros_total: 11 }]);
+  });
+
+  it('produção da propriedade na mesma data converge em vez de conflitar para sempre', async () => {
+    const lancar = (id: string, litros: number, quando: string) =>
+      executar(
+        `INSERT INTO producao_propriedade (id, data, litros_vendidos, litros_total, created_at, updated_at)
+         VALUES (?, '2026-10-20', ?, ?, ?, ?)`,
+        [id, litros, litros, quando, quando],
+      );
+
+    definirBackend(aparelhoA);
+    await lancar('pa', 100, '2026-10-20T10:00:00.000Z');
+    await sincronizar({ endereco, codigo: CODIGO, dispositivo: 'A' });
+
+    definirBackend(aparelhoB);
+    await lancar('pb', 120, '2026-10-20T11:00:00.000Z');
+    const emB = await sincronizar({ endereco, codigo: CODIGO, dispositivo: 'B' });
+    definirBackend(aparelhoA);
+    const emA = await sincronizar({ endereco, codigo: CODIGO, dispositivo: 'A' });
+
+    expect(emB.conflitos).toEqual([]);
+    expect(emA.conflitos).toEqual([]);
+    expect(await consultar('SELECT id, litros_total FROM producao_propriedade', [])).toEqual([
+      { id: 'pb', litros_total: 120 },
+    ]);
+    definirBackend(aparelhoB);
+    expect(await consultar('SELECT id FROM producao_propriedade', [])).toEqual([{ id: 'pb' }]);
   });
 
   it('o nome do aparelho sobrevive a uma troca de endereço', async () => {

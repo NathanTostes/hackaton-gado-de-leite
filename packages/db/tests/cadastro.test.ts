@@ -49,7 +49,7 @@ describe('cadastro ampliado de animais', () => {
     await salvarAnimal({ id: 'legado', brinco: '100', numero_gta: 'GTA-1' });
     definirBackend(adaptador);
     expect((await obterAnimal('legado'))?.numero_gta).toBe('GTA-1');
-    expect(db.prepare("SELECT valor FROM meta_app WHERE chave='schema_versao'").get()?.valor).toBe('2');
+    expect(db.prepare("SELECT valor FROM meta_app WHERE chave='schema_versao'").get()?.valor).toBe('4');
   });
 
   it('salva e relê todos os dados da entrada, filiação e reprodução', async () => {

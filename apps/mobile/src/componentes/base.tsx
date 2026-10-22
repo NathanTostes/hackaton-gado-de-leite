@@ -19,6 +19,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { useTema } from '../tema';
+import { ContextoFormulario, type useFormulario } from './validacaoFormulario';
 import { LARGURA_MAXIMA_CONTEUDO, larguraDaColuna, useLayout } from '../responsivo';
 
 export type NomeIcone = keyof typeof MaterialIcons.glyphMap;
@@ -64,9 +65,11 @@ export function Tela({
   scroll = true,
   style,
   largura = 'legivel',
+  formulario,
 }: {
   children: ReactNode;
   scroll?: boolean;
+  formulario?: ReturnType<typeof useFormulario>;
   style?: StyleProp<ViewStyle>;
   /**
    * `legivel` centraliza e limita a largura — numa tela de computador, uma linha
@@ -94,17 +97,20 @@ export function Tela({
   }
 
   return (
-    <ScrollView
-      style={base}
-      contentContainerStyle={{
-        padding: preenchimento,
-        paddingBottom: espaco.xxl * 2,
-        alignItems: 'center',
-      }}
-      keyboardShouldPersistTaps="handled"
-    >
-      <View style={[limite, style]}>{children}</View>
-    </ScrollView>
+    <ContextoFormulario.Provider value={formulario ?? null}>
+      <ScrollView
+        ref={formulario?.scroll}
+        style={base}
+        contentContainerStyle={{
+          padding: preenchimento,
+          paddingBottom: espaco.xxl * 2,
+          alignItems: 'center',
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View ref={formulario?.conteudo} collapsable={false} style={[limite, style]}>{children}</View>
+      </ScrollView>
+    </ContextoFormulario.Provider>
   );
 }
 
@@ -421,6 +427,8 @@ export const Chip = memo(function Chip({
       accessibilityRole={aoTocar ? 'button' : undefined}
       style={{
         flexDirection: 'row',
+        maxWidth: '100%',
+        minWidth: 0,
         alignItems: 'center',
         gap: 4,
         borderRadius: raio.chip,
@@ -435,7 +443,7 @@ export const Chip = memo(function Chip({
       {icone && (
         <MaterialIcons name={icone} size={15} color={ativo ? c.primariaTexto : corBase} />
       )}
-      <Text style={[t.caption, { color: ativo ? c.primariaTexto : corBase, fontSize: 13 }]}>
+      <Text style={[t.caption, { color: ativo ? c.primariaTexto : corBase, fontSize: 13, flexShrink: 1 }]}>
         {texto}
       </Text>
     </Comp>

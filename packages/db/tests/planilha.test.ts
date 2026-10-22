@@ -73,6 +73,30 @@ describe('planilha da propriedade', () => {
     expect(conteudo.Propriedade?.[0]?.['Nome da propriedade']).toBe('Sítio Boa Esperança');
   });
 
+  it('preserva estado, cidade, país e pasto no round-trip em um banco vazio', async () => {
+    await salvarPropriedade({ estado: 'MG', cidade: 'Juiz de Fora', pais: 'Brasil', tipo_pasto: 'Braquiária e tifton' });
+    const bytes = await exportarPlanilha();
+    const { conteudo } = lerArquivo(bytes);
+    expect(conteudo.Propriedade?.[0]).toMatchObject({
+      'Estado (UF)': 'MG', Cidade: 'Juiz de Fora', País: 'Brasil', 'Tipo de pasto': 'Braquiária e tifton',
+    });
+    definirBackend(backendNode());
+    const relatorio = await importarPlanilha(bytes);
+    expect(relatorio.erros).toEqual([]);
+    expect(await obterPropriedade()).toMatchObject({
+      estado: 'MG', cidade: 'Juiz de Fora', pais: 'Brasil', tipo_pasto: 'Braquiária e tifton',
+    });
+  });
+
+  it('preserva o estado de suspeita clínica na exportação e importação', async () => {
+    await salvarAnimal({ brinco: '901', categoria: 'vaca_lactacao', sexo: 'F', status: 'suspeito' });
+    const bytes = await exportarPlanilha();
+    definirBackend(backendNode());
+    const relatorio = await importarPlanilha(bytes);
+    expect(relatorio.erros).toEqual([]);
+    expect((await listarRebanho())[0]?.status).toBe('suspeito');
+  });
+
   it('importa animais, lotes e produção referenciando por brinco e nome do lote', async () => {
     const arquivo = await arquivoCom({
       Lotes: [{ Lote: 'Vacas em lactação', Descrição: 'Alta produção' }],

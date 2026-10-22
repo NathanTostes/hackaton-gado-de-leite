@@ -244,10 +244,15 @@ export default function Saude() {
           Ordenhe nesta ordem para reduzir a contaminação entre vacas. Lave as mãos
           antes de passar para a próxima vaca.
         </Txt>
+        {vacas.some((v) => v.status === 'suspeito') && <>
+          <Espaco h={espaco.sm} />
+          <Alerta tipo="atencao" titulo="Há animais com suspeita clínica"
+            texto="Confira os prontuários. Esses animais não aparecem no grupo de vacas sadias." />
+        </>}
         <Espaco h={espaco.sm} />
         {(
           [
-            { rotulo: '1º — Vacas sadias', filtro: (v: (typeof vacas)[number]) => !v.ultimo_cmt || v.ultimo_cmt === 'N' || v.ultimo_cmt === 'T', cor: c.ok },
+            { rotulo: '1º — Vacas sadias', filtro: (v: (typeof vacas)[number]) => v.status === 'saudavel' && (!v.ultimo_cmt || v.ultimo_cmt === 'N' || v.ultimo_cmt === 'T'), cor: c.ok },
             { rotulo: '2º — CMT positivo (subclínicas)', filtro: (v: (typeof vacas)[number]) => !!v.ultimo_cmt && ['1', '2', '3'].includes(v.ultimo_cmt) && v.status !== 'em_tratamento', cor: c.atencao },
             { rotulo: '3º — Clínicas e em tratamento', filtro: (v: (typeof vacas)[number]) => v.status === 'em_tratamento' || v.status === 'em_carencia' || v.status === 'mastite_cronica', cor: c.alerta },
           ] as const

@@ -56,12 +56,16 @@ export async function salvarPropriedade(p: Partial<Propriedade>): Promise<void> 
   if (!atual) {
     await executar(
       `INSERT INTO propriedade
-       (id, nome, area_propria_ha, area_arrendada_ha, mao_de_obra_pessoas, preco_leite_litro,
+       (id, nome, estado, cidade, pais, tipo_pasto, area_propria_ha, area_arrendada_ha, mao_de_obra_pessoas, preco_leite_litro,
         mao_de_obra_familiar_mes, reposicao_investimento_mes, gestacao_dias, created_at, updated_at)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         p.id ?? novoId('prop'),
         p.nome ?? 'Minha propriedade',
+        p.estado?.trim() || null,
+        p.cidade?.trim() || null,
+        p.pais?.trim() || null,
+        p.tipo_pasto?.trim() || null,
         p.area_propria_ha ?? 0,
         p.area_arrendada_ha ?? 0,
         p.mao_de_obra_pessoas ?? 1,
@@ -77,11 +81,15 @@ export async function salvarPropriedade(p: Partial<Propriedade>): Promise<void> 
   }
   const m = { ...atual, ...p };
   await executar(
-    `UPDATE propriedade SET nome=?, area_propria_ha=?, area_arrendada_ha=?, mao_de_obra_pessoas=?,
+    `UPDATE propriedade SET nome=?, estado=?, cidade=?, pais=?, tipo_pasto=?, area_propria_ha=?, area_arrendada_ha=?, mao_de_obra_pessoas=?,
      preco_leite_litro=?, mao_de_obra_familiar_mes=?, reposicao_investimento_mes=?, gestacao_dias=?,
      updated_at=? WHERE id=?`,
     [
       m.nome,
+      m.estado?.trim() || null,
+      m.cidade?.trim() || null,
+      m.pais?.trim() || null,
+      m.tipo_pasto?.trim() || null,
       m.area_propria_ha,
       m.area_arrendada_ha,
       m.mao_de_obra_pessoas,
@@ -294,7 +302,7 @@ function montarOrdenacao(f: FiltrosRebanho): string {
                 ELSE 4 END ${dir}, brinco`;
     case 'alerta':
       return `CASE status WHEN 'em_tratamento' THEN 0 WHEN 'em_carencia' THEN 1
-              WHEN 'mastite_cronica' THEN 2 WHEN 'quarentena' THEN 3 ELSE 4 END ${dir}, brinco`;
+              WHEN 'mastite_cronica' THEN 2 WHEN 'suspeito' THEN 3 WHEN 'quarentena' THEN 4 ELSE 5 END ${dir}, brinco`;
     default:
       return `brinco ${dir}`;
   }
@@ -312,6 +320,7 @@ export async function listarRebanho(f: FiltrosRebanho = {}): Promise<AnimalComRe
     where.push(`a.status IN (${f.status.map(() => '?').join(',')})`);
     params.push(...f.status);
   }
+  if (!f.status?.length) where.push("a.status NOT IN ('morto','descartado','vendido')");
   if (f.loteId) {
     where.push('a.lote_id = ?');
     params.push(f.loteId);
@@ -406,7 +415,7 @@ export interface LoteComContagem {
 export async function listarLotes(): Promise<LoteComContagem[]> {
   return consultar<LoteComContagem>(
     `SELECT l.id, l.nome,
-            (SELECT COUNT(*) FROM animal a WHERE a.lote_id = l.id AND a.deleted_at IS NULL) AS animais
+            (SELECT COUNT(*) FROM animal a WHERE a.lote_id = l.id AND a.deleted_at IS NULL AND a.status NOT IN ('morto','descartado','vendido')) AS animais
      FROM lote l ORDER BY l.nome`,
   );
 }
@@ -534,10 +543,30 @@ export async function atualizarStatus(animalId: string, status: StatusAnimal): P
   ]);
 }
 
+/**
+ * A triagem indica suspeita, não confirma doença nem inicia tratamento.
+ * Só sai de saudável: uma consulta inconclusiva não equivale a alta clínica.
+ * Chamado dentro da transação que grava o prontuário e seus exames.
+ */
+export async function atualizarStatusAposTriagem(
+  animalId: string,
+  hipoteses: readonly { id: string; grupo: string; cf: number }[],
+  bandeiraVermelha = false,
+): Promise<void> {
+  const suspeita = bandeiraVermelha || hipoteses.some((h) =>
+    h.id !== 'sem_alteracao' && h.grupo !== 'rebanho' && Number.isFinite(h.cf) && h.cf > 0,
+  );
+  if (!suspeita) return;
+  await executar(
+    "UPDATE animal SET status='suspeito', updated_at=? WHERE id=? AND status='saudavel' AND deleted_at IS NULL",
+    [agoraISO(), animalId],
+  );
+}
+
 export async function composicaoRebanho(): Promise<ComposicaoRebanho> {
   const linhas = await consultar<{ categoria: CategoriaAnimal; n: number }>(
     `SELECT categoria, COUNT(*) AS n FROM animal
-     WHERE deleted_at IS NULL AND status NOT IN ('morto','descartado')
+     WHERE deleted_at IS NULL AND status NOT IN ('morto','descartado','vendido')
      GROUP BY categoria`,
   );
   const c: ComposicaoRebanho = {};
@@ -698,7 +727,7 @@ export async function painelMastite(ano: number, mes: number): Promise<PainelMas
 
   const vacas = await consultarUm<{ n: number }>(
     `SELECT COUNT(*) AS n FROM animal
-     WHERE categoria='vaca_lactacao' AND deleted_at IS NULL AND status NOT IN ('morto','descartado')`,
+     WHERE categoria='vaca_lactacao' AND deleted_at IS NULL AND status NOT IN ('morto','descartado','vendido')`,
   );
 
   const testes = await consultarUm<{ testadas: number; positivas: number }>(
@@ -1041,6 +1070,14 @@ export async function registrarTratamento(t: {
 
     await atualizarStatus(t.animalId, 'em_carencia');
 
+    const inicioEvento = await criarEvento({ tipo: 'medicacao', animalId: t.animalId,
+      titulo: `Início do tratamento — ${t.descricao}`, data: t.dataInicio,
+      descricao: 'Data de início registrada para o tratamento.', origem: 'automatico', referenciaId: id });
+    if (t.dataInicio <= hoje()) await concluirEvento(inicioEvento);
+    if (dataFim !== t.dataInicio) await criarEvento({ tipo: 'medicacao', animalId: t.animalId,
+      titulo: `Fim do tratamento — ${t.descricao}`, data: dataFim,
+      descricao: 'Data de fim registrada para o tratamento.', origem: 'automatico', referenciaId: id });
+
     await criarEvento({
       tipo: 'medicacao',
       animalId: t.animalId,
@@ -1114,17 +1151,75 @@ export async function criarEvento(e: {
   return id;
 }
 
-export async function listarEventos(de: string, ate: string): Promise<EventoComAnimal[]> {
+/** Eventos vinculados ao atendimento, incluindo os já concluídos. */
+export async function eventosDoAtendimento(atendimentoId: string): Promise<EventoComAnimal[]> {
   return consultar<EventoComAnimal>(
-    `SELECT e.*, a.brinco, a.nome AS animal_nome
-     FROM evento_calendario e LEFT JOIN animal a ON a.id = e.animal_id
-     WHERE e.data BETWEEN ? AND ? AND e.status <> 'cancelado'
-     ORDER BY e.data, e.tipo`,
-    [de, ate],
+    `SELECT e.*, a.brinco, a.nome AS animal_nome, at.id AS atendimento_id
+     FROM evento_calendario e LEFT JOIN animal a ON a.id=e.animal_id
+     LEFT JOIN tratamento t ON t.id=e.referencia_id
+     JOIN atendimento at ON at.id=COALESCE(t.atendimento_id,e.referencia_id)
+     WHERE at.id=? AND e.status <> 'cancelado' ORDER BY e.data, e.titulo`, [atendimentoId],
   );
 }
 
+/** Materializa a próxima dose informada no registro, sem calcular esquemas vacinais. */
+async function garantirProximasDoses(): Promise<void> {
+  const agora = agoraISO();
+  await executar(
+    `INSERT OR IGNORE INTO evento_calendario
+      (id,tipo,animal_id,titulo,descricao,data,status,origem,referencia_id,created_at,updated_at)
+     SELECT 'dose:' || v.id || ':' || v.proxima_dose, 'vacinacao', v.animal_id,
+       'Próxima dose — ' || vac.nome, 'Data informada no registro de vacinação.', v.proxima_dose,
+       'pendente', 'automatico', v.id, ?, ?
+     FROM vacinacao v JOIN vacina vac ON vac.id=v.vacina_id JOIN animal a ON a.id=v.animal_id
+     WHERE v.proxima_dose IS NOT NULL AND v.proxima_dose <> '' AND a.deleted_at IS NULL
+       AND a.status NOT IN ('morto','vendido','descartado')
+       AND NOT EXISTS (SELECT 1 FROM evento_calendario e
+         WHERE e.referencia_id=v.id AND e.tipo='vacinacao' AND e.data=v.proxima_dose)`, [agora, agora],
+  );
+}
+
+export async function listarEventos(de: string, ate: string): Promise<EventoComAnimal[]> {
+  await garantirProximasDoses();
+  const eventos = await consultar<EventoComAnimal>(
+    `SELECT e.*, a.brinco, a.nome AS animal_nome, at.id AS atendimento_id
+     FROM evento_calendario e LEFT JOIN animal a ON a.id = e.animal_id
+     LEFT JOIN tratamento t ON t.id=e.referencia_id
+     LEFT JOIN atendimento at ON at.id = COALESCE(t.atendimento_id,e.referencia_id)
+     WHERE ((e.data BETWEEN ? AND ?) OR (e.data < ? AND e.status IN ('pendente','atrasado')))
+       AND e.status <> 'cancelado'
+     ORDER BY e.data, e.tipo`,
+    [de, ate, de],
+  );
+  // Aplicações já registradas também aparecem no calendário, sem criar novas
+  // aplicações ou lembretes. Não duplica eventos existentes na mesma data.
+  const vacinas = await consultar<EventoComAnimal>(
+    `SELECT 'vacinacao:' || v.id AS id, 'vacinacao' AS tipo, v.animal_id, NULL AS lote_id,
+       'Vacinação realizada — ' || COALESCE(vac.nome,'Vacina registrada') AS titulo,
+       'Aplicação registrada no histórico de vacinação.' AS descricao, v.data,
+       NULL AS recorrencia, 'feito' AS status, 'automatico' AS origem, v.id AS referencia_id,
+       a.brinco, a.nome AS animal_nome, NULL AS atendimento_id
+     FROM vacinacao v JOIN animal a ON a.id=v.animal_id LEFT JOIN vacina vac ON vac.id=v.vacina_id
+     WHERE a.deleted_at IS NULL AND v.data BETWEEN ? AND ?
+       AND NOT EXISTS (SELECT 1 FROM evento_calendario e WHERE e.referencia_id=v.id
+         AND e.tipo='vacinacao' AND e.data=v.data AND e.status <> 'cancelado')`, [de, ate],
+  );
+  const tratamentos = await consultar<EventoComAnimal>(
+    `SELECT 'tratamento:' || t.id AS id, 'medicacao' AS tipo, t.animal_id, NULL AS lote_id,
+       'Início do tratamento — ' || COALESCE(m.nome,'Tratamento registrado') AS titulo,
+       'Início registrado no histórico de tratamentos.' AS descricao, t.data_inicio AS data,
+       NULL AS recorrencia, 'feito' AS status, 'automatico' AS origem, t.id AS referencia_id,
+       a.brinco, a.nome AS animal_nome, t.atendimento_id
+     FROM tratamento t JOIN animal a ON a.id=t.animal_id LEFT JOIN medicamento m ON m.id=t.medicamento_id
+     WHERE a.deleted_at IS NULL AND t.data_inicio BETWEEN ? AND ?
+       AND NOT EXISTS (SELECT 1 FROM evento_calendario e WHERE e.referencia_id=t.id
+         AND e.data=t.data_inicio AND e.titulo LIKE 'Início do tratamento%' AND e.status <> 'cancelado')`, [de, ate],
+  );
+  return [...eventos, ...vacinas, ...tratamentos].sort((a, b) => a.data.localeCompare(b.data) || a.titulo.localeCompare(b.titulo));
+}
+
 export async function eventosPendentes(limite = 20): Promise<EventoComAnimal[]> {
+  await garantirProximasDoses();
   return consultar<EventoComAnimal>(
     `SELECT e.*, a.brinco, a.nome AS animal_nome
      FROM evento_calendario e LEFT JOIN animal a ON a.id = e.animal_id

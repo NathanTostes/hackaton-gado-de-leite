@@ -1,3 +1,5 @@
+import { AgendaProntuario } from '../componentes/agendaProntuario';
+import { compromissosDaAgenda, type AjustesAgenda } from '../agendaConsulta';
 /**
  * Modo leitura em voz alta: uma única tela, botões enormes, o app falando.
  *
@@ -29,10 +31,7 @@ import { baseCompilada } from '@drmoo/knowledge';
 import {
   definirModoLeituraVoz,
   fatosDoAnimal,
-  lancarCMT,
   listarRebanho,
-  registrarCasoMastite,
-  salvarAtendimento,
   type AnimalComResumo,
 } from '@drmoo/db';
 import { ROTULO_CATEGORIA, hoje } from '@drmoo/domain';
@@ -45,6 +44,7 @@ import {
 } from '../componentes/acessibilidade';
 import { falar, pararDeFalar } from '../voz';
 import { useTema } from '../tema';
+import { salvarConsulta } from '../salvarConsulta';
 
 export default function AnamneseVoz({ aoSair }: { aoSair: () => void }) {
   const [animal, setAnimal] = useState<AnimalComResumo | null>(null);
@@ -139,6 +139,9 @@ function Atendimento({
   const [passo, setPasso] = useState<ProximoPasso | null>(null);
   const [salvo, setSalvo] = useState(false);
   const [salvando, setSalvando] = useState(false);
+  const [dataAtendimento, setDataAtendimento] = useState(hoje());
+  const [ajustesAgenda, setAjustesAgenda] = useState<AjustesAgenda>({});
+  const [erroSalvar, setErroSalvar] = useState('');
 
   useEffect(() => {
     let ativo = true;
@@ -177,48 +180,14 @@ function Atendimento({
     const s = sessaoRef.current;
     if (!s || salvando) return;
     setSalvando(true);
+    setErroSalvar('');
     try {
-      const serializado = s.serializar();
-      const id = await salvarAtendimento({
-        animal_id: animal.id,
-        data_hora: new Date().toISOString(),
-        queixa_principal: null,
-        kb_versao: parecer.kbVersao,
-        engine_versao: parecer.engineVersao,
-        fatos_iniciais: JSON.stringify(serializado.fatosIniciais),
-        respostas: JSON.stringify(serializado.respostas),
-        conclusoes: JSON.stringify(parecer.hipoteses),
-        traco: JSON.stringify(parecer.traco),
-        conduta_check: JSON.stringify([]),
-        motivo_parada: parecer.motivoParada,
-        status: 'concluido',
-        observacoes: null,
-      });
-
-      const principal = parecer.hipoteses[0];
-      if (principal?.id.startsWith('mastite_clinica')) {
-        await registrarCasoMastite({
-          animalId: animal.id,
-          quartos: 1,
-          tipo: 'clinica',
-          grau: Number(principal.id.slice(-1)) || null,
-          dataInicio: hoje(),
-          atendimentoId: id,
-        });
-      }
-
-      const cmt = s.memoria.get('cmt_pior_quarto');
-      if (cmt && typeof cmt.valor === 'string' && cmt.origem === 'pergunta') {
-        await lancarCMT(animal.id, hoje(), {
-          ad: cmt.valor as 'N' | 'T' | '1' | '2' | '3' | 'PP',
-          ae: null,
-          pd: null,
-          pe: null,
-        });
-      }
+      await salvarConsulta(animal.id, s, parecer, [], { dataAtendimento, compromissos: compromissosDaAgenda(parecer, [], ajustesAgenda) });
 
       setSalvo(true);
       falar('Prontuário salvo.');
+    } catch (e) {
+      setErroSalvar(e instanceof Error ? e.message : 'Não foi possível salvar o prontuário.');
     } finally {
       setSalvando(false);
     }
@@ -265,6 +234,9 @@ function Atendimento({
               • {item}
             </Txt>
           ))}
+          <AgendaProntuario parecer={passo.parecer!} ajustes={ajustesAgenda} aoMudar={setAjustesAgenda}
+            dataAtendimento={dataAtendimento} aoMudarData={setDataAtendimento} bloqueado={salvo || salvando} />
+          {!!erroSalvar && <Txt cor={c.alerta}>{erroSalvar}</Txt>}
         </ScrollView>
         <BotaoEnorme
           titulo={salvo ? 'Salvo' : 'Salvar'}
@@ -319,6 +291,9 @@ function Atendimento({
               ))}
             </>
           )}
+          <AgendaProntuario parecer={passo.parecer!} ajustes={ajustesAgenda} aoMudar={setAjustesAgenda}
+            dataAtendimento={dataAtendimento} aoMudarData={setDataAtendimento} bloqueado={salvo || salvando} />
+          {!!erroSalvar && <Txt cor={c.alerta}>{erroSalvar}</Txt>}
         </ScrollView>
 
         <BotaoEnorme

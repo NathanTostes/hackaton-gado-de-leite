@@ -1,92 +1,1219 @@
 [
-  { "nome": "del", "rotulo": "dias em lactação (DEL)", "tipo": "numero" },
-  { "nome": "numero_lactacao", "rotulo": "número da lactação", "tipo": "numero" },
-  { "nome": "producao_media_dia", "rotulo": "produção média por dia (L)", "tipo": "numero" },
-  { "nome": "idade_dias", "rotulo": "idade em dias", "tipo": "numero" },
-  { "nome": "cmt_positivo_meses", "rotulo": "meses seguidos com CMT positivo nesta lactação", "tipo": "numero" },
-  { "nome": "sexo", "rotulo": "sexo do animal", "tipo": "enum", "opcoes": ["F", "M"] },
-  { "nome": "raca_taurina_europeia", "rotulo": "raça de origem europeia (taurina), sem cruzamento zebuíno", "tipo": "boolean" },
-
-  { "nome": "caneca_grumos", "rotulo": "grumos ou pus nos primeiros jatos", "tipo": "boolean" },
-  { "nome": "caneca_cor_alterada", "rotulo": "leite com coloração alterada (amarelada ou avermelhada)", "tipo": "boolean" },
-  { "nome": "caneca_consistencia_alterada", "rotulo": "leite com consistência alterada (aguado ou grosso)", "tipo": "boolean" },
-  { "nome": "palpacao_dor", "rotulo": "dor à palpação da mama", "tipo": "boolean" },
-  { "nome": "palpacao_inchaco", "rotulo": "inchaço na mama", "tipo": "boolean" },
-  { "nome": "palpacao_endurecido", "rotulo": "área endurecida na mama", "tipo": "boolean" },
-  { "nome": "palpacao_vermelhidao", "rotulo": "parte da mama avermelhada", "tipo": "boolean" },
-  { "nome": "ubere_aumento_tamanho", "rotulo": "aumento de tamanho do úbere", "tipo": "boolean" },
-  { "nome": "nao_deixa_ordenhar", "rotulo": "a vaca não se deixa ordenhar", "tipo": "boolean" },
-  { "nome": "caroco_apos_ordenha", "rotulo": "caroços ou áreas endurecidas após a ordenha", "tipo": "boolean" },
-  { "nome": "cmt_pior_quarto", "rotulo": "pior resultado de CMT entre os quartos", "tipo": "enum", "opcoes": ["N", "T", "1", "2", "3", "PP"] },
-  { "nome": "ccs_individual", "rotulo": "CCS individual (células/mL)", "tipo": "numero" },
-  { "nome": "quarto_sem_leite", "rotulo": "algum quarto não produz mais leite", "tipo": "boolean" },
-
-  { "nome": "febre", "rotulo": "febre (temperatura acima de 39,5 °C) ou orelhas e focinho quentes", "tipo": "boolean" },
-  { "nome": "apetite_reduzido", "rotulo": "perda de apetite", "tipo": "boolean" },
-  { "nome": "desidratacao", "rotulo": "sinais de desidratação (olhos fundos, prega de pele lenta)", "tipo": "boolean" },
-  { "nome": "apatia", "rotulo": "apatia ou prostração", "tipo": "boolean" },
-
-  { "nome": "decubito", "rotulo": "vaca caída, sem conseguir levantar", "tipo": "boolean" },
-  { "nome": "extremidades_frias", "rotulo": "orelhas e patas frias", "tipo": "boolean" },
-  { "nome": "tremores_musculares", "rotulo": "tremores musculares", "tipo": "boolean" },
-  { "nome": "agitacao_convulsao", "rotulo": "agitação, espasmos ou convulsão", "tipo": "boolean" },
-  { "nome": "pasto_novo_adubado", "rotulo": "lote em pasto novo ou recém-adubado", "tipo": "boolean" },
-  { "nome": "halito_adocicado", "rotulo": "hálito adocicado (cheiro de acetona)", "tipo": "boolean" },
-  { "nome": "queda_producao_subita", "rotulo": "queda súbita na produção de leite", "tipo": "boolean" },
-  { "nome": "perda_escore_corporal", "rotulo": "emagrecimento visível", "tipo": "boolean" },
-
-  { "nome": "placenta_retida_12h", "rotulo": "placenta retida por mais de 12 horas após o parto", "tipo": "boolean" },
-  { "nome": "corrimento_vulvar_fetido", "rotulo": "corrimento vulvar fétido ou achocolatado", "tipo": "boolean" },
-
-  { "nome": "dias_desde_parto_sem_cio", "rotulo": "dias desde o parto sem nenhum cio observado", "tipo": "numero" },
-  { "nome": "cio_irregular_frequente", "rotulo": "cios frequentes e irregulares", "tipo": "boolean" },
-  { "nome": "inseminacoes_sem_prenhez", "rotulo": "inseminações ou coberturas sem prenhez confirmada nesta vaca", "tipo": "numero" },
-
-  { "nome": "fezes_escassas", "rotulo": "fezes escassas ou pastosas", "tipo": "boolean" },
-  { "nome": "fezes_liquidas_bolhosas", "rotulo": "fezes líquidas e com bolhas", "tipo": "boolean" },
-  { "nome": "ruminacao_reduzida", "rotulo": "a vaca rumina menos que o normal", "tipo": "boolean" },
-  { "nome": "flanco_esquerdo_distendido", "rotulo": "flanco esquerdo estufado", "tipo": "boolean" },
-  { "nome": "dieta_muito_concentrado", "rotulo": "dieta com muito concentrado e pouca fibra", "tipo": "boolean" },
-  { "nome": "queda_gordura_leite", "rotulo": "queda do teor de gordura do leite", "tipo": "boolean" },
-
-  { "nome": "claudicacao", "rotulo": "manqueira (claudicação)", "tipo": "boolean" },
-  { "nome": "casco_quente_inchado", "rotulo": "casco quente ou inchado", "tipo": "boolean" },
-  { "nome": "mau_cheiro_casco", "rotulo": "mau cheiro ou ferida entre os dedos", "tipo": "boolean" },
-
-  { "nome": "coceira_intensa", "rotulo": "coceira intensa com perda de pelo", "tipo": "boolean" },
-  { "nome": "crostas_pele", "rotulo": "crostas na pele (cabeça, pescoço ou base da cauda)", "tipo": "boolean" },
-  { "nome": "placas_descamadas", "rotulo": "placas arredondadas de pele descamada", "tipo": "boolean" },
-  { "nome": "pele_clara_ferida_sol", "rotulo": "pele clara avermelhada ou ferida após sol (focinho, úbere)", "tipo": "boolean" },
-  { "nome": "idade_jovem", "rotulo": "animal jovem (novilha ou bezerra desmamada)", "tipo": "boolean" },
-
-  { "nome": "caroco_localizado_mama", "rotulo": "bolsa ou caroço localizado e amolecido na mama", "tipo": "boolean" },
-
-  { "nome": "mucosas_palidas", "rotulo": "mucosas pálidas (gengiva e olhos esbranquiçados)", "tipo": "boolean" },
-  { "nome": "mucosas_amareladas", "rotulo": "mucosas amareladas", "tipo": "boolean" },
-  { "nome": "urina_escura", "rotulo": "urina escura (cor de vinho ou café)", "tipo": "boolean" },
-  { "nome": "infestacao_carrapatos", "rotulo": "muitos carrapatos no animal", "tipo": "boolean" },
-  { "nome": "tosse", "rotulo": "tosse", "tipo": "boolean" },
-  { "nome": "secrecao_nasal", "rotulo": "secreção nasal", "tipo": "boolean" },
-  { "nome": "respiracao_acelerada", "rotulo": "respiração acelerada", "tipo": "boolean" },
-
-  { "nome": "vesiculas_boca_tetos_cascos", "rotulo": "aftas ou bolhas na boca, língua, focinho, tetos ou entre os cascos", "tipo": "boolean" },
-  { "nome": "salivacao_intensa", "rotulo": "salivação intensa (baba escorrendo)", "tipo": "boolean" },
-  { "nome": "sinais_nervosos", "rotulo": "sinais nervosos (incoordenação, agressividade, mugido alterado, paralisia do trem posterior)", "tipo": "boolean" },
-  { "nome": "dificuldade_deglutir", "rotulo": "dificuldade para engolir", "tipo": "boolean" },
-
-  { "nome": "fezes_liquidas", "rotulo": "fezes líquidas (diarreia)", "tipo": "boolean" },
-  { "nome": "umbigo_inchado_quente", "rotulo": "umbigo inchado, quente ou dolorido", "tipo": "boolean" },
-  { "nome": "colostro_primeiras_6h", "rotulo": "recebeu colostro nas primeiras 6 horas de vida", "tipo": "boolean" },
-
-  { "nome": "lambe_roi_objetos", "rotulo": "lambe ou rói terra, ossos ou objetos (pica)", "tipo": "boolean" },
-  { "nome": "pelo_aspero_sem_brilho", "rotulo": "pelo áspero e sem brilho", "tipo": "boolean" },
-  { "nome": "suplementacao_mineral_regular", "rotulo": "recebe suplementação mineral regularmente", "tipo": "boolean" },
-
-  { "nome": "acesso_pasto_area_nova", "rotulo": "teve acesso recente a pasto ou área nova/desconhecida", "tipo": "boolean" },
-  { "nome": "morte_subita_lote", "rotulo": "morte súbita de outro animal do mesmo lote", "tipo": "boolean" },
-
-  { "nome": "perc_mastite_clinica_mes", "rotulo": "% de mastite clínica no mês", "tipo": "numero" },
-  { "nome": "perc_mastite_subclinica", "rotulo": "% de mastite subclínica", "tipo": "numero" },
-  { "nome": "perc_vacas_lactacao", "rotulo": "% de vacas em lactação", "tipo": "numero" },
-  { "nome": "dias_desde_ultimo_cmt", "rotulo": "dias desde o último teste de CMT no rebanho", "tipo": "numero" }
+  {
+    "nome": "del",
+    "rotulo": "dias em lactação (DEL)",
+    "tipo": "numero"
+  },
+  {
+    "nome": "numero_lactacao",
+    "rotulo": "número da lactação",
+    "tipo": "numero"
+  },
+  {
+    "nome": "producao_media_dia",
+    "rotulo": "produção média por dia (L)",
+    "tipo": "numero"
+  },
+  {
+    "nome": "idade_dias",
+    "rotulo": "idade em dias",
+    "tipo": "numero"
+  },
+  {
+    "nome": "cmt_positivo_meses",
+    "rotulo": "meses seguidos com CMT positivo nesta lactação",
+    "tipo": "numero"
+  },
+  {
+    "nome": "sexo",
+    "rotulo": "sexo do animal",
+    "tipo": "enum",
+    "opcoes": [
+      "F",
+      "M"
+    ]
+  },
+  {
+    "nome": "raca_taurina_europeia",
+    "rotulo": "raça de origem europeia (taurina), sem cruzamento zebuíno",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "caneca_grumos",
+    "rotulo": "grumos ou pus nos primeiros jatos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "caneca_cor_alterada",
+    "rotulo": "leite com coloração alterada (amarelada ou avermelhada)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "caneca_consistencia_alterada",
+    "rotulo": "leite com consistência alterada (aguado ou grosso)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "palpacao_dor",
+    "rotulo": "dor à palpação da mama",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "palpacao_inchaco",
+    "rotulo": "inchaço na mama",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "palpacao_endurecido",
+    "rotulo": "área endurecida na mama",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "palpacao_vermelhidao",
+    "rotulo": "parte da mama avermelhada",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ubere_aumento_tamanho",
+    "rotulo": "aumento de tamanho do úbere",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "nao_deixa_ordenhar",
+    "rotulo": "a vaca não se deixa ordenhar",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "caroco_apos_ordenha",
+    "rotulo": "caroços ou áreas endurecidas após a ordenha",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "cmt_pior_quarto",
+    "rotulo": "pior resultado de CMT entre os quartos",
+    "tipo": "enum",
+    "opcoes": [
+      "N",
+      "T",
+      "1",
+      "2",
+      "3",
+      "PP"
+    ]
+  },
+  {
+    "nome": "ccs_individual",
+    "rotulo": "CCS individual (células/mL)",
+    "tipo": "numero"
+  },
+  {
+    "nome": "quarto_sem_leite",
+    "rotulo": "algum quarto não produz mais leite",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "febre",
+    "rotulo": "febre (temperatura acima de 39,5 °C) ou orelhas e focinho quentes",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "apetite_reduzido",
+    "rotulo": "perda de apetite",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "desidratacao",
+    "rotulo": "sinais de desidratação (olhos fundos, prega de pele lenta)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "apatia",
+    "rotulo": "apatia ou prostração",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "decubito",
+    "rotulo": "vaca caída, sem conseguir levantar",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "extremidades_frias",
+    "rotulo": "orelhas e patas frias",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "tremores_musculares",
+    "rotulo": "tremores musculares",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "agitacao_convulsao",
+    "rotulo": "agitação, espasmos ou convulsão",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pasto_novo_adubado",
+    "rotulo": "lote em pasto novo ou recém-adubado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "halito_adocicado",
+    "rotulo": "hálito adocicado (cheiro de acetona)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "queda_producao_subita",
+    "rotulo": "queda súbita na produção de leite",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "perda_escore_corporal",
+    "rotulo": "emagrecimento visível",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "placenta_retida_12h",
+    "rotulo": "placenta retida por mais de 12 horas após o parto",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "corrimento_vulvar_fetido",
+    "rotulo": "corrimento vulvar fétido ou achocolatado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "dias_desde_parto_sem_cio",
+    "rotulo": "dias desde o parto sem nenhum cio observado",
+    "tipo": "numero"
+  },
+  {
+    "nome": "cio_irregular_frequente",
+    "rotulo": "cios frequentes e irregulares",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "inseminacoes_sem_prenhez",
+    "rotulo": "inseminações ou coberturas sem prenhez confirmada nesta vaca",
+    "tipo": "numero"
+  },
+  {
+    "nome": "fezes_escassas",
+    "rotulo": "fezes escassas ou pastosas",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "fezes_liquidas_bolhosas",
+    "rotulo": "fezes líquidas e com bolhas",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ruminacao_reduzida",
+    "rotulo": "a vaca rumina menos que o normal",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "flanco_esquerdo_distendido",
+    "rotulo": "flanco esquerdo estufado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "dieta_muito_concentrado",
+    "rotulo": "dieta com muito concentrado e pouca fibra",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "queda_gordura_leite",
+    "rotulo": "queda do teor de gordura do leite",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "claudicacao",
+    "rotulo": "manqueira (claudicação)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "casco_quente_inchado",
+    "rotulo": "casco quente ou inchado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "mau_cheiro_casco",
+    "rotulo": "mau cheiro ou ferida entre os dedos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "coceira_intensa",
+    "rotulo": "coceira intensa com perda de pelo",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "crostas_pele",
+    "rotulo": "crostas na pele (cabeça, pescoço ou base da cauda)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "placas_descamadas",
+    "rotulo": "placas arredondadas de pele descamada",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pele_clara_ferida_sol",
+    "rotulo": "pele clara avermelhada ou ferida após sol (focinho, úbere)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "idade_jovem",
+    "rotulo": "animal jovem (novilha ou bezerra desmamada)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "caroco_localizado_mama",
+    "rotulo": "bolsa ou caroço localizado e amolecido na mama",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "mucosas_palidas",
+    "rotulo": "mucosas pálidas (gengiva e olhos esbranquiçados)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "mucosas_amareladas",
+    "rotulo": "mucosas amareladas",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "urina_escura",
+    "rotulo": "urina escura (cor de vinho ou café)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "infestacao_carrapatos",
+    "rotulo": "muitos carrapatos no animal",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "tosse",
+    "rotulo": "tosse",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "secrecao_nasal",
+    "rotulo": "secreção nasal",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "respiracao_acelerada",
+    "rotulo": "respiração acelerada",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "vesiculas_boca_tetos_cascos",
+    "rotulo": "aftas ou bolhas na boca, língua, focinho, tetos ou entre os cascos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "salivacao_intensa",
+    "rotulo": "salivação intensa (baba escorrendo)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "sinais_nervosos",
+    "rotulo": "sinais nervosos (incoordenação, agressividade, mugido alterado, paralisia do trem posterior)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "dificuldade_deglutir",
+    "rotulo": "dificuldade para engolir",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "fezes_liquidas",
+    "rotulo": "fezes líquidas (diarreia)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "umbigo_inchado_quente",
+    "rotulo": "umbigo inchado, quente ou dolorido",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "colostro_primeiras_6h",
+    "rotulo": "recebeu colostro nas primeiras 6 horas de vida",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "lambe_roi_objetos",
+    "rotulo": "lambe ou rói terra, ossos ou objetos (pica)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pelo_aspero_sem_brilho",
+    "rotulo": "pelo áspero e sem brilho",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "suplementacao_mineral_regular",
+    "rotulo": "recebe suplementação mineral regularmente",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "acesso_pasto_area_nova",
+    "rotulo": "teve acesso recente a pasto ou área nova/desconhecida",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "morte_subita_lote",
+    "rotulo": "morte súbita de outro animal do mesmo lote",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "perc_mastite_clinica_mes",
+    "rotulo": "% de mastite clínica no mês",
+    "tipo": "numero"
+  },
+  {
+    "nome": "perc_mastite_subclinica",
+    "rotulo": "% de mastite subclínica",
+    "tipo": "numero"
+  },
+  {
+    "nome": "perc_vacas_lactacao",
+    "rotulo": "% de vacas em lactação",
+    "tipo": "numero"
+  },
+  {
+    "nome": "dias_desde_ultimo_cmt",
+    "rotulo": "dias desde o último teste de CMT no rebanho",
+    "tipo": "numero"
+  },
+  {
+    "nome": "posicao_cabeca_flanco",
+    "rotulo": "cabeça curvada sobre o flanco ou as costelas",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pupilas_dilatadas",
+    "rotulo": "pupilas dilatadas",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "nao_responde_calcio",
+    "rotulo": "não melhorou após aplicação de cálcio na veia",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "escore_corporal_alto",
+    "rotulo": "vaca chegou ao parto muito gorda",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "cetonuria_positiva",
+    "rotulo": "fita de urina positiva para corpos cetônicos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "hiperestesia_som",
+    "rotulo": "reage exageradamente a barulho ou toque",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ping_flanco_esquerdo",
+    "rotulo": "som metálico agudo (\"ping\") ao bater no flanco esquerdo",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ping_flanco_direito",
+    "rotulo": "som metálico agudo (\"ping\") ao bater no flanco direito",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "graos_inteiros_fezes",
+    "rotulo": "grãos inteiros nas fezes",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "engasgo_alimento_inteiro",
+    "rotulo": "engasgo após tentar engolir fruta, tubérculo ou alimento inteiro",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "dor_cernelha",
+    "rotulo": "geme de dor quando se belisca a pele sobre a cernelha",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "dorso_arqueado",
+    "rotulo": "costas arqueadas e andar travado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "apetite_preservado",
+    "rotulo": "continua comendo bem apesar de emagrecer",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "diarreia_cronica_refrataria",
+    "rotulo": "diarreia constante há semanas que não responde a tratamento",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "fezes_piche",
+    "rotulo": "fezes escuras como piche (sangue digerido)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "taquicardia_choque",
+    "rotulo": "coração muito acelerado, quadro de choque",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "timpanismo_cronico",
+    "rotulo": "rúmen estufado que volta sempre, com dificuldade de arrotar",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ingestao_corpo_estranho",
+    "rotulo": "hábito de mastigar corda, plástico, arame ou lixo",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "suplemento_proteinado_molhado",
+    "rotulo": "suplemento proteinado (com ureia) molhado por chuva no cocho",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ubere_edema_cacifo",
+    "rotulo": "inchaço frio e indolor no úbere que guarda a marca do dedo",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pre_parto",
+    "rotulo": "vaca seca no fim da gestação, perto do parto",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "aborto",
+    "rotulo": "perdeu a gestação (aborto)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "feto_formado",
+    "rotulo": "o feto abortado já estava formado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "caes_acesso_cocho",
+    "rotulo": "cães têm acesso livre ao cocho ou à comida do rebanho",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "vacinada_reproducao",
+    "rotulo": "vacinada contra doenças reprodutivas",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "comportamento_masculinizado",
+    "rotulo": "comportamento e aparência masculinizados (\"machorra\")",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ovarios_pequenos_lisos",
+    "rotulo": "ovários pequenos e lisos ao exame de toque",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "massa_protrai_vulva",
+    "rotulo": "massa de tecido saindo pela vulva",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "massa_com_caruncula",
+    "rotulo": "a massa que saiu tem carúnculas (botões) — é o útero",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "parto_distocico_recente",
+    "rotulo": "parto recente muito difícil ou com tração",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "juntas_inchadas_quentes",
+    "rotulo": "juntas inchadas, quentes e doloridas",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "abdomen_distendido",
+    "rotulo": "abdômen distendido (\"barrigudo\")",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "edema_submandibular",
+    "rotulo": "inchaço mole embaixo do queixo (\"papeira\")",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "opistotono_rigidez",
+    "rotulo": "rigidez dos membros com a cabeça repuxada para trás",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ferida_contaminada_recente",
+    "rotulo": "ferida, castração ou corte de umbigo recente em ambiente sujo",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "transporte_recente",
+    "rotulo": "transporte ou entrada recente no rebanho",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "inchaco_crepitante",
+    "rotulo": "inchaço com som de estalo (gás) sob a pele",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "cegueira_subita",
+    "rotulo": "perdeu a visão de repente",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "anda_circulos_pressiona_cabeca",
+    "rotulo": "anda em círculos e pressiona a cabeça contra obstáculos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "verrugas_couveflor",
+    "rotulo": "verrugas secas e duras parecendo couve-flor",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pasto_samambaia",
+    "rotulo": "pasto invadido por samambaia há mais de um ano",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "hematuria_persistente",
+    "rotulo": "sangue vivo na urina de forma constante",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "sangue_nao_coagulado_orificios",
+    "rotulo": "sangue escuro que não coagula saindo pelos orifícios naturais",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "animal_morto",
+    "rotulo": "animal encontrado morto (achado de necropsia)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "lesao_morango_interdigital",
+    "rotulo": "lesão vermelha e granulosa como um morango entre os dedos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "perfuracao_sola_pus",
+    "rotulo": "perfuração ou buraco na sola do casco com saída de pus",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "aumento_osso_mandibula",
+    "rotulo": "aumento duro e indolor no osso da mandíbula",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "inchaco_mole_garganta",
+    "rotulo": "inchaço mole na base da língua ou na garganta",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "lingua_pendula",
+    "rotulo": "língua pendurada para fora da boca",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "olho_lacrimejando_fotofobia",
+    "rotulo": "olho lacrimejando muito, com medo de luz",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "mancha_branca_olho",
+    "rotulo": "mancha branca opaca no centro do olho",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "leite_pelas_narinas",
+    "rotulo": "leite escorre pelas narinas ao mamar",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ausencia_orificio_anal",
+    "rotulo": "ausência de orifício anal",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "fezes_sangue_vivo_tenesmo",
+    "rotulo": "fezes com sangue vivo e muita força para defecar",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "tratador_com_diarreia",
+    "rotulo": "pessoa que cuida do lote também está com diarreia",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "baterias_sucata_pasto",
+    "rotulo": "baterias velhas ou sucata descartadas no pasto",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ranger_dentes",
+    "rotulo": "range os dentes",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "dieta_pobre_selenio",
+    "rotulo": "dieta da mãe ou do lote pobre em selênio e vitamina E",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "musculos_tremem_nao_sustentam",
+    "rotulo": "músculos das pernas tremem e não sustentam o peso",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "estufa_apos_mamada_balde",
+    "rotulo": "estufa do lado esquerdo logo após mamar no balde",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pelos_desbotados_oculos",
+    "rotulo": "pelos desbotados ao redor dos olhos (\"óculos\")",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "tremores_congenitos",
+    "rotulo": "nasceu com tremores de cabeça e dificuldade de ficar em pé",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "dor_cabeca_pescoco",
+    "rotulo": "chora de dor ao toque na cabeça ou no pescoço",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "estresse_termico_recente",
+    "rotulo": "transporte ou calor extremo recente",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "parto_travado_membros_dobrados",
+    "rotulo": "parto travado com membros do bezerro dobrados",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "monta_natural_touro_novo",
+    "rotulo": "monta natural com touro recém-comprado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "aborto_precoce_fetido",
+    "rotulo": "aborto no início da gestação com cheiro de podre",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "gestacao_gemelar",
+    "rotulo": "gestação de gêmeos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "rasgo_vagina_abdomen",
+    "rotulo": "rasgo profundo comunicando vagina e abdômen",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "gestacao_prolongada",
+    "rotulo": "passou da data prevista de parto sem contrações",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "feto_mumificado",
+    "rotulo": "feto duro, seco e mumificado ao toque",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "lesoes_anel_tetos",
+    "rotulo": "feridas em forma de anel nos tetos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "troca_ordenhadeira",
+    "rotulo": "troca ou regulagem recente da ordenhadeira",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "leite_com_sangue",
+    "rotulo": "leite sai com sangue, sem grumos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "corte_no_teto",
+    "rotulo": "corte ou ferimento no teto",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "verrugas_tetos",
+    "rotulo": "verrugas finas e alongadas nos tetos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "nodulos_duros_glandula",
+    "rotulo": "nódulos duros ao longo da glândula mamária",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "inchaco_frio_barriga_esterno",
+    "rotulo": "inchaço frio na pele da barriga, do úbere até o peito",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pus_verde_fetido",
+    "rotulo": "pus verde, grosso e de cheiro insuportável no quarto",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "periodo_seco",
+    "rotulo": "vaca no período seco",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "flocos_brancos_leite",
+    "rotulo": "flocos brancos (\"areia\") no leite do tanque",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "perda_ponta_teto",
+    "rotulo": "perdeu a ponta do teto e o leite pinga sozinho",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pustulas_crostas_tetos",
+    "rotulo": "pústulas e crostas na pele dos tetos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "feridas_maos_ordenhador",
+    "rotulo": "ordenhadores com feridas purulentas nas mãos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "bolsa_liquido_fenda_ubere",
+    "rotulo": "bolsa de líquido malcheiroso na fenda do úbere",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "chapinhar_liquido_rumen",
+    "rotulo": "som de chapinhar líquido ao balançar o flanco",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "dor_final_miccao",
+    "rotulo": "dor e dificuldade para urinar, com sangue no fim do jato",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "polpa_citrica_excesso",
+    "rotulo": "dieta com muita polpa cítrica ou concentrado desbalanceado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "silagem_com_bolor",
+    "rotulo": "silagem ou ração com bolor",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "caroco_algodao_excesso",
+    "rotulo": "excesso de caroço de algodão não processado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "abomaso_distendido_timpanico",
+    "rotulo": "abomaso distendido e timpânico à direita, em bezerro",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "junta_fistula_sinovia",
+    "rotulo": "junta com orifício vazando líquido sinovial e pus",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "cascos_compridos",
+    "rotulo": "cascos muito compridos, em tesoura",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "fenda_linha_branca",
+    "rotulo": "fenda na linha branca do casco com barro e pus",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "inchaco_acima_casco_rachaduras",
+    "rotulo": "inchaço quente acima do casco com rachaduras exudativas",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "massa_movel_umbigo",
+    "rotulo": "massa arredondada, móvel e indolor no umbigo",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "crepitacao_ossea_membro",
+    "rotulo": "membro mole com som de osso quebrado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "membros_frente_tortos",
+    "rotulo": "nasceu com membros da frente tortos e tendões encurtados",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "calos_sem_pelo_juntas",
+    "rotulo": "calos grossos e sem pelo nos joelhos e jarretes",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ferida_v_talao",
+    "rotulo": "ferida em V no talão do casco com carne exposta",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pernas_abertas_espacate",
+    "rotulo": "pernas traseiras escorregaram para os lados e não juntam",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "piso_escorregadio",
+    "rotulo": "piso molhado e escorregadio",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "agressividade_subita",
+    "rotulo": "ficou agressivo de repente",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "morte_sob_arvore_tempestade",
+    "rotulo": "morte sob árvore isolada após tempestade",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "poeira_pasto_alto_seca",
+    "rotulo": "pasto alto e poeira intensa na seca",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "agua_lagoa_com_algas",
+    "rotulo": "água de lagoa com floração de algas na superfície",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pescoco_rigido_tabua",
+    "rotulo": "pescoço travado e rígido como tábua",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "terceira_palpebra_visivel",
+    "rotulo": "terceira pálpebra cobre parte do olho ao susto",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "diarreia_sangue_coagulos",
+    "rotulo": "diarreia com sangue vermelho vivo e coágulos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "queda_subita_apos_esforco",
+    "rotulo": "cai de repente ao ser tocado ou movimentado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pasto_erva_de_rato",
+    "rotulo": "pasto com erva-de-rato ou planta cardiotóxica",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "paralisia_facial_unilateral",
+    "rotulo": "pálpebra e orelha caídas de um só lado do rosto",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "globo_ocular_branco_aumentado",
+    "rotulo": "globo ocular branco e aumentado de tamanho",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "abscesso_garganta_rompido",
+    "rotulo": "abscesso de garganta que estourou para dentro",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "protege_bezerro_agressiva",
+    "rotulo": "ataca quem se aproxima do bezerro recém-nascido",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "edema_membros_confinamento",
+    "rotulo": "inchaço nas pernas em confinamento longo sem verde",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "batimentos_irregulares",
+    "rotulo": "batimentos cardíacos irregulares",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "sudorese_boca_aberta_sol",
+    "rotulo": "sua muito e respira de boca aberta sob sol forte",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ferida_couveflor_olho",
+    "rotulo": "ferida em couve-flor sangrenta invadindo o olho",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "urina_limpa_apos_primeiras_gotas",
+    "rotulo": "urina avermelhada só nas primeiras gotas",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "cio_muco_cristalino",
+    "rotulo": "sinais de cio com muco cristalino na vulva",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pinga_leite_antes_ordenha",
+    "rotulo": "pinga leite no curral de espera antes da ordenha",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "fezes_consistencia_ideal",
+    "rotulo": "fezes verdes em panqueca, consistência ideal",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "temperatura_apos_exercicio",
+    "rotulo": "temperatura levemente alta logo após corrida ou manejo",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "alimento_pigmentante",
+    "rotulo": "comeu beterraba, cenoura ou alimento que tinge",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "comeu_placenta",
+    "rotulo": "expulsou a placenta no prazo e a comeu",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "colostro_antes_do_parto",
+    "rotulo": "acúmulo de colostro no úbere antes do parto",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "mancha_preta_palato",
+    "rotulo": "mancha preta no céu da boca, de nascença",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "parametros_vitais_normais",
+    "rotulo": "parâmetros vitais dentro do normal para a categoria",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "tremor_manha_fria",
+    "rotulo": "tremor nas paletas só na manhã fria",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "jugular_ingurgitada",
+    "rotulo": "veia jugular inchada e estufada no pescoço",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "cordao_duro_jugular",
+    "rotulo": "cordão duro e dolorido na jugular após injeções",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "sopro_cardiaco",
+    "rotulo": "sopro cardíaco audível",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "epistaxe_massiva",
+    "rotulo": "hemorragia nasal massiva e contínua",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "sangramento_local_injecao",
+    "rotulo": "sangramento que não para no local de injeção",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "veneno_rato_area",
+    "rotulo": "veneno de rato acessível na área",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "inchaco_duro_duas_patas",
+    "rotulo": "inchaço duro nas duas patas traseiras, sem febre",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "obeso_ofegante",
+    "rotulo": "obeso e ofegante ao mínimo esforço",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pustulas_esfincter_ordenha",
+    "rotulo": "pústulas e feridas no esfíncter dos tetos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "vacuo_alto_ordenhadeira",
+    "rotulo": "vácuo da ordenhadeira alto ou desregulado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "nodulo_canal_teto",
+    "rotulo": "nódulo duro dentro do canal do teto (\"ervilha\")",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ganglios_aumentados_simetricos",
+    "rotulo": "gânglios aumentados dos dois lados, simetricamente",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "conjuntivite_placas_focinho",
+    "rotulo": "conjuntivite com placas e feridas esbranquiçadas no focinho",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "feto_morto_retido",
+    "rotulo": "bezerro morto retido no útero há dias",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pelo_longo_nao_troca",
+    "rotulo": "não troca o pelo, fica peludo no verão e não tolera calor",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "historico_aftosa",
+    "rotulo": "já teve febre aftosa",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pasto_tangola_alagado",
+    "rotulo": "pasto de tangola ou capim-gordura em várzea alagada",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "queda_apos_monta",
+    "rotulo": "caiu durante a monta e arrasta os quartos traseiros",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "orelha_caida_secrecao",
+    "rotulo": "orelha caída com secreção purulenta no canal auditivo",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "comeu_muitas_frutas",
+    "rotulo": "comeu grande quantidade de frutas ou grãos de uma vez",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "estupor_coma_sem_convulsao",
+    "rotulo": "entra em estupor e coma, sem convulsão",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "decubito_lateral_barranco",
+    "rotulo": "caído de lado em barranco ou buraco",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "dificuldade_levantar_sem_decubito",
+    "rotulo": "levanta com dificuldade, mas consegue (sem ficar caído)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "ponta_teto_caloso_aspero",
+    "rotulo": "ponta do teto áspera, dura e arrebitada (calo)",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pus_vulvar_sem_febre",
+    "rotulo": "pus grosso e branco pela vulva ao deitar, sem febre",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "sola_cede_dor_sem_ferida",
+    "rotulo": "sola cede e dói muito ao apertar, sem ferida visível por fora",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "vermelhidao_leve_entre_unhas",
+    "rotulo": "pele levemente avermelhada entre as unhas, sem inchaço grande",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "crepitacao_dentro_casco",
+    "rotulo": "barulho de osso raspando dentro do casco após trauma",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "acesso_ossos_carcaca",
+    "rotulo": "acesso a ossos velhos ou carcaça no pasto",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "paralisia_flacida_lingua",
+    "rotulo": "paralisia mole do corpo com a língua de fora",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "nao_responde_tratamento",
+    "rotulo": "emagrecimento crônico que não responde a nenhum medicamento",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "abdomen_maca_pera",
+    "rotulo": "abdômen deformado: lado esquerdo em maçã, direito em pêra",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "erosoes_gengiva_labios",
+    "rotulo": "pequenas feridas erosivas na gengiva e nos lábios",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pasto_brejo_caracol",
+    "rotulo": "pasto de brejo/área alagada com caramujos",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "pelo_descorado_avermelhado",
+    "rotulo": "pelo que deveria ser escuro nasce avermelhado/descorado",
+    "tipo": "boolean"
+  },
+  {
+    "nome": "sangue_cor_chocolate",
+    "rotulo": "sangue com cor de chocolate (escurecido) ao ser colhido",
+    "tipo": "boolean"
+  }
 ]

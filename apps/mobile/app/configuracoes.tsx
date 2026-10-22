@@ -1,11 +1,14 @@
+import { SeletorEstado } from '../src/componentes/seletorEstado';
+import { ESTADOS_BRASIL } from '../src/estados';
+import { validarCampos } from '../src/componentes/validarCampos';
+import { useFormulario, useCampoFormulario } from '../src/componentes/validacaoFormulario';
 import { useEffect, useState } from 'react';
 import { Platform, TextInput, View } from 'react-native';
 import {
+  apagarTudo,
   bancoEmMemoria,
   exportarPlanilha,
-  gerarArquivoExemplo,
   importarPlanilha,
-  NOME_ARQUIVO_EXEMPLO,
   obterPropriedade,
   salvarPropriedade,
   type RelatorioImportacao,
@@ -37,6 +40,10 @@ export default function Configuracoes() {
 
   const [form, setForm] = useState({
     nome: '',
+    estado: '',
+    cidade: '',
+    pais: '',
+    tipo_pasto: '',
     area_propria_ha: '',
     area_arrendada_ha: '',
     mao_de_obra_pessoas: '',
@@ -48,18 +55,26 @@ export default function Configuracoes() {
   const [salvo, setSalvo] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState('');
-  const [planilhaOcupada, setPlanilhaOcupada] = useState<'exportando' | 'exemplo' | 'importando' | null>(
-    null,
-  );
+  const formulario = useFormulario();
+  const [planilhaOcupada, setPlanilhaOcupada] = useState<'exportando' | 'importando' | null>(null);
   const [avisoPlanilha, setAvisoPlanilha] = useState<string | null>(null);
   const [relatorio, setRelatorio] = useState<RelatorioImportacao | null>(null);
   const [substituir, setSubstituir] = useState(false);
+  // Apagar tudo é irreversível e não tem Ctrl+Z: o primeiro toque só arma o
+  // botão, o segundo é que apaga.
+  const [apagarArmado, setApagarArmado] = useState(false);
+  const [apagando, setApagando] = useState(false);
+  const [avisoApagar, setAvisoApagar] = useState<string | null>(null);
   const modoVoz = useModoVoz();
 
   useEffect(() => {
     if (!dados) return;
     setForm({
       nome: dados.nome,
+      estado: dados.estado ?? '',
+      cidade: dados.cidade ?? '',
+      pais: dados.pais ?? '',
+      tipo_pasto: dados.tipo_pasto ?? '',
       area_propria_ha: String(dados.area_propria_ha),
       area_arrendada_ha: String(dados.area_arrendada_ha),
       mao_de_obra_pessoas: String(dados.mao_de_obra_pessoas),
@@ -73,6 +88,22 @@ export default function Configuracoes() {
   if (carregando && !dados) return <Carregando />;
 
   const salvar = async () => {
+    const erros = validarCampos([
+      { rotulo: 'Nome da propriedade', valor: form.nome, obrigatorio: true },
+      { rotulo: 'Área própria (ha)', valor: form.area_propria_ha, tipo: 'numero' },
+      { rotulo: 'Área arrendada (ha)', valor: form.area_arrendada_ha, tipo: 'numero' },
+      { rotulo: 'Pessoas na atividade leiteira', valor: form.mao_de_obra_pessoas, tipo: 'numero', positivo: true, inteiro: true },
+      { rotulo: 'Preço recebido pelo litro (R$)', valor: form.preco_leite_litro, tipo: 'numero' },
+      { rotulo: 'Mão de obra familiar por mês (R$)', valor: form.mao_de_obra_familiar_mes, tipo: 'numero' },
+      { rotulo: 'Reposição e investimento por mês (R$)', valor: form.reposicao_investimento_mes, tipo: 'numero' },
+      { rotulo: 'Período de gestação (dias)', valor: form.gestacao_dias, tipo: 'numero', positivo: true, inteiro: true },
+    ]);
+    if (form.estado && !ESTADOS_BRASIL.some(([uf]) => uf === form.estado)) erros.Estado = 'Selecione um estado válido.';
+    if (formulario.mostrarErros(erros)) {
+      setSalvo(false);
+      setErro('Corrija os campos destacados.');
+      return;
+    }
     setSalvando(true);
     setErro('');
     setSalvo(false);
@@ -80,18 +111,23 @@ export default function Configuracoes() {
       await salvarPropriedade({
         id: dados?.id,
         nome: form.nome,
-        area_propria_ha: Number(form.area_propria_ha) || 0,
-        area_arrendada_ha: Number(form.area_arrendada_ha) || 0,
-        mao_de_obra_pessoas: Number(form.mao_de_obra_pessoas) || 1,
-        preco_leite_litro: Number(form.preco_leite_litro) || 0,
-        mao_de_obra_familiar_mes: Number(form.mao_de_obra_familiar_mes) || 0,
-        reposicao_investimento_mes: Number(form.reposicao_investimento_mes) || 0,
-        gestacao_dias: Number(form.gestacao_dias) || 283,
+        estado: form.estado || null,
+        cidade: form.cidade.trim() || null,
+        pais: form.pais.trim() || null,
+        tipo_pasto: form.tipo_pasto.trim() || null,
+        area_propria_ha: Number(form.area_propria_ha.replace(',', '.')) || 0,
+        area_arrendada_ha: Number(form.area_arrendada_ha.replace(',', '.')) || 0,
+        mao_de_obra_pessoas: Number(form.mao_de_obra_pessoas.replace(',', '.')) || 1,
+        preco_leite_litro: Number(form.preco_leite_litro.replace(',', '.')) || 0,
+        mao_de_obra_familiar_mes: Number(form.mao_de_obra_familiar_mes.replace(',', '.')) || 0,
+        reposicao_investimento_mes: Number(form.reposicao_investimento_mes.replace(',', '.')) || 0,
+        gestacao_dias: Number(form.gestacao_dias.replace(',', '.')) || 283,
       });
       setSalvo(true);
       recarregar();
     } catch (e) {
       setErro(e instanceof Error ? e.message : String(e));
+      formulario.scroll.current?.scrollTo({ y: 0, animated: true });
     } finally {
       setSalvando(false);
     }
@@ -129,36 +165,6 @@ export default function Configuracoes() {
     }
   };
 
-  /**
-   * A planilha de exemplo não lê o banco: é sempre o mesmo arquivo de
-   * demonstração, para o produtor ver o formato preenchido antes de mexer nos
-   * dados dele.
-   */
-  const baixarExemplo = async () => {
-    setPlanilhaOcupada('exemplo');
-    setAvisoPlanilha(null);
-    setRelatorio(null);
-    try {
-      const destino = await entregarArquivo({
-        nome: NOME_ARQUIVO_EXEMPLO,
-        bytes: gerarArquivoExemplo(),
-        titulo: 'Planilha de exemplo — Dr. Moo',
-      });
-      setAvisoPlanilha(
-        (destino === 'download'
-          ? 'Planilha de exemplo baixada.'
-          : destino === 'compartilhado'
-            ? 'Planilha de exemplo gerada. Escolha para onde enviar.'
-            : 'Planilha de exemplo salva neste aparelho.') +
-          ' Ela traz uma propriedade de demonstração com 10 vacas, ordenhas, CMT, CCS, tratamento, vacinação e as contas do mês. Importe como está para conhecer o app, ou use de modelo.',
-      );
-    } catch (e) {
-      setAvisoPlanilha(e instanceof Error ? e.message : String(e));
-    } finally {
-      setPlanilhaOcupada(null);
-    }
-  };
-
   const importar = async () => {
     setAvisoPlanilha(null);
     setRelatorio(null);
@@ -180,8 +186,42 @@ export default function Configuracoes() {
     }
   };
 
+  const apagarDados = async () => {
+    setApagando(true);
+    setAvisoApagar(null);
+    try {
+      await apagarTudo();
+      setApagarArmado(false);
+      // A propriedade também foi apagada: o formulário não pode continuar
+      // mostrando os valores de um cadastro que não existe mais.
+      setForm({
+        nome: '',
+        estado: '',
+        cidade: '',
+        pais: '',
+        tipo_pasto: '',
+        area_propria_ha: '',
+        area_arrendada_ha: '',
+        mao_de_obra_pessoas: '',
+        preco_leite_litro: '',
+        mao_de_obra_familiar_mes: '',
+        reposicao_investimento_mes: '',
+        gestacao_dias: '',
+      });
+      setRelatorio(null);
+      setAvisoPlanilha(null);
+      setSalvo(false);
+      recarregar();
+      setAvisoApagar('Tudo apagado. O app está zerado — importe uma planilha para começar.');
+    } catch (e) {
+      setAvisoApagar(e instanceof Error ? e.message : String(e));
+    } finally {
+      setApagando(false);
+    }
+  };
+
   return (
-    <Tela>
+    <Tela formulario={formulario}>
       <CabecalhoPagina
         titulo="Configurações"
         subtitulo="Dados da propriedade, metas e planilha"
@@ -216,6 +256,10 @@ export default function Configuracoes() {
       <TituloSecao icone="home-work">Propriedade</TituloSecao>
       <Cartao>
         <Campo rotulo="Nome da propriedade" valor={form.nome} aoMudar={(v) => alterarCampo('nome', v)} numerico={false} />
+        <SeletorEstado valor={form.estado} aoMudar={(v) => alterarCampo('estado', v)} />
+        <Campo rotulo="Cidade" valor={form.cidade} aoMudar={(v) => alterarCampo('cidade', v)} numerico={false} />
+        <Campo rotulo="País" valor={form.pais} aoMudar={(v) => alterarCampo('pais', v)} numerico={false} />
+        <Campo rotulo="Tipo de pasto" valor={form.tipo_pasto} aoMudar={(v) => alterarCampo('tipo_pasto', v)} numerico={false} nota="Ex.: braquiária, mombaça, tifton ou pastagem mista." />
         <Linha gap={espaco.md}>
           <View style={{ flex: 1 }}>
             <Campo rotulo="Área própria (ha)" valor={form.area_propria_ha} aoMudar={(v) => alterarCampo('area_propria_ha', v)} />
@@ -296,12 +340,6 @@ export default function Configuracoes() {
           e os dados atuais dentro. Preencha ou corrija no Excel e importe de volta. Os
           animais são identificados pelo brinco, e lote, medicamento e vacina pelo nome.
         </Txt>
-        <Espaco h={espaco.sm} />
-        <Txt v="caption" cor={c.textoSecundario}>
-          Nunca mexeu numa planilha dessas? Baixe a de exemplo: ela vem com uma propriedade
-          de demonstração preenchida — 10 vacas, ordenhas das últimas semanas, CMT, CCS,
-          tratamento com carência, vacinação e as contas do mês.
-        </Txt>
         <Espaco h={espaco.md} />
         <Acoes>
           <Botao
@@ -315,13 +353,6 @@ export default function Configuracoes() {
             icone={Platform.OS === 'web' ? 'download' : 'share'}
             desabilitado={planilhaOcupada !== null}
             aoTocar={() => void baixarPlanilha()}
-          />
-          <Botao
-            titulo={planilhaOcupada === 'exemplo' ? 'Gerando exemplo…' : 'Baixar planilha de exemplo'}
-            icone="auto-awesome"
-            variante="secundario"
-            desabilitado={planilhaOcupada !== null}
-            aoTocar={() => void baixarExemplo()}
           />
           <Botao
             titulo={planilhaOcupada === 'importando' ? 'Importando…' : 'Importar planilha preenchida'}
@@ -391,6 +422,56 @@ export default function Configuracoes() {
         )}
       </Cartao>
 
+      <TituloSecao icone="delete-forever">Apagar todos os dados</TituloSecao>
+      <Cartao>
+        <Txt v="label" cor={c.textoSecundario}>
+          Esvazia o banco deste aparelho: animais, ordenhas, exames, tratamentos, contas e
+          os dados da propriedade. Não dá para desfazer e nada é enviado para a nuvem — se
+          quiser guardar o que já está aqui, exporte a planilha antes.
+        </Txt>
+        <Espaco h={espaco.md} />
+        <Acoes
+          aviso={
+            avisoApagar ? (
+              <Alerta
+                tipo={apagarArmado ? 'alerta' : 'ok'}
+                icone="delete-forever"
+                titulo="Dados"
+                texto={avisoApagar}
+              />
+            ) : apagarArmado ? (
+              <Alerta
+                tipo="alerta"
+                titulo="Toque de novo para confirmar"
+                texto="O próximo toque apaga tudo, sem volta."
+              />
+            ) : null
+          }
+        >
+          <Botao
+            titulo={
+              apagando ? 'Apagando…' : apagarArmado ? 'Confirmar: apagar tudo' : 'Apagar todos os dados'
+            }
+            icone="delete-forever"
+            variante={apagarArmado ? 'perigo' : 'secundario'}
+            desabilitado={apagando}
+            aoTocar={() => {
+              setAvisoApagar(null);
+              if (apagarArmado) void apagarDados();
+              else setApagarArmado(true);
+            }}
+          />
+          {apagarArmado && !apagando && (
+            <Botao
+              titulo="Cancelar"
+              icone="close"
+              variante="texto"
+              aoTocar={() => setApagarArmado(false)}
+            />
+          )}
+        </Acoes>
+      </Cartao>
+
     </Tela>
   );
 }
@@ -418,23 +499,26 @@ function Campo({
   numerico?: boolean;
 }) {
   const { c, espaco, raio } = useTema();
+  const campo = useCampoFormulario(rotulo);
   return (
-    <View style={{ marginBottom: espaco.md }}>
+    <View ref={campo.ref} collapsable={false} style={{ marginBottom: espaco.md }}>
       <Txt v="caption" cor={c.textoSecundario}>
         {rotulo}
       </Txt>
       <TextInput
         value={valor}
-        onChangeText={aoMudar}
+        onChangeText={(texto) => { campo.limpar(); aoMudar(texto); }}
         autoComplete="off"
         importantForAutofill="no"
         textContentType="none"
         accessibilityLabel={rotulo}
+        accessibilityHint={campo.erro}
+        aria-invalid={!!campo.erro}
         keyboardType={numerico ? 'numeric' : 'default'}
         style={{
           minHeight: 48,
           borderWidth: 1,
-          borderColor: c.borda,
+          borderColor: campo.erro ? c.alerta : c.borda,
           borderRadius: raio.input,
           paddingHorizontal: espaco.md,
           backgroundColor: c.superficieAlt,
@@ -444,6 +528,7 @@ function Campo({
           marginTop: 4,
         }}
       />
+      {!!campo.erro && <Txt v="caption" cor={c.alerta}>{campo.erro}</Txt>}
       {!!nota && (
         <Txt v="caption" cor={c.textoSecundario} style={{ marginTop: 2 }}>
           {nota}
