@@ -220,6 +220,10 @@ Os diagramas saem de `npm run diagrama`, que desenha as figuras a partir do mode
 Os arquivos `docs/02-*` e `docs/05-*` são **gerados a partir da própria base de conhecimento**
 (`npm run docs`): documentação escrita à mão sobre uma base que muda vira documentação errada.
 
+A pasta `docs/` **não é versionada** — ela é saída de build, como `dist-web/`. Rode
+`npm run entrega` para gerar tudo localmente: os capítulos em Markdown, os diagramas, o
+documento Word e a apresentação.
+
 A suíte cobre:
 
 | Pacote | O que é verificado |
@@ -248,16 +252,16 @@ packages/planilha  Mapa planilha ↔ banco, leitura e escrita do .xlsx
 packages/relatorio Relatórios em HTML + gráficos SVG, que viram PDF no app
 packages/ui      Design system (tokens extraídos da logo)
 scripts/         Geração de documentação e servidor de sincronização da propriedade
-docs/            Documentação da entrega
+docs/            Documentação da entrega (gerada, fora do versionamento)
 ```
 
 O motor não importa React, nem SQLite, nem nada de I/O: recebe
 `(base de conhecimento, fatos)` e devolve `(próxima pergunta | parecer, traço)`.
 É isso que o torna testável em milissegundos e auditável.
 
-Detalhes em [`docs/01-arquitetura.md`](docs/01-arquitetura.md), com o passo a passo de cada
-funcionalidade em [`docs/06-funcionamento.md`](docs/06-funcionamento.md) e o modelo de classes em
-[`docs/07-diagrama-de-classes.md`](docs/07-diagrama-de-classes.md).
+Detalhes em `docs/01-arquitetura.md`, com o passo a passo de cada funcionalidade em
+`docs/06-funcionamento.md` e o modelo de classes em `docs/07-diagrama-de-classes.md` — todos
+gerados por `npm run entrega`.
 
 ---
 
@@ -304,7 +308,7 @@ funcionalidade em [`docs/06-funcionamento.md`](docs/06-funcionamento.md) e o mod
 
 Regras formalizadas a partir de consenso veterinário geral, sem conferência com fonte primária,
 estão marcadas com `status: "revisar"` e aparecem na interface com selo *"requer validação
-técnica"*. Veja [`docs/02-base-de-conhecimento.md`](docs/02-base-de-conhecimento.md).
+técnica"*. Veja `docs/02-base-de-conhecimento.md`, gerado por `npm run docs`.
 
 **O Dr. Moo orienta e faz triagem. Não substitui o exame do médico-veterinário.**
 
