@@ -9,7 +9,10 @@
 export type CF = number;
 
 /** Valor que uma variável pode assumir na memória de trabalho. */
-export type Valor = boolean | number | string | string[];
+// A base usa listas de número em `entre` (ex.: DEL `[7, 60]`) e listas de texto
+// em `em` (ex.: CMT `["1","2","3"]`). O tipo precisa admitir as duas, senão o
+// JSON válido da base não casa com o tipo que o motor declara.
+export type Valor = boolean | number | string | string[] | number[];
 
 /** De onde veio um fato — usado no traço e para não reperguntar o que já se sabe. */
 export type OrigemFato = 'pergunta' | 'banco' | 'regra' | 'calculado';
