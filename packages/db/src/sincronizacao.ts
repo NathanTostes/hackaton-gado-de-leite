@@ -25,7 +25,7 @@ import {
   type ResultadoSincronizacao,
   type Saude,
 } from '@drmoo/sync';
-import { abrirBanco, agoraISO, consultar, consultarUm, executar, novoId, type Parametro } from './driver';
+import { abrirBanco, agoraISO, consultar, executar, gravarMeta, lerMeta, novoId, type Parametro } from './driver';
 
 const CHAVE_ENDERECO = 'sync_endereco';
 const CHAVE_CODIGO = 'sync_codigo';
@@ -37,19 +37,6 @@ export interface ConfiguracaoSync {
   codigo: string;
   dispositivo: string;
   ultimaSincronizacao: string | null;
-}
-
-async function lerMeta(chave: string): Promise<string | null> {
-  const linha = await consultarUm<{ valor: string }>('SELECT valor FROM meta_app WHERE chave = ?', [chave]);
-  return linha?.valor ?? null;
-}
-
-async function gravarMeta(chave: string, valor: string): Promise<void> {
-  await executar(
-    `INSERT INTO meta_app (chave, valor) VALUES (?, ?)
-     ON CONFLICT(chave) DO UPDATE SET valor = excluded.valor`,
-    [chave, valor],
-  );
 }
 
 /** Nome padrão do aparelho: identifica a linha na lista do servidor. */

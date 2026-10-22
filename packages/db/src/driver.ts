@@ -137,6 +137,24 @@ export async function emTransacao(fn: () => Promise<void>): Promise<void> {
   await db.withTransactionAsync(fn);
 }
 
+/**
+ * Par chave/valor de `meta_app` — o lugar certo para uma preferência pequena e
+ * solitária (um endereço de sincronização, uma versão de esquema, um modo de
+ * tela) que não merece coluna própria em nenhuma tabela de domínio.
+ */
+export async function lerMeta(chave: string): Promise<string | null> {
+  const linha = await consultarUm<{ valor: string }>('SELECT valor FROM meta_app WHERE chave = ?', [chave]);
+  return linha?.valor ?? null;
+}
+
+export async function gravarMeta(chave: string, valor: string): Promise<void> {
+  await executar(
+    `INSERT INTO meta_app (chave, valor) VALUES (?, ?)
+     ON CONFLICT(chave) DO UPDATE SET valor = excluded.valor`,
+    [chave, valor],
+  );
+}
+
 const TABELAS_EM_ORDEM_DE_EXCLUSAO = [
   'fato_registrado',
   'exame_cmt',
