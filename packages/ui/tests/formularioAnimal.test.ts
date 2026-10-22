@@ -85,7 +85,8 @@ describe('renderização do cadastro de animais', () => {
 
   it.each(['novo', 'nascimento'] as const)('usa controles web fora da heurística de cartões no modo %s', (modo) => {
     const html = renderToStaticMarkup(createElement(FormularioAnimal, { modo, aoVoltar: () => {} }));
-    expect(html).not.toContain('<input');
+    expect(html.match(/<input/g)?.length).toBe(modo === 'novo' ? 3 : 2);
+    expect(html.match(/type="date"/g)?.length).toBe(modo === 'novo' ? 3 : 2);
     expect(html).toContain('<textarea');
     for (const input of inputs) {
       expect(input.multiline).toBe(true);

@@ -1,3 +1,4 @@
+import { CampoData } from '../../../src/componentes/campoData';
 import { validarCampos } from '../../../src/componentes/validarCampos';
 import { useFormulario, useCampoFormulario } from '../../../src/componentes/validacaoFormulario';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -52,7 +53,7 @@ export default function LancarLeite() {
     setErro('');
     setSalvo(false);
     const erros = validarCampos([
-      { rotulo: 'Data da ordenha (AAAA-MM-DD)', valor: data, tipo: 'data', obrigatorio: true },
+      { rotulo: 'Data da ordenha', valor: data, tipo: 'data', obrigatorio: true },
       { rotulo: 'Litros — manhã', valor: manha, tipo: 'numero' },
       { rotulo: 'Litros — tarde', valor: tarde, tipo: 'numero' },
     ]);
@@ -84,7 +85,7 @@ export default function LancarLeite() {
       {!!erro && <Alerta tipo="alerta" titulo="Não foi possível salvar" texto={erro} />}
 
       <Cartao>
-        <Campo rotulo="Data da ordenha (AAAA-MM-DD)" valor={data} aoMudar={setData} numerico={false} />
+        <CampoData rotulo="Data da ordenha" valor={data} aoMudar={setData} obrigatorio />
         <Linha gap={espaco.md}>
           <View style={{ flex: 1 }}>
             <Campo rotulo="Litros — manhã" valor={manha} aoMudar={setManha} />
