@@ -186,11 +186,12 @@ npm run entrega      # regera documentação, diagramas e apresentação
 | Arquivo | O que é |
 |---|---|
 | `docs/DrMoo-Documentacao.docx` | documentação técnica completa num só arquivo — capa, sumário, arquitetura, as 44 regras de produção, motor de inferência, processo com IA, casos de teste, funcionamento do sistema e diagrama de classes |
-| `docs/DrMoo-DiagramaDeClasses.docx` | só os diagramas de classes, em paisagem: domínio persistido, motor de inferência e serviços de aplicação |
+| `docs/DrMoo-DiagramaDeClasses.mdj` | projeto StarUML com os três diagramas de classes — domínio persistido, motor de inferência e serviços de aplicação — abríveis e editáveis |
 | `docs/DrMoo-Apresentacao.pptx` | 18 slides com animações e notas do apresentador |
 
 Os diagramas saem de `npm run diagrama`, que desenha as figuras a partir do modelo descrito em
-`scripts/gerar_diagrama_classes.py` — elas acompanham o código, não um desenho esquecido.
+`scripts/gerar_diagrama_classes.py` — elas acompanham o código, não um desenho esquecido. O mesmo
+modelo vira o `.mdj` do StarUML (`scripts/exportar_mdj.py`), com as caixas nas mesmas posições.
 
 Os arquivos `docs/02-*` e `docs/05-*` são **gerados a partir da própria base de conhecimento**
 (`npm run docs`): documentação escrita à mão sobre uma base que muda vira documentação errada.

@@ -93,6 +93,15 @@ export async function exportarPlanilhaBase64(): Promise<string> {
   return gerarArquivoBase64(await conteudoDaPlanilha());
 }
 
+/**
+ * Planilha de exemplo — não olha para o banco.
+ *
+ * Fica aqui, junto da exportação, porque é daqui que a tela de configurações
+ * busca tudo que tem a ver com planilha; o conteúdo em si vive em
+ * `@drmoo/planilha`, sem depender de banco nenhum.
+ */
+export { gerarArquivoExemplo, gerarArquivoExemploBase64, NOME_ARQUIVO_EXEMPLO } from '@drmoo/planilha';
+
 export interface RelatorioImportacao {
   /** Linhas gravadas por aba. */
   gravadas: Record<string, number>;

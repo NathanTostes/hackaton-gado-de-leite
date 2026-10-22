@@ -3,7 +3,9 @@ import { Platform, TextInput, View } from 'react-native';
 import {
   bancoEmMemoria,
   exportarPlanilha,
+  gerarArquivoExemplo,
   importarPlanilha,
+  NOME_ARQUIVO_EXEMPLO,
   obterPropriedade,
   salvarPropriedade,
   type RelatorioImportacao,
@@ -46,7 +48,9 @@ export default function Configuracoes() {
   const [salvo, setSalvo] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState('');
-  const [planilhaOcupada, setPlanilhaOcupada] = useState<'exportando' | 'importando' | null>(null);
+  const [planilhaOcupada, setPlanilhaOcupada] = useState<'exportando' | 'exemplo' | 'importando' | null>(
+    null,
+  );
   const [avisoPlanilha, setAvisoPlanilha] = useState<string | null>(null);
   const [relatorio, setRelatorio] = useState<RelatorioImportacao | null>(null);
   const [substituir, setSubstituir] = useState(false);
@@ -117,6 +121,36 @@ export default function Configuracoes() {
           : destino === 'compartilhado'
             ? 'Planilha gerada. Escolha para onde enviar.'
             : 'Planilha gerada e salva neste aparelho.',
+      );
+    } catch (e) {
+      setAvisoPlanilha(e instanceof Error ? e.message : String(e));
+    } finally {
+      setPlanilhaOcupada(null);
+    }
+  };
+
+  /**
+   * A planilha de exemplo não lê o banco: é sempre o mesmo arquivo de
+   * demonstração, para o produtor ver o formato preenchido antes de mexer nos
+   * dados dele.
+   */
+  const baixarExemplo = async () => {
+    setPlanilhaOcupada('exemplo');
+    setAvisoPlanilha(null);
+    setRelatorio(null);
+    try {
+      const destino = await entregarArquivo({
+        nome: NOME_ARQUIVO_EXEMPLO,
+        bytes: gerarArquivoExemplo(),
+        titulo: 'Planilha de exemplo — Dr. Moo',
+      });
+      setAvisoPlanilha(
+        (destino === 'download'
+          ? 'Planilha de exemplo baixada.'
+          : destino === 'compartilhado'
+            ? 'Planilha de exemplo gerada. Escolha para onde enviar.'
+            : 'Planilha de exemplo salva neste aparelho.') +
+          ' Ela traz uma propriedade de demonstração com 10 vacas, ordenhas, CMT, CCS, tratamento, vacinação e as contas do mês. Importe como está para conhecer o app, ou use de modelo.',
       );
     } catch (e) {
       setAvisoPlanilha(e instanceof Error ? e.message : String(e));
@@ -262,6 +296,12 @@ export default function Configuracoes() {
           e os dados atuais dentro. Preencha ou corrija no Excel e importe de volta. Os
           animais são identificados pelo brinco, e lote, medicamento e vacina pelo nome.
         </Txt>
+        <Espaco h={espaco.sm} />
+        <Txt v="caption" cor={c.textoSecundario}>
+          Nunca mexeu numa planilha dessas? Baixe a de exemplo: ela vem com uma propriedade
+          de demonstração preenchida — 10 vacas, ordenhas das últimas semanas, CMT, CCS,
+          tratamento com carência, vacinação e as contas do mês.
+        </Txt>
         <Espaco h={espaco.md} />
         <Acoes>
           <Botao
@@ -275,6 +315,13 @@ export default function Configuracoes() {
             icone={Platform.OS === 'web' ? 'download' : 'share'}
             desabilitado={planilhaOcupada !== null}
             aoTocar={() => void baixarPlanilha()}
+          />
+          <Botao
+            titulo={planilhaOcupada === 'exemplo' ? 'Gerando exemplo…' : 'Baixar planilha de exemplo'}
+            icone="auto-awesome"
+            variante="secundario"
+            desabilitado={planilhaOcupada !== null}
+            aoTocar={() => void baixarExemplo()}
           />
           <Botao
             titulo={planilhaOcupada === 'importando' ? 'Importando…' : 'Importar planilha preenchida'}

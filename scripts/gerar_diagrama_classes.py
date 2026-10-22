@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Gera o diagrama de classes do Dr. Moo em .docx (com as figuras em PNG).
+Gera o diagrama de classes do Dr. Moo: as figuras em PNG para a documentação e
+um projeto StarUML (.mdj) editável com as mesmas classes e posições.
 
 O modelo aqui descrito é extraído do código: as entidades são as interfaces de
 `packages/db/src/tipos.ts` e o esquema de `schema.ts`; o motor é a classe
@@ -22,26 +23,13 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
-from docx import Document
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK
-from docx.shared import Inches, Pt
-
 RAIZ = Path(__file__).resolve().parent.parent
 DOCS = RAIZ / "docs"
 IMAGENS = DOCS / "img"
-SAIDA = DOCS / "DrMoo-DiagramaDeClasses.docx"
+SAIDA = DOCS / "DrMoo-DiagramaDeClasses.mdj"
 
 sys.path.insert(0, str(RAIZ / "scripts"))
-from gerar_docx import (  # noqa: E402  (precisa do sys.path acima)
-    CINZA,
-    CINZA_CLARO,
-    FONTE,
-    LOGO,
-    TEAL,
-    converter,
-    preparar_estilos,
-    rodape,
-)
+from exportar_mdj import exportar  # noqa: E402  (precisa do sys.path acima)
 
 # Paleta (mesma da logo, em hex para o matplotlib)
 C_TEAL = "#015B66"
@@ -94,6 +82,17 @@ class Relacao:
     tipo: str = "associacao"  # associacao | composicao | heranca | dependencia
     lado_de: str = "auto"
     lado_para: str = "auto"
+
+
+@dataclass
+class Modelo:
+    """Um diagrama inteiro: o nome, o título da figura, o PNG e o conteúdo."""
+
+    nome: str
+    titulo: str
+    imagem: Path
+    classes: list[Classe]
+    relacoes: list[Relacao]
 
 
 def ancora(classe: Classe, lado: str) -> tuple[float, float]:
@@ -273,7 +272,7 @@ def desenhar(classes: list[Classe], relacoes: list[Relacao], arquivo: Path, titu
 # Os três diagramas
 # ---------------------------------------------------------------------------
 
-def diagrama_dominio() -> tuple[Path, str]:
+def modelo_dominio() -> Modelo:
     """Entidades persistidas: o rebanho e o que acontece com ele."""
     classes = [
         Classe(
@@ -421,12 +420,16 @@ def diagrama_dominio() -> tuple[Path, str]:
         Relacao("AnimalComResumo", "Animal", "estende", "heranca"),
         Relacao("Propriedade", "Lote", "1 → *", "composicao"),
     ]
-    caminho = IMAGENS / "classes-dominio.png"
-    desenhar(classes, relacoes, caminho, "Figura 1 — Domínio persistido (packages/db)")
-    return caminho, "Domínio persistido"
+    return Modelo(
+        "Domínio persistido",
+        "Figura 1 — Domínio persistido (packages/db)",
+        IMAGENS / "classes-dominio.png",
+        classes,
+        relacoes,
+    )
 
 
-def diagrama_motor() -> tuple[Path, str]:
+def modelo_motor() -> Modelo:
     """O motor de inferência e a base de conhecimento."""
     classes = [
         Classe(
@@ -523,12 +526,16 @@ def diagrama_motor() -> tuple[Path, str]:
         Relacao("Sessao", "Parecer", "encerra com", "dependencia"),
         Relacao("Hipotese", "Parecer", "compõe", "associacao"),
     ]
-    caminho = IMAGENS / "classes-motor.png"
-    desenhar(classes, relacoes, caminho, "Figura 2 — Motor de inferência (packages/engine + knowledge)")
-    return caminho, "Motor de inferência"
+    return Modelo(
+        "Motor de inferência",
+        "Figura 2 — Motor de inferência (packages/engine + knowledge)",
+        IMAGENS / "classes-motor.png",
+        classes,
+        relacoes,
+    )
 
 
-def diagrama_servicos() -> tuple[Path, str]:
+def modelo_servicos() -> Modelo:
     """Os serviços de aplicação: persistência, sincronização, planilha e relatório."""
     classes = [
         Classe(
@@ -650,9 +657,13 @@ def diagrama_servicos() -> tuple[Path, str]:
         Relacao("Planilha", "Driver", "grava", "dependencia"),
         Relacao("Relatorio", "Repositorios", "lê números de", "dependencia"),
     ]
-    caminho = IMAGENS / "classes-servicos.png"
-    desenhar(classes, relacoes, caminho, "Figura 3 — Serviços de aplicação e portas")
-    return caminho, "Serviços de aplicação"
+    return Modelo(
+        "Serviços de aplicação",
+        "Figura 3 — Serviços de aplicação e portas",
+        IMAGENS / "classes-servicos.png",
+        classes,
+        relacoes,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -705,66 +716,13 @@ mesmo resultado, e repetir não muda nada.
 
 
 def main() -> None:
-    figuras = [diagrama_dominio(), diagrama_motor(), diagrama_servicos()]
+    modelos = [modelo_dominio(), modelo_motor(), modelo_servicos()]
 
-    doc = Document()
-    for secao in doc.sections:
-        # Paisagem: diagrama em retrato fica ilegível.
-        secao.page_width = Inches(11.69)
-        secao.page_height = Inches(8.27)
-        secao.left_margin = Inches(0.6)
-        secao.right_margin = Inches(0.6)
-        secao.top_margin = Inches(0.6)
-        secao.bottom_margin = Inches(0.6)
+    for modelo in modelos:
+        desenhar(modelo.classes, modelo.relacoes, modelo.imagem, modelo.titulo)
+        print(f"  + {modelo.imagem.relative_to(RAIZ)}")
 
-    preparar_estilos(doc)
-
-    # Capa curta — o documento é um anexo técnico, não a documentação inteira.
-    if LOGO.exists():
-        p = doc.add_paragraph()
-        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p.paragraph_format.space_before = Pt(60)
-        p.add_run().add_picture(str(LOGO), width=Inches(1.5))
-
-    p = doc.add_paragraph()
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("Dr. Moo — Diagrama de classes")
-    r.font.size = Pt(26)
-    r.font.bold = True
-    r.font.color.rgb = TEAL
-    r.font.name = FONTE
-
-    p = doc.add_paragraph()
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("Modelo de domínio, motor de inferência e serviços de aplicação")
-    r.font.size = Pt(12)
-    r.font.color.rgb = CINZA
-    r.font.name = FONTE
-
-    p = doc.add_paragraph()
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("Hackathon UFJF 2026 · gerado a partir do código por scripts/gerar_diagrama_classes.py")
-    r.font.size = Pt(9)
-    r.font.color.rgb = CINZA_CLARO
-    r.font.name = FONTE
-
-    doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
-
-    for caminho, titulo in figuras:
-        doc.add_heading(titulo, level=1)
-        p = doc.add_paragraph()
-        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p.add_run().add_picture(str(caminho), width=Inches(10.3))
-        doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
-
-    converter(doc, LEGENDA.strip())
-    converter(doc, NOTAS.strip())
-
-    rodape(doc)
-    doc.save(SAIDA)
-
-    for caminho, _ in figuras:
-        print(f"  + {caminho.relative_to(RAIZ)}")
+    exportar(modelos, SAIDA, f"{LEGENDA.strip()}\n\n{NOTAS.strip()}")
     print(f"\n{SAIDA.relative_to(RAIZ)} ({SAIDA.stat().st_size / 1024:.0f} KB)")
 
 

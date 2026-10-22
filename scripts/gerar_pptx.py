@@ -33,6 +33,20 @@ LOGO = next(
 )
 SAIDA = RAIZ / "docs" / "DrMoo-Apresentacao.pptx"
 
+# Fotos da visita técnica (pasta de referência, fora do repositório).
+PASTA_EMBRAPA = RAIZ / "reference" / "imagens visita embrapa"
+FOTOS_EMBRAPA = [
+    PASTA_EMBRAPA / "WhatsApp Image 2026-10-20 at 11.43.53 AM.jpeg",
+    PASTA_EMBRAPA / "WhatsApp Image 2026-10-20 at 11.43.54 AM.jpeg",
+    PASTA_EMBRAPA / "WhatsApp Image 2026-10-20 at 11.43.55 AM.jpeg",
+    PASTA_EMBRAPA / "WhatsApp Image 2026-10-20 at 11.43.56 AM.jpeg",
+]
+
+# QR codes gerados por `scripts/gerar_pptx.py` apontando para o site publicado
+# e para a Play Store (placeholder até o app ser publicado na loja).
+QR_SITE = RAIZ / "docs" / "img" / "qr_site.png"
+QR_PLAY = RAIZ / "docs" / "img" / "qr_play.png"
+
 # Paleta amostrada da logo (packages/ui/src/tokens.ts)
 TEAL = RGBColor(0x01, 0x5B, 0x66)
 TEAL_ESCURO = RGBColor(0x01, 0x3A, 0x41)
@@ -470,7 +484,36 @@ def construir() -> Presentation:
     transicao(s, "push")
     nota(s, "Mostrar que o desenho é o do slide 14 da apresentação do Hackathon, camada por camada.")
 
-    # ------------------------------------------------ 6. Base de conhecimento
+    # ------------------------------------------------- 5b. Escolha da tecnologia
+    s = nova(prs, BRANCO)
+    f = titulo_slide(s, "Por que essa stack", "Cada escolha técnica persegue o mesmo requisito: localhost, offline, determinístico")
+    cartoes = [
+        cartao(s, 0.8, 2.1, 2.9, 2.15, "TypeScript de ponta a ponta",
+               "Um único tipo atravessa app,\nmotor e banco. Contrato\nquebrado aparece no editor,\nnão em produção.", cor=TEAL),
+        cartao(s, 3.9, 2.1, 2.9, 2.15, "Expo · React Native + Web",
+               "Um código-fonte roda no\nAndroid e no navegador\n(localhost:8081) — sem manter\ndois apps em paralelo.", cor=TEAL),
+        cartao(s, 7.0, 2.1, 2.9, 2.15, "Motor zero dependências",
+               "TypeScript puro, não importa\nReact nem SQLite. Roda e\ntesta em milissegundos,\nisolado do resto.", cor=TEAL),
+        cartao(s, 10.1, 2.1, 2.45, 2.15, "SQLite local",
+               "Prontuário, histórico e\nplanilha ficam no aparelho.\nNenhuma chamada de rede\ndecide nada.", cor=TEAL),
+    ]
+    destaque = retangulo(s, 0.8, 4.65, L - 1.6, 1.45, preenchimento=RGBColor(0xEC, 0xF8, 0xF1), contorno=VERDE_ESCURO)
+    tf = destaque.text_frame
+    tf.margin_left = Inches(0.3); tf.margin_top = Inches(0.22)
+    p = tf.paragraphs[0]
+    r = p.add_run(); r.text = "Nenhuma dessas escolhas é modismo."
+    r.font.size = Pt(15); r.font.bold = True; r.font.color.rgb = PRETO; r.font.name = FONTE
+    p = tf.add_paragraph(); p.space_before = Pt(7)
+    r = p.add_run()
+    r.text = ("Todas servem ao mesmo requisito do regulamento: a solução final roda por completo em "
+              "localhost, sem servidor, sem LLM em runtime — determinística e auditável de ponta a ponta.")
+    r.font.size = Pt(12); r.font.color.rgb = CINZA; r.font.name = FONTE
+    animar(s, [(x, "subir") for x in f] + [(c, "subir") for c in cartoes] + [(destaque, "revelar")])
+    transicao(s, "push")
+    nota(s, "Se perguntarem 'por que não Flutter / Next.js / Firebase': a resposta é sempre a mesma — "
+            "localhost, offline, zero dependência de serviço externo.")
+
+    # ------------------------------------------------------------ 6. Base de conhecimento
     s = nova(prs, BRANCO)
     f = titulo_slide(s, "A base de conhecimento", "Dado, não programa: JSON que um médico-veterinário consegue ler e corrigir")
     nums = []
@@ -515,6 +558,22 @@ def construir() -> Presentation:
     animar(s, [(x, "fade") for x in f] + [(a1, "entrar_esquerda"), (a2, "entrar_direita"), (destaque, "subir")])
     transicao(s, "push")
     nota(s, "Este slide costuma ganhar pontos: mostra consciência do limite do que foi construído.")
+
+    # ------------------------------------------------- 7b. Visita à Embrapa
+    s = nova(prs, BRANCO)
+    f = titulo_slide(s, "Visita à Embrapa Gado de Leite", "Juiz de Fora — confrontar o protótipo com quem escreveu a cartilha")
+    posicoes = [(0.8, 2.15), (6.95, 2.15), (0.8, 4.55), (6.95, 4.55)]
+    fotos = []
+    for (x, y), caminho in zip(posicoes, FOTOS_EMBRAPA):
+        if caminho.exists():
+            moldura = retangulo(s, x, y, 5.6, 2.2, preenchimento=BRANCO, contorno=BORDA, raio=0.03)
+            fotos.append(moldura)
+            img = s.shapes.add_picture(str(caminho), Inches(x + 0.08), Inches(y + 0.08), height=Inches(2.04))
+            fotos.append(img)
+    rod = rodape(s, "A mesma instituição autora da cartilha usada como fonte das 17 regras validadas de mastite.")
+    animar(s, [(x, "fade") for x in f] + [(x, "subir") for x in fotos] + [(rod, "fade")], intervalo=160)
+    transicao(s, "push")
+    nota(s, "Contar como foi a visita: o que a equipe perguntou e o que a Embrapa confirmou sobre as metas e as regras de mastite.")
 
     # --------------------------------------------------------- 8. O motor
     s = nova(prs, BRANCO)
@@ -750,6 +809,56 @@ def construir() -> Presentation:
     animar(s, [(x, "fade") for x in f] + [(x, "subir") for x in c])
     transicao(s, "push")
     nota(s, "Não prometer o que não existe. A banca percebe, e isso custa caro.")
+
+    # --------------------------------------------------------- 17b. Deploy
+    s = nova(prs, BRANCO)
+    f = titulo_slide(s, "Deploy e integração contínua", "Dois workflows do GitHub Actions cobrem verificação e publicação")
+    codigo = caixa_codigo(s, 0.8, 2.15, 7.1, 4.15, [
+        ("verificar.yml", True),
+        ("on: push (qualquer branch) e pull_request", False),
+        ("  npm ci", False),
+        ("  npm run typecheck && npm run test", False),
+        ("", False),
+        ("publicar-web.yml", True),
+        ("on: push na main (ou disparo manual)", False),
+        ("  npm ci && npm run verify", False),
+        ("  npm run build:web", False),
+        ("  ajustar baseUrl → /hackaton-gado-de-leite/app", False),
+        ("  actions/deploy-pages@v4", False),
+    ], tamanho=13)
+    lado = [
+        cartao(s, 8.15, 2.15, 4.4, 1.9, "Falhar aqui é melhor",
+               "`verificar.yml` roda em menos de\n2 minutos a cada push — é o que\nimpede a base, o motor ou a\nplanilha quebrarem sem ninguém\nperceber.", cor=TEAL),
+        cartao(s, 8.15, 4.3, 4.4, 1.95, "Zero servidor no ar",
+               "`publicar-web.yml` exporta o app\nestático e publica no GitHub Pages\na cada merge. O banco SQLite\ncontinua rodando no navegador\nde quem acessa.", cor=VERDE_ESCURO),
+    ]
+    animar(s, [(x, "fade") for x in f] + [(codigo, "revelar")] + [(x, "subir") for x in lado])
+    transicao(s, "push")
+    nota(s, "Mostrar a aba Actions do GitHub ao vivo, se der tempo: os dois workflows rodando verde.")
+
+    # --------------------------------------------------------- 17c. QR codes
+    s = nova(prs, TEAL)
+    faixa(s, 0, 0, L, 0.1, VERDE)
+    t1 = texto(s, 0, 0.75, L, 0.8, "Acesse agora", tamanho=38, cor=BRANCO, negrito=True, alinhamento=PP_ALIGN.CENTER)
+    t2 = texto(s, 0, 1.55, L, 0.5, "Um já está no ar. O outro aponta para onde vai estar.",
+               tamanho=15, cor=RGBColor(0xBF, 0xE3, 0xE7), alinhamento=PP_ALIGN.CENTER)
+    blocos = []
+    for cx, qr, rotulo, url in [
+        (2.9, QR_SITE, "Site  ·  GitHub Pages", "nathantostes.github.io/hackaton-gado-de-leite"),
+        (7.9, QR_PLAY, "App  ·  Play Store", "redireciona para a Play Store — publicação em andamento"),
+    ]:
+        cartao_fundo = retangulo(s, cx, 2.5, 3.5, 4.1, preenchimento=BRANCO, contorno=None, raio=0.05)
+        blocos.append(cartao_fundo)
+        if qr.exists():
+            tam = 2.6
+            img = s.shapes.add_picture(str(qr), Inches(cx + (3.5 - tam) / 2), Inches(2.75), height=Inches(tam))
+            blocos.append(img)
+        blocos.append(texto(s, cx + 0.15, 5.55, 3.2, 0.4, rotulo, tamanho=15, cor=TEAL, negrito=True, alinhamento=PP_ALIGN.CENTER))
+        blocos.append(texto(s, cx + 0.15, 5.95, 3.2, 0.5, url, tamanho=10.5, cor=RGBColor(0xC3, 0xDC, 0xE0),
+                             alinhamento=PP_ALIGN.CENTER, entrelinha=1.2))
+    animar(s, [(t1, "ampliar"), (t2, "fade")] + [(b, "subir") for b in blocos], intervalo=180)
+    transicao(s, "fade", "slow")
+    nota(s, "Deixar este slide no ar um pouco mais — é o momento de a banca escanear com o celular.")
 
     # ------------------------------------------------------ 18. Encerramento
     s = nova(prs, TEAL)

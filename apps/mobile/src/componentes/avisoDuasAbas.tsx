@@ -148,8 +148,8 @@ export function AvisoDuasAbas({
         />
 
         <Txt v="caption" cor={cores.cinza500} style={{ textAlign: 'center' }}>
-          Continuando, esta aba usa uma cópia temporária com os dados de demonstração. Nada do que
-          você registrar nela será guardado.
+          Continuando, esta aba usa uma cópia temporária e vazia: os animais da outra aba não
+          aparecem aqui, e nada do que você registrar nela será guardado.
           {Platform.OS === 'web' ? ' No aplicativo de celular e no de computador isso não acontece.' : ''}
         </Txt>
       </View>
