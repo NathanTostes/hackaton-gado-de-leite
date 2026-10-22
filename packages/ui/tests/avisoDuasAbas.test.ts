@@ -79,7 +79,7 @@ describe('aviso de duas abas', () => {
     // O React quebra o parágrafo em vários nós de texto; comparar o texto puro
     // é o que reflete o que o usuário lê.
     const texto = html.replace(/<[^>]+>/g, '');
-    expect(texto).toContain('Nada do que você registrar nela será guardado');
+    expect(texto).toContain('nada do que você registrar nela será guardado');
   });
 
   it('oferece as duas saídas como botões acessíveis', () => {
