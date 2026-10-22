@@ -49,21 +49,10 @@ function podeCairParaMemoria(): boolean {
   return typeof document !== 'undefined';
 }
 
-async function abrirExpoSqlite(): Promise<BackendSQLite> {
+async function abrirExpoSqlite(nome: string): Promise<BackendSQLite> {
   // Import dinâmico: mantém o pacote utilizável fora do runtime do Expo.
   const SQLite = await import('expo-sqlite');
-  let db: Awaited<ReturnType<typeof SQLite.openDatabaseAsync>>;
-  try {
-    db = await SQLite.openDatabaseAsync(NOME_BANCO);
-  } catch (e) {
-    // No navegador o arquivo fica no OPFS, que só aceita UM acesso de escrita por
-    // vez: a segunda aba/janela aberta no mesmo navegador falha ao abrir o banco.
-    // Em vez de travar a aba, ela trabalha num banco em memória — o app abre e
-    // funciona normalmente (o seed de demonstração é refeito), só não persiste.
-    if (!podeCairParaMemoria()) throw e;
-    db = await SQLite.openDatabaseAsync(':memory:');
-    emMemoria = true;
-  }
+  const db = await SQLite.openDatabaseAsync(nome);
   return {
     execAsync: (sql) => db.execAsync(sql),
     runAsync: async (sql, params) => {
@@ -75,29 +64,62 @@ async function abrirExpoSqlite(): Promise<BackendSQLite> {
   };
 }
 
+/** Cria o esquema e aplica as migrações de coluna na conexão recebida. */
+async function prepararEsquema(db: BackendSQLite): Promise<void> {
+  await db.execAsync(DDL);
+  // CREATE TABLE IF NOT EXISTS não acrescenta colunas em bancos já instalados.
+  await db.withTransactionAsync(async () => {
+    const colunas = await db.getAllAsync<{ name: string }>('PRAGMA table_info(animal)', []);
+    const existentes = new Set(colunas.map((coluna) => coluna.name));
+    for (const [nome, tipo] of Object.entries(COLUNAS_CADASTRO)) {
+      if (!existentes.has(nome)) await db.execAsync(`ALTER TABLE animal ADD COLUMN ${nome} ${tipo}`);
+    }
+  });
+  await db.runAsync(
+    `INSERT INTO meta_app (chave, valor) VALUES ('schema_versao', ?)
+     ON CONFLICT(chave) DO UPDATE SET valor = excluded.valor`,
+    [String(SCHEMA_VERSAO)],
+  );
+}
+
 export async function abrirBanco(): Promise<BackendSQLite> {
   if (conexao) return conexao;
   if (abrindo) return abrindo;
 
   abrindo = (async () => {
-    const db = backendInjetado ?? (await abrirExpoSqlite());
-    await db.execAsync(DDL);
-    // CREATE TABLE IF NOT EXISTS não acrescenta colunas em bancos já instalados.
-    await db.withTransactionAsync(async () => {
-      const colunas = await db.getAllAsync<{ name: string }>('PRAGMA table_info(animal)', []);
-      const existentes = new Set(colunas.map((coluna) => coluna.name));
-      for (const [nome, tipo] of Object.entries(COLUNAS_CADASTRO)) {
-        if (!existentes.has(nome)) await db.execAsync(`ALTER TABLE animal ADD COLUMN ${nome} ${tipo}`);
-      }
-    });
-    await db.runAsync(
-      `INSERT INTO meta_app (chave, valor) VALUES ('schema_versao', ?)
-       ON CONFLICT(chave) DO UPDATE SET valor = excluded.valor`,
-      [String(SCHEMA_VERSAO)],
-    );
-    conexao = db;
-    return db;
+    if (backendInjetado) {
+      await prepararEsquema(backendInjetado);
+      conexao = backendInjetado;
+      return backendInjetado;
+    }
+
+    try {
+      const db = await abrirExpoSqlite(NOME_BANCO);
+      await prepararEsquema(db);
+      conexao = db;
+      return db;
+    } catch (e) {
+      // No navegador o arquivo fica no OPFS, que só aceita UM acesso de escrita
+      // por vez: a segunda aba/janela aberta no mesmo navegador não consegue o
+      // arquivo. A falha pode aparecer já no open ou só na primeira consulta
+      // ("Invalid VFS state") — por isso a tentativa inteira, esquema incluído,
+      // é que decide se esta aba tem o banco de verdade.
+      // Em vez de travar a aba, ela trabalha num banco em memória: o app abre e
+      // funciona normalmente, só não persiste — e a tela de aviso explica isso.
+      if (!podeCairParaMemoria()) throw e;
+      const memoria = await abrirExpoSqlite(':memory:');
+      await prepararEsquema(memoria);
+      emMemoria = true;
+      conexao = memoria;
+      return memoria;
+    }
   })();
+
+  // Uma tentativa que falhou não pode ficar memorizada: sem isso, o botão
+  // "tentar de novo" devolveria para sempre o mesmo erro.
+  abrindo.catch(() => {
+    abrindo = null;
+  });
 
   return abrindo;
 }
